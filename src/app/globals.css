@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+body {
+  background: var(--background);
+  font-family: "Poppins", sans-serif;
+}
+
+/* .banner {
+  background-image: url(../../public/images/banner.png);
+  height: 100vh;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+} */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  box-shadow: 0 0 0px 1000px #2b0d52 inset !important;
+  -webkit-text-fill-color: #a4a4a4 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+@layer utilities {
+  .backdrop-blur-custom {
+    backdrop-filter: blur(15.23668384552002px);
+  }
+}
+.shadow-inset-custom {
+  box-shadow: inset 0px 0px 11.28px 0px #00000029;
+}
+@media (max-width: 1025px) {
+  .custom-gap-margin {
+    margin: 0 59px;
+  }
+  .bg-mob {
+    height: 100% !important;
+  }
+}
+@media (max-width: 767px) {
+  .left img {
+    width: 100%;
+  }
+  .custom-gap-margin {
+    gap: 0px;
+    margin: 0 59px;
+  }
+  .mob-text {
+    font-size: 40px;
+  }
+  .form-sec {
+    width: 100%;
+  }
+}
