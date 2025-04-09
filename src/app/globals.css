@@ -1,7 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Audiowide&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap");
 @import "tailwindcss";
-
 body {
-  background: var(--background);
+  background-image: linear-gradient(89.97deg, #002b58 -37.97%, #3b0459 99.97%),
+    linear-gradient(180deg, rgba(31, 6, 74, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%);
   font-family: "Poppins", sans-serif;
 }
 
@@ -24,9 +26,44 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: #a4a4a4 !important;
   transition: background-color 5000s ease-in-out 0s;
 }
+
 @layer utilities {
   .backdrop-blur-custom {
     backdrop-filter: blur(15.23668384552002px);
+  }
+}
+.border-gradient {
+  border: 6px solid;
+  border-image-source: linear-gradient(180deg, #501794 0%, #3e70a1 100%);
+  border-image-slice: 1;
+  border-radius: 100%;
+}
+@layer utilities {
+  .border-gradient-custom {
+    border: 3px solid;
+    border-image: linear-gradient(180deg, #501794 0%, #3e70a1 100%);
+    border-image-slice: 1;
+  }
+  .border-gradient-shape {
+    border: 3px solid;
+    border-image: linear-gradient(180deg, #501794 0%, #3e70a1 100%);
+    border-image-slice: 1;
+  }
+  .gradient-border {
+    background: linear-gradient(
+      to bottom,
+      #a855f7,
+      #3b82f6
+    ); /* purple to blue */
+    padding: 3px; /* Border width */
+    border-radius: 9999px; /* Full round */
+  }
+
+  .bg-transparent {
+    background-color: #151d58 !important;
+  }
+  .custom-shape {
+    clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%);
   }
 }
 .shadow-inset-custom {
