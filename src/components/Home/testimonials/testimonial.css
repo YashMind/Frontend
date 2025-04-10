@@ -1,0 +1,8 @@
+/* Override Keen Slider's styles */
+.keen-slider:not([data-keen-slider-disabled]) .keen-slider__slide {
+    min-height: auto !important; /* Remove min-height */
+    overflow: visible !important; /* Allow overflow */
+    position: static !important; /* Remove relative positioning */
+    width: auto !important; /* Reset width */
+  }
+  
