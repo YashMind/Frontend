@@ -1,0 +1,101 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import api from "@/services/http/baseUrl";
+import {
+  startLoadingActivity,
+  stopLoadingActivity,
+} from "../activity/activitySlice";
+import toast from "react-hot-toast";
+
+// Async thunk for signup
+export const signUpUser = createAsyncThunk<
+  any,
+  { payload: any; navigate: (path: string) => void }
+>(
+  "auth/signUpUser",
+  async ({ payload, navigate }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await api.post("/auth/signup", payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toast.success("user created successfully!");
+        return response.data;
+      } else {
+        return rejectWithValue("Signup failed");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during signup");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const signInUser = createAsyncThunk<
+  any,
+  { payload: any; navigate: (path: string) => void }
+>(
+  "auth/signInUser",
+  async ({ payload, navigate }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await api.post("/auth/signin", payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toast.success("user logged in successfully!");
+        return response.data;
+      } else {
+        return rejectWithValue("Signup failed");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during signup");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+const initialState = {
+  loading: false,
+  data: [],
+  userData: {},
+  userDetails: {},
+};
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(signUpUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(signUpUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload.data;
+      })
+      .addCase(signUpUser.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(signInUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(signInUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userData = action.payload.data;
+      })
+      .addCase(signInUser.rejected, (state, action) => {
+        state.loading = false;
+      })
+  },
+});
+
+export default authSlice.reducer;
