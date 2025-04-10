@@ -58,7 +58,9 @@ input:-webkit-autofill:active {
     padding: 3px; /* Border width */
     border-radius: 9999px; /* Full round */
   }
-
+  .center-img {
+    align-items: anchor-center;
+  }
   .bg-transparent {
     background-color: #151d58 !important;
   }

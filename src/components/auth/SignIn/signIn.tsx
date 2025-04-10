@@ -100,7 +100,7 @@ const SignIn = () => {
                   {errors.password && <span className="text-red-500">{errors?.password?.message}</span>}
 
                 <button className="w-full py-3 rounded-[18px] bg-[linear-gradient(90.04deg,_#501794_0.03%,_#3E70A1_101.88%)] text-[22px]  font-medium hover:opacity-90 transition ">
-                  Sign up
+                  Sign In
                 </button>
                 </form>
                 <div className="text-right mt-2">
