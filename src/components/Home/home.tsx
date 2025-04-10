@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import HomeHeader from "@/components/Common/header/header";
 import HomeBanner from "@/components/Home/banner/banner";
@@ -10,49 +10,14 @@ import Testimonials from "@/components/Home/testimonials/testimonials";
 import PriceSection from "@/components/Home/priceSection/priceSection";
 import VoiceAgent from "@/components/Home/voiceAgent/voiceAgent";
 import ChatLLM from "@/components/Home/chatLLM/chatLLM";
-
-// const Home = () => {
-//   return (
-//     <div>
-//       <HomeHeader />
-//     {/* banner section */}
-//       <HomeBanner />
-//       {/* Our Products */}
-//       <HomeProducts />
-
-//       {/* Chat Bot Sec */}
-//       <ChatbotSection />
-
-//       {/* Chat LLM section */}
-//       <ChatLLM />
-
-//       {/* Voice Agent section */}
-//       <VoiceAgent />
-
-//       {/* price section */}
-//       <PriceSection />
-
-//       {/* Testimonials section */}
-//       <Testimonials />
-
-//       {/* faq section */}
-//       <FaqSection />
-
-//       {/* footer */}
-//       <HomeFooter />
-//     </div>
-//   );
-// };
-
-// export default Home;
-
+import "./home.css";
 
 const Home = () => {
   return (
     <div>
       {/* header */}
       <HomeHeader />
-      
+
       {/* banner section */}
       <HomeBanner />
 

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 const FaqSection = () => {
+  const [openContent, setOpenContent] = useState(false);
   return (
     <div className="faq mt-[110px]">
       <div className="container mb-[55px] ">
@@ -59,21 +60,26 @@ const FaqSection = () => {
                           Do you maintain your apps?
                         </h3>
                       </div>
-                      <button className="text-white bg-cyan-400 w-[86px] h-[80px] flex items-center justify-center rounded-sm text-3xl">
-                        −
+                      <button
+                        className="text-white bg-cyan-400 w-[86px] h-[80px] flex items-center justify-center rounded-sm text-3xl"
+                        onClick={() => setOpenContent(!openContent)}
+                      >
+                        {openContent ? "-" : "+"}
                       </button>
                     </div>
-                    <div className="px-6 py-4 text-sm leading-relaxed text-gray-300">
-                      AI has the best record in software maintenance and
-                      upgrades. Over and over we get praises and accolades from
-                      our customers for taking good care of our apps. AI has the
-                      best record in software maintenance and upgrades. Over and
-                      over we get praises and accolades from our customers for
-                      taking good care of our apps. AI has the best record in
-                      software maintenance and upgrades. Over and over we get
-                      praises and accolades from our customers for taking good
-                      care of our apps.
-                    </div>
+                    {openContent ? (
+                      <div className="px-6 py-4 text-sm leading-relaxed text-gray-300">
+                        AI has the best record in software maintenance and
+                        upgrades. Over and over we get praises and accolades
+                        from our customers for taking good care of our apps. AI
+                        has the best record in software maintenance and
+                        upgrades. Over and over we get praises and accolades
+                        from our customers for taking good care of our apps. AI
+                        has the best record in software maintenance and
+                        upgrades. Over and over we get praises and accolades
+                        from our customers for taking good care of our apps.
+                      </div>
+                    ) : null}
                   </div>
 
                   {/* Accordion Item 2 */}
