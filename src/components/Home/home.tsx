@@ -259,7 +259,7 @@ const Home = () => {
               fontFamily: "'Audiowide', sans-serif",
             }}
           >
-            Voice Agent
+            Chat LLM
           </h1>
           <img src="/images/heading.png" />
           <div className="flex items-center mt-5 ">
@@ -270,16 +270,15 @@ const Home = () => {
                   fontFamily: "'Audiowide', sans-serif",
                 }}
               >
-                How <span className="text-[#05BDFD]">AI Voice Agent</span> Work?
+                What <span className="text-[#05BDFD]"> LLM</span> Can Do?
               </h2>
               <p className=" font-light text-xl">
-                An AI Voice Agent works by using speech recognition to convert
-                spoken words into text, natural language processing (NLP) to
-                understand the intent, and text-to-speech (TTS) to respond in a
-                human-like voice. It processes user input in real-time,
-                accessing databases or APIs to provide relevant information or
-                take action. Machine learning continuously improves its accuracy
-                and response quality based on interactions.
+                A Large Language Model (LLM) is an advanced AI system designed
+                to process and generate human-like text across various domains.
+                It learns from vast amounts of data and can perform tasks such
+                as answering questions, writing content, and summarizing
+                information. LLMs are crucial for applications in chatbots,
+                content creation, and language translation.
               </p>
             </div>
             <div className="Chat-img w-1/2">
@@ -298,7 +297,7 @@ const Home = () => {
               fontFamily: "'Audiowide', sans-serif",
             }}
           >
-            Chat Bot
+            Voice Agent
           </h1>
           <img src="/images/heading.png" />
           <div className="flex items-center mt-5 ">
@@ -312,15 +311,16 @@ const Home = () => {
                   fontFamily: "'Audiowide', sans-serif",
                 }}
               >
-                What <span className="text-[#05BDFD]">Chat Bot</span> Can Do?
+                How <span className="text-[#05BDFD]">AI Voice Agent</span> Work?
               </h2>
               <p className="text-right font-light text-xl">
-                Chatbots can be rule-based, where they follow predefined scripts
-                and decision trees, or they can be powered by artificial
-                intelligence (AI) and natural language processing (NLP) to
-                understand and respond to user inputs more dynamically. The
-                sophistication of a chatbot's capabilities can vary widely
-                depending on its design and the technology behind it.
+                An AI Voice Agent works by using speech recognition to convert
+                spoken words into text, natural language processing (NLP) to
+                understand the intent, and text-to-speech (TTS) to respond in a
+                human-like voice. It processes user input in real-time,
+                accessing databases or APIs to provide relevant information or
+                take action. Machine learning continuously improves its accuracy
+                and response quality based on interactions.
               </p>
             </div>
           </div>
@@ -340,9 +340,9 @@ const Home = () => {
           </h1>
           <img src="/images/heading.png" />
           <div className="pt-12 px-4">
-            <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch justify-center gap-8 h-full">
+            <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch justify-center gap-8 h-full center-img">
               {/* FREE Plan */}
-              <div className=" rounded-tr-[18px] rounded-bl-[18px]   border border-[#FFFFFF33] backdrop-blur-[32.8032px] shadow-[0px_2.62px_13.12px_-0.66px_#00000000] px-[20px] py-[31px] text-white w-full md:w-1/3 flex flex-col justify-between min-h-full">
+              <div className=" bg-[#1B1441] rounded-tr-[18px] rounded-bl-[18px]  border  border-[#FFFFFF33] p-6 text-white w-full md:max-w-[350px] flex flex-col justify-between min-h-full">
                 <div>
                   <h3
                     className="text-lg font-bold   "
@@ -350,7 +350,7 @@ const Home = () => {
                       fontFamily: "'Audiowide', sans-serif",
                     }}
                   >
-                    FREE
+                    Basic
                   </h3>
                   <span className="">
                     {" "}
@@ -402,77 +402,71 @@ const Home = () => {
               </div>
 
               {/* BASIC Plan */}
-              <div
-                className="bg-[#1B1441] rounded-tr-[18px] rounded-bl-[18px]  border-[2.31px]  backdrop-blur-[32.8032px] shadow-[0px_2.62px_13.12px_-0.66px_#00000000] px-[20px] py-[31px] text-white w-full md:w-1/3 flex flex-col justify-between min-h-full"
-                style={{
-                  borderImageSource:
-                    "linear-gradient(98.62deg, #4E2295 -3.12%, #42579D 79.45%)",
-                  borderImageSlice: 1,
-                }}
-              >
-                <div>
-                  <h3
-                    className="text-lg font-bold  "
-                    style={{
-                      fontFamily: "'Audiowide', sans-serif",
-                    }}
-                  >
-                    Basic
-                  </h3>
-                  <span className="">
-                    {" "}
-                    <img src="/images/Line.png" />
-                  </span>
-                  <p className="text-sm font-normal mt-[10px] mb-[15px]">
-                    Unlock advanced AI features, full customization, and
-                    high-quality exports—ideal for serious creators at
-                    $19.99/month.
-                  </p>
-                  <h2 className="text-[28px] font-semibold pb-[27px] ">
-                    $4,200{" "}
-                    <span className="text-xs font-normal text-[#FFFFFFA1]">
-                      /month
+              <div className="p-[2.31px] rounded-tr-[18px] h-[530px] rounded-bl-[18px] bg-gradient-to-r from-[#4E2295] to-[#42579D]">
+                <div className="bg-[#1B1441] rounded-tr-[16px] rounded-bl-[16px] backdrop-blur-[32.8032px] shadow-[0px_2.62px_13.12px_-0.66px_#00000000] px-[20px] py-[31px] text-white w-full max-w-[412px] flex flex-col justify-between min-h-full">
+                  <div>
+                    <h3
+                      className="text-lg font-bold"
+                      style={{
+                        fontFamily: "'Audiowide', sans-serif",
+                      }}
+                    >
+                      Pro
+                    </h3>
+                    <span>
+                      <img src="/images/Line.png" />
                     </span>
-                  </h2>
-                  <button className="w-full rounded-full bg-[linear-gradient(95.5deg,_#501794_-27.34%,_#40659F_117.34%)] py-2 mb-6 text-white font-medium text-[17px]">
-                    Choose This Plan
-                  </button>
-                  <ul className=" space-y-2 text-sm">
-                    <li className="flex gap-2">
-                      <span>
-                        <img src="/images/star.png" />
-                      </span>{" "}
-                      Lorem ipsum dolor
-                    </li>
-                    <li className="flex gap-2">
-                      <span>
-                        <img src="/images/star.png" />
-                      </span>{" "}
-                      Lorem ipsum dolor
-                    </li>
-                    <li className="flex gap-2">
-                      <span>
-                        <img src="/images/star.png" />
-                      </span>{" "}
-                      Lorem ipsum dolor
-                    </li>
-                    <li className="flex gap-2">
-                      <span>
-                        <img src="/images/star.png" />
-                      </span>{" "}
-                      Lorem ipsum dolor
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <hr className="border-purple-400 mb-4" />
-                  <p className="text-xs">• 100% Satisfaction Guarantee</p>
-                  <p className="text-xs">• 24 x 7 Customer Support</p>
+                    <p className="text-sm font-normal mt-[10px] mb-[15px]">
+                      Unlock advanced AI features, full customization, and
+                      high-quality exports—ideal for serious creators at
+                      $19.99/month.
+                    </p>
+                    <h2 className="text-[28px] font-semibold pb-[27px]">
+                      $4,200{" "}
+                      <span className="text-xs font-normal text-[#FFFFFFA1]">
+                        /month
+                      </span>
+                    </h2>
+                    <button className="w-full rounded-full bg-[linear-gradient(95.5deg,_#501794_-27.34%,_#40659F_117.34%)] py-2 mb-6 text-white font-medium text-[17px]">
+                      Choose This Plan
+                    </button>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex gap-2">
+                        <span>
+                          <img src="/images/star.png" />
+                        </span>{" "}
+                        Lorem ipsum dolor
+                      </li>
+                      <li className="flex gap-2">
+                        <span>
+                          <img src="/images/star.png" />
+                        </span>{" "}
+                        Lorem ipsum dolor
+                      </li>
+                      <li className="flex gap-2">
+                        <span>
+                          <img src="/images/star.png" />
+                        </span>{" "}
+                        Lorem ipsum dolor
+                      </li>
+                      <li className="flex gap-2">
+                        <span>
+                          <img src="/images/star.png" />
+                        </span>{" "}
+                        Lorem ipsum dolor
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <hr className="border-purple-400 mb-4" />
+                    <p className="text-xs">• 100% Satisfaction Guarantee</p>
+                    <p className="text-xs">• 24 x 7 Customer Support</p>
+                  </div>
                 </div>
               </div>
 
               {/* PRO Plan */}
-              <div className="bg-[#1B1441] rounded-[20px] border border-blue-400 p-6 text-white w-full md:w-1/3 flex flex-col justify-between min-h-full">
+              <div className="bg-[#1B1441] rounded-tr-[18px] rounded-bl-[18px]   border  border-[#FFFFFF33] p-6 text-white w-full md:max-w-[350px] flex flex-col justify-between min-h-full">
                 <div>
                   <h3
                     className="text-lg font-bold   "
@@ -480,7 +474,7 @@ const Home = () => {
                       fontFamily: "'Audiowide', sans-serif",
                     }}
                   >
-                    PRO
+                    ENT
                   </h3>
                   <span className="">
                     {" "}
@@ -497,7 +491,7 @@ const Home = () => {
                       /month
                     </span>
                   </h2>
-                  <button className="w-full rounded-full bg-gradient-to-r from-purple-500 to-blue-500 py-2 mb-6 text-white font-medium">
+                  <button className="w-full rounded-full bg-[linear-gradient(95.5deg,_#501794_-27.34%,_#40659F_117.34%)] py-2 mb-6 text-white font-medium text-[17px]">
                     Choose This Plan
                   </button>
                   <ul className="mb-6 space-y-2 text-sm">
@@ -610,7 +604,7 @@ const Home = () => {
 
                 {/* Testimonial Card 2 */}
                 <div
-                  className="rounded-lg py-6  w-[361px] h-[406px] mx-auto"
+                  className="rounded-lg py-6  w-[361px] h-[406px] mx-auto "
                   style={{
                     backgroundImage: "url('/images/slide2.png')",
                     transform: "scale(1.1)",
