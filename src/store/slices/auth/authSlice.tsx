@@ -1,24 +1,28 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api from "@/services/http/baseUrl";
+import http from "@/services/http/baseUrl";
 import {
   startLoadingActivity,
   stopLoadingActivity,
 } from "../activity/activitySlice";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
 
 // Async thunk for signup
 export const signUpUser = createAsyncThunk<
-  any,
-  { payload: any; navigate: (path: string) => void }
+any,
+  { payload: SignUpForm; router: ReturnType<typeof useRouter>  }
 >(
   "auth/signUpUser",
-  async ({ payload, navigate }, { dispatch, rejectWithValue }) => {
+  async ({ payload, router }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await api.post("/auth/signup", payload);
+      const response = await http.post("/auth/signup", payload);
+      console.log("response singup ", response);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toast.success("user created successfully!");
+        router.push("/signin");
         return response.data;
       } else {
         return rejectWithValue("Signup failed");
@@ -36,16 +40,17 @@ export const signUpUser = createAsyncThunk<
 
 export const signInUser = createAsyncThunk<
   any,
-  { payload: any; navigate: (path: string) => void }
+  { payload: any; router: ReturnType<typeof useRouter> }
 >(
   "auth/signInUser",
-  async ({ payload, navigate }, { dispatch, rejectWithValue }) => {
+  async ({ payload, router }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await api.post("/auth/signin", payload);
+      const response = await http.post("/auth/signin", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toast.success("user logged in successfully!");
+        // router.push("/dashboard");
         return response.data;
       } else {
         return rejectWithValue("Signup failed");
@@ -79,7 +84,7 @@ const authSlice = createSlice({
       })
       .addCase(signUpUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload.data;
+        state.data = action?.payload?.data;
       })
       .addCase(signUpUser.rejected, (state, action) => {
         state.loading = false;

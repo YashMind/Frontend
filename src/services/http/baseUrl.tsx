@@ -1,8 +1,8 @@
 import axios from "axios";
 // import Cookies from "js-cookie";
 
-const api = axios.create({
-  baseURL: process.env.NEXT_APP_ADV_URL,
+const http = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
 
   headers: {
     Accept: "application/json",
@@ -11,7 +11,7 @@ const api = axios.create({
 });
 
 // Add a request interceptor
-api.interceptors.request.use(
+http.interceptors.request.use(
   (config: any) => {
     // const userData = Cookies.get("user_data")
     //   ? JSON.parse(Cookies.get("user_data"))
@@ -20,11 +20,11 @@ api.interceptors.request.use(
     // if (authToken) {
     //   config.headers.Authorization = `Bearer ${authToken}`;
     // }
-
+    config.withCredentials = true;
     return config;
   },
   (error: any) => {
     return Promise.reject(error);
   }
 );
-export default api;
+export default http;
