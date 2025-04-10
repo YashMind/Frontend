@@ -1,6 +1,59 @@
+"use client"
 import React from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import styles from "./style.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { signUpUser } from "@/store/slices/auth/authSlice";
+import { useRouter } from "next/navigation";
+
+// yup schema
+const schema = yup.object().shape({
+  fullName: yup
+  .string()
+  .required("Full Name is a required field")
+  .min(3, "Full name must be at least 3 characters"),
+
+  email: yup
+  .string()
+  .email()
+  .required("Email is a required field"),
+
+  password: yup
+    .string()
+    .required("Password is a required field")
+    .min(8, "Password must be at least 8 characters long")
+    .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .matches(/\d/, "Password must contain at least one number")
+    .matches(/[@$!%*?&#]/, "Password must contain at least one special character"),
+
+  confirmPassword: yup
+    .string()
+    .required("Confirm password is a required field")
+    .oneOf([yup.ref("password")], "Passwords must match"),
+});
+
 const SignUp = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading }: any = useSelector((state: RootState) => state.auth);
+  console.log("lodaing ", loading);
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<SignUpForm>({ resolver: yupResolver(schema) });
+
+  const onSubmit = (data: SignUpForm) => {
+    console.log(data);
+    dispatch(signUpUser({payload: data, router}));
+    reset();
+  };
   return (
     <div>
       <div
@@ -20,6 +73,7 @@ const SignUp = () => {
                 <p className="text-[15px] my-[20px] font-bold lg:text-left text-center">
                   Sign in with email address
                 </p>
+                <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="space-y-4 ">
                   {/* Full Name */}
                   <div className="flex items-center bg-[#261046] shadow-[inset_0px_0px_11.28px_0px_#00000029] backdrop-blur-[15.23668384552002px] backdrop-filter text-white rounded-[12px] p-3 space-x-2">
@@ -33,28 +87,30 @@ const SignUp = () => {
                       <path
                         d="M12 9.96875C13.933 9.96875 15.5 8.40175 15.5 6.46875C15.5 4.53575 13.933 2.96875 12 2.96875C10.067 2.96875 8.5 4.53575 8.5 6.46875C8.5 8.40175 10.067 9.96875 12 9.96875Z"
                         stroke="#A4A4A4"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M2 21.4688C2 17.0503 6.0295 13.4688 11 13.4688M15.5 21.9688L20.5 16.9688L18.5 14.9688L13.5 19.9688V21.9688H15.5Z"
                         stroke="#A4A4A4"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
 
                     <input
                       type="text"
                       placeholder="Full Name"
+                      {...register("fullName")}
                       className=" outline-none w-full  text-base font-medium  text-[#A4A4A4]   rounded-[12px] "
                     />
                   </div>
+                  {errors.fullName && <span className="text-red-500">{errors?.fullName?.message}</span>}
 
                   {/* Email */}
-                  <div className="flex items-center bg-[#261046] backdrop-blur-custom shadow-inset-custom text-[#A4A4A4] rounded-[12px] p-4 space-x-2 my-[20px]">
+                  <div className="flex items-center bg-[#261046] backdrop-blur-custom shadow-inset-custom text-[#A4A4A4] rounded-[12px] p-4 space-x-2">
                     <svg
                       width="26"
                       height="20"
@@ -70,10 +126,12 @@ const SignUp = () => {
 
                     <input
                       type="email"
-                      placeholder="Yourname@gmail.com"
-                      className="bg-transparent outline-none w-full placeholder-[#A4A4A4]  "
+                      placeholder="example@gmail.com"
+                      {...register("email")}
+                      className="bg-transparent outline-none w-full placeholder-[#A4A4A4]"
                     />
                   </div>
+                  {errors.email && <span className="text-red-500">{errors?.email?.message}</span>}
 
                   {/* Password */}
                   <div className="flex items-center bg-[#2b0d52] text-white rounded-[12px] p-4  space-x-2">
@@ -92,13 +150,14 @@ const SignUp = () => {
 
                     <input
                       type="password"
-                      placeholder="Password dddddd"
+                      placeholder="Password"
+                      {...register("password")}
                       className="bg-transparent outline-none w-full placeholder-white placeholder-opacity-60"
                     />
                   </div>
-
+                  {errors.password && <span className="text-red-500">{errors?.password?.message}</span>}
                   {/* Confirm Password */}
-                  <div className="flex items-center bg-[#2b0d52] text-white rounded-[12px] p-4 space-x-2 my-[20px]">
+                  <div className="flex items-center bg-[#2b0d52] text-white rounded-[12px] p-4 space-x-2 mb-[20px]">
                     <svg
                       width="24"
                       height="25"
@@ -115,14 +174,16 @@ const SignUp = () => {
                     <input
                       type="password"
                       placeholder="Confirm Password"
+                      {...register("confirmPassword")}
                       className="bg-transparent outline-none w-full placeholder-[#A4A4A4]"
                     />
                   </div>
+                  {errors.confirmPassword && <span className="text-red-500">{errors?.confirmPassword?.message}</span>}
                 </div>
-
-                <button className="w-full py-3 rounded-[12px] bg-[linear-gradient(90.04deg,_#501794_0.03%,_#3E70A1_101.88%)] text-[22px]  font-medium hover:opacity-90 transition ">
+                <button className="w-full py-3 rounded-[12px] bg-[linear-gradient(90.04deg,_#501794_0.03%,_#3E70A1_101.88%)] text-[22px]  font-medium hover:opacity-90 transition " type="submit">
                   Sign up
                 </button>
+                </form>
 
                 <div className="text-right mt-2"></div>
                 <hr className="border border-[#727272] my-[20px] " />
@@ -138,7 +199,7 @@ const SignUp = () => {
                     Google
                   </button>
                   <button className="flex items-center justify-center gap-2 bg-[#3B2063] text-[15px] font-medium  text-white px-4 py-3 rounded-[12px] w-full hover:shadow-lg">
-                    <img src="/facebook.png" />
+                    <img src="/images/facebook.png" />
                     Facebook
                   </button>
                 </div>
