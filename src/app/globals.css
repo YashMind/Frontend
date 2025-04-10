@@ -2,8 +2,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap");
 @import "tailwindcss";
 body {
-  background-image: linear-gradient(89.97deg, #002b58 -37.97%, #3b0459 99.97%),
-    linear-gradient(180deg, rgba(31, 6, 74, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%);
+  /* background-image: linear-gradient(89.97deg, #002b58 -37.97%, #3b0459 99.97%),
+    linear-gradient(180deg, rgba(31, 6, 74, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%); */
   font-family: "Poppins", sans-serif;
 }
 
