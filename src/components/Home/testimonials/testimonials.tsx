@@ -11,18 +11,18 @@ const Testimonials = () => {
       perView: 3,
       spacing: 16,
     },
-    // breakpoints: {
-    //     '(max-width: 1024px)': {
-    //       slides: {
-    //         perView: 2,
-    //       },
-    //     },
-    //     '(max-width: 768px)': {
-    //       slides: {
-    //         perView: 1,
-    //       },
-    //     },
-    //   },
+    breakpoints: {
+      "(max-width: 1024px)": {
+        slides: {
+          perView: 2,
+        },
+      },
+      "(max-width: 768px)": {
+        slides: {
+          perView: 1,
+        },
+      },
+    },
     slideChanged(slider) {
       setCurrentSlide(slider.track.details.rel);
     },
@@ -74,7 +74,7 @@ const Testimonials = () => {
     <div className=" Testimonials mt-[110px]">
       <div className="container">
         <h1
-          className="font-normal text-[30px] text-white"
+          className="font-normal text-[30px] text-white text-center md:text-left"
           style={{
             fontFamily: "'Audiowide', sans-serif",
           }}

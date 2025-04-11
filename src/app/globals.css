@@ -94,6 +94,18 @@ input:-webkit-autofill:active {
   .form-sec {
     width: 100%;
   }
+  .mob-block {
+    gap: 0;
+    display: unset;
+  }
+}
+@media (max-width: 600px) {
+  .mob-bg:nth-child(2) {
+    margin-top: 50px;
+  }
+  .space-top {
+    margin-top: 85px;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -106,5 +118,10 @@ input:-webkit-autofill:active {
   }
   .gap-mob {
     gap: 12px;
+  }
+}
+@media screen and (min-device-width: 991px) and (max-device-width: 1024px) {
+  .space-top {
+    margin-left: 47px;
   }
 }

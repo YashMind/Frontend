@@ -19,6 +19,7 @@ const ChatbotFaqs = () => {
   }
 
   return (
+    
     <div className="bg-white mpx-6 py-10 ">
         <div className="container">
           <div className="in-h-screen flex flex-col md:flex-row items-center justify-center  ">
