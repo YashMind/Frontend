@@ -1,29 +1,33 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-// import { jwtDecode } from "jwt-decode";
 
 export default function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("access_token")?.value;
-  // If no token, redirect to signin
+  const { pathname } = request.nextUrl;
+  const isAuthPage = pathname === "/signin";
+  const isProtectedRoute = ["/", "/home", "/profile"].some((route) =>
+    pathname === route || pathname.startsWith(`${route}/`)
+  );
+
+  // 🚫 Token is missing
   if (!accessToken) {
-    // return NextResponse.redirect(new URL("/signin", request.url));
+    if (isProtectedRoute) {
+      // Not authenticated + trying to access protected route
+      return NextResponse.redirect(new URL("/signin", request.url));
+    }
+    return NextResponse.next(); // Public page
   }
 
-  try {
-    // const decoded: any = jwtDecode(accessToken);
-
-    // // Optional: Check if token is expired
-    // if (decoded.exp * 1000 < Date.now()) {
-    //   return NextResponse.redirect(new URL("/signin", request.url));
-    // }
-  } catch (error) {
-    // If token is invalid or decoding fails
-    // return NextResponse.redirect(new URL("/signin", request.url));
+  // ✅ Token is present
+  if (isAuthPage) {
+    // Already logged in, prevent going to /signin
+    return NextResponse.redirect(new URL("/", request.url));
   }
+
 
   return NextResponse.next();
 }
 
 export const config = {
-    // matcher: ["/home", "/home/:path*", "/profile/:path*"]
-  };
+  matcher: ["/:path*"],
+};

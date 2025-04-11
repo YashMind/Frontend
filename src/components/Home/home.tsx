@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, {useEffect} from "react";
 import HomeHeader from "@/components/Common/header/header";
 import HomeBanner from "@/components/Home/banner/banner";
 import HomeProducts from "@/components/Home/products/products";
@@ -11,8 +11,15 @@ import PriceSection from "@/components/Home/priceSection/priceSection";
 import VoiceAgent from "@/components/Home/voiceAgent/voiceAgent";
 import ChatLLM from "@/components/Home/chatLLM/chatLLM";
 import "./home.css";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
+import { getMeData } from "@/store/slices/auth/authSlice";
 
 const Home = () => {
+  const dispatch = useDispatch<AppDispatch>()
+  useEffect(()=>{
+  dispatch(getMeData())
+  }, [])
   return (
     <div>
       {/* header */}

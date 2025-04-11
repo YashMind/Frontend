@@ -67,7 +67,7 @@ const FaqSection = () => {
                 <div className="w-[70%] space-y-4">
                   {/* Accordion Item 1 (Open) */}
                   {faqsData?.map((item, index:number) => (
-                  <div className={`border  ${accordianItems.includes(item?.title) ?  "border-cyan-400" : "border-[#747474]"} rounded-lg overflow-hidden bg-[#0f003e]`}>
+                  <div key={index} className={`border  ${accordianItems.includes(item?.title) ?  "border-cyan-400" : "border-[#747474]"} rounded-lg overflow-hidden bg-[#0f003e]`}>
                     <div className={`flex items-center justify-between pl-6 border-cyan-400`}>
                       <div className="flex gap-3 items-center">
                         <span className="text-white font-medium text-2xl">

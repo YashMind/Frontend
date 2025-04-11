@@ -1,6 +1,6 @@
-import Image from "next/image";
 import HomeComponent from "@/components/Home/home";
-
-export default async function Home() {
+const Home = () => {
   return <HomeComponent />;
 }
+
+export default Home;

@@ -50,7 +50,7 @@ export const signInUser = createAsyncThunk<
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toast.success("user logged in successfully!");
-        // router.push("/dashboard");
+        router.push("/");
         return response.data;
       } else {
         return rejectWithValue("Signup failed");
@@ -60,6 +60,29 @@ export const signInUser = createAsyncThunk<
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during signup");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const getMeData = createAsyncThunk<any, void>(
+  "auth/getMeData",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.get("/auth/me");
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("auth failed");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during auth");
     } finally {
       dispatch(stopLoadingActivity());
     }
@@ -98,6 +121,17 @@ const authSlice = createSlice({
         state.userData = action.payload.data;
       })
       .addCase(signInUser.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(getMeData.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMeData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userData = action.payload.data;
+      })
+      .addCase(getMeData.rejected, (state, action) => {
         state.loading = false;
       })
   },
