@@ -38,34 +38,6 @@ any,
   }
 );
 
-export const signInUser = createAsyncThunk<
-  any,
-  { payload: any; router: ReturnType<typeof useRouter> }
->(
-  "auth/signInUser",
-  async ({ payload, router }, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoadingActivity());
-      const response = await http.post("/auth/signin", payload);
-      if (response.status === 200) {
-        dispatch(stopLoadingActivity());
-        toast.success("user logged in successfully!");
-        router.push("/");
-        return response.data;
-      } else {
-        return rejectWithValue("Signup failed");
-      }
-    } catch (error:any) {
-      if (error.response && error.response.status === 400) {
-        return rejectWithValue(error.response.data.message);
-      }
-      return rejectWithValue("An error occurred during signup");
-    } finally {
-      dispatch(stopLoadingActivity());
-    }
-  }
-);
-
 export const getMeData = createAsyncThunk<any, void>(
   "auth/getMeData",
   async (_, { dispatch, rejectWithValue }) => {
@@ -88,6 +60,36 @@ export const getMeData = createAsyncThunk<any, void>(
     }
   }
 );
+
+export const signInUser = createAsyncThunk<
+  any,
+  { payload: any; router: ReturnType<typeof useRouter> }
+>(
+  "auth/signInUser",
+  async ({ payload, router }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.post("/auth/signin", payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        dispatch(getMeData());
+        toast.success("user logged in successfully!");
+        router.push("/");
+        return response.data;
+      } else {
+        return rejectWithValue("Signup failed");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during signup");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 
 const initialState = {
   loading: false,

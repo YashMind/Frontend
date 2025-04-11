@@ -11,15 +11,16 @@ import PriceSection from "@/components/Home/priceSection/priceSection";
 import VoiceAgent from "@/components/Home/voiceAgent/voiceAgent";
 import ChatLLM from "@/components/Home/chatLLM/chatLLM";
 import "./home.css";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
 import { getMeData } from "@/store/slices/auth/authSlice";
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>()
+  const {userData} = useSelector((state:RootState)=> state.auth);
   useEffect(()=>{
-  dispatch(getMeData())
-  }, [])
+  dispatch(getMeData());
+  }, []);
   return (
     <div>
       {/* header */}
