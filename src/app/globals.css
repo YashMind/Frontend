@@ -17,6 +17,7 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 15px;
 }
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -92,5 +93,18 @@ input:-webkit-autofill:active {
   }
   .form-sec {
     width: 100%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .arrow-circle {
+    width: 155px;
+  }
+  .arrow-circle button {
+    width: 100px;
+    height: 100px;
+  }
+  .gap-mob {
+    gap: 12px;
   }
 }

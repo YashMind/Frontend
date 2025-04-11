@@ -2,14 +2,14 @@
 import React, { useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import "./testimonial.css"
+import "./testimonial.css";
 const Testimonials = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     loop: true,
     slides: {
       perView: 3,
-      spacing: 16
+      spacing: 16,
     },
     // breakpoints: {
     //     '(max-width: 1024px)': {
@@ -160,31 +160,33 @@ const Testimonials = () => {
 
             {/* Arrows */}
             <div className="mt-6">
-            <button
-              className="absolute bottom-20 left-6 bg-white/80 rounded-full p-3 text-black hover:bg-white"
-              onClick={() => instanceRef.current?.prev()}
-            >
-              ←
-            </button>
-            <button
-              className="absolute bottom-20 right-6 bg-white/80 rounded-full p-3 text-black hover:bg-white"
-              onClick={() => instanceRef.current?.next()}
-            >
-              →
-            </button>
+              <button
+                className="absolute bottom-20   p-3 text-black "
+                onClick={() => instanceRef.current?.prev()}
+              >
+                <img src="/images/arrow-lft.png" />
+              </button>
+              <button
+                className="absolute bottom-20 right-0 p-3"
+                onClick={() => instanceRef.current?.next()}
+              >
+                <img src="/images/arrow-right.png" />
+              </button>
 
-            {/* Dots */}
-            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2">
-              {[...Array(slideCount)].map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => instanceRef.current?.moveToIdx(idx)}
-                  className={`w-3 h-3 rounded-full ${
-                    currentSlide === idx ? "bg-white" : "bg-gray-500"
-                  }`}
-                />
-              ))}
-            </div>
+              {/* Dots */}
+              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2">
+                {[...Array(slideCount)].map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => instanceRef.current?.moveToIdx(idx)}
+                    className={`w-[16px] h-[16px] rounded-full ${
+                      currentSlide === idx
+                        ? "bg-[#01BEED]"
+                        : "bg-transparent border  border-[#01BEED]"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </section>
         </div>
