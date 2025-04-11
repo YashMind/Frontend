@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { useRouter } from "next/navigation";
+import Link from 'next/link';
 
 const HomeHeader = () => {
 const [navItem, setNavItem] = useState<number>(1)
@@ -55,40 +56,40 @@ const router = useRouter();
             >
               <ul className="flex gap-6  py-2 px-2 rounded-[43px] backdrop-blur-md  text-white bg-[#FFFFFF45]">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/"
                     className={`${navItem===1 ? "bg-white text-black rounded-[27px] px-3" : ""} text-lg font-normal py-2   cursor-pointer`}
                     onClick={()=> setNavItem(1)}
                   >
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/"
                     className={` ${navItem===2 ? "bg-white text-black rounded-[27px] px-3" : ""} text-lg font-normal py-2 hover:text-gray-300 px-3 cursor-pointer`}
                     onClick={()=> setNavItem(2)}
                   >
                     Chat Bot
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/"
                     className={`${navItem===3 ? "bg-white text-black rounded-[27px] px-3" : ""} text-lg font-normal py-2  hover:text-gray-300 px-3 cursor-pointer`}
                     onClick={()=> setNavItem(3)}
                   >
                     Voice Agent
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/"
                     className={`${navItem===4 ? "bg-white text-black rounded-[27px] px-3" : ""} text-lg font-normal py-2 px-3 hover:text-gray-300 cursor-pointer`}
                     onClick={()=> setNavItem(4)}
                   >
                     Chat LLM
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

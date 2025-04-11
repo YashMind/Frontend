@@ -2,6 +2,22 @@ import React, { useState } from "react";
 
 const FaqSection = () => {
   const [openContent, setOpenContent] = useState(false);
+  const [accordianItems, setAccordianItems] = useState<string[]>([]);
+    const faqsData = [
+      {title:"Do you maintain your apps?", paragraph:"AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades from our customers for taking good care of our apps. AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades from our customers for taking good care of our apps. AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades from our customers for taking good care of our apps."},
+      {title:"How does AI Collective get all these AIs?", paragraph:"AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades from our customers for taking good care of our apps. AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades from our customers for taking good care of our apps. AI has the best record in software"},
+      {title:"Why is it so affordable?", paragraph:"AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades from our customers for taking good care of our apps. AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades"},
+      {title:"Can I get a free trial?", paragraph:"AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades from our customers for taking good care of our apps."},
+      {title:"How can I cancel my purchase?", paragraph:"AI has the best record in software maintenance and upgrades."},
+    ]
+  
+    const handleAccordian = (title: string) => {
+      setAccordianItems((prev) =>
+          prev.includes(title)
+            ? prev.filter((t) => t !== title)
+            : [...prev, title]
+        );
+    }
   return (
     <div className="faq mt-[110px]">
       <div className="container mb-[55px] ">
@@ -50,97 +66,31 @@ const FaqSection = () => {
                 {/* Right Side: Accordion */}
                 <div className="w-[70%] space-y-4">
                   {/* Accordion Item 1 (Open) */}
-                  <div className="border border-cyan-400 rounded-lg overflow-hidden bg-[#0f003e]">
-                    <div className="flex items-center justify-between pl-6 border-cyan-400">
+                  {faqsData?.map((item, index:number) => (
+                  <div className={`border  ${accordianItems.includes(item?.title) ?  "border-cyan-400" : "border-[#747474]"} rounded-lg overflow-hidden bg-[#0f003e]`}>
+                    <div className={`flex items-center justify-between pl-6 border-cyan-400`}>
                       <div className="flex gap-3 items-center">
                         <span className="text-white font-medium text-2xl">
-                          01
+                          0{index}
                         </span>
                         <h3 className="text-white font-normal text-[22px]">
-                          Do you maintain your apps?
+                          {item?.title}
                         </h3>
                       </div>
                       <button
-                        className="text-white bg-cyan-400 w-[86px] h-[80px] flex items-center justify-center rounded-sm text-3xl"
-                        onClick={() => setOpenContent(!openContent)}
+                        className={`text-white ${accordianItems.includes(item?.title) ? "bg-cyan-400": "bg-[#152329]"} w-[86px] h-[80px] flex items-center justify-center rounded-sm text-3xl`}
+                        onClick={() => handleAccordian(item?.title)}
                       >
-                        {openContent ? "-" : "+"}
+                        {accordianItems.includes(item?.title) ? "-" : "+"}
                       </button>
                     </div>
-                    {openContent ? (
-                      <div className="px-6 py-4 text-sm leading-relaxed text-gray-300">
-                        AI has the best record in software maintenance and
-                        upgrades. Over and over we get praises and accolades
-                        from our customers for taking good care of our apps. AI
-                        has the best record in software maintenance and
-                        upgrades. Over and over we get praises and accolades
-                        from our customers for taking good care of our apps. AI
-                        has the best record in software maintenance and
-                        upgrades. Over and over we get praises and accolades
-                        from our customers for taking good care of our apps.
-                      </div>
-                    ) : null}
+                    
+                    {accordianItems.includes(item?.title) ? <div className="px-6 py-4 text-sm leading-relaxed text-gray-300">
+                        {item?.paragraph}
+                      </div> : null }
+                    
                   </div>
-
-                  {/* Accordion Item 2 */}
-                  <div className="border border-[#747474] rounded-lg bg-[#0f003e]">
-                    <div className="flex items-center justify-between pl-6 relative min-h-[77px]">
-                      <div className="flex gap-3 items-center">
-                        <span className="text-white font-semibold">02</span>
-                        <h3 className="text-white font-normal text-[22px]">
-                          How does AI Collective get all these AIs?
-                        </h3>
-                      </div>
-                      <button className="text-white bg-[#152329] w-[86px] h-[80px] flex items-center justify-center rounded-sm text-xl absolute -top-px -right-[2px]">
-                        +
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Accordion Item 3 */}
-                  <div className="border border-[#747474] rounded-lg bg-[#0f003e]">
-                    <div className="flex items-center justify-between pl-6 relative min-h-[77px]">
-                      <div className="flex gap-3 items-center">
-                        <span className="text-white font-semibold">03</span>
-                        <h3 className="text-white font-normal text-[22px]">
-                          Why is it so affordable?
-                        </h3>
-                      </div>
-                      <button className="text-white bg-[#152329] w-[86px] h-[80px] flex items-center justify-center rounded-sm text-xl absolute -top-px -right-[2px]">
-                        +
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Accordion Item 4 */}
-                  <div className="border border-[#747474] rounded-lg bg-[#0f003e]">
-                    <div className="flex items-center justify-between pl-6 relative min-h-[77px]">
-                      <div className="flex gap-3 items-center">
-                        <span className="text-white font-semibold">04</span>
-                        <h3 className="text-white font-normal text-[22px]">
-                          Can I get a free trial?
-                        </h3>
-                      </div>
-                      <button className="text-white bg-[#152329] w-[86px] h-[80px] flex items-center justify-center rounded-sm text-xl absolute -top-px -right-[2px]">
-                        +
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Accordion Item 5 */}
-                  <div className="border border-[#747474] rounded-lg bg-[#0f003e]">
-                    <div className="flex items-center justify-between pl-6 relative min-h-[77px]">
-                      <div className="flex gap-3 items-center">
-                        <span className="text-white font-semibold">05</span>
-                        <h3 className="text-white font-normal text-[22px]">
-                          How can I cancel my purchase?
-                        </h3>
-                      </div>
-                      <button className="text-white bg-[#152329] w-[86px] h-[80px] flex items-center justify-center rounded-sm text-xl absolute -top-px -right-[2px]">
-                        +
-                      </button>
-                    </div>
-                  </div>
+                ))}
                 </div>
               </div>
             </div>
