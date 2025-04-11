@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const HomeHeader = () => {
   const [navItem, setNavItem] = useState<number>(1);
@@ -55,8 +56,8 @@ const HomeHeader = () => {
           >
             <ul className="flex gap-6  py-2  rounded-[43px] backdrop-blur-md  text-white bg-[#FFFFFF45]">
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/"
                   className={`${
                     navItem === 1
                       ? "bg-white text-black rounded-[27px] px-3"
@@ -65,11 +66,11 @@ const HomeHeader = () => {
                   onClick={() => setNavItem(1)}
                 >
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/"
                   className={` ${
                     navItem === 2
                       ? "bg-white text-black rounded-[27px] px-3"
@@ -78,11 +79,11 @@ const HomeHeader = () => {
                   onClick={() => setNavItem(2)}
                 >
                   Chat Bot
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/"
                   className={`${
                     navItem === 3
                       ? "bg-white text-black rounded-[27px] px-3"
@@ -91,11 +92,11 @@ const HomeHeader = () => {
                   onClick={() => setNavItem(3)}
                 >
                   Voice Agent
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/"
                   className={`${
                     navItem === 4
                       ? "bg-white text-black rounded-[27px] px-3"
@@ -104,7 +105,7 @@ const HomeHeader = () => {
                   onClick={() => setNavItem(4)}
                 >
                   Chat LLM
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
