@@ -22,7 +22,7 @@ const OurChatbots = () => {
           </div>
 
           {/* Card 2 */}
-          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative sm:mt-8">
+          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative ">
             <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#60D669] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
               <img className="" src="/images/logos_whatsapp-icon.png" />
             </div>
@@ -80,7 +80,7 @@ const OurChatbots = () => {
           </div>
 
           {/* Card 6 */}
-          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative sm:mt-8">
+          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative ">
             <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#466CFF] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
               <img className="" src="/images/facebook-messenger-icon 1.png" />
             </div>

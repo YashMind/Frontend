@@ -93,7 +93,7 @@ const HomeBanner = () => {
           </div>
         </div>
       </div>
-      <div className="container">
+      <div className="container relative">
         {/* Arrows */}
         <button
           className="absolute bottom-20  p-3 "
