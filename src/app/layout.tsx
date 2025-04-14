@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import StoreProvider from "@/app/StoreProvider";
 import ScrollToTop from "@/services/scroolToTop/scroolToTop";
 import { Toaster } from "react-hot-toast";
@@ -27,6 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
@@ -38,5 +40,6 @@ export default function RootLayout({
         </StoreProvider>
       </body>
     </html>
+    </GoogleOAuthProvider>
   );
 }
