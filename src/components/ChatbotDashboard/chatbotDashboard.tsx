@@ -11,7 +11,7 @@ const ChatbotDashboard = () => {
         {/* Top Navbar */}
 
         {/* Real Time Count + Table */}
-        <div className="bg-[#2a2561]  p-4 m-9 rounded-[300px]">
+        <div className="bg-[#2a2561]  p-4 m-9 rounded-[300px] mt-[145px]">
           <div className="flex items-center justify-between mb-2 gap-5">
             <h2 className="font-semibold text-lg">Real Time Count:</h2>
             <div className="overflow-x-auto w-full">
