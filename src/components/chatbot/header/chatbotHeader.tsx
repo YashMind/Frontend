@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
-const ChatbotHeader = () => {
+const ChatbotHeader = (noFix: any) => {
   const [bot, setBot] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
@@ -10,7 +10,10 @@ const ChatbotHeader = () => {
     setIsMenuOpen((prev) => !prev);
   };
   return (
-    <nav className="bg-[#2D2095] fixed w-full z-20  rounded-[36px] top-0   my-9">
+    <nav
+      className={`bg-[#2D2095] fixed
+     w-full z-20  rounded-[36px] top-0   my-9`}
+    >
       <div className="container">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto gap-0 p-4 md:gap-4">
           <div className="w-full flex justify-center md:justify-start md:w-auto ">

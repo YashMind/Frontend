@@ -24,7 +24,7 @@ const ChatbotBanner = () => {
             >
               Custom AI Chatbots
             </h1>
-            <p className="font-bold text-white text-base my-[22px]">
+            <p className="font-bold text-white text-base my-[22px] [font-family:'Roboto_Flex',sans-serif]">
               Innovative AI solutions designed to simplify and accelerate your
               workflow.
             </p>
