@@ -6,6 +6,7 @@ import WhyChooseUs from "@/components/chatbot/whyChooseUs/whyChooseUs";
 import OurChatbots from "@/components/chatbot/ourChatbots/ourChatbots";
 import OurPlans from "@/components/chatbot/ourPlans/ourPlans";
 import ChatbotFaqs from "@/components/chatbot/chatbotFaqs/chatbotFaqs";
+import ClientSays from "@/components/chatbot/clientSays/clientSays";
 
 const Chatbot = () => {
   return (
@@ -24,6 +25,8 @@ const Chatbot = () => {
       {/* basic price */}
       <OurPlans />
 
+      {/* what our client says */}
+      <ClientSays />
       {/* faq */}
       <ChatbotFaqs />
 
