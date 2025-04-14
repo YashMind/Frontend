@@ -70,7 +70,7 @@ const HomeHeader = () => {
               </li>
               <li>
                 <Link
-                  href="/"
+                  href="/chatbot"
                   className={` ${
                     navItem === 2
                       ? "bg-white text-black rounded-[27px] px-3"
