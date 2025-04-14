@@ -6,29 +6,9 @@ const ChatbotDashboard = () => {
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
-      <ChatbotHeader noFix={true} />
+      <ChatbotHeader />
       <div className="min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4">
         {/* Top Navbar */}
-        <div className="flex items-center justify-between bg-[#1f1b4d] rounded-2xl p-4 mb-6">
-          <div className="flex items-center space-x-4">
-            <img
-              src="/logo.png"
-              alt="Logo"
-              className="w-12 h-12 rounded-full"
-            />
-            <button className="bg-[#23c4f2] text-white px-4 py-2 rounded-full text-sm">
-              Chat Bot
-            </button>
-            <button className="px-4 py-2 text-sm">Voice Agent</button>
-            <button className="px-4 py-2 text-sm">Chat LLM</button>
-          </div>
-          <div className="flex items-center space-x-4">
-            <button className="bg-cyan-500 px-4 py-2 rounded-full text-sm">
-              Return to Home
-            </button>
-            <div className="w-10 h-10 bg-gray-400 rounded-full" />
-          </div>
-        </div>
 
         {/* Real Time Count + Table */}
         <div className="bg-[#2a2561]  p-4 m-9 rounded-[300px]">
@@ -134,7 +114,7 @@ const ChatbotDashboard = () => {
                         width={46}
                       />
                     </div>
-                    <span className="font-semibold text-sm text-[#6B6B6B]">
+                    <span className="font-semibold text-base text-black">
                       12/12/25
                     </span>
                   </div>
