@@ -28,6 +28,21 @@ const ClientSays = () => {
   });
 
   const slideCount = instanceRef.current?.track.details.slides.length || 0;
+
+  const reviewData = [
+    {count:1, review:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean hendrerit scelerisque quam, id imperdiet nunc rhoncus ut. Maecenas vitae finibus odio, non egestas odio. Aliquam et vestibulum ligula, sed eleifend urna. Duis commodo imperdiet neque, bibendum mollis dui ultrices nec. Quisque sollicitudin."},
+
+      {count:2, review:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean hendrerit scelerisque quam, id imperdiet nunc rhoncus ut. Maecenas vitae finibus odio, non egestas odio. Aliquam et vestibulum ligula, sed eleifend urna. Duis commodo imperdiet neque, bibendum mollis dui ultrices nec. Quisque sollicitudin.",
+    },
+      {count:3, review:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean hendrerit scelerisque quam, id imperdiet nunc rhoncus ut. Maecenas vitae finibus odio, non egestas odio. Aliquam et vestibulum ligula, sed eleifend urna. Duis commodo imperdiet neque, bibendum mollis dui ultrices nec. Quisque sollicitudin.",
+    },
+      {count:4, review:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean hendrerit scelerisque quam, id imperdiet nunc rhoncus ut. Maecenas vitae finibus odio, non egestas odio. Aliquam et vestibulum ligula, sed eleifend urna. Duis commodo imperdiet neque, bibendum mollis dui ultrices nec. Quisque sollicitudin.",
+    },
+      {count:5, review:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean hendrerit scelerisque quam, id imperdiet nunc rhoncus ut. Maecenas vitae finibus odio, non egestas odio. Aliquam et vestibulum ligula, sed eleifend urna. Duis commodo imperdiet neque, bibendum mollis dui ultrices nec. Quisque sollicitudin.",
+    },
+      {count:6, review:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean hendrerit scelerisque quam, id imperdiet nunc rhoncus ut. Maecenas vitae finibus odio, non egestas odio. Aliquam et vestibulum ligula, sed eleifend urna. Duis commodo imperdiet neque, bibendum mollis dui ultrices nec. Quisque sollicitudin.",
+    }
+  ]
   return (
     <div className="bg-[#2b1e8f]  py-10 px-4 md:px-10">
       <h2 className="text-white text-center text-2xl md:text-3xl font-semibold mb-10">
@@ -61,7 +76,12 @@ const ClientSays = () => {
           className="keen-slider flex overflow-hidden items-center"
         >
           {/* Card 1 */}
-          <div className="keen-slider__slide bg-white rounded-xl w-72 flex flex-col items-center text-center shadow-[0_0_14px_7px_#00000040]  h-[500px] w-[250px]">
+          {reviewData && reviewData?.map((item, index:number)=>{
+          const isSecondSlide =
+            index === (currentSlide + 1) % reviewData.length;
+            return(
+          <div className={`keen-slider__slide bg-white rounded-xl w-72 flex flex-col items-center text-center shadow-[0_0_14px_7px_#00000040]  ${isSecondSlide ? "h-[550px] w-[301px]" : "h-[500px] w-[250px]"}`}
+          key={index}>
             <img
               src="/images/testi-1.png"
               alt="client"
@@ -72,55 +92,12 @@ const ClientSays = () => {
                 ★★★★★
               </div>
               <p className="text-xs text-[#6F6C90]">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                hendrerit scelerisque quam, id imperdiet nunc rhoncus ut.
-                Maecenas vitae finibus odio, non egestas odio. Aliquam et
-                vestibulum ligula, sed eleifend urna. Duis commodo imperdiet
-                neque, bibendum mollis dui ultrices nec. Quisque sollicitudin.
+                {item?.count +" "+ item?.review}
               </p>
             </div>
           </div>
-          {/* Card 2 */}
-          <div className="keen-slider__slide bg-white rounded-xl   flex flex-col items-center text-center shadow-[0_0_14px_7px_#00000040]  h-[550px] w-[301px] ">
-            <img
-              src="/images/testi-1.png"
-              alt="client"
-              className="w-full rounded-t-xl h-100 object-cover"
-            />
-            <div className="p-6">
-              <div className="flex justify-center text-yellow-400 mb-3 text-2xl">
-                ★★★★★
-              </div>
-              <p className="text-xs text-[#6F6C90]">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                hendrerit scelerisque quam, id imperdiet nunc rhoncus ut.
-                Maecenas vitae finibus odio, non egestas odio. Aliquam et
-                vestibulum ligula, sed eleifend urna. Duis commodo imperdiet
-                neque, bibendum mollis dui ultrices nec. Quisque sollicitudin.
-              </p>
-            </div>
-          </div>
-
-          {/* Card 3 */}
-          <div className="keen-slider__slide bg-white rounded-xl  flex flex-col items-center text-center shadow-[0_0_14px_7px_#00000040] h-[500px] w-[250px] ">
-            <img
-              src="/images/testi-1.png"
-              alt="client"
-              className="w-full rounded-t-xl h-100 object-cover"
-            />
-            <div className="p-6">
-              <div className="flex justify-center text-yellow-400 mb-3 text-2xl">
-                ★★★★★
-              </div>
-              <p className="text-xs text-[#6F6C90]">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                hendrerit scelerisque quam, id imperdiet nunc rhoncus ut.
-                Maecenas vitae finibus odio, non egestas odio. Aliquam et
-                vestibulum ligula, sed eleifend urna. Duis commodo imperdiet
-                neque, bibendum mollis dui ultrices nec. Quisque sollicitudin.
-              </p>
-            </div>
-          </div>
+            )
+          })}
         </div>
 
         {/* Right Arrow */}
