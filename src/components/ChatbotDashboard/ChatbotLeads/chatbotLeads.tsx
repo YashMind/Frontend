@@ -4,7 +4,7 @@ import Image from "next/image";
 import ChatbotSidebar from "@/components/ChatbotDashboard/ChatbotSidebar/chatbotSidebar";
 import RealTimeCount from "@/components/ChatbotDashboard/RealTimeCount/realTimeCount";
 
-const ChatbotOverview = () => {
+const ChatbotLeads = () => {
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
@@ -232,4 +232,4 @@ const ChatbotOverview = () => {
   );
 };
 
-export default ChatbotOverview;
+export default ChatbotLeads;

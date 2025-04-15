@@ -1,164 +1,22 @@
-import ChatbotHeader from "@/components/chatbot/header/chatbotHeader";
 import React from "react";
+import ChatbotHeader from "@/components/chatbot/header/chatbotHeader";
 import Image from "next/image";
+import ChatbotSidebar from "@/components/ChatbotDashboard/ChatbotSidebar/chatbotSidebar";
+import RealTimeCount from "@/components/ChatbotDashboard/RealTimeCount/realTimeCount";
 
 const ChatbotOverview = () => {
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
-      <ChatbotHeader noFix={true} />
+      <ChatbotHeader noFix={true} addBgColor={true} />
       <div className="min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4">
         {/* Real Time Count + Table */}
-        <div className="bg-[#2a2561]  p-4 m-9 rounded-[300px]">
-          <div className="flex items-center justify-between mb-2 gap-5">
-            <h2 className="font-semibold text-lg">Real Time Count:</h2>
-            <div className="overflow-x-auto w-full">
-              <table className="w-full text-sm text-white text-center border border-gray-500">
-                <thead className="bg-[#2a2463]">
-                  <tr>
-                    <th className="p-2 border border-white text-sm font-extrabold">
-                      Tools
-                    </th>
-                    <th className="p-2 border border-white text-sm font-extrabold">
-                      Chat Bot
-                    </th>
-                    <th className="p-2 border border-white text-sm font-extrabold">
-                      Voice Agent
-                    </th>
-                    <th className="p-2 border border-white text-sm font-extrabold">
-                      LLM
-                    </th>
-                    <th
-                      className="p-2 border border-white text-sm font-extrabold"
-                      colSpan={3}
-                    >
-                      Main Balance : 500$
-                    </th>
-                  </tr>
-                  <tr className="bg-[#2a2463]">
-                    <th className="p-2 border border-white text-sm font-extrabold">
-                      Consumed
-                    </th>
-                    <td className="p-2 border border-white font-semibold text-sm">
-                      200
-                    </td>
-                    <td className="p-2 border border-white font-semibold text-sm">
-                      100
-                    </td>
-                    <td className="p-2 border border-white font-semibold text-sm">
-                      5000
-                    </td>
-                    <td className="p-2 border border-white font-semibold text-sm">
-                      Total
-                    </td>
-                    <td className="p-2 border border-white font-semibold text-sm">
-                      Main Bal.
-                    </td>
-                    <td className="p-2 border border-white font-semibold text-sm">
-                      Add Credit
-                    </td>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="p-2 border border-white text-sm font-extrabold">
-                      Used Credit
-                    </td>
-                    <td className="p-2 border border-white font-semibold text-sm">
-                      2
-                    </td>
-                    <td className="p-2 border border-white font-semibold text-sm">
-                      5
-                    </td>
-                    <td className="p-2 border border-white font-semibold text-sm">
-                      5
-                    </td>
-                    <td className="p-2 border border-white font-semibold text-sm">
-                      6
-                    </td>
-                    <td className="p-2 border border-white font-semibold text-sm">
-                      500
-                    </td>
-                    <td className="p-2 border border-white font-semibold text-sm">
-                      100
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <p className="font-semibold text-lg">
-              Total Credit consumed: <span className="font-semibold">22</span>
-            </p>
-          </div>
-        </div>
+        <RealTimeCount />
 
         {/* Owner Section */}
         <div className="flex gap-6">
           <div className="bg-[#2a2561]   rounded-[58px] w-[90%]  flex gap-[68px]">
-            <div className="w-[220px] h-screen bg-black text-white p-4 flex flex-col gap-6  rounded-tl-[58px] rounded-tr-[0px] rounded-br-[0px] rounded-bl-[58px]">
-              {/* Section: Overview */}
-              <div>
-                <p className="text-cyan-400 font-semibold flex items-center gap-2">
-                  <i className="fas fa-th-large"></i> Overview
-                </p>
-              </div>
-
-              {/* Section: Activity */}
-              <div className="flex flex-col gap-3">
-                <p className="text-gray-400">Activity</p>
-                <p className="flex items-center gap-2">
-                  <i className="far fa-comment-dots"></i> Chat logs
-                </p>
-                <p className="flex items-center gap-2">
-                  <i className="fas fa-user-friends"></i> Leads
-                </p>
-              </div>
-
-              {/* Section: Training Data */}
-              <div className="flex flex-col gap-3">
-                <p className="text-gray-400">Training Data</p>
-                <p className="flex items-center gap-2">
-                  <i className="far fa-file-alt"></i> Data Input
-                </p>
-                <p className="flex items-center gap-2">
-                  <i className="fas fa-upload"></i> Content Upload
-                </p>
-                <p className="flex items-center gap-2">
-                  <i className="fas fa-pen-square"></i> FAQs
-                </p>
-              </div>
-
-              {/* Section: Behaviour */}
-              <div className="flex flex-col gap-3">
-                <p className="text-gray-400">Behaviour</p>
-                <p className="flex items-center gap-2">
-                  <i className="fas fa-sliders-h"></i> Response Tuning
-                </p>
-              </div>
-
-              {/* Section: Deployment */}
-              <div className="flex flex-col gap-3">
-                <p className="text-gray-400">Deployment</p>
-                <p className="flex items-center gap-2">
-                  <i className="fas fa-eye"></i> Visual Setting
-                </p>
-                <p className="flex items-center gap-2">
-                  <i className="fas fa-cogs"></i> Launch Setting
-                </p>
-              </div>
-
-              {/* Section: Advance */}
-              <div className="flex flex-col gap-3">
-                <p className="text-gray-400">Advance</p>
-                <p className="flex items-center gap-2">
-                  <i className="fas fa-plug"></i> Connect Apps
-                </p>
-                <p className="flex items-center gap-2">
-                  <i className="fas fa-cog"></i> Settings Preferences
-                </p>
-              </div>
-            </div>
+            <ChatbotSidebar />
             <div>
               <h2 className="text-2xl font-bold mb-4">Owner</h2>
               <div className="flex flex-wrap gap-4 w-[786px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px] ">
@@ -253,10 +111,6 @@ const ChatbotOverview = () => {
               width={24}
             />
           </div>
-
-          {/* My Bot List */}
-
-          {/* Right Sidebar */}
         </div>
       </div>
     </div>

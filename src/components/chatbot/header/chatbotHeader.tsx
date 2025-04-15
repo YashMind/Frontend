@@ -6,7 +6,7 @@ import { AppDispatch, RootState } from "@/store/store";
 import { getMeData, logoutUser } from "@/store/slices/auth/authSlice";
 import { useRouter } from "next/navigation";
 
-const ChatbotHeader = (noFix: any) => {
+const ChatbotHeader = ({ noFix, addBgColor }: any) => {
   const [bot, setBot] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -27,10 +27,11 @@ const ChatbotHeader = (noFix: any) => {
     dispatch(logoutUser({router}))
   }
 
+  console.log("addBgColor ", addBgColor);
   return (
     <nav
-      className="bg-[#2D2095] fixed
-     w-full z-20  rounded-[36px] top-0   my-9"
+      className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} fixed
+     w-full z-20  rounded-[36px] top-0   my-9`}
     >
       <div className="container">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto gap-0 p-4 md:gap-4">

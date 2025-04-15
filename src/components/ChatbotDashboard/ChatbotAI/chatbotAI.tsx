@@ -1,10 +1,10 @@
 import ChatbotHeader from "@/components/chatbot/header/chatbotHeader";
 import React from "react";
-import Image from "next/image";
-import ChatbotSidebar from "@/components/ChatbotDashboard/ChatbotSidebar/chatbotSidebar";
+import Image from "next/image";           
 import RealTimeCount from "@/components/ChatbotDashboard/RealTimeCount/realTimeCount";
+import ChatbotSidebar from "@/components/ChatbotDashboard/ChatbotSidebar/chatbotSidebar";
 
-const ChatbotOverview = () => {
+const ChatbotAI = () => {
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
@@ -15,7 +15,7 @@ const ChatbotOverview = () => {
         {/* Owner Section */}
         <div className="flex gap-3 justify-between">
           <div className="bg-[#2a2561]   rounded-[58px] w-full pr-3 flex gap-[35px]">
-          <ChatbotSidebar />
+          <ChatbotSidebar />            
             <div className="w-full">
               <h2 className="text-2xl font-bold my-4">Leads</h2>
               {/* <table></table> */}
@@ -232,4 +232,4 @@ const ChatbotOverview = () => {
   );
 };
 
-export default ChatbotOverview;
+export default ChatbotAI;
