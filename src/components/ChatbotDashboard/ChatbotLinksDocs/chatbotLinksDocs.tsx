@@ -260,7 +260,41 @@ const ChatbotLinksDocs = () => {
               </div>
             </div>
             <div className="w-full">
-              <h2 className="text-2xl font-bold my-4">Leadsasdadad</h2>
+              <h2 className="text-2xl font-bold mt-[30]">Links / Docs</h2>
+              <div className="bg-[#9592AE] justify-evenly rounded-[28px] p-4 flex  items-center w-full my-[30] ">
+                {/* Crawled Links */}
+                <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#18B91F] text-white text-center">
+                  <span className="text-sm font-semibold">Crawled Links</span>
+                  <span className="text-lg font-bold mt-1">0</span>
+                </div>
+
+                {/* Chars */}
+                <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-white text-black text-center">
+                  <span className="text-sm font-semibold">Chars</span>
+                  <span className="text-lg font-bold text-purple-900 mt-1">
+                    0
+                  </span>
+                </div>
+
+                {/* Failed */}
+                <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#FF0000] text-white text-center">
+                  <span className="text-sm font-semibold">Failed</span>
+                  <span className="text-lg font-bold mt-1">0</span>
+                </div>
+
+                {/* Pending */}
+                <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#FFC107] text-black text-center">
+                  <span className="text-sm font-semibold">Pending</span>
+                  <span className="text-lg font-bold mt-1">0</span>
+                </div>
+
+                {/* Indexed */}
+                <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#808080] text-white text-center">
+                  <span className="text-sm font-semibold">Indexed</span>
+                  <span className="text-lg font-bold mt-1">0</span>
+                </div>
+              </div>
+
               {/* <table></table> */}
               <div className="bg-white rounded-b-xl overflow-hidden  text-sm w-full rounded-[40px] mb-8 mr-3 ">
                 {/* Top Actions */}
@@ -338,22 +372,22 @@ const ChatbotLinksDocs = () => {
                         />
                       </th>
                       <th className="py-[14px] text-sm font-bold text-black">
-                        Country
-                      </th>
-                      <th className="py-[14px] text-sm font-bold text-black">
-                        Started
-                      </th>
-                      <th className="py-[14px] text-sm font-bold text-black">
                         Status
                       </th>
                       <th className="py-[14px] text-sm font-bold text-black">
-                        Language
+                        Chars
                       </th>
                       <th className="py-[14px] text-sm font-bold text-black">
-                        Last message
+                        Data
                       </th>
                       <th className="py-[14px] text-sm font-bold text-black">
-                        Platform
+                        Date Added
+                      </th>
+                      <th className="py-[14px] text-sm font-bold text-black">
+                        Retrain
+                      </th>
+                      <th className="py-[14px] text-sm font-bold text-black">
+                        Type
                       </th>
                       <th className="py-[14px] text-sm font-bold text-black">
                         Action
@@ -371,24 +405,27 @@ const ChatbotLinksDocs = () => {
                               className="w-4 h-4 accent-[#5E2EFF]"
                             />
                           </td>
-                          <td className="p-4 text-xs font-medium text-black">
-                            India
+                          <td className=" text-xs font-medium text-black ">
+                            <div className="flex gap-3">
+                              <p className="w-2 h-2 bg-[#DE4DBC] rounded-full"></p>{" "}
+                              Pending
+                            </div>
                           </td>
-                          <td className="p-4 text-xs font-medium text-black">
-                            2 hours ago
+                          <td className="py-4 text-xs font-medium text-black">
+                            0
                           </td>
-                          <td className="p-4 text-xs font-medium text-black">
-                            Original
+                          <td className="py-4 text-xs font-medium text-black">
+                            (Your Document)
                           </td>
-                          <td className="p-4 text-xs font-medium text-black">
-                            Original
+                          <td className="py-4 text-xs font-medium text-black">
+                            28 Feb 2025
                           </td>
                           <td className=" truncate max-w-[150px] p-4 text-xs font-medium text-black">
-                            Hi, how are....
+                            -
                           </td>
                           <td className="py-4">
                             <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black">
-                              Web
+                              .pdf
                             </span>
                           </td>
                           <td className="py-4 flex items-center gap-2">
