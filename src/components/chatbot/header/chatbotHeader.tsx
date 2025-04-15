@@ -1,14 +1,32 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { getMeData, logoutUser } from "@/store/slices/auth/authSlice";
+import { useRouter } from "next/navigation";
 
 const ChatbotHeader = (noFix: any) => {
   const [bot, setBot] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
+  const router = useRouter();
 
   const handleToggle = () => {
     setIsMenuOpen((prev) => !prev);
   };
+  const dispatch = useDispatch<AppDispatch>()
+  const userData: UserProfileData = useSelector((state:RootState)=> state.auth.userData);
+
+  useEffect(()=>{
+  dispatch(getMeData());
+  }, []);
+
+  const handleLogOut = () => {
+    dispatch(logoutUser({router}))
+  }
+
   return (
     <nav
       className="bg-[#2D2095] fixed
@@ -31,6 +49,8 @@ const ChatbotHeader = (noFix: any) => {
             >
               Return to Home
             </Link>
+            <div className="relative inline-block text-left" ref={menuRef}>
+            <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none">
             <svg
               width="21"
               height="22"
@@ -44,8 +64,28 @@ const ChatbotHeader = (noFix: any) => {
                 fill="white"
               />
             </svg>
+            </button>
+            {isOpen && (
+            <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-10">
+              <div className="py-1">
+                <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  Profile
+                </Link>
+                <Link href="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  Settings
+                </Link>
+                <button
+                  onClick={() => handleLogOut()}
+                  className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          )}
+            </div>
 
-            <p className="text-white font-semibold text-[15px]">User</p>
+            <p className="text-white font-semibold text-[15px]">{userData?.fullName}</p>
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"
@@ -89,7 +129,7 @@ const ChatbotHeader = (noFix: any) => {
               </li>
               <li>
                 <Link
-                  href="/chatbot"
+                  href="/voice-agent"
                   className={`block py-2 px-3 text-white ${
                     bot === 2 ? "bg-[#434343]" : ""
                   } rounded-[26px]  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}

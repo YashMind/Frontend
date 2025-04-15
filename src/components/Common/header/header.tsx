@@ -86,7 +86,7 @@ const HomeHeader = () => {
               </li>
               <li>
                 <Link
-                  href="/"
+                  href="/voice-agent"
                   className={`${
                     navItem === 3
                       ? "bg-white text-black rounded-[27px] px-3"

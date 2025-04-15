@@ -10,22 +10,24 @@ const LoginWithGoogle = () => {
 
   const signUpWithGoogle = async (accessToken: string) => {
     try {
-      const { data: profile } = await axios.get(
-        "https://www.googleapis.com/oauth2/v3/userinfo",
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      // const { data: profile } = await axios.get(
+      //   "https://www.googleapis.com/oauth2/v3/userinfo",
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${accessToken}`,
+      //     },
+      //   }
+      // );
 
-      const { data } = await http.post("/google-login", {
-        googleId: profile.sub,
-        name: profile.name,
-        email: profile.email,
-        token: accessToken,
-      });
-
+      // console.log("profile ", profile)
+      // console.log("token ", accessToken)
+      // const authData = {
+      //   googleId: profile.sub,
+      //   fullName: profile.name,
+      //   email: profile.email,
+      //   token: accessToken,
+      // }
+      const { data } = await http.post("/auth/google-login", {token:accessToken});
       return data;
     } catch (error) {
       console.error("Google Sign-Up/Login failed:", error);
@@ -40,7 +42,7 @@ const LoginWithGoogle = () => {
         // Optionally: store tokens or user info here
         if(user){
             toast.success("Logged with google successfully!")
-            router.push("/dashboard");
+            router.push("/chatbot");
         }
       } catch (err) {
         console.log("Login failed:", err);

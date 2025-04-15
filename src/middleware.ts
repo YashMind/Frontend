@@ -7,7 +7,7 @@ export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const publicRoutes = ["/", "/signin", "signup"];
-  const knownRoutes = ["/home","/chatbot", "/profile", "/settings", "/chatbot-dashboard"];
+  const knownRoutes = ["/chatbot", "/profile", "/settings", "/voice-agent", "/chatbot-dashboard"];
 
   const isPublic = publicRoutes.includes(pathname);
   const isKnown = knownRoutes.some(route =>
@@ -17,7 +17,7 @@ export default function middleware(request: NextRequest) {
   // User is visiting /signin
   if (isPublic) {
     if (accessToken) {
-      return NextResponse.redirect(new URL("/home", request.url));
+      return NextResponse.redirect(new URL("/chatbot", request.url));
     }
     return NextResponse.next(); // Allow
   }
@@ -29,7 +29,7 @@ export default function middleware(request: NextRequest) {
 
   // Authenticated, but unknown route
   if (!isKnown) {
-    return NextResponse.redirect(new URL("/home", request.url));
+    return NextResponse.redirect(new URL("/chatbot", request.url));
   }
 
   // Authenticated + known route

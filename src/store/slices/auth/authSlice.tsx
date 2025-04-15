@@ -7,6 +7,19 @@ import {
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
+const UserData = {
+  id: 0,
+  email: '',
+  fullName: '',
+  password: '',
+  created_at: '',
+  isMFA: false,
+  isRestricted: false,
+  provider: '',
+  googleId: '',
+  picture: '',
+  updated_at: '',
+}
 
 // Async thunk for signup
 export const signUpUser = createAsyncThunk<
@@ -74,7 +87,7 @@ export const signInUser = createAsyncThunk<
         dispatch(stopLoadingActivity());
         dispatch(getMeData());
         toast.success("user logged in successfully!");
-        router.push("/");
+        router.push("/chatbot");
         return response.data;
       } else {
         return rejectWithValue("Signup failed");
@@ -90,11 +103,36 @@ export const signInUser = createAsyncThunk<
   }
 );
 
+export const logoutUser = createAsyncThunk<any, {router: ReturnType<typeof useRouter>}>(
+  "auth/logoutUser",
+  async ({router}, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.post("/auth/logout");
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toast.success("user logout successfully!");
+        router.push("/signin")
+        return response.data;
+      } else {
+        return rejectWithValue("auth failed");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during auth");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 
 const initialState = {
   loading: false,
   data: [],
-  userData: {},
+  userData: UserData,
   userDetails: {},
 };
 
@@ -131,7 +169,7 @@ const authSlice = createSlice({
       })
       .addCase(getMeData.fulfilled, (state, action) => {
         state.loading = false;
-        state.userData = action.payload.data;
+        state.userData = action.payload.data || action.payload.user;
       })
       .addCase(getMeData.rejected, (state, action) => {
         state.loading = false;
