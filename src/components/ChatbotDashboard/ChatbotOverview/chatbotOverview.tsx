@@ -6,10 +6,10 @@ const ChatbotOverview = () => {
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
-      <ChatbotHeader noFix={true} />
+      <ChatbotHeader noFix={true} addBgColor={true} />
       <div className="min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4">
         {/* Real Time Count + Table */}
-        <div className="bg-[#2a2561]  p-4 m-9 mt-[145px] rounded-[300px]">
+        <div className="bg-[#2a2561]  p-4 m-9 rounded-[300px]">
           <div className="flex items-center justify-between mb-2 gap-5">
             <h2 className="font-semibold text-lg">Real Time Count:</h2>
             <div className="overflow-x-auto w-full">

@@ -2,7 +2,7 @@ import ChatbotHeader from "@/components/chatbot/header/chatbotHeader";
 import React from "react";
 import Image from "next/image";
 
-const ChatbotOverview = () => {
+const ChatbotLinksDocs = () => {
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
@@ -475,4 +475,4 @@ const ChatbotOverview = () => {
   );
 };
 
-export default ChatbotOverview;
+export default ChatbotLinksDocs;
