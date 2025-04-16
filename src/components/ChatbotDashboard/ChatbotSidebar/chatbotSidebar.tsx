@@ -30,7 +30,7 @@ const ChatbotSidebar = () => {
             height={20}
             width={20}
           />{" "}
-          <Link href="/chatbot-dashboard/overview">Overview</Link>
+          <Link href="/chatbot-dashboard/overview" className={`${pathname==="/chatbot-dashboard/overview" ? "text-[#01BEED]":""}`}>Overview</Link>
         </p>
       </div>
 

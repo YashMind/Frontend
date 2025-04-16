@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import ChatbotHeader from "@/components/chatbot/header/chatbotHeader";
 import RealTimeCount from "@/components/ChatbotDashboard/RealTimeCount/realTimeCount";
+import Link from "next/link";
 const ChatbotDashboard = () => {
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
@@ -41,9 +42,9 @@ const ChatbotDashboard = () => {
                     <span className="w-3 h-3 bg-green-400 rounded-full" />
                   </div>
                   <div className="flex justify-between items-center">
-                    <a href="#" className="text-[#23c4f2] text-sm underline">
+                    <Link href="/chatbot-dashboard/overview" className="text-[#23c4f2] text-sm underline">
                       Allocated message
-                    </a>
+                    </Link>
                     <Image
                       alt="alt"
                       src="/images/password.png"
