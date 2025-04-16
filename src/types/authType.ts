@@ -27,3 +27,7 @@ interface UserProfileData {
   created_at: string
   updated_at?: string
 }
+
+interface TrainingText {
+  text_content: string;
+}

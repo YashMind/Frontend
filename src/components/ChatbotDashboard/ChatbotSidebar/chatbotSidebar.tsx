@@ -19,7 +19,7 @@ const ChatbotSidebar = () => {
   const pathname = usePathname()
   console.log("pathname ", pathname);
   return (
-    <div className="w-[220px] h-screen bg-black text-white p-4 flex flex-col gap-6  rounded-tl-[58px] rounded-tr-[0px] rounded-br-[0px] rounded-bl-[58px]">
+    <div className="w-[260px] h-screen bg-black text-white p-4 flex flex-col gap-6  rounded-tl-[58px] rounded-tr-[0px] rounded-br-[0px] rounded-bl-[58px]">
       {/* Section: Overview */}
       <div>
         <p className="text-white text-sm flex items-center gap-2 font-light">
@@ -62,10 +62,10 @@ const ChatbotSidebar = () => {
         <Link href="/chatbot-dashboard/texts">Content Upload</Link>
         {pathname==="/chatbot-dashboard/texts" ?  <BiSolidRightArrow /> : null }
         </p>
-        <p className={`flex items-center gap-2 ${pathname==="/chatbot-dashboard/q&a" ? "text-[#01BEED]":""}`}>
+        <p className={`flex items-center gap-2 ${pathname==="/chatbot-dashboard/faqs" ? "text-[#01BEED]":""}`}>
         <HiOutlineChatBubbleBottomCenterText />
-        <Link href="/chatbot-dashboard/q&a">FAQs</Link>
-        {pathname==="/chatbot-dashboard/q&a" ?  <BiSolidRightArrow /> : null }
+        <Link href="/chatbot-dashboard/faqs">FAQs</Link>
+        {pathname==="/chatbot-dashboard/faqs" ?  <BiSolidRightArrow /> : null }
         </p>
       </div>
 
