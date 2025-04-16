@@ -31,3 +31,9 @@ interface UserProfileData {
 interface TrainingText {
   text_content: string;
 }
+
+interface ProfileForm {
+  fullName: string;
+  email: string;
+  password: string;
+}
