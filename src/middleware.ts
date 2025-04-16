@@ -6,12 +6,29 @@ export default function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("access_token")?.value;
   const { pathname } = request.nextUrl;
 
-  const publicRoutes = ["/", "/signin", "signup"];
-  const knownRoutes = ["/chatbot", "/profile", "/settings", "/voice-agent", "/chatbot-dashboard"];
+  const publicRoutes = [
+    "/",
+    "/signin",
+    "signup",
+    "/chatbot",
+    "/chatbot-dashboard",
+    "/chatbot-dashboard/overview",
+    "/chatbot-dashboard/chat-leads",
+    "/chatbot-dashboard/chat-history",
+    "/chatbot-products",
+    "/admin",
+  ];
+  const knownRoutes = [
+    "/chatbot",
+    "/profile",
+    "/settings",
+    "/voice-agent",
+    "/chatbot-dashboard",
+  ];
 
   const isPublic = publicRoutes.includes(pathname);
-  const isKnown = knownRoutes.some(route =>
-    pathname === route || pathname.startsWith(route + "/")
+  const isKnown = knownRoutes.some(
+    (route) => pathname === route || pathname.startsWith(route + "/")
   );
 
   // User is visiting /signin
@@ -37,5 +54,5 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|favicon.ico|images|api).*)"]
+  matcher: ["/((?!_next|favicon.ico|images|api).*)"],
 };
