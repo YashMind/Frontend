@@ -573,7 +573,7 @@ const ChatbotProducts = () => {
                   className="bg-[#171821] placeholder-[#D2D2D2] text-xs font-medium py-[21] px-[13] rounded-[11px] w-full "
                   id=""
                 ></input>
-                <div className="mt-[20px]">
+                <div className="mt-[8px]">
                   <a
                     href=""
                     className="bg-[#01BEED] text-white px-4 py-2 rounded-[12px] "
