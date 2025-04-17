@@ -50,9 +50,10 @@ const ChatbotDashboard = () => {
         </div>
 
         <h2 className="text-2xl font-bold mt-[36px] mb-4">My Bot List</h2>
-        <div className="flex flex-wrap gap-4 ">
+        <div className="flex gap-4 w-full">
+          {/* first div */}
           <div className="flex flex-wrap gap-4 w-[786px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px]">
-            <div className="bg-[#fff] p-4 rounded-2xl flex-1 min-w-[200px]">
+            <div className="bg-[#fff] p-4 rounded-2xl flex-1 min-w-[300px]">
               <div className="flex items-center justify-between">
                 <p className="mb-2 text-black font-semibold text-lg">
                   Messages consumed
@@ -65,7 +66,7 @@ const ChatbotDashboard = () => {
                 <div className="text-[#501794] h-2 rounded-full w-0" />
               </div>
             </div>
-            <div className="bg-[#fff] p-4 rounded-2xl flex-1 min-w-[200px] ">
+            <div className="bg-[#fff] p-4 rounded-2xl flex-1 min-w-[300px] ">
               <div className="flex items-center justify-between">
                 <p className="mb-2 text-black font-semibold text-lg">
                   Messages allocated
@@ -79,7 +80,8 @@ const ChatbotDashboard = () => {
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-center border border-dashed border-gray-400 rounded-2xl flex-1 cursor-pointer">
+          {/* second div */}
+          <div className="flex items-center justify-center border border-dashed border-gray-400 rounded-2xl flex-1  min-w-[400px] cursor-pointer">
             <span className="font-semibold text-lg text-white text-center">
               Create New Bot <br></br> +
             </span>

@@ -17,20 +17,19 @@ import ChatbotSettings from "@/components/ChatbotDashboard/ChatbotSettings/chatb
 import ChatbotDashboard from "@/components/ChatbotDashboard/chatbotDashboard";
 
 const ChatbotMain = ({botPage}: {botPage:string}) => {
-    console.log("bot page ", botPage)
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
-      <ChatbotHeader noFix={true} addBgColor={true} />
+      <ChatbotHeader fix={true} addBgColor={true} />
       <div className="min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4">
         {/* Real Time Count + Table */}
         <RealTimeCount />
         
         {/* Owner Section */}
-        {botPage==="main" ? <ChatbotDashboard /> :
         <div className="flex gap-6">
           <div className="bg-[#2a2561]   rounded-[58px] w-[90%]  flex gap-[68px]">
-            <ChatbotSidebar />
+            {botPage!=="main" ? <ChatbotSidebar /> : null }
+            {botPage==="main" ? <ChatbotDashboard /> : null }
             {botPage==="overview" ? <ChatbotOverview /> : null}
             {botPage==="chat-history" ? <ChatbotHistory /> : null}
             {botPage==="chat-leads" ? <ChatbotLeads /> : null}
@@ -43,6 +42,7 @@ const ChatbotMain = ({botPage}: {botPage:string}) => {
             {botPage==="integration" ? <ChatbotIntegration /> : null}
             {botPage==="settings" ? <ChatbotSettings /> : null}
           </div>
+          {/* second div */}
           <div className="w-[10%] bg-[#2a2561]  rounded-[58px]">
             <div className="w-[100px] h-[100px] bg-white rounded-full flex items-center justify-center m-auto mb-5">
               <Image
@@ -69,7 +69,7 @@ const ChatbotMain = ({botPage}: {botPage:string}) => {
               width={24}
             />
           </div>
-        </div>}
+        </div>
       </div>
     </div>
   );

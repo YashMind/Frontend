@@ -37,7 +37,6 @@ const SignIn = () => {
     } = useForm<SignInForm>({ resolver: yupResolver(schema) });
   
     const onSubmit = (data: SignInForm) => {
-      console.log(data);
       dispatch(signInUser({payload: data, router}))
       reset();
     };

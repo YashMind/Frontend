@@ -5,7 +5,6 @@ interface ChatbotPageProps {
 }
 const ChatbotViewPage = async(props: ChatbotPageProps) => {
   const { botPage } = await props.params;
-  console.log("main ", botPage)
   return <ChatbotMain botPage={botPage} />;
 };
 

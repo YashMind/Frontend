@@ -35,5 +35,14 @@ interface TrainingText {
 interface ProfileForm {
   fullName: string;
   email: string;
-  password: string;
+  password?: string;
+}
+interface PreferenceForm {
+  preferedAiModel: string;
+  lastUsedModel?: boolean;
+}
+
+interface HelpSupportForm {
+  subject: string;
+  message: string;
 }

@@ -17,7 +17,6 @@ import { FiSettings } from "react-icons/fi";
 
 const ChatbotSidebar = () => {
   const pathname = usePathname()
-  console.log("pathname ", pathname);
   return (
     <div className="w-[260px] h-screen bg-black text-white p-4 flex flex-col gap-6  rounded-tl-[58px] rounded-tr-[0px] rounded-br-[0px] rounded-bl-[58px]">
       {/* Section: Overview */}

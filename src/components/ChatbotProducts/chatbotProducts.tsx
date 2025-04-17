@@ -1,4 +1,4 @@
-import ChatbotHeader from "@/components/ChatbotProducts/ChatbotHeader/chatbotHeader";
+import ChatbotHeader from "@/components/chatbot/header/chatbotHeader";
 import SidebarProducts from "@/components/ChatbotProducts/SidebarProducts/sidebarProducts";
 import ProfileProducts from "@/components/ChatbotProducts/ProfileProducts/profileProducts";
 import PreferenceProducts from "@/components/ChatbotProducts/PreferenceProducts/preferenceProducts";
@@ -10,9 +10,9 @@ const ChatbotProducts = ({product}:{product: string}) => {
   return (
     <div className="bg-[#2F0448] h-screen">
       {/* header */}
-      <ChatbotHeader />
+      <ChatbotHeader fix={false} addBgColor={true} />
       {/* sidebar */}
-      <div className="bg-[#1E1B3A] text-white min-h-screen flex m-[10px] pt-[85px] pb-[10px]">
+      <div className="bg-[#1E1B3A] text-white min-h-screen flex m-[10px] pb-[10px]">
         {/* Sidebar */}
         <SidebarProducts productMenu={product}/>
 

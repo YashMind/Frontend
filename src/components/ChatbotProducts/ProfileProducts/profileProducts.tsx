@@ -1,12 +1,12 @@
 "use client";
 import Image from "next/image";
-import { getMeData } from "@/store/slices/auth/authSlice";
+import { getMeData, updateUserProfile } from "@/store/slices/auth/authSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RiEditLine } from "react-icons/ri";
 import * as yup from "yup";
-import { useForm } from "react-hook-form";
+import { useForm, Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 const schema = yup.object().shape({
   fullName: yup.string().required("Full Name is required field"),
@@ -14,7 +14,8 @@ const schema = yup.object().shape({
 
   password: yup
     .string()
-    .required("Password is a required field")
+    .transform((value) => (value === "" ? undefined : value))
+    .notRequired()
     .min(8, "Password must be at least 8 characters long")
     .matches(/[a-z]/, "Password must contain at least one lowercase letter")
     .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
@@ -35,7 +36,7 @@ const ProfileProducts = () => {
     reset,
     formState: { errors },
   } = useForm<ProfileForm>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as Resolver<ProfileForm>,
     defaultValues: {
       fullName: "",
       email: "",
@@ -53,8 +54,8 @@ const ProfileProducts = () => {
       });
     }
   }, [reset, userData?.fullName]);
-  const onSubmit = (data: SignInForm) => {
-    console.log(data);
+  const onSubmit = (data: ProfileForm) => {
+    dispatch(updateUserProfile({payload: data}))
     reset();
   };
   return (
@@ -159,6 +160,7 @@ const ProfileProducts = () => {
               </label>
               <input
                 {...register("email")}
+                readOnly
                 type="email"
                 id="email"
                 placeholder="joli@gmail.com"

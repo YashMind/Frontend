@@ -39,7 +39,6 @@ const schema = yup.object().shape({
 const SignUp = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading }: any = useSelector((state: RootState) => state.auth);
-  console.log("lodaing ", loading);
   const router = useRouter();
 
   const {
@@ -50,7 +49,6 @@ const SignUp = () => {
   } = useForm<SignUpForm>({ resolver: yupResolver(schema) });
 
   const onSubmit = (data: SignUpForm) => {
-    console.log(data);
     dispatch(signUpUser({payload: data, router}));
     reset();
   };

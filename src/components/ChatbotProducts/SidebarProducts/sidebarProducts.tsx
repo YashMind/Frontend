@@ -1,9 +1,18 @@
+"use client"
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { getMeData, logoutUser } from "@/store/slices/auth/authSlice";
+import { AppDispatch } from "@/store/store";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const SidebarProducts = ({productMenu}:{productMenu: string}) => {
-    console.log("productMenu ", productMenu);
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>()
+  const handleLogOut = () => {
+    dispatch(logoutUser({router}))
+  }
   return (
     <aside className="w-[294px] bg-[#2B255C]  flex flex-col gap-2 rounded-tl-[15px] rounded-bl-[15px]">
       <div className="relative mb-4 p-4">
@@ -135,6 +144,7 @@ const SidebarProducts = ({productMenu}:{productMenu: string}) => {
         <Link
           href="/signin"
           className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-light text-sm"
+          onClick={() => handleLogOut()}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
