@@ -556,7 +556,7 @@ const UserManagement = () => {
                     <td className="p-4 text-[#AEB9E1] text-xs">12</td>
                     <td className="p-4 text-[#AEB9E1] text-xs">01-2-2024</td>
                     <td className="p-4">
-                      <span className="bg-[#05C16833] text-[#14CA74] text-xs px-2 py-1 rounded">
+                      <span className="bg-[#AEB9E133] text-[#AEB9E1] text-xs px-2 py-1 rounded">
                         Online
                       </span>
                     </td>
@@ -622,21 +622,27 @@ const UserManagement = () => {
                             <div className="py-1">
                               <a
                                 href="#"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#5C5C5C] hover:bg-gray-100"
                               >
-                               View Detail
+                                View Detail
                               </a>
                               <a
                                 href="#"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#FF0000] hover:bg-gray-100"
                               >
-                               Suspend
+                                Suspend
                               </a>
                               <a
                                 href="#"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                className="block px-4 py-2 border-b-1 border-[#CACACA] text-xs text-[#0FB100] hover:bg-gray-100"
                               >
-                                Sign out
+                                Activate
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2   text-xs text-[#CD6600] hover:bg-gray-100"
+                              >
+                                Reset token quote
                               </a>
                             </div>
                           </div>
@@ -719,22 +725,60 @@ const UserManagement = () => {
                             />
                           </svg>
                         </button>
-                        <button>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                            />
-                          </svg>
-                        </button>
+                        {/* dropdown start */}
+                        <div className="relative inline-block text-left">
+                          <input
+                            type="checkbox"
+                            id="dropdown-toggle1"
+                            className="peer hidden"
+                          />
+                          <label htmlFor="dropdown-toggle1" className="">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="size-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                              />
+                            </svg>
+                          </label>
+
+                          <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 peer-checked:block hidden">
+                            <div className="py-1">
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#5C5C5C] hover:bg-gray-100"
+                              >
+                                View Detail
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#FF0000] hover:bg-gray-100"
+                              >
+                                Suspend
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 border-b-1 border-[#CACACA] text-xs text-[#0FB100] hover:bg-gray-100"
+                              >
+                                Activate
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2   text-xs text-[#CD6600] hover:bg-gray-100"
+                              >
+                                Reset token quote
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        {/* dropdown end */}
                         <div className="relative group">
                           <button className="text-gray-300 hover:text-white">
                             <i className="fas fa-ellipsis-v"></i>
@@ -777,7 +821,7 @@ const UserManagement = () => {
                     <td className="p-4 text-[#AEB9E1] text-xs">12</td>
                     <td className="p-4 text-[#AEB9E1] text-xs">01-2-2024</td>
                     <td className="p-4">
-                      <span className="bg-[#05C16833] text-[#14CA74] text-xs px-2 py-1 rounded">
+                      <span className="bg-[#AEB9E133] text-[#AEB9E1] text-xs px-2 py-1 rounded">
                         Online
                       </span>
                     </td>
@@ -815,22 +859,60 @@ const UserManagement = () => {
                             />
                           </svg>
                         </button>
-                        <button>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                            />
-                          </svg>
-                        </button>
+                        {/* dropdown start */}
+                        <div className="relative inline-block text-left">
+                          <input
+                            type="checkbox"
+                            id="dropdown-toggle2"
+                            className="peer hidden"
+                          />
+                          <label htmlFor="dropdown-toggle2" className="">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="size-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                              />
+                            </svg>
+                          </label>
+
+                          <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 peer-checked:block hidden">
+                            <div className="py-1">
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#5C5C5C] hover:bg-gray-100"
+                              >
+                                View Detail
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#FF0000] hover:bg-gray-100"
+                              >
+                                Suspend
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 border-b-1 border-[#CACACA] text-xs text-[#0FB100] hover:bg-gray-100"
+                              >
+                                Activate
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2   text-xs text-[#CD6600] hover:bg-gray-100"
+                              >
+                                Reset token quote
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        {/* dropdown end */}
                         <div className="relative group">
                           <button className="text-gray-300 hover:text-white">
                             <i className="fas fa-ellipsis-v"></i>
@@ -908,22 +990,60 @@ const UserManagement = () => {
                             />
                           </svg>
                         </button>
-                        <button>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                            />
-                          </svg>
-                        </button>
+                        {/* dropdown start */}
+                        <div className="relative inline-block text-left">
+                          <input
+                            type="checkbox"
+                            id="dropdown-toggle3"
+                            className="peer hidden"
+                          />
+                          <label htmlFor="dropdown-toggle3" className="">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="size-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                              />
+                            </svg>
+                          </label>
+
+                          <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 peer-checked:block hidden">
+                            <div className="py-1">
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#5C5C5C] hover:bg-gray-100"
+                              >
+                                View Detail
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#FF0000] hover:bg-gray-100"
+                              >
+                                Suspend
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 border-b-1 border-[#CACACA] text-xs text-[#0FB100] hover:bg-gray-100"
+                              >
+                                Activate
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2   text-xs text-[#CD6600] hover:bg-gray-100"
+                              >
+                                Reset token quote
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        {/* dropdown end */}
                         <div className="relative group">
                           <button className="text-gray-300 hover:text-white">
                             <i className="fas fa-ellipsis-v"></i>
@@ -966,7 +1086,7 @@ const UserManagement = () => {
                     <td className="p-4 text-[#AEB9E1] text-xs">12</td>
                     <td className="p-4 text-[#AEB9E1] text-xs">01-2-2024</td>
                     <td className="p-4">
-                      <span className="bg-[#05C16833] text-[#14CA74] text-xs px-2 py-1 rounded">
+                      <span className="bg-[#AEB9E133] text-[#AEB9E1] text-xs px-2 py-1 rounded">
                         Online
                       </span>
                     </td>
@@ -1004,22 +1124,60 @@ const UserManagement = () => {
                             />
                           </svg>
                         </button>
-                        <button>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                            />
-                          </svg>
-                        </button>
+                        {/* dropdown start */}
+                        <div className="relative inline-block text-left">
+                          <input
+                            type="checkbox"
+                            id="dropdown-toggle4"
+                            className="peer hidden"
+                          />
+                          <label htmlFor="dropdown-toggle4" className="">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="size-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                              />
+                            </svg>
+                          </label>
+
+                          <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 peer-checked:block hidden">
+                            <div className="py-1">
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#5C5C5C] hover:bg-gray-100"
+                              >
+                                View Detail
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#FF0000] hover:bg-gray-100"
+                              >
+                                Suspend
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 border-b-1 border-[#CACACA] text-xs text-[#0FB100] hover:bg-gray-100"
+                              >
+                                Activate
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2   text-xs text-[#CD6600] hover:bg-gray-100"
+                              >
+                                Reset token quote
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        {/* dropdown end */}
                         <div className="relative group">
                           <button className="text-gray-300 hover:text-white">
                             <i className="fas fa-ellipsis-v"></i>
@@ -1097,22 +1255,60 @@ const UserManagement = () => {
                             />
                           </svg>
                         </button>
-                        <button>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                            />
-                          </svg>
-                        </button>
+                        {/* dropdown start */}
+                        <div className="relative inline-block text-left">
+                          <input
+                            type="checkbox"
+                            id="dropdown-toggle5"
+                            className="peer hidden"
+                          />
+                          <label htmlFor="dropdown-toggle5" className="">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="size-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                              />
+                            </svg>
+                          </label>
+
+                          <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 peer-checked:block hidden">
+                            <div className="py-1">
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#5C5C5C] hover:bg-gray-100"
+                              >
+                                View Detail
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#FF0000] hover:bg-gray-100"
+                              >
+                                Suspend
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 border-b-1 border-[#CACACA] text-xs text-[#0FB100] hover:bg-gray-100"
+                              >
+                                Activate
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2   text-xs text-[#CD6600] hover:bg-gray-100"
+                              >
+                                Reset token quote
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        {/* dropdown end */}
                         <div className="relative group">
                           <button className="text-gray-300 hover:text-white">
                             <i className="fas fa-ellipsis-v"></i>
@@ -1155,7 +1351,7 @@ const UserManagement = () => {
                     <td className="p-4 text-[#AEB9E1] text-xs">12</td>
                     <td className="p-4 text-[#AEB9E1] text-xs">01-2-2024</td>
                     <td className="p-4">
-                      <span className="bg-[#05C16833] text-[#14CA74] text-xs px-2 py-1 rounded">
+                      <span className="bg-[#AEB9E133] text-[#AEB9E1] text-xs px-2 py-1 rounded">
                         Online
                       </span>
                     </td>
@@ -1193,22 +1389,60 @@ const UserManagement = () => {
                             />
                           </svg>
                         </button>
-                        <button>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                            />
-                          </svg>
-                        </button>
+                        {/* dropdown start */}
+                        <div className="relative inline-block text-left">
+                          <input
+                            type="checkbox"
+                            id="dropdown-toggle6"
+                            className="peer hidden"
+                          />
+                          <label htmlFor="dropdown-toggle6" className="">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="size-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                              />
+                            </svg>
+                          </label>
+
+                          <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 peer-checked:block hidden">
+                            <div className="py-1">
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#5C5C5C] hover:bg-gray-100"
+                              >
+                                View Detail
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#FF0000] hover:bg-gray-100"
+                              >
+                                Suspend
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 border-b-1 border-[#CACACA] text-xs text-[#0FB100] hover:bg-gray-100"
+                              >
+                                Activate
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2   text-xs text-[#CD6600] hover:bg-gray-100"
+                              >
+                                Reset token quote
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        {/* dropdown end */}
                         <div className="relative group">
                           <button className="text-gray-300 hover:text-white">
                             <i className="fas fa-ellipsis-v"></i>
@@ -1286,22 +1520,60 @@ const UserManagement = () => {
                             />
                           </svg>
                         </button>
-                        <button>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                            />
-                          </svg>
-                        </button>
+                        {/* dropdown start */}
+                        <div className="relative inline-block text-left">
+                          <input
+                            type="checkbox"
+                            id="dropdown-toggle7"
+                            className="peer hidden"
+                          />
+                          <label htmlFor="dropdown-toggle7" className="">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="size-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                              />
+                            </svg>
+                          </label>
+
+                          <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 peer-checked:block hidden">
+                            <div className="py-1">
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#5C5C5C] hover:bg-gray-100"
+                              >
+                                View Detail
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#FF0000] hover:bg-gray-100"
+                              >
+                                Suspend
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 border-b-1 border-[#CACACA] text-xs text-[#0FB100] hover:bg-gray-100"
+                              >
+                                Activate
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2   text-xs text-[#CD6600] hover:bg-gray-100"
+                              >
+                                Reset token quote
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        {/* dropdown end */}
                         <div className="relative group">
                           <button className="text-gray-300 hover:text-white">
                             <i className="fas fa-ellipsis-v"></i>
@@ -1344,7 +1616,7 @@ const UserManagement = () => {
                     <td className="p-4 text-[#AEB9E1] text-xs">12</td>
                     <td className="p-4 text-[#AEB9E1] text-xs">01-2-2024</td>
                     <td className="p-4">
-                      <span className="bg-[#05C16833] text-[#14CA74] text-xs px-2 py-1 rounded">
+                      <span className="bg-[#AEB9E133] text-[#AEB9E1] text-xs px-2 py-1 rounded">
                         Online
                       </span>
                     </td>
@@ -1382,22 +1654,60 @@ const UserManagement = () => {
                             />
                           </svg>
                         </button>
-                        <button>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                            />
-                          </svg>
-                        </button>
+                        {/* dropdown start */}
+                        <div className="relative inline-block text-left">
+                          <input
+                            type="checkbox"
+                            id="dropdown-toggle8"
+                            className="peer hidden"
+                          />
+                          <label htmlFor="dropdown-toggle8" className="">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="size-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                              />
+                            </svg>
+                          </label>
+
+                          <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 peer-checked:block hidden">
+                            <div className="py-1">
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#5C5C5C] hover:bg-gray-100"
+                              >
+                                View Detail
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#FF0000] hover:bg-gray-100"
+                              >
+                                Suspend
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 border-b-1 border-[#CACACA] text-xs text-[#0FB100] hover:bg-gray-100"
+                              >
+                                Activate
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2   text-xs text-[#CD6600] hover:bg-gray-100"
+                              >
+                                Reset token quote
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        {/* dropdown end */}
                         <div className="relative group">
                           <button className="text-gray-300 hover:text-white">
                             <i className="fas fa-ellipsis-v"></i>
@@ -1475,22 +1785,60 @@ const UserManagement = () => {
                             />
                           </svg>
                         </button>
-                        <button>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                            />
-                          </svg>
-                        </button>
+                        {/* dropdown start */}
+                        <div className="relative inline-block text-left">
+                          <input
+                            type="checkbox"
+                            id="dropdown-toggle9"
+                            className="peer hidden"
+                          />
+                          <label htmlFor="dropdown-toggle9" className="">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="size-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                              />
+                            </svg>
+                          </label>
+
+                          <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right h-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 peer-checked:block hidden">
+                            <div className="py-1">
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#5C5C5C] hover:bg-gray-100"
+                              >
+                                View Detail
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#FF0000] hover:bg-gray-100"
+                              >
+                                Suspend
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2 border-b-1 border-[#CACACA] text-xs text-[#0FB100] hover:bg-gray-100"
+                              >
+                                Activate
+                              </a>
+                              <a
+                                href="#"
+                                className="block px-4 py-2   text-xs text-[#CD6600] hover:bg-gray-100"
+                              >
+                                Reset token quote
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        {/* dropdown end */}
                         <div className="relative group">
                           <button className="text-gray-300 hover:text-white">
                             <i className="fas fa-ellipsis-v"></i>
@@ -1518,55 +1866,7 @@ const UserManagement = () => {
                 </tbody>
               </table>
             </div>
-            <div className="relative inline-block text-left">
-              <input
-                type="checkbox"
-                id="dropdown-toggle"
-                className="peer hidden"
-              />
-              <label
-                htmlFor="dropdown-toggle"
-                className="inline-flex justify-center items-center cursor-pointer w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
-              >
-                Options
-                <svg
-                  className="ml-2 h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </label>
 
-              <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 peer-checked:block hidden">
-                <div className="py-1">
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Account settings
-                  </a>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Support
-                  </a>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Sign out
-                  </a>
-                </div>
-              </div>
-            </div>
             {/* popup start */}
             <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[800px]  max-w-full my-5 shadow-5xl">
               <h2 className="text-xl font-semibold mb-1">Edit</h2>
