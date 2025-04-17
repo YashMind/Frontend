@@ -7,7 +7,7 @@ export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const publicRoutes = ["/", "/signin", "signup"];
-  const knownRoutes = ["/chatbot", "/profile", "/settings", "/voice-agent", "/chatbot-dashboard", "/chatbot-products"];
+  const knownRoutes = ["/chatbot", "/profile", "/settings", "/voice-agent", "/chatbot-dashboard", "/chatbot-products", "/admin"];
 
   const isPublic = publicRoutes.includes(pathname);
   const isKnown = knownRoutes.some(
