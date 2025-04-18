@@ -20,6 +20,10 @@ export default function middleware(request: NextRequest) {
     "/admin/user-management",
     "/admin/subscription-plans",
     "/admin/token-analytics",
+    "/admin/users-roles",
+    "/admin/enterprise-clients",
+    "/admin/product-monitoring",
+    "/admin/billing-settings",
   ];
   const knownRoutes = [
     "/chatbot",
