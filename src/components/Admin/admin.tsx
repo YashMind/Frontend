@@ -3,6 +3,9 @@ import React from "react";
 import AdminSidebar from "./AdminSidebar/adminSidebar";
 import AdminTopbar from "./AdminMain/AdminTopbar/adminTopbar";
 import AdminMain from "./AdminMain/adminMain";
+import UserManagement from "./UserManagement/userManagement";
+import SubscriptionPlans from "./SubscriptionPlans/subscriptionPlans";
+import TokenAnalytics from "./TokenAnalytics/tokenAnalytics";
 const Admin = ({adminPage}:{adminPage: string}) => {
   return (
     <div>
@@ -13,8 +16,10 @@ const Admin = ({adminPage}:{adminPage: string}) => {
 
           <div className="dashboard-right flex-1 mr-[30px] mb-[60px]">
             <AdminTopbar />
-            <AdminMain />
-
+            {adminPage === "dashboard" ? <AdminMain /> : null }
+            {adminPage === "users-management" ? <UserManagement /> : null }
+            {adminPage === "subscription-plans" ? <SubscriptionPlans /> : null }
+            {adminPage === "token-analytics" ? <TokenAnalytics /> : null }
             {/* popup start */}
             
           </div>

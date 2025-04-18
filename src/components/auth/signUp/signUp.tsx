@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { signUpUser } from "@/store/slices/auth/authSlice";
 import { useRouter } from "next/navigation";
-
+import LoginWithFacebook from "@/components/auth/LoginWithFacebook/loginWithFacebook";
+import LoginWithGoogle from "@/components/auth/LoginWithGoogle/loginWithGoogle";
 // yup schema
 const schema = yup.object().shape({
   fullName: yup
@@ -192,14 +193,8 @@ const SignUp = () => {
                 </div>
 
                 <div className="flex gap-4 justify-center">
-                  <button className="flex items-center justify-center gap-2 bg-[#3B2063] text-[15px] font-medium text-white px-4 py-3 rounded-[12px] w-full hover:shadow-lg">
-                    <img src="/images/google.png" />
-                    Google
-                  </button>
-                  <button className="flex items-center justify-center gap-2 bg-[#3B2063] text-[15px] font-medium  text-white px-4 py-3 rounded-[12px] w-full hover:shadow-lg">
-                    <img src="/images/facebook.png" />
-                    Facebook
-                  </button>
+                <LoginWithGoogle />
+                <LoginWithFacebook />
                 </div>
 
                 <p className=" text-xs text-[#B6B6B6]  font-medium my-[20px] lg:text-left text-center">
