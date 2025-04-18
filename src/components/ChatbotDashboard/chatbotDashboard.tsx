@@ -2,8 +2,10 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-const ChatbotDashboard = () => {
+interface ChatbotDashboardProps {
+  showModal: () => void;
+}
+const ChatbotDashboard = ({showModal}:ChatbotDashboardProps) => {
   return (
     <div className="flex gap-6">
       <div className="bg-[#2a2561]  py-4 rounded-[58px] w-[90%] px-10">
@@ -81,7 +83,8 @@ const ChatbotDashboard = () => {
             </div>
           </div>
           {/* second div */}
-          <div className="flex items-center justify-center border border-dashed border-gray-400 rounded-2xl flex-1  min-w-[400px] cursor-pointer">
+          <div className="flex items-center justify-center border border-dashed border-gray-400 rounded-2xl flex-1  min-w-[400px] cursor-pointer"
+          onClick={()=> showModal()}>
             <span className="font-semibold text-lg text-white text-center">
               Create New Bot <br></br> +
             </span>

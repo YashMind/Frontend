@@ -6,7 +6,7 @@ interface EditUserModalProps {
   onHide: () => void;
 }
 
-const EditUserModal = ({ show, onHide }: EditUserModalProps) => {
+const CreatebotModal = ({ show, onHide }: EditUserModalProps) => {
   if (!show) return null;
   return (
     <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
@@ -107,4 +107,4 @@ const EditUserModal = ({ show, onHide }: EditUserModalProps) => {
   );
 };
 
-export default EditUserModal;
+export default CreatebotModal;

@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+import React, {useState} from "react";
 import ChatbotHeader from "@/components/chatbot/header/chatbotHeader";
 import Image from "next/image";
 import ChatbotSidebar from "@/components/ChatbotDashboard/ChatbotSidebar/chatbotSidebar";
@@ -15,8 +16,13 @@ import ChatbotDeploy from "@/components/ChatbotDashboard/ChatbotDeploy/chatbotDe
 import ChatbotIntegration from "@/components/ChatbotDashboard/ChatbotIntegration/chatbotIntegration";
 import ChatbotSettings from "@/components/ChatbotDashboard/ChatbotSettings/chatbotSettings";
 import ChatbotDashboard from "@/components/ChatbotDashboard/chatbotDashboard";
+import CreatebotModal from "./Createbot/createbot";
 
 const ChatbotMain = ({botPage}: {botPage:string}) => {
+  const [modalShow, setModalShow] = useState<boolean>(false);
+  const showModal = () => {
+    setModalShow(true);
+  }
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
@@ -29,7 +35,7 @@ const ChatbotMain = ({botPage}: {botPage:string}) => {
         <div className="flex gap-6">
           <div className="bg-[#2a2561]   rounded-[58px] w-[90%]  flex gap-[68px]">
             {botPage!=="main" ? <ChatbotSidebar /> : null }
-            {botPage==="main" ? <ChatbotDashboard /> : null }
+            {botPage==="main" ? <ChatbotDashboard showModal={showModal} /> : null }
             {botPage==="overview" ? <ChatbotOverview /> : null}
             {botPage==="chat-history" ? <ChatbotHistory /> : null}
             {botPage==="chat-leads" ? <ChatbotLeads /> : null}
@@ -67,9 +73,14 @@ const ChatbotMain = ({botPage}: {botPage:string}) => {
               src="/images/plus.png"
               height={24}
               width={24}
+              onClick={()=>setModalShow(true)}
             />
           </div>
         </div>
+        <CreatebotModal 
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            />
       </div>
     </div>
   );

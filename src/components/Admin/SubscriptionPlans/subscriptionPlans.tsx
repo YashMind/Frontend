@@ -1,6 +1,9 @@
-import React from "react";
+"use client"
+import React, {useState} from "react";
 import Image from "next/image";
+import EditUserModal from "../UserManagement/EditUser/editUser";
 const SubscriptionPlans = () => {
+  const [modalShow, setModalShow] = useState<boolean>(false);
   return (
     <div>
       <div className="">
@@ -68,7 +71,7 @@ const SubscriptionPlans = () => {
                     <td className="p-4 text-[#AEB9E1] text-xs">500</td>
                     <td className="p-4 relative">
                       <div className="flex gap-2 items-center">
-                        <button className="text-gray-300 hover:text-white">
+                        <button className="text-gray-300 hover:text-white" onClick={()=>setModalShow(true)}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -431,6 +434,10 @@ const SubscriptionPlans = () => {
                 </tbody>
               </table>
             </div>
+            <EditUserModal 
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            />
           </div>
         </div>
       </div>
