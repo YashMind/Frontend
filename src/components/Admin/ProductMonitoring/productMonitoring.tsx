@@ -493,6 +493,298 @@ const ProductMonitoring = () => {
                 </div>
               </div>
             </div>
+            {/* project  */}
+            {/* Product Monitoring Start */}
+            <div className="  text-white p-6 space-y-10 ">
+              {/* Product Monitoring */}
+              <div>
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-2xl font-semibold">Product Monitoring</h2>
+                </div>
+
+                <div className=" border border-gray-700 rounded-lg overflow-hidden pb-8 pt-3">
+                  <div className="flex justify-between items-cente py-4 px-8 border-b border-[#343B4F]">
+                    <div className="text-base text-gray-300">
+                      Featuring Toggles
+                    </div>
+                    <button className="bg-green-500 text-sm text-white px-4 py-1 rounded hover:bg-green-600">
+                      Add New Product
+                    </button>
+                  </div>
+                  {/* Item Row */}
+                  <div className="">
+                    {/* Name Row */}
+                    <div className="flex items-center justify-between px-8 py-5">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked
+                          className="accent-fuchsia-500 w-4 h-4"
+                        />
+                        <span className="text-xs flex gap-1 items-center justify-start">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="size-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                            />
+                          </svg>
+                          Name
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Chatbot Row */}
+                    <div className="flex items-center justify-between px-8 py-5 bg-[#0A1330]">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked
+                          className="accent-fuchsia-500 w-4 h-4"
+                        />
+                        <span className="text-xs">Chatbot</span>
+                      </div>
+
+                      {/* Toggle switch */}
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
+                        <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
+                      </label>
+                    </div>
+
+                    {/* Voice Agent Row */}
+                    <div className="flex items-center justify-between px-8 py-5 ">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked
+                          className="accent-fuchsia-500 w-4 h-4"
+                        />
+                        <span className="text-xs">Voice Agent</span>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
+                        <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
+                      </label>
+                    </div>
+
+                    {/* Chat LLM Row */}
+                    <div className="flex items-center justify-between px-8 py-5 bg-[#0A1330]">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked
+                          className="accent-fuchsia-500 w-4 h-4"
+                        />
+                        <span className="text-xs">Chat LLM</span>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
+                        <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* bot status */}
+            <div className="  text-white p-6 space-y-10 ">
+              {/* Product Monitoring */}
+              <div>
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-2xl font-semibold">Bot Status</h2>
+                </div>
+
+                <div className=" border border-gray-700 rounded-lg overflow-hidden pb-8 pt-3">
+                  <div className="flex justify-between items-cente py-4 px-8 border-b border-[#343B4F]">
+                    <div className="text-base text-gray-300">
+                      Featuring Toggles
+                    </div>
+                  </div>
+                  {/* Item Row */}
+                  <div className="">
+                    {/* Name Row */}
+                    <div className="flex items-center justify-between px-8 py-5">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked
+                          className="accent-fuchsia-500 w-4 h-4"
+                        />
+                        <span className="text-xs flex gap-1 items-center justify-start">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="size-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                            />
+                          </svg>
+                          Name
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Chatbot Row */}
+                    <div className="flex items-center justify-between px-8 py-5 bg-[#0A1330]">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked
+                          className="accent-fuchsia-500 w-4 h-4"
+                        />
+                        <span className="text-xs">Chatbot</span>
+                      </div>
+
+                      {/* Toggle switch */}
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
+                        <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
+                      </label>
+                    </div>
+
+                    {/* Voice Agent Row */}
+                    <div className="flex items-center justify-between px-8 py-5 ">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked
+                          className="accent-fuchsia-500 w-4 h-4"
+                        />
+                        <span className="text-xs">Gemini</span>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
+                        <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
+                      </label>
+                    </div>
+
+                    {/* Chat LLM Row */}
+                    <div className="flex items-center justify-between px-8 py-5 bg-[#0A1330]">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked
+                          className="accent-fuchsia-500 w-4 h-4"
+                        />
+                        <span className="text-xs">Microsoft Copilot</span>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
+                        <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
+                      </label>
+                    </div>
+                    {/* end */}
+                    <div className="flex items-center justify-between px-8 py-5 ">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked
+                          className="accent-fuchsia-500 w-4 h-4"
+                        />
+                        <span className="text-xs">Deep Seek</span>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
+                        <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/*  */}
+            {/* Voice Start */}
+            <div className=" bg-[#0B1739] rounded-3xl p-6 m-6 text-white mb-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Voice Agent Stats Card */}
+                <div className="bg-[#081028] rounded-2xl p-8  shadow-md">
+                  <div className="flex  gap-10 items-center mb-5">
+                    <div>
+                      <h3 className="text-white font-semibold mb-2">
+                        Voice Agent Stats
+                      </h3>
+                    </div>
+                    <div className="w-10 rounded-full h-10 bg-[#0A1330]  flex justify-center items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-white/90 mb-4">
+                      Avg call duration: 0.4
+                    </p>
+                    <p className="text-sm text-white/90">Success rate: 98%</p>
+                  </div>
+                </div>
+                {/* Chat LLM Logs Card */}
+                <div className="bg-[#081028] rounded-2xl p-8  shadow-md">
+                  <div className="flex gap-10 items-center mb-5">
+                    <div>
+                      <h3 className="text-white font-semibold mb-2">
+                        Chat LLM Logs
+                      </h3>
+                    </div>
+                    <div className="w-10 rounded-full h-10 bg-[#0A1330]  flex justify-center items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-white/90 mb-4">
+                      Response Time : 120 ms
+                    </p>
+                    <p className="text-sm text-white/90">
+                      Modal used : John Doe
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

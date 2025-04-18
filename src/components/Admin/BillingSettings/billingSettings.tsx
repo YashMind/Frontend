@@ -493,6 +493,196 @@ const BillingSettings = () => {
                 </div>
               </div>
             </div>
+            {/*  */}
+            {/* Next Page Start */}
+            <div className="min-h-screen  p-6 text-white font-sans space-y-10">
+              {/* Billing Settings */}
+              <section>
+                <h2 className="text-xl font-semibold mb-4">Billing Settings</h2>
+                <div className="rounded-xl border border-[#343B4F] p-4 shadow-md overflow-x-auto">
+                  <div className="flex justify-between items-center pb-4 border-b border-[#343B4F]">
+                    <h3 className="text-white/90 font-medium">
+                      Payment Gateways
+                    </h3>
+                    <button className="bg-green-500 text-white text-sm px-4 py-1.5 rounded hover:bg-green-600">
+                      Add Payment Gateway
+                    </button>
+                  </div>
+                  <table className="w-full text-left text-sm">
+                    <thead className="text-white/70">
+                      <tr>
+                        <th className="py-5">
+                          <input
+                            type="checkbox"
+                            className="form-checkbox mr-2 accent-purple-500"
+                          ></input>
+                        </th>
+                        <th className="py-5">Name</th>
+
+                        <th className="py-5 flex justify-start items-center">
+                          <span>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="size-4"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                              />
+                            </svg>
+                          </span>
+                          <span>Last sync</span>
+                        </th>
+                        <th className="py-5">Status</th>
+                        <th className="py-5">API Key:</th>
+                        <th className="py-5">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-white/90">
+                      <tr className="border-t border-white/10">
+                        <td>
+                          <input
+                            type="checkbox"
+                            className="form-checkbox mr-2 accent-purple-500"
+                          ></input>
+                        </td>
+                        <td className="py-5">Stripe</td>
+                        <td>Today 09:42 AM</td>
+                        <td>
+                          <span className="bg-green-500 text-xs text-white px-2 py-0.5 rounded-full">
+                            Active
+                          </span>
+                        </td>
+                        <td>sk_live_******</td>
+                        <td className="flex gap-2 py-5">
+                          <button className="bg-green-600 text-xs px-2 py-1 rounded">
+                            Configure
+                          </button>
+                          <button className="bg-gray-600 text-xs px-2 py-1 rounded">
+                            Switch
+                          </button>
+                        </td>
+                      </tr>
+                      <tr className="border-t border-white/10">
+                        <td>
+                          <input
+                            type="checkbox"
+                            className="form-checkbox mr-2 accent-purple-500"
+                          ></input>
+                        </td>
+                        <td className="py-5">Razorpay</td>
+                        <td>Yesterday 03:15 PM</td>
+                        <td>
+                          <span className="bg-orange-500 text-xs text-white px-2 py-0.5 rounded-full">
+                            Trial
+                          </span>
+                        </td>
+                        <td>rp_test_******</td>
+                        <td className="flex gap-2 py-5">
+                          <button className="bg-green-600 text-xs px-2 py-1 rounded">
+                            Configure
+                          </button>
+                          <button className="bg-gray-600 text-xs px-2 py-1 rounded">
+                            Disable
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              {/* Invoice History */}
+              <section>
+                <h2 className="text-xl font-semibold mb-4">Invoice History</h2>
+                <div className="border border-[#343B4F] rounded-xl p-4 shadow-md overflow-x-auto">
+                  <div className="flex border-b border-[#343B4F] justify-between items-center pb-4">
+                    <h3 className="text-white/90 font-medium">
+                      Payment Gateways
+                    </h3>
+                    <button className="bg-green-500 text-white text-sm px-4 py-1.5 rounded hover:bg-green-600">
+                      Add Payment Gateway
+                    </button>
+                  </div>
+                  <table className="w-full text-left text-sm">
+                    <thead className="text-white/70">
+                      <tr>
+                        <th className="py-5">Invoice #</th>
+                        <th className="py-5"> Client</th>
+                        <th className="py-5"> Date</th>
+                        <th className="py-5"> Amount</th>
+                        <th className="py-5"> Plan</th>
+                        <th className="py-5"> Status</th>
+                        <th className="py-5">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-white/90">
+                      <tr className="border-t border-white/10">
+                        <td className="py-5">INV-2023-056</td>
+                        <td className="py-5">Acme Corp</td>
+                        <td className="py-5">May 15, 20..</td>
+                        <td className="py-5">$12,500.00</td>
+                        <td className="py-5">Enterprise</td>
+                        <td className="py-5">
+                          <span className="bg-green-500 text-xs text-white px-2 py-0.5 rounded-full">
+                            Paid
+                          </span>
+                        </td>
+                        <td>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="size-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                            />
+                          </svg>
+                        </td>
+                      </tr>
+                      <tr className="border-t border-white/10">
+                        <td className="py-5">INV-2023-042</td>
+                        <td className="py-5">Globex Inc</td>
+                        <td className="py-5">Apr 28, 20..</td>
+                        <td className="py-5">$8,200.00</td>
+                        <td className="py-5">Pro</td>
+                        <td className="py-5">
+                          <span className="bg-yellow-500 text-xs text-white px-2 py-0.5 rounded-full">
+                            Overdue
+                          </span>
+                        </td>
+                        <td>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="size-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                            />
+                          </svg>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
           </div>
         </div>
       </div>
