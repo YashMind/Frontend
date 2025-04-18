@@ -46,3 +46,8 @@ interface HelpSupportForm {
   subject: string;
   message: string;
 }
+
+interface CreatebotForm {
+  bot_name: string;
+  public: boolean;
+}
