@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface EditUserModalProps {
@@ -8,6 +9,10 @@ interface EditUserModalProps {
 
 const CreatebotModal = ({ show, onHide }: EditUserModalProps) => {
   if (!show) return null;
+  const router = useRouter();
+  const handleCreatebot = () => {
+    router.push("/chatbot-dashboard/overview-add")
+  }
   return (
         <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex items-center justify-center z-50 mb-5">
         <div className="bg-white rounded-2xl shadow-xl w-[600px] p-8 relative">
@@ -53,7 +58,8 @@ const CreatebotModal = ({ show, onHide }: EditUserModalProps) => {
                 </div>
 
                 <div className="flex justify-start gap-4">
-                  <button className="bg-[#18B91F] text-white px-6 py-2 rounded-md font-semibold">
+                  <button className="bg-[#18B91F] text-white px-6 py-2 rounded-md font-semibold"
+                  onClick={()=> handleCreatebot()}>
                     Save
                   </button>
                   <button className="bg-[#9F9F9F] text-white px-6 py-2 rounded-md font-semibold"

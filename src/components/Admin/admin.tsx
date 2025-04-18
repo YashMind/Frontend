@@ -8,6 +8,8 @@ import SubscriptionPlans from "./SubscriptionPlans/subscriptionPlans";
 import TokenAnalytics from "./TokenAnalytics/tokenAnalytics";
 import AdminUsersRoles from "./AdminUsersRoles/adminUsersRoles";
 import EnterpriseClients from "./EnterpriseClients/enterpriseClients";
+import ProductMonitoring from "./ProductMonitoring/productMonitoring";
+import BillingSettings from "./BillingSettings/billingSettings";
 const Admin = ({adminPage}:{adminPage: string}) => {
   return (
     <div>
@@ -24,6 +26,8 @@ const Admin = ({adminPage}:{adminPage: string}) => {
             {adminPage === "token-analytics" ? <TokenAnalytics /> : null }
             {adminPage === "users-roles" ? <AdminUsersRoles /> : null }
             {adminPage === "enterprise-clients" ? <EnterpriseClients /> : null }
+            {adminPage === "product-monitoring" ? <ProductMonitoring /> : null }
+            {adminPage === "billing-settings" ? <BillingSettings /> : null }
             {/* popup start */}
             
           </div>

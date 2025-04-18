@@ -194,7 +194,7 @@ const SignUp = () => {
 
                 <div className="flex gap-4 justify-center">
                 <LoginWithGoogle />
-                <LoginWithFacebook />
+                {/* <LoginWithFacebook /> */}
                 </div>
 
                 <p className=" text-xs text-[#B6B6B6]  font-medium my-[20px] lg:text-left text-center">

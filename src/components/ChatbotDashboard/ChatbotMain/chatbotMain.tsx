@@ -33,10 +33,10 @@ const ChatbotMain = ({botPage}: {botPage:string}) => {
         
         {/* Owner Section */}
         <div className="flex gap-6">
-          <div className="bg-[#2a2561]   rounded-[58px] w-[90%]  flex gap-[68px]">
+          <div className={`bg-[#2a2561]   rounded-[58px] w-[90%]  flex ${botPage==="overview-add" ? "" : "gap-[68px]"}`}>
             {botPage!=="main" ? <ChatbotSidebar /> : null }
             {botPage==="main" ? <ChatbotDashboard showModal={showModal} /> : null }
-            {botPage==="overview" ? <ChatbotOverview /> : null}
+            {botPage==="overview" || botPage==="overview-add" ? <ChatbotOverview botPage={botPage} /> : null}
             {botPage==="chat-history" ? <ChatbotHistory /> : null}
             {botPage==="chat-leads" ? <ChatbotLeads /> : null}
             {botPage==="links-docs" ? <ChatbotLinksDocs /> : null}

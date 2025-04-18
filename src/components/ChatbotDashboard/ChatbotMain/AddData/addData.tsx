@@ -1,6 +1,12 @@
+"use client"
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const AddBotData = () => {
+  const router = useRouter();
+  const handleAddData = () => {
+    router.push("/chatbot-dashboard/main");
+  }
   return (
     <div className="min-h-screen bg-[#241E4E] text-white p-10">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
@@ -63,7 +69,8 @@ const AddBotData = () => {
           </p>
         </div>
         <div className="text-right">
-          <button className="bg-[#18B91F] text-white px-10 py-2 rounded-md font-semibold text-right">
+          <button className="bg-[#18B91F] text-white px-10 py-2 rounded-md font-semibold text-right"
+          onClick={()=>handleAddData()}>
             Save
           </button>
         </div>
