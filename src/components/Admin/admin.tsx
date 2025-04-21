@@ -10,6 +10,8 @@ import AdminUsersRoles from "./AdminUsersRoles/adminUsersRoles";
 import EnterpriseClients from "./EnterpriseClients/enterpriseClients";
 import ProductMonitoring from "./ProductMonitoring/productMonitoring";
 import BillingSettings from "./BillingSettings/billingSettings";
+import SupportComminications from "./support&communication/support&communication";
+import LogsActivity from "./logs&activity/logs&activity";
 const Admin = ({adminPage}:{adminPage: string}) => {
   return (
     <div>
@@ -28,6 +30,8 @@ const Admin = ({adminPage}:{adminPage: string}) => {
             {adminPage === "enterprise-clients" ? <EnterpriseClients /> : null }
             {adminPage === "product-monitoring" ? <ProductMonitoring /> : null }
             {adminPage === "billing-settings" ? <BillingSettings /> : null }
+            {adminPage === "support-communication" ? <SupportComminications /> : null }
+            {adminPage === "logs-activity" ? <LogsActivity /> : null }
             {/* popup start */}
             
           </div>
