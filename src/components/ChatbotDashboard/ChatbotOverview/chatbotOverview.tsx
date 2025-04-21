@@ -2,8 +2,9 @@
 import React from "react";
 import Image from "next/image";
 import AddBotData from "../ChatbotMain/AddData/addData";
-const ChatbotOverview = ({botPage}:{botPage: string}) => {
+const ChatbotOverview = ({botPage, botId}:{botPage?: string, botId?: number}) => {
   console.log("botPage11111111111111111111 ", botPage);
+  console.log("botId botId ", botId);
   return (
     <div className="w-full">
       {botPage==="overview" ? <h2 className="text-2xl font-bold my-4">Owner</h2> : null }
@@ -115,7 +116,7 @@ const ChatbotOverview = ({botPage}:{botPage: string}) => {
           </div>
         </div>
       </div> : null }
-      {botPage==="overview-add" ? <AddBotData /> : null}
+      {!botPage && botId ? <AddBotData botId={botId} /> : null}
     </div>
   );
 };

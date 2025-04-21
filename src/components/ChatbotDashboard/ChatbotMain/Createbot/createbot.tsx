@@ -4,6 +4,9 @@ import React from "react";
 import * as yup from "yup";
 import { useForm, Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { createChatbot } from "@/store/slices/chats/chatSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
 
 interface EditUserModalProps {
   show: boolean;
@@ -11,7 +14,7 @@ interface EditUserModalProps {
 }
 
 const schema = yup.object().shape({
-  bot_name: yup.string().required("Bot name is required field"),
+  chatbot_name: yup.string().required("Bot name is required field"),
   public: yup.boolean().optional(),
 });
 
@@ -27,10 +30,11 @@ const CreatebotModal = ({ show, onHide }: EditUserModalProps) => {
       resolver: yupResolver(schema) as Resolver<CreatebotForm>,
     });
   
+    const dispatch = useDispatch<AppDispatch>();
     const onSubmit = (data: CreatebotForm) => {
-        console.log("data ", data);
+        console.log("data ", data.chatbot_name, data.public);
+        dispatch(createChatbot({payload: data, router}))
         reset();
-        router.push("/chatbot-dashboard/overview-add");
     };
   
   return (
@@ -48,14 +52,14 @@ const CreatebotModal = ({ show, onHide }: EditUserModalProps) => {
           Give Your bot a name
         </label>
         <input
-            {...register("bot_name")}
+            {...register("chatbot_name")}
           type="text"
           placeholder="Enter bot name"
           className="w-full border text-black border-gray-300 text-xs rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
-        {errors.bot_name && (
+        {errors.chatbot_name && (
             <span className="text-red-500 mt-2">
-              {errors?.bot_name?.message}
+              {errors?.chatbot_name?.message}
             </span>
           )}
         <div className="pb-5 mt-4">

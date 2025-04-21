@@ -18,11 +18,14 @@ import ChatbotSettings from "@/components/ChatbotDashboard/ChatbotSettings/chatb
 import ChatbotDashboard from "@/components/ChatbotDashboard/chatbotDashboard";
 import CreatebotModal from "./Createbot/createbot";
 
-const ChatbotMain = ({botPage}: {botPage:string}) => {
+const ChatbotMain = ({botPage, botId}: {botPage?:string, botId?: number}) => {
   const [modalShow, setModalShow] = useState<boolean>(false);
   const showModal = () => {
     setModalShow(true);
   }
+
+  console.log("botPage11111 ", botPage)
+  console.log("botId111111 ", botId)
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
@@ -33,10 +36,10 @@ const ChatbotMain = ({botPage}: {botPage:string}) => {
         
         {/* Owner Section */}
         <div className="flex gap-6">
-          <div className={`bg-[#2a2561]   rounded-[58px] w-[90%]  flex ${botPage==="overview-add" ? "" : "gap-[68px]"}`}>
+          <div className={`bg-[#2a2561]   rounded-[58px] w-[90%]  flex ${botId ? "" : "gap-[68px]"}`}>
             {botPage!=="main" ? <ChatbotSidebar /> : null }
             {botPage==="main" ? <ChatbotDashboard showModal={showModal} /> : null }
-            {botPage==="overview" || botPage==="overview-add" ? <ChatbotOverview botPage={botPage} /> : null}
+            {botPage==="overview" || botId ? <ChatbotOverview botPage={botPage} botId={botId} /> : null}
             {botPage==="chat-history" ? <ChatbotHistory /> : null}
             {botPage==="chat-leads" ? <ChatbotLeads /> : null}
             {botPage==="links-docs" ? <ChatbotLinksDocs /> : null}
