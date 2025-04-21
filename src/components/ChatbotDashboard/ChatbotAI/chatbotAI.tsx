@@ -21,11 +21,9 @@ const ChatbotAI = () => {
   } = useForm<TrainingText>({ resolver: yupResolver(schema) });
 
   const onSubmit = (data: TrainingText) => {
-    console.log(data);
     reset();
   };
 
-  console.log("service ", service);
   return (
     <div className="w-full">
       <h2 className="text-2xl font-bold my-4">AI</h2>

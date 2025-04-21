@@ -1,12 +1,17 @@
+"use client"
 import React from "react";
 import Image from "next/image";
-const ChatbotOverview = () => {
+import AddBotData from "../ChatbotMain/AddData/addData";
+const ChatbotOverview = ({botPage, botId}:{botPage?: string, botId?: number}) => {
+  console.log("botPage11111111111111111111 ", botPage);
+  console.log("botId botId ", botId);
   return (
     <div className="w-full">
-      <h2 className="text-2xl font-bold my-4">Owner</h2>
+      {botPage==="overview" ? <h2 className="text-2xl font-bold my-4">Owner</h2> : null }
+      {botPage==="overview" ? 
       <div className="flex gap-10">
         <div className="">
-          <div className="flex flex-wrap gap-4 w-[786px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px] ">
+          <div className="flex flex-wrap gap-4 w-[650px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px] ">
             {[1, 2].map((_, i) => (
               <div
                 key={i}
@@ -38,7 +43,7 @@ const ChatbotOverview = () => {
               </div>
             ))}
           </div>
-          <div className="flex flex-wrap gap-4 w-[786px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px] mt-[22px] ">
+          <div className="flex flex-wrap gap-4 w-[650px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px] mt-[22px] ">
             {[1, 2].map((_, i) => (
               <div
                 key={i}
@@ -72,7 +77,7 @@ const ChatbotOverview = () => {
           </div>
         </div>
         {/* right chatbot */}
-        <div className="bg-white  h-[500px] rounded-lg shadow-md flex flex-col justify-between ">
+       <div className="w-[320] bg-white  h-[500px] rounded-lg shadow-md flex flex-col justify-between ">
           <div className="p-4 flex items-center gap-2 border-b">
             <img
               src="/images/face2.webp"
@@ -110,7 +115,8 @@ const ChatbotOverview = () => {
             <h6>powered by fasterbots</h6>
           </div>
         </div>
-      </div>
+      </div> : null }
+      {!botPage && botId ? <AddBotData botId={botId} /> : null}
     </div>
   );
 };

@@ -45,7 +45,6 @@ const LoginWithGoogle = () => {
             router.push("/chatbot");
         }
       } catch (err) {
-        console.log("Login failed:", err);
         toast.error("Login with google failed!")
       }
     },

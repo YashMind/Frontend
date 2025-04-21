@@ -1,11 +1,11 @@
 import ChatbotMain from "@/components/ChatbotDashboard/ChatbotMain/chatbotMain";
 
 interface ChatbotPageProps {
-  params: Promise<{ botPage: string }>;
+  params: Promise<{ botId?: number }>;
 }
 const ChatbotViewPage = async(props: ChatbotPageProps) => {
-  const { botPage } = await props.params;
-  return <ChatbotMain botPage={botPage} />;
+  const { botId } = await props.params;
+  return <ChatbotMain botId={botId} />;
 };
 
 export default ChatbotViewPage;

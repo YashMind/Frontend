@@ -37,7 +37,6 @@ const SignIn = () => {
     } = useForm<SignInForm>({ resolver: yupResolver(schema) });
   
     const onSubmit = (data: SignInForm) => {
-      console.log(data);
       dispatch(signInUser({payload: data, router}))
       reset();
     };
@@ -122,7 +121,7 @@ const SignIn = () => {
 
                 <div className="flex gap-4 justify-center">
                   <LoginWithGoogle />
-                  <LoginWithFacebook />
+                  {/* <LoginWithFacebook /> */}
                 </div>
 
                 <p className=" text-xs text-[#B6B6B6]  font-medium my-[20px] text-center lg:text-left ">

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
+import Link from "next/link";
 const HomeBanner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
@@ -35,12 +36,11 @@ const HomeBanner = () => {
                 Innovative AI solutions designed to simplify and accelerate your
                 workflow.
               </p>
-              <button
+              <Link href="/signup"
                 className="py-[14px] px-[43px] text-white text-base font-medium rounded-[18px] bg-[linear-gradient(90.04deg,_#501794_0.03%,_#3E70A1_101.88%)] hover:from-purple-700 hover:to-blue-600 transition-all cursor-pointer"
-                onClick={() => router.push("/signup")}
               >
                 Sign up
-              </button>
+              </Link>
             </div>
           </div>
         </div>

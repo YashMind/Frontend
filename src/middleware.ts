@@ -41,21 +41,26 @@ export default function middleware(request: NextRequest) {
   );
 
   // User is visiting /signin
+
   if (isPublic) {
     if (accessToken) {
-      return NextResponse.redirect(new URL("/chatbot", request.url));
+      return NextResponse.redirect(
+        new URL("/chatbot-dashboard/main", request.url)
+      );
     }
     return NextResponse.next(); // Allow
   }
 
   // Protected routes without token
   if (!accessToken) {
-    return NextResponse.redirect(new URL("/signin", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   // Authenticated, but unknown route
   if (!isKnown) {
-    return NextResponse.redirect(new URL("/chatbot", request.url));
+    return NextResponse.redirect(
+      new URL("/chatbot-dashboard/main", request.url)
+    );
   }
 
   // Authenticated + known route

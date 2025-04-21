@@ -31,7 +31,6 @@ any,
     try {
       dispatch(startLoadingActivity());
       const response = await http.post("/auth/signup", payload);
-      console.log("response singup ", response);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toast.success("user created successfully!");
@@ -94,6 +93,7 @@ export const signInUser = createAsyncThunk<
       }
     } catch (error:any) {
       if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during signup");
@@ -122,6 +122,34 @@ export const logoutUser = createAsyncThunk<any, {router: ReturnType<typeof useRo
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during auth");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const updateUserProfile = createAsyncThunk<
+  any,
+  { payload: any }
+>(
+  "auth/updateUserProfile",
+  async ({ payload }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.put("/auth/update-profile", payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        dispatch(getMeData());
+        toast.success("Profile updated successfully!");
+        return response.data;
+      } else {
+        return rejectWithValue("Profile update failed");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during profile update");
     } finally {
       dispatch(stopLoadingActivity());
     }

@@ -29,9 +29,7 @@ const Testimonials = () => {
   });
 
   const slideCount = instanceRef.current?.track.details.slides.length || 0;
-
-  console.log("current slider ", currentSlide);
-
+  
   const testimonials = [
     {
       name: "Hannah Schmitt1",
