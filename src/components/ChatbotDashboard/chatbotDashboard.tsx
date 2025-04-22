@@ -62,7 +62,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                   </div>
                   <div className="flex justify-between items-center">
                     <Link
-                      href={`/chatbot-dashboard/overview/${item?.id}`}
+                      href={`/chatbot-dashboard/update/${item?.id}`}
                       className="text-[#23c4f2] text-sm underline"
                     >
                       Allocated message

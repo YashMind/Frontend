@@ -20,7 +20,6 @@ const schema = yup.object().shape({
 });
 
 const AddBotData = ({ botId }: { botId?: number }) => {
-  console.log("botId ppppppppppppppppppp", botId);
   const [activeTrainFrom, setActiveTrainFrom] = useState<string | null>(
     "Full website"
   );

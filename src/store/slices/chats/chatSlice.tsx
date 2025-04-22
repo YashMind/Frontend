@@ -75,7 +75,7 @@ export const updateChatbot = createAsyncThunk<
         dispatch(stopLoadingActivity());
         toast.success("chatbot updated successfully!");
         dispatch(getChatbots());
-        router.push("/chatbot-dashboard/overview");
+        router.push(`/chatbot-dashboard/overview/${payload.id}`);
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot!");
@@ -124,11 +124,40 @@ export const uploadDocument = createAsyncThunk<
   }
 );
 
+export const getSingleChatbot = createAsyncThunk<
+  any,
+  { botId: number }
+>(
+  "chat/getSingleChatbot",
+  async ({ botId }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.get("/chatbot/get-bot", { params: { botId }});
+      console.log("chat bot ", response);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to create chatbot!");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during chatbot");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 const initialState = {
   loading: false,
   data: [],
   botData: {},
   chatbots: [],
+  chatbotData:{} as ChatbotsData
 };
 
 const chatSlice = createSlice({
@@ -156,6 +185,17 @@ const chatSlice = createSlice({
         state.chatbots = action?.payload;
       })
       .addCase(getChatbots.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(getSingleChatbot.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getSingleChatbot.fulfilled, (state, action) => {
+        state.loading = false;
+        state.chatbotData = action?.payload;
+      })
+      .addCase(getSingleChatbot.rejected, (state, action) => {
         state.loading = false;
       })
   },

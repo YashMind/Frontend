@@ -1,5 +1,5 @@
 "use client"
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ChatbotHeader from "@/components/chatbot/header/chatbotHeader";
 import Image from "next/image";
 import ChatbotSidebar from "@/components/ChatbotDashboard/ChatbotSidebar/chatbotSidebar";
@@ -17,15 +17,24 @@ import ChatbotIntegration from "@/components/ChatbotDashboard/ChatbotIntegration
 import ChatbotSettings from "@/components/ChatbotDashboard/ChatbotSettings/chatbotSettings";
 import ChatbotDashboard from "@/components/ChatbotDashboard/chatbotDashboard";
 import CreatebotModal from "./Createbot/createbot";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
+import { getSingleChatbot } from "@/store/slices/chats/chatSlice";
 
 const ChatbotMain = ({botPage, botId}: {botPage?:string, botId?: number}) => {
   const [modalShow, setModalShow] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
   const showModal = () => {
     setModalShow(true);
   }
 
   console.log("botPage11111 ", botPage)
   console.log("botId111111 ", botId)
+  useEffect(()=>{
+    if (botId !== undefined) {
+    dispatch(getSingleChatbot({botId}))
+    }
+  },[dispatch, botId])
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
@@ -37,9 +46,9 @@ const ChatbotMain = ({botPage, botId}: {botPage?:string, botId?: number}) => {
         {/* Owner Section */}
         <div className="flex gap-6">
           <div className={`bg-[#2a2561]   rounded-[58px] w-[90%]  flex ${botId ? "" : "gap-[68px]"}`}>
-            {botPage!=="main" ? <ChatbotSidebar /> : null }
+            {botPage!=="main" ? <ChatbotSidebar botPage={botPage} botId={botId} /> : null }
             {botPage==="main" ? <ChatbotDashboard showModal={showModal} /> : null }
-            {botPage==="overview" || botId ? <ChatbotOverview botPage={botPage} botId={botId} /> : null}
+            {botPage==="update" || botPage==="overview" ? <ChatbotOverview botPage={botPage} botId={botId} /> : null}
             {botPage==="chat-history" ? <ChatbotHistory /> : null}
             {botPage==="chat-leads" ? <ChatbotLeads /> : null}
             {botPage==="links-docs" ? <ChatbotLinksDocs /> : null}

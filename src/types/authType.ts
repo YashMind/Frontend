@@ -70,3 +70,7 @@ interface ChatbotsData {
   created_at: string
   updated_at: string
 }
+
+interface TextMessage {
+  text_message: string
+}
