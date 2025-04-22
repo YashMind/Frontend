@@ -12,7 +12,7 @@ const Chatbot = () => {
   return (
     <div className="bg-white">
       {/* header */}
-      <ChatbotHeader />
+      <ChatbotHeader fix={false} addBgColor={false} />
 
       {/* banner */}
       <ChatbotBanner />

@@ -5,7 +5,7 @@ const VoiceAgent = () => {
   return (
     <div className="bg-gradient-to-b from-[#2B255D] to-[#110FB9]">
       {/* header */}
-      <ChatbotHeader />
+      <ChatbotHeader fix={false} addBgColor={false} />
       {/* banner sec */}
       <div className="intract-banner   w-full py-[61px] text-center h-screen">
         <div className="container">
