@@ -4,10 +4,10 @@ import React from "react";
 const RealTimeCount = () => {
   return (
     <div className="bg-[#2a2561]  p-4 mb-[20px] mt-[108px] rounded-[300px]">
-      <div className="flex items-center justify-between mb-2 gap-5">
-        <h2 className="font-semibold text-lg">Real Time Count:</h2>
+      <div className="flex flex-col md:flex-row items-center justify-between mb-2 gap-5">
+        <h2 className="font-semibold text-lg md:text-xl">Real Time Count:</h2>
         <div className="overflow-x-auto w-full">
-          <table className="w-full text-sm text-white text-center border border-gray-500">
+          <table className="w-full text-sm md:text-base text-white text-center border border-gray-500">
             <thead className="bg-[#2a2463]">
               <tr>
                 <th className="p-2 border border-white text-sm font-extrabold">
@@ -23,22 +23,20 @@ const RealTimeCount = () => {
                   LLM
                 </th>
                 <th
-                  className="p-2 border border-white text-sm font-extrabold "
+                  className="p-2 border border-white text-sm font-extrabold"
                   colSpan={3}
                 >
-                  <div className="flex justify-between items-center ">
+                  <div className="flex justify-between items-center">
                     <div>
-                      {" "}
                       <p>
-                        {" "}
-                        Main Balance :{" "}
-                        <span className="text-[#18B91F] ml-6"> 500$</span>{" "}
+                        Main Balance:{" "}
+                        <span className="text-[#18B91F] ml-6">500$</span>
                       </p>
                     </div>
                     <div>
                       <Image
                         className=""
-                        alt="alt"
+                        alt="refresh"
                         src="/images/refresh.png"
                         height={12}
                         width={12}
@@ -99,7 +97,7 @@ const RealTimeCount = () => {
           </table>
         </div>
 
-        <p className="font-semibold text-lg">
+        <p className="font-semibold text-lg md:text-xl">
           Total Credit consumed: <span className="font-semibold">22</span>
         </p>
       </div>

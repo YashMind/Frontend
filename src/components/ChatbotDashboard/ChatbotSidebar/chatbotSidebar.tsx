@@ -18,25 +18,9 @@ import { FiSettings } from "react-icons/fi";
 const ChatbotSidebar = () => {
   const pathname = usePathname();
   return (
-    <div className="w-[260px]  bg-black text-white p-4 flex flex-col gap-6  rounded-tl-[58px] rounded-tr-[0px] rounded-br-[0px] rounded-bl-[58px]">
+    <div className="w-[400px] lg:w-[260px] bg-black text-white p-4 flex flex-col gap-6 rounded-tl-[58px] rounded-tr-[0px] rounded-br-[0px] rounded-bl-[58px]">
       {/* Section: Overview */}
       <div>
-        <div className="mob-show mb-4">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-            />
-          </svg>
-        </div>
         <p className="text-white text-sm flex items-center gap-2 font-light">
           <Image
             className=""
@@ -58,7 +42,7 @@ const ChatbotSidebar = () => {
 
       {/* Section: Activity */}
       <div className="flex flex-col gap-3">
-        <p className="text-gray-400">Activity</p>
+        <p className="text-gray-400 text-[13px]">Activity</p>
         <p
           className={`flex items-center gap-2 ${
             pathname === "/chatbot-dashboard/chat-history"
@@ -67,18 +51,28 @@ const ChatbotSidebar = () => {
           }`}
         >
           <RiChatHistoryFill />
-          <Link href="/chatbot-dashboard/chat-history">Chat logs</Link>
+          <Link
+            className="text-xs font-light"
+            href="/chatbot-dashboard/chat-history"
+          >
+            Chat logs
+          </Link>
           {pathname === "/chatbot-dashboard/chat-history" ? (
             <BiSolidRightArrow />
           ) : null}
         </p>
         <p
-          className={`flex items-center gap-2 ${
+          className={`flex items-center gap-2  text-xs font-light ${
             pathname === "/chatbot-dashboard/chat-leads" ? "text-[#01BEED]" : ""
           }`}
         >
           <FaUserClock />
-          <Link href="/chatbot-dashboard/chat-leads">Leads</Link>
+          <Link
+            className="text-xs font-light"
+            href="/chatbot-dashboard/chat-leads"
+          >
+            Leads
+          </Link>
           {pathname === "/chatbot-dashboard/chat-leads" ? (
             <BiSolidRightArrow />
           ) : null}
@@ -86,10 +80,10 @@ const ChatbotSidebar = () => {
       </div>
 
       {/* Section: Training Data */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 text-[13px]">
         <p className="text-gray-400">Training Data</p>
         <p
-          className={`flex items-center gap-2 ${
+          className={`flex items-center gap-2 text-xs font-light ${
             pathname === "/chatbot-dashboard/links-docs" ? "text-[#01BEED]" : ""
           }`}
         >
@@ -100,7 +94,7 @@ const ChatbotSidebar = () => {
           ) : null}
         </p>
         <p
-          className={`flex items-center gap-2 ${
+          className={`flex items-center gap-2 text-xs font-light ${
             pathname === "/chatbot-dashboard/texts" ? "text-[#01BEED]" : ""
           }`}
         >
@@ -111,7 +105,7 @@ const ChatbotSidebar = () => {
           ) : null}
         </p>
         <p
-          className={`flex items-center gap-2 ${
+          className={`flex items-center gap-2 text-xs font-light ${
             pathname === "/chatbot-dashboard/faqs" ? "text-[#01BEED]" : ""
           }`}
         >
@@ -124,10 +118,10 @@ const ChatbotSidebar = () => {
       </div>
 
       {/* Section: Behaviour */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 text-[13px]">
         <p className="text-gray-400">Behaviour</p>
         <p
-          className={`flex items-center gap-2 ${
+          className={`flex items-center gap-2 text-xs font-light ${
             pathname === "/chatbot-dashboard/ai" ? "text-[#01BEED]" : ""
           }`}
         >
@@ -138,10 +132,10 @@ const ChatbotSidebar = () => {
       </div>
 
       {/* Section: Deployment */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 text-[13px]">
         <p className="text-gray-400">Deployment</p>
         <p
-          className={`flex items-center gap-2 ${
+          className={`flex items-center gap-2  text-xs font-light ${
             pathname === "/chatbot-dashboard/appearence" ? "text-[#01BEED]" : ""
           }`}
         >
@@ -152,7 +146,7 @@ const ChatbotSidebar = () => {
           ) : null}
         </p>
         <p
-          className={`flex items-center gap-2 ${
+          className={`flex items-center gap-2   text-xs font-light ${
             pathname === "/chatbot-dashboard/deploy" ? "text-[#01BEED]" : ""
           }`}
         >
@@ -166,9 +160,9 @@ const ChatbotSidebar = () => {
 
       {/* Section: Advance */}
       <div className="flex flex-col gap-3">
-        <p className="text-gray-400">Advance</p>
+        <p className="text-gray-400 text-[13px]">Advance</p>
         <p
-          className={`flex items-center gap-2 ${
+          className={`flex items-center gap-2 font-light  text-xs ${
             pathname === "/chatbot-dashboard/integration"
               ? "text-[#01BEED]"
               : ""
@@ -181,7 +175,7 @@ const ChatbotSidebar = () => {
           ) : null}
         </p>
         <p
-          className={`flex items-center gap-2 ${
+          className={`flex items-center gap-2  text-xs font-light ${
             pathname === "/chatbot-dashboard/settings" ? "text-[#01BEED]" : ""
           }`}
         >

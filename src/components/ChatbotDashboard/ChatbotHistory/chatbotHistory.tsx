@@ -6,7 +6,7 @@ const ChatbotHistory = () => {
     <div className="w-full">
       <h2 className="text-2xl font-bold my-4">Leads</h2>
       {/* <table></table> */}
-      <div className="bg-white rounded-b-xl overflow-hidden text-sm w-[641px] xl:w-full rounded-[40px] mb-8 mr-3">
+      <div className="bg-white rounded-b-xl overflow-hidden text-sm w-[550px] xl:w-full rounded-[40px] mb-8 mr-3">
         {/* Top Actions */}
         <div className="flex flex-wrap items-center justify-between gap-4 bg-[#9592AE] px-6 py-4 ">
           <div className="flex items-center gap-2">

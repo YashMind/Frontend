@@ -44,8 +44,8 @@ const ChatbotMain = ({
         {/* Owner Section */}
         <div className="flex gap-6">
           <div
-            className={`bg-[#2a2561] pr-5  rounded-[58px] w-[90%]  flex ${
-              botId ? "" : "gap-[25px]  "
+            className={`bg-[#2a2561] pr-5 rounded-[58px] w-full lg:w-[90%] flex ${
+              botId ? "" : "gap-[25px]"
             }`}
           >
             {botPage !== "main" ? <ChatbotSidebar /> : null}
@@ -67,14 +67,14 @@ const ChatbotMain = ({
             {botPage === "settings" ? <ChatbotSettings /> : null}
           </div>
           {/* second div */}
-          <div className="w-[10%] bg-[#2a2561]  rounded-[58px]">
-            <div className="w-[100px] h-[100px] bg-white rounded-full flex items-center justify-center m-auto mb-5">
+          <div className="hidden lg:block w-[10%] bg-[#2a2561] rounded-[58px]">
+            <div className="w-[70px] h-[70px] xl:w-[100px] xl:h-[100px] bg-white rounded-full flex items-center justify-center m-auto mb-5">
               <Image
-                className="m-auto mb-4"
+                className="m-auto mb-4 w-[40px] xl:w-[58px] h-auto"
                 alt="alt"
                 src="/images/face1.png"
-                height={68}
                 width={58}
+                height={68}
               />
             </div>
             <Image
