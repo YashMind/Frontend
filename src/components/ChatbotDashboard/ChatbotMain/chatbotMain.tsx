@@ -20,32 +20,38 @@ import CreatebotModal from "./Createbot/createbot";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import { getSingleChatbot } from "@/store/slices/chats/chatSlice";
+import ChatbotDashboardHeader from "../ChatbotHeader/chatbotHeader";
 
-const ChatbotMain = ({botPage, botId}: {botPage?:string, botId?: number}) => {
+const ChatbotMain = ({
+  botPage,
+  botId,
+}: {
+  botPage?: string;
+  botId?: number;
+}) => {
   const [modalShow, setModalShow] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const showModal = () => {
     setModalShow(true);
-  }
+  };
 
-  console.log("botPage11111 ", botPage)
-  console.log("botId111111 ", botId)
   useEffect(()=>{
     if (botId !== undefined) {
     dispatch(getSingleChatbot({botId}))
     }
   },[dispatch, botId])
+
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
-      <ChatbotHeader fix={true} addBgColor={true} />
-      <div className="min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4">
+      <ChatbotDashboardHeader fix={true} addBgColor={true} />
+      <div className="min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 ">
         {/* Real Time Count + Table */}
         <RealTimeCount />
-        
+
         {/* Owner Section */}
         <div className="flex gap-6">
-          <div className={`bg-[#2a2561]   rounded-[58px] w-[90%]  flex ${botId ? "" : "gap-[68px]"}`}>
+          <div className={`bg-[#2a2561]   rounded-[58px] w-full lg:w-[90%]  flex ${botId ? "" : "gap-[25px]"}`}>
             {botPage!=="main" ? <ChatbotSidebar botPage={botPage} botId={botId} /> : null }
             {botPage==="main" ? <ChatbotDashboard showModal={showModal} /> : null }
             {botPage==="update" || botPage==="overview" ? <ChatbotOverview botPage={botPage} botId={botId} /> : null}
@@ -59,16 +65,15 @@ const ChatbotMain = ({botPage, botId}: {botPage?:string, botId?: number}) => {
             {botPage==="deploy" ? <ChatbotDeploy /> : null}
             {botPage==="integration" ? <ChatbotIntegration /> : null}
             {botPage==="settings" ? <ChatbotSettings /> : null}
-          </div>
           {/* second div */}
-          <div className="w-[10%] bg-[#2a2561]  rounded-[58px]">
-            <div className="w-[100px] h-[100px] bg-white rounded-full flex items-center justify-center m-auto mb-5">
+          <div className="hidden lg:block w-[10%] bg-[#2a2561] rounded-[58px]">
+            <div className="w-[70px] h-[70px] xl:w-[100px] xl:h-[100px] bg-white rounded-full flex items-center justify-center m-auto mb-5">
               <Image
-                className="m-auto mb-4"
+                className="m-auto mb-4 w-[40px] xl:w-[58px] h-auto"
                 alt="alt"
                 src="/images/face1.png"
-                height={68}
                 width={58}
+                height={68}
               />
             </div>
             <Image
@@ -85,15 +90,13 @@ const ChatbotMain = ({botPage, botId}: {botPage?:string, botId?: number}) => {
               src="/images/plus.png"
               height={24}
               width={24}
-              onClick={()=>setModalShow(true)}
+              onClick={() => setModalShow(true)}
             />
           </div>
         </div>
-        <CreatebotModal 
-            show={modalShow}
-            onHide={() => setModalShow(false)}
-            />
+        <CreatebotModal show={modalShow} onHide={() => setModalShow(false)} />
       </div>
+    </div>
     </div>
   );
 };

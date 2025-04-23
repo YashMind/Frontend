@@ -7,7 +7,13 @@ import { getMeData, logoutUser } from "@/store/slices/auth/authSlice";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-const ChatbotHeader = ({ fix, addBgColor }: {fix: boolean, addBgColor: boolean}) => {
+const ChatbotHeader = ({
+  fix,
+  addBgColor,
+}: {
+  fix: boolean;
+  addBgColor: boolean;
+}) => {
   const [bot, setBot] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +38,9 @@ const ChatbotHeader = ({ fix, addBgColor }: {fix: boolean, addBgColor: boolean})
 
   return (
     <nav
-      className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${fix ? "fixed" :""}
+      className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${
+        fix ? "fixed" : ""
+      }
      w-full z-20  rounded-[36px] top-0   my-0.5`}
     >
       <div className="container">

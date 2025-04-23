@@ -6,7 +6,7 @@ const ChatbotHistory = () => {
     <div className="w-full">
       <h2 className="text-2xl font-bold my-4">Leads</h2>
       {/* <table></table> */}
-      <div className="bg-white rounded-b-xl overflow-hidden  text-sm w-full rounded-[40px] mb-8 mr-3 ">
+      <div className="bg-white rounded-b-xl overflow-hidden text-sm w-[550px] xl:w-full rounded-[40px] mb-8 mr-3">
         {/* Top Actions */}
         <div className="flex flex-wrap items-center justify-between gap-4 bg-[#9592AE] px-6 py-4 ">
           <div className="flex items-center gap-2">
@@ -69,85 +69,92 @@ const ChatbotHistory = () => {
         </div>
 
         {/* Table */}
-        <table className="w-full text-left text-gray-800">
-          <thead className="bg-white text-gray-600 border-y border-gray-300">
-            <tr>
-              <th className="p-4">
-                <input type="checkbox" className="w-4 h-4 accent-[#5E2EFF]" />
-              </th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Country
-              </th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Started
-              </th>
-              <th className="py-[14px] text-sm font-bold text-black">Status</th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Language
-              </th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Last message
-              </th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Platform
-              </th>
-              <th className="py-[14px] text-sm font-bold text-black">Action</th>
-            </tr>
-          </thead>
-          <tbody className="bg-[#f7f6fd]">
-            {Array(7)
-              .fill(0)
-              .map((_, idx) => (
-                <tr key={idx} className="border-b border-gray-200">
-                  <td className="p-4">
-                    <input
-                      type="checkbox"
-                      className="w-4 h-4 accent-[#5E2EFF]"
-                    />
-                  </td>
-                  <td className="p-4 text-xs font-medium text-black">India</td>
-                  <td className="p-4 text-xs font-medium text-black">
-                    2 hours ago
-                  </td>
-                  <td className="p-4 text-xs font-medium text-black">
-                    Original
-                  </td>
-                  <td className="p-4 text-xs font-medium text-black">
-                    Original
-                  </td>
-                  <td className=" truncate max-w-[150px] p-4 text-xs font-medium text-black">
-                    Hi, how are....
-                  </td>
-                  <td className="py-4">
-                    <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black">
-                      Web
-                    </span>
-                  </td>
-                  <td className="py-4 flex items-center gap-2">
-                    <button>
-                      <Image
-                        className="m-auto mb-4"
-                        alt="alt"
-                        src="/images/eye.png"
-                        height={24}
-                        width={24}
+        <div className="overflow-x-auto">
+          <table className="min-w-[800px] w-full  text-left text-gray-800">
+            <thead className="bg-white text-gray-600 border-y border-gray-300">
+              <tr>
+                <th className="p-4">
+                  <input type="checkbox" className="w-4 h-4 accent-[#5E2EFF]" />
+                </th>
+                <th className="py-[14px] text-sm font-bold text-black">
+                  Country
+                </th>
+                <th className="py-[14px] text-sm font-bold text-black">
+                  Started
+                </th>
+                <th className="py-[14px] text-sm font-bold text-black">
+                  Status
+                </th>
+                <th className="py-[14px] text-sm font-bold text-black">
+                  Language
+                </th>
+                <th className="py-[14px] text-sm font-bold text-black">
+                  Last message
+                </th>
+                <th className="py-[14px] text-sm font-bold text-black">
+                  Platform
+                </th>
+                <th className="py-[14px] text-sm font-bold text-black">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-[#f7f6fd]">
+              {Array(7)
+                .fill(0)
+                .map((_, idx) => (
+                  <tr key={idx} className="border-b border-gray-200">
+                    <td className="p-4">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 accent-[#5E2EFF]"
                       />
-                    </button>
-                    <button>
-                      <Image
-                        className="m-auto mb-4"
-                        alt="alt"
-                        src="/images/bx_edit.png"
-                        height={24}
-                        width={24}
-                      />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-
+                    </td>
+                    <td className="p-4 text-xs font-medium text-black">
+                      India
+                    </td>
+                    <td className="p-4 text-xs font-medium text-black">
+                      2 hours ago
+                    </td>
+                    <td className="p-4 text-xs font-medium text-black">
+                      Original
+                    </td>
+                    <td className="p-4 text-xs font-medium text-black">
+                      Original
+                    </td>
+                    <td className=" truncate max-w-[150px] p-4 text-xs font-medium text-black">
+                      Hi, how are....
+                    </td>
+                    <td className="py-4">
+                      <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black">
+                        Web
+                      </span>
+                    </td>
+                    <td className="py-4 flex items-center gap-2">
+                      <button>
+                        <Image
+                          className="m-auto mb-4"
+                          alt="alt"
+                          src="/images/eye.png"
+                          height={24}
+                          width={24}
+                        />
+                      </button>
+                      <button>
+                        <Image
+                          className="m-auto mb-4"
+                          alt="alt"
+                          src="/images/bx_edit.png"
+                          height={24}
+                          width={24}
+                        />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
         {/* Pagination */}
         <div className="flex justify-center items-center gap-2 px-6 py-4 bg-white border-t border-gray-200">
           <button className="text-sm text-[#9E9E9E] font-medium">

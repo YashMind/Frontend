@@ -44,7 +44,7 @@ const ClientSays = () => {
     }
   ]
   return (
-    <div className="bg-[#2b1e8f]  py-10 px-4 md:px-10">
+    <div className="bg-[#2b1e8f]  py-10 px-4 md:px-10" id="reviews">
       <h2 className="text-white text-center text-2xl md:text-3xl font-semibold mb-10">
         What our <span className="text-[#28e0f2]">Client Says</span>
       </h2>

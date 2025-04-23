@@ -14,7 +14,7 @@ const ChatbotBanner = () => {
 
   const slideCount = instanceRef.current?.track.details.slides.length || 0;
   return (
-    <div className="chatbot-banner bg-gradient-to-t from-[#2B255C] via-[#1300AF] to-[#0083FF] pt-[155px] h-screen">
+    <div className="chatbot-banner bg-gradient-to-t from-[#2B255C] via-[#1300AF] to-[#0083FF]  pt-[155px] h-screen">
       <div ref={sliderRef} className="keen-slider container h-full">
         <div className="keen-slider__slide flex">
           <div className="">

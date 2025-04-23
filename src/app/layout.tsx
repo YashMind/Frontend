@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
-    <html lang="en" suppressHydrationWarning>
+    <html className="scroll-smooth" lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
