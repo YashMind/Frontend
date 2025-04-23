@@ -60,7 +60,6 @@ const AddBotData = ({ botId }: { botId?: number }) => {
     dispatch(uploadDocument({ payload: formData }))
       .unwrap()
       .then((res) => {
-        console.log("response in ui pppppppppp ", res);
         setValue("document_link", res?.url);
       });
   };

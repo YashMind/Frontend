@@ -1,7 +1,5 @@
 "use client"
 import React, {useEffect, useState} from "react";
-import ChatbotHeader from "@/components/chatbot/header/chatbotHeader";
-import Image from "next/image";
 import ChatbotSidebar from "@/components/ChatbotDashboard/ChatbotSidebar/chatbotSidebar";
 import RealTimeCount from "@/components/ChatbotDashboard/RealTimeCount/realTimeCount";
 import ChatbotOverview from "@/components/ChatbotDashboard/ChatbotOverview/chatbotOverview";
@@ -19,8 +17,9 @@ import ChatbotDashboard from "@/components/ChatbotDashboard/chatbotDashboard";
 import CreatebotModal from "./Createbot/createbot";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
-import { getSingleChatbot } from "@/store/slices/chats/chatSlice";
+import { createChatsId, getSingleChatbot } from "@/store/slices/chats/chatSlice";
 import ChatbotDashboardHeader from "../ChatbotHeader/chatbotHeader";
+import RightSection from "./RightSection/rightSection";
 
 const ChatbotMain = ({
   botPage,
@@ -38,6 +37,8 @@ const ChatbotMain = ({
   useEffect(()=>{
     if (botId !== undefined) {
     dispatch(getSingleChatbot({botId}))
+    dispatch(createChatsId({bot_id: botId}));
+
     }
   },[dispatch, botId])
 
@@ -66,34 +67,8 @@ const ChatbotMain = ({
             {botPage==="integration" ? <ChatbotIntegration /> : null}
             {botPage==="settings" ? <ChatbotSettings /> : null}
           {/* second div */}
-          <div className="hidden lg:block w-[10%] bg-[#2a2561] rounded-[58px]">
-            <div className="w-[70px] h-[70px] xl:w-[100px] xl:h-[100px] bg-white rounded-full flex items-center justify-center m-auto mb-5">
-              <Image
-                className="m-auto mb-4 w-[40px] xl:w-[58px] h-auto"
-                alt="alt"
-                src="/images/face1.png"
-                width={58}
-                height={68}
-              />
-            </div>
-            <Image
-              className="m-auto"
-              alt="alt"
-              src="/images/face2.png"
-              height={68}
-              width={58}
-            />
-            <hr className="bg-[linear-gradient(90deg,#501794_49.49%,#3E70A1_50.51%)] p-[1px] rounded-md my-6"></hr>
-            <Image
-              className="m-auto"
-              alt="alt"
-              src="/images/plus.png"
-              height={24}
-              width={24}
-              onClick={() => setModalShow(true)}
-            />
-          </div>
         </div>
+        <RightSection showModal={showModal}/>
         <CreatebotModal show={modalShow} onHide={() => setModalShow(false)} />
       </div>
     </div>

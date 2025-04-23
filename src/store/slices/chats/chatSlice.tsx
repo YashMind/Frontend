@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import http from "@/services/http/baseUrl";
 import {
   startLoadingActivity,
@@ -39,7 +39,6 @@ export const createChatbot = createAsyncThunk<
     try {
       dispatch(startLoadingActivity());
       const response = await http.post("/chatbot/create-bot", payload);
-      console.log("chat bot ", response);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toast.success("chatbot created successfully!");
@@ -70,7 +69,6 @@ export const updateChatbot = createAsyncThunk<
     try {
       dispatch(startLoadingActivity());
       const response = await http.put("/chatbot/update-bot", payload);
-      console.log("chat bot ", response);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toast.success("chatbot updated successfully!");
@@ -103,7 +101,6 @@ export const uploadDocument = createAsyncThunk<
       const response = await http.post("/chatbot/upload-document", payload, {headers: {
         "Content-Type": "multipart/form-data"
       }});
-      console.log("chat bot ", response);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toast.success("Document uploaded successfully!");
@@ -133,7 +130,6 @@ export const getSingleChatbot = createAsyncThunk<
     try {
       dispatch(startLoadingActivity());
       const response = await http.get("/chatbot/get-bot", { params: { botId }});
-      console.log("chat bot ", response);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         return response.data;
@@ -152,12 +148,103 @@ export const getSingleChatbot = createAsyncThunk<
   }
 );
 
+export const getChatbotsMessages = createAsyncThunk<
+  any,
+  { chat_id?: number }
+>(
+  "chat/getChatbotsMessages",
+  async ({ chat_id }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.get(`/chatbot/chats/${chat_id}`);
+      console.log("chat bot ", response);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get chats!");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const createChatsId = createAsyncThunk<
+  any,
+  { bot_id?: number }
+>(
+  "chat/createChatsId",
+  async ({ bot_id }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.post("/chatbot/chats-id",  {bot_id} );
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        dispatch(getChatbotsMessages({chat_id: response?.data?.id}))
+        return response.data;
+      } else {
+        return rejectWithValue("failed to create chatbot id!");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during creating chatbot id");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const addUserMessage = createAction<{ message: string; sender: string }>('chat/addUserMessage');
+
+export const conversationMessage = createAsyncThunk<
+  any,
+  { payload: TextMessage }
+>(
+  "chat/getSingleChatbot",
+  async ({ payload }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      dispatch(addUserMessage({ message: payload.message, sender: "user" }));
+      const response = await http.post(`/chatbot/chats/${payload?.chat_id}/message`, payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        dispatch(getChatbotsMessages({chat_id: payload.chat_id}))
+        return response.data;
+      } else {
+        return rejectWithValue("failed to create chatbot!");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during chatbot");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+
+
 const initialState = {
   loading: false,
   data: [],
   botData: {},
   chatbots: [],
-  chatbotData:{} as ChatbotsData
+  chatbotData:{} as ChatbotsData,
+  chatIdData:{} as chatsIdData,
+  chatMessages:[] as ChatbotMessages[]
 };
 
 const chatSlice = createSlice({
@@ -198,6 +285,32 @@ const chatSlice = createSlice({
       .addCase(getSingleChatbot.rejected, (state, action) => {
         state.loading = false;
       })
+
+      .addCase(createChatsId.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createChatsId.fulfilled, (state, action) => {
+        state.loading = false;
+        state.chatIdData = action?.payload;
+      })
+      .addCase(createChatsId.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(getChatbotsMessages.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getChatbotsMessages.fulfilled, (state, action) => {
+        state.loading = false;
+        state.chatMessages = action?.payload;
+      })
+      .addCase(getChatbotsMessages.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(addUserMessage, (state, action) => {
+        state.chatMessages.push(action.payload);
+      });
   },
 });
 
