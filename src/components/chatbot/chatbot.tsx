@@ -49,7 +49,7 @@ const Chatbot = () => {
       <OurChatbots />
       {/* 1 why choose */}
       <div>
-        <div className="bg-white mt-[88px] px-4 lg:px-24 bg-[url('/images/roboot.png')] bg-no-repeat bg-left-bottom">
+        <div className="bg-white mt-[88px] px-4 lg:px-24 bg-no-repeat bg-left-bottom lg:bg-[url('/images/roboot.png')]">
           <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row  gap-10">
             {/* Left Section */}
             <div className="lg:w-1/2 text-center lg:text-left">
@@ -67,7 +67,7 @@ const Chatbot = () => {
             </div>
 
             {/* Right Section */}
-            <div className="lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-6 m-auto ">
               <div className="w-[235px]">
                 <div className="flex justify-between items-center">
                   <div className="">
@@ -255,12 +255,12 @@ const Chatbot = () => {
       </div>
       {/* 2 custom gpt */}
       <div>
-        <div className="bg-[#2C1F94] text-white py-[42px]">
-          <div className="container  flex justify-between items-center ">
+        <div className="bg-[#2C1F94] text-white py-[42px] px-4 lg:px-24">
+          <div className="container flex flex-col lg:flex-row justify-between items-center">
             {/* Left Section */}
-            <div className="lg:w-2/3 space-y-10 ">
+            <div className="lg:w-2/3 space-y-10">
               {/* Step 1 */}
-              <div className="flex items-start gap-10">
+              <div className="flex flex-col lg:flex-row items-start gap-10">
                 <div className="flex-shrink-0">
                   <Image
                     alt="alt"
@@ -269,9 +269,9 @@ const Chatbot = () => {
                     width={144}
                   />
                 </div>
-                <div className="w-[247]">
-                  <div className="flex items-center space-x-3 ">
-                    <span className="bg-white text-black  w-[56px] h-[56px] rounded-full flex items-center justify-center text-[22px] font-bold">
+                <div className="w-[247px]">
+                  <div className="flex items-center space-x-3">
+                    <span className="bg-white text-black w-[56px] h-[56px] rounded-full flex items-center justify-center text-[22px] font-bold">
                       1
                     </span>
                     <h3 className="text-lg font-bold">Import Data</h3>
@@ -284,13 +284,13 @@ const Chatbot = () => {
               </div>
 
               {/* Step 2 */}
-              <div className="flex items-start gap-10 my-[76px]">
-                <div className="w-[247]">
-                  <div className="flex items-center space-x-3 ">
-                    <span className="bg-white text-black  w-[56px] h-[56px] rounded-full flex items-center justify-center text-[22px] font-bold">
+              <div className="flex flex-col lg:flex-row items-start gap-10 my-[76px]">
+                <div className="w-[247px]">
+                  <div className="flex items-center space-x-3">
+                    <span className="bg-white text-black w-[56px] h-[56px] rounded-full flex items-center justify-center text-[22px] font-bold">
                       2
                     </span>
-                    <h3 className="text-lg font-bold">Customise Bot </h3>
+                    <h3 className="text-lg font-bold">Customise Bot</h3>
                   </div>
                   <p className="text-xs font-light mt-[20px]">
                     Choose your welcome message, chat icon and colour scheme to
@@ -308,7 +308,7 @@ const Chatbot = () => {
               </div>
 
               {/* Step 3 */}
-              <div className="flex items-start gap-10">
+              <div className="flex flex-col lg:flex-row items-start gap-10">
                 <div className="flex-shrink-0">
                   <Image
                     alt="alt"
@@ -317,8 +317,8 @@ const Chatbot = () => {
                     width={144}
                   />
                 </div>
-                <div className="w-[247]">
-                  <div className="flex items-center space-x-3 ">
+                <div className="w-[247px]">
+                  <div className="flex items-center space-x-3">
                     <span className="bg-white text-black w-[56px] h-[56px] rounded-full flex items-center justify-center text-[22px] font-bold">
                       3
                     </span>
@@ -335,16 +335,16 @@ const Chatbot = () => {
             {/* Right Section */}
             <div className="lg:w-1/3 text-center mt-12 lg:mt-0">
               <h2
-                className=" text-[40px] font-normal leading-tight"
+                className="text-[40px] font-normal leading-tight"
                 style={{ fontFamily: "'Audiowide', sans-serif" }}
               >
                 3 steps to <br />
                 your custom <br />
                 <span className="text-[#34C8FB]">ChatGPT agent</span>
               </h2>
-              <p className="text-base  font-bold mt-[22px]">
+              <p className="text-base font-bold mt-[22px]">
                 Gain a new employee who helps 24/7/365 answer any questions
-                about your business or chosen data
+                about your business or chosen data.
               </p>
               <div className="text-right">
                 <button className="bg-white text-[#363636] font-semibold px-6 py-2 rounded-[22px] mt-[22px]">
@@ -355,6 +355,7 @@ const Chatbot = () => {
                 <Image
                   alt="alt"
                   src="/images/robot-small.png"
+                  className="m-auto"
                   height={269}
                   width={286}
                 />
@@ -364,13 +365,14 @@ const Chatbot = () => {
         </div>
       </div>
 
+
       {/* 3 add your chatbot */}
       <div>
         <div className="bg-white py-16 px-4 lg:px-24">
           <div className="container">
-            <div className="  grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <div className="  grid grid-cols-1 lg:grid-cols-2 gap-10 ">
               {/* Left Text */}
-              <div>
+              <div className="text-center lg:text-left">
                 <h2
                   className="text-[40px] font-normal  text-black leading-snug "
                   style={{ fontFamily: "'Audiowide', sans-serif" }}
@@ -378,7 +380,7 @@ const Chatbot = () => {
                   Add Your Chatbot <br />
                   To <span className="text-[#34C8FB]">Any Website</span>
                 </h2>
-                <p className="text-base text-[#686868] mt-4 font-bold w-[439px]">
+                <p className="text-base text-[#686868] mt-4 font-bold lg:w-[439px] w-full">
                   Install our Chatbots on any Website platform by adding one
                   line of code
                 </p>
@@ -445,106 +447,108 @@ const Chatbot = () => {
 
       {/* 4 tern conversation */}
       <div>
-        <div className="bg-[#2C1F94] py-20  lg:px-24 text-white mb-[78px]">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
-            {/* Left Column Features */}
-            <div className="flex flex-col gap-16">
-              <div>
-                <div className="mb-2">
-                  <Image
-                    alt="alt"
-                    src="/images/Frame-icon.png"
-                    height={29}
-                    width={29}
-                  />
-                  <h3 className="font-bold text-lg">
-                    Turn Conversations into Actions with AI Agents
-                  </h3>
+        <div className="bg-[#2C1F94] py-20 lg:px-24 text-white mb-[78px]">
+          <div className="container">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+              {/* Left Column Features */}
+              <div className="flex flex-col gap-16">
+                <div>
+                  <div className="mb-2">
+                    <Image
+                      alt="alt"
+                      src="/images/Frame-icon.png"
+                      height={29}
+                      width={29}
+                    />
+                    <h3 className="font-bold text-lg">
+                      Turn Conversations into Actions with AI Agents
+                    </h3>
+                  </div>
+                  <p className="text-xs text-white font-light mb-4">
+                    Enhance your chatbot’s capabilities by connecting it to
+                    Zapier & AI actions.
+                  </p>
+                  <button className="bg-[#0073AA] text-white text-xs px-6 py-2 rounded-[22px] font-bold">
+                    Try Now
+                  </button>
                 </div>
-                <p className="text-xs text-white font-light mb-4 ">
-                  Enhance your chatbot’s capabilities by connecting it to Zapier
-                  & AI actions.
-                </p>
-                <button className="bg-[#0073AA] text-white text-xs px-6 py-2 rounded-[22px] font-bold">
-                  Try Now
-                </button>
+
+                <div>
+                  <div className="mb-2">
+                    <Image
+                      alt="alt"
+                      src="/images/Frame-icon.png"
+                      height={29}
+                      width={29}
+                    />
+                    <h3 className="font-bold text-lg">
+                      Automated Translations for Global Engagement
+                    </h3>
+                  </div>
+                  <p className="text-xs text-white font-light mb-4">
+                    If your chatbot serves users worldwide, language barriers
+                    could make communication challenging.
+                  </p>
+                  <button className="bg-[#0073AA] text-white text-xs px-6 py-2 rounded-[22px] font-bold">
+                    Try Now
+                  </button>
+                </div>
               </div>
 
-              <div>
-                <div className=" mb-2">
-                  <Image
-                    alt="alt"
-                    src="/images/Frame-icon.png"
-                    height={29}
-                    width={29}
-                  />
-                  <h3 className="font-bold text-lg">
-                    Automated Translations for Global Engagement
-                  </h3>
-                </div>
-                <p className="text-xs text-white font-light mb-4">
-                  If your chatbot serves users in worldwide, language barriers
-                  could make communication challenging.
-                </p>
-                <button className="bg-[#0073AA] text-white text-xs px-6 py-2 rounded-[22px] font-bold">
-                  Try Now
-                </button>
-              </div>
-            </div>
-
-            {/* Center Image */}
-            <div className="flex justify-center">
-              <Image
-                alt="alt"
-                src="/images/laptop-screen.png"
-                height={384}
-                width={483}
-              />
-            </div>
-
-            {/* Right Column Features */}
-            <div className="flex flex-col gap-16">
-              <div>
-                <div className=" mb-2">
-                  <Image
-                    alt="alt"
-                    src="/images/Frame-icon.png"
-                    height={29}
-                    width={29}
-                  />
-                  <h3 className="font-bold text-lg">
-                    Turn Conversations into Leads Automatically
-                  </h3>
-                </div>
-                <p className="text-xs text-white font-light mb-4">
-                  With Fastdata, lead collection is effortless by allowing your
-                  chatbot to gather contact details directly from users during
-                  conversations.
-                </p>
-                <button className="bg-[#0073AA] text-white text-xs px-6 py-2 rounded-[22px] font-bold">
-                  Try Now
-                </button>
+              {/* Center Image */}
+              <div className="flex justify-center mb-12 lg:mb-0">
+                <Image
+                  alt="alt"
+                  src="/images/laptop-screen.png"
+                  height={384}
+                  width={483}
+                />
               </div>
 
-              <div>
-                <div className=" mb-2">
-                  <Image
-                    alt="alt"
-                    src="/images/Frame-icon.png"
-                    height={29}
-                    width={29}
-                  />
-                  <h3 className="font-bold text-lg">
-                    Keep Your Up-to-Date With Automated Retraining
-                  </h3>
+              {/* Right Column Features */}
+              <div className="flex flex-col gap-16">
+                <div>
+                  <div className="mb-2">
+                    <Image
+                      alt="alt"
+                      src="/images/Frame-icon.png"
+                      height={29}
+                      width={29}
+                    />
+                    <h3 className="font-bold text-lg">
+                      Turn Conversations into Leads Automatically
+                    </h3>
+                  </div>
+                  <p className="text-xs text-white font-light mb-4">
+                    With Fastdata, lead collection is effortless by allowing
+                    your chatbot to gather contact details directly from users
+                    during conversations.
+                  </p>
+                  <button className="bg-[#0073AA] text-white text-xs px-6 py-2 rounded-[22px] font-bold">
+                    Try Now
+                  </button>
                 </div>
-                <p className="text-xs text-white font-light mb-4">
-                  Keeping your chatbot up-to-date is crucial when managing a
-                  website that frequently changes content or receives updates.
-                </p>
-                <button className="bg-[#0073AA] text-white text-xs px-6 py-2 rounded-[22px] font-bold">
-                  Try Now
-                </button>
+
+                <div>
+                  <div className="mb-2">
+                    <Image
+                      alt="alt"
+                      src="/images/Frame-icon.png"
+                      height={29}
+                      width={29}
+                    />
+                    <h3 className="font-bold text-lg">
+                      Keep Your Up-to-Date With Automated Retraining
+                    </h3>
+                  </div>
+                  <p className="text-xs text-white font-light mb-4">
+                    Keeping your chatbot up-to-date is crucial when managing a
+                    website that frequently changes content or receives updates.
+                  </p>
+                  <button className="bg-[#0073AA] text-white text-xs px-6 py-2 rounded-[22px] font-bold">
+                    Try Now
+                  </button>
+                </div>
               </div>
             </div>
           </div>

@@ -34,6 +34,8 @@ export default function middleware(request: NextRequest) {
     "/admin/billing-settings",
     "/admin/support&communication",
     "/admin/logs&activity",
+    "/voice-agent",
+    "/llm",
   ];
   const knownRoutes = [
     "/chatbot",
