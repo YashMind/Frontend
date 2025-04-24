@@ -44,4 +44,12 @@ interface ChatbotMessages {
   message: string;
   sender: string;
   user_id?: number;
+  country?: string;
+}
+
+interface ChatbotHistoryMessages {
+  data:ChatbotMessages
+  totalCount: number,
+  totalPages: number,
+  currentPage: number
 }

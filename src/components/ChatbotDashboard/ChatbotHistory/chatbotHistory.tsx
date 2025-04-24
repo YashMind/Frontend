@@ -1,27 +1,76 @@
-import React from "react";
-import Image from "next/image";
+"use client";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { deleteChats, getChatbotsUserHistory } from "@/store/slices/chats/chatSlice";
+import { formatDistanceToNow } from "date-fns";
+import { FaEye } from "react-icons/fa6";
+import { MdSimCardDownload } from "react-icons/md";
 
-const ChatbotHistory = () => {
+const ChatbotHistory = ({ botId }: { botId?: number }) => {
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+  const chatUserHistory = useSelector(
+    (state: RootState) => state.chat.chatbotHistory
+  );
+  useEffect(() => {
+    if (botId) {
+      dispatch(getChatbotsUserHistory({ bot_id: botId, page, search }));
+    }
+  }, [botId, page, search]);
+
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+    const allRowIds = Object.keys(chatUserHistory).map((id) => Number(id));
+    setSelectedIds(isChecked ? allRowIds : []);
+  };
+
+  const handleSelectRow = (id: number, checked: boolean) => {
+    setSelectedIds((prev) =>
+      checked ? [...prev, id] : prev.filter((item) => item !== id)
+    );
+  };
+
+  const isDisabled = selectedIds.length === 0;
+
+  
+  const handleDeleteChat = () => {
+    dispatch(deleteChats({bot_id:botId, chat_ids:selectedIds}));
+  }
   return (
     <div className="w-full">
-      <h2 className="text-2xl font-bold my-4">Leads</h2>
+      <h2 className="text-2xl font-bold my-4">Chat History</h2>
       {/* <table></table> */}
       <div className="bg-white rounded-b-xl overflow-hidden text-sm w-[550px] xl:w-full rounded-[40px] mb-8 mr-3">
         {/* Top Actions */}
         <div className="flex flex-wrap items-center justify-between gap-4 bg-[#9592AE] px-6 py-4 ">
           <div className="flex items-center gap-2">
-            <label htmlFor="entries" className="text-gray-700 font-medium">
-              Show
-            </label>
-            <select
-              id="entries"
-              className=" px-2 py-1 bg-[#E0E0E0] rounded-md text-black outline-0"
-            >
-              <option>10</option>
-              <option>25</option>
-              <option>50</option>
-            </select>
-            <span className="text-gray-700 font-medium">entries</span>
+            <div className="flex gap-4">
+              <button
+                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
+                  isDisabled
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-purple-600 hover:bg-purple-700"
+                }`}
+                disabled={isDisabled}
+              >
+                Export
+              </button>
+              <button
+                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
+                  isDisabled
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-red-500 hover:bg-red-600"
+                }`}
+                disabled={isDisabled}
+                onClick={()=>handleDeleteChat()}
+              >
+                Delete
+              </button>
+            </div>
+
             <div className="relative w-full max-w-xs">
               <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg
@@ -40,6 +89,8 @@ const ChatbotHistory = () => {
                 type="text"
                 placeholder="Search..."
                 className="border border-white placeholder-white  pl-9  py-2 rounded-md  focus:outline-none focus:ring-2 focus:ring-purple-500 w-[140px]"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
             </div>
 
@@ -74,7 +125,11 @@ const ChatbotHistory = () => {
             <thead className="bg-white text-gray-600 border-y border-gray-300">
               <tr>
                 <th className="p-4">
-                  <input type="checkbox" className="w-4 h-4 accent-[#5E2EFF]" />
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 accent-[#5E2EFF]"
+                    onChange={handleSelectAll}
+                  />
                 </th>
                 <th className="py-[14px] text-sm font-bold text-black">
                   Country
@@ -100,80 +155,85 @@ const ChatbotHistory = () => {
               </tr>
             </thead>
             <tbody className="bg-[#f7f6fd]">
-              {Array(7)
-                .fill(0)
-                .map((_, idx) => (
-                  <tr key={idx} className="border-b border-gray-200">
-                    <td className="p-4">
-                      <input
-                        type="checkbox"
-                        className="w-4 h-4 accent-[#5E2EFF]"
-                      />
-                    </td>
-                    <td className="p-4 text-xs font-medium text-black">
-                      India
-                    </td>
-                    <td className="p-4 text-xs font-medium text-black">
-                      2 hours ago
-                    </td>
-                    <td className="p-4 text-xs font-medium text-black">
-                      Original
-                    </td>
-                    <td className="p-4 text-xs font-medium text-black">
-                      Original
-                    </td>
-                    <td className=" truncate max-w-[150px] p-4 text-xs font-medium text-black">
-                      Hi, how are....
-                    </td>
-                    <td className="py-4">
-                      <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black">
-                        Web
-                      </span>
-                    </td>
-                    <td className="py-4 flex items-center gap-2">
-                      <button>
-                        <Image
-                          className="m-auto mb-4"
-                          alt="alt"
-                          src="/images/eye.png"
-                          height={24}
-                          width={24}
+              {chatUserHistory?.data && Object.entries(chatUserHistory?.data).map(
+                ([chatId, messages]: any, idx) => {
+                  const lastMessage = messages[messages?.length - 2];
+                  const timeAgo = formatDistanceToNow(
+                    new Date(lastMessage?.created_at),
+                    { addSuffix: true }
+                  );
+
+                  return (
+                    <tr key={chatId} className="border-b border-gray-200">
+                      <td className="p-4">
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 accent-[#5E2EFF]"
+                          checked={selectedIds.includes(Number(chatId))}
+                          onChange={(e) =>
+                            handleSelectRow(Number(chatId), e.target.checked)
+                          }
                         />
-                      </button>
-                      <button>
-                        <Image
-                          className="m-auto mb-4"
-                          alt="alt"
-                          src="/images/bx_edit.png"
-                          height={24}
-                          width={24}
-                        />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="p-4 text-xs font-medium text-black">
+                        India
+                      </td>
+                      <td className="p-4 text-xs font-medium text-black">
+                        {timeAgo}
+                      </td>
+                      <td className="p-4 text-xs font-medium text-black">
+                        Original
+                      </td>
+                      <td className="p-4 text-xs font-medium text-black">
+                        Original
+                      </td>
+                      <td className=" truncate max-w-[150px] p-4 text-xs font-medium text-black">
+                        {lastMessage?.message?.slice(0, 25)}...
+                      </td>
+                      <td className="py-4">
+                        <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black">
+                          Web
+                        </span>
+                      </td>
+                      <td className="py-4 flex items-center gap-2">
+                        <button>
+                          <FaEye size={20} />
+                        </button>
+                        <button>
+                          <MdSimCardDownload size={20} />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                }
+              )}
             </tbody>
           </table>
         </div>
         {/* Pagination */}
         <div className="flex justify-center items-center gap-2 px-6 py-4 bg-white border-t border-gray-200">
-          <button className="text-sm text-[#9E9E9E] font-medium">
+          <button className="text-sm text-[#9E9E9E] font-medium disabled:opacity-50"
+          disabled={page === 1}
+          onClick={() => setPage(page - 1)}>
             Previous
           </button>
-          <button className="w-6 h-6 bg-[#624DE3] text-white rounded-[7px] text-sm">
+          {chatUserHistory?.totalPages>=1 ? 
+          <button className={`w-6 h-6 ${page===1 ? "bg-[#624DE3]" : "bg-gray-200"}   text-black rounded-[7px] text-sm`}>
             1
-          </button>
-          <button className="w-6 h-6 bg-gray-200 text-black rounded-[7px] text-sm">
-            2
-          </button>
-          <button className="w-6 h-6 bg-gray-200 text-black rounded-[7px] text-sm">
-            3
-          </button>
-          <button className="text-sm text-[#9E9E9E] font-medium">Next</button>
+          </button> : null}
+          {chatUserHistory?.totalPages >1 ? 
+          <button className="w-6 h-6 bg-gray-200 text-black rounded-[7px] text-sm" disabled>
+          ...
+          </button> : null}
+          {chatUserHistory?.totalPages>1 ? 
+          <button className={`w-6 h-6 ${chatUserHistory?.totalPages===page ? "bg-[#624DE3]" : "bg-gray-200"} text-black rounded-[7px] text-sm`}>
+            {chatUserHistory?.totalPages}
+          </button>:null}
+          <button className="text-sm text-[#9E9E9E] font-medium"
+          onClick={() => setPage(page + 1)}
+          disabled={chatUserHistory?.totalPages===page}>Next</button>
         </div>
       </div>
-
-      {/* table */}
     </div>
   );
 };

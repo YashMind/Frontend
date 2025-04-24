@@ -17,7 +17,7 @@ import ChatbotDashboard from "@/components/ChatbotDashboard/chatbotDashboard";
 import CreatebotModal from "./Createbot/createbot";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
-import { createChatsId, getSingleChatbot } from "@/store/slices/chats/chatSlice";
+import { getSingleChatbot } from "@/store/slices/chats/chatSlice";
 import ChatbotDashboardHeader from "../ChatbotHeader/chatbotHeader";
 import RightSection from "./RightSection/rightSection";
 
@@ -37,8 +37,6 @@ const ChatbotMain = ({
   useEffect(()=>{
     if (botId !== undefined) {
     dispatch(getSingleChatbot({botId}))
-    dispatch(createChatsId({bot_id: botId}));
-
     }
   },[dispatch, botId])
 
@@ -56,7 +54,7 @@ const ChatbotMain = ({
             {botPage!=="main" ? <ChatbotSidebar botPage={botPage} botId={botId} /> : null }
             {botPage==="main" ? <ChatbotDashboard showModal={showModal} /> : null }
             {botPage==="update" || botPage==="overview" ? <ChatbotOverview botPage={botPage} botId={botId} /> : null}
-            {botPage==="chat-history" ? <ChatbotHistory /> : null}
+            {botPage==="chat-history" ? <ChatbotHistory botId={botId} /> : null}
             {botPage==="chat-leads" ? <ChatbotLeads /> : null}
             {botPage==="links-docs" ? <ChatbotLinksDocs /> : null}
             {botPage==="texts" ? <ChatbotTexts /> : null}

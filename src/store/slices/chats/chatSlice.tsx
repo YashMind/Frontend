@@ -235,6 +235,64 @@ export const conversationMessage = createAsyncThunk<
   }
 );
 
+export const getChatbotsUserHistory = createAsyncThunk<
+  any,
+  { bot_id?: number, page?: number; limit?: number; search?: string }
+>(
+  "chat/getChatbotsUserHistory",
+  async ({ bot_id, page = 1, limit = 10, search }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const params = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+      if (search) params.append("search", search);
+      const response = await http.get(`/chatbot/chats-history/${bot_id}?${params}`);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get chats!");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const deleteChats = createAsyncThunk<
+  any,
+  { bot_id?: number, chat_ids?:number[] }
+>(
+  "chat/deleteChats",
+  async ({ bot_id, chat_ids }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.delete(`/chatbot/delete-chats/${bot_id}`, {data:{chat_ids}});
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toast.success("Chats deleted Successfully!");
+        dispatch(getChatbotsUserHistory({bot_id: bot_id}));
+        return response.data;
+      } else {
+        return rejectWithValue("failed to delete chats!");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during delete chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 
 
 const initialState = {
@@ -244,7 +302,8 @@ const initialState = {
   chatbots: [],
   chatbotData:{} as ChatbotsData,
   chatIdData:{} as chatsIdData,
-  chatMessages:[] as ChatbotMessages[]
+  chatMessages:[] as ChatbotMessages[],
+  chatbotHistory:{} as ChatbotHistoryMessages
 };
 
 const chatSlice = createSlice({
@@ -310,7 +369,18 @@ const chatSlice = createSlice({
 
       .addCase(addUserMessage, (state, action) => {
         state.chatMessages.push(action.payload);
-      });
+      })
+
+      .addCase(getChatbotsUserHistory.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getChatbotsUserHistory.fulfilled, (state, action) => {
+        state.loading = false;
+        state.chatbotHistory = action?.payload;
+      })
+      .addCase(getChatbotsUserHistory.rejected, (state, action) => {
+        state.loading = false;
+      })
   },
 });
 
