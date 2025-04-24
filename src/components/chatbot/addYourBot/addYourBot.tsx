@@ -5,9 +5,9 @@ const AddYourBot = () => {
   return (
     <div className="bg-white py-16 px-4 lg:px-24">
       <div className="container">
-        <div className="  grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        <div className="  grid grid-cols-1 lg:grid-cols-2 gap-10 ">
           {/* Left Text */}
-          <div>
+          <div className="text-center lg:text-left">
             <h2
               className="text-[40px] font-normal  text-black leading-snug "
               style={{ fontFamily: "'Audiowide', sans-serif" }}
@@ -15,7 +15,7 @@ const AddYourBot = () => {
               Add Your Chatbot <br />
               To <span className="text-[#34C8FB]">Any Website</span>
             </h2>
-            <p className="text-base text-[#686868] mt-4 font-bold w-[439px]">
+            <p className="text-base text-[#686868] mt-4 font-bold lg:w-[439px] w-full">
               Install our Chatbots on any Website platform by adding one line of
               code
             </p>

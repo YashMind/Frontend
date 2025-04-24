@@ -40,11 +40,13 @@ const Chatbot = () => {
 
       {/* 4 tern conversation */}
       <TurnConversation />
+
       {/* basic price */}
       <OurPlans />
 
       {/* what our client says */}
       <ClientSays />
+      
       {/* faq */}
       <ChatbotFaqs />
 

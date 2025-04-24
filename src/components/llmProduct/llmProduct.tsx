@@ -2,11 +2,12 @@ import React from "react";
 import ChatbotHeader from "@/components/chatbot/header/chatbotHeader";
 import ChatbotFooter from "@/components/chatbot/footer/chatbotFooter";
 import Image from "next/image";
-const VoiceAgent = () => {
+const LlmProduct = () => {
   return (
     <div className="bg-gradient-to-b from-[#2B255D] to-[#110FB9]">
       {/* header */}
-      <ChatbotHeader fix={false} addBgColor={false} />
+      <ChatbotHeader />
+
       {/* banner sec */}
       <div className="intract-banner   w-full  text-center h-screen">
         <div className="container">
@@ -439,4 +440,4 @@ const VoiceAgent = () => {
   );
 };
 
-export default VoiceAgent;
+export default LlmProduct;

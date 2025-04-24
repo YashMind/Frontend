@@ -3,9 +3,9 @@ import React from "react";
 const OurChatbots = () => {
   return (
     <div className="bg-[#1D0F8DED]  md:px-20 text-white py-[64px]">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-12 container">
+      <div className="block lg:flex items-center justify-between gap-12 container">
         {/* Left Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full md:w-2/3 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6  w-full lg:w-2/3 text-center">
           {/* Card 1 */}
           <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative">
             <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#DF437E] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
@@ -96,24 +96,26 @@ const OurChatbots = () => {
         </div>
 
         {/* Right Section */}
-        <div className="text-center md:text-left w-full md:w-1/3">
+        <div className="text-center sm:text-left w-full lg:w-1/3">
           <h2
-            className="text-3xl md:text-4xl font-normal mb-4 leading-snug text-right"
+            className="text-3xl md:text-4xl font-normal mb-4 leading-snug text-center lg:text-right mt-[10px] lg:mt-0"
             style={{ fontFamily: "'Audiowide', sans-serif" }}
           >
             Our Chatbots <br />
-            <span className="text-cyan-400 text-right">Integrate With</span>
+            <span className="text-cyan-400 text-center lg:text-right">
+              Integrate With
+            </span>
           </h2>
-          <p className="font-bold text-base mb-6 text-right ">
+          <p className="font-bold text-base mb-6 text-center lg:text-right ">
             Let our chatbots help your customers across multiple <br />
             social media channels at once
           </p>
-          <div className=" text-right">
+          <div className=" text-center lg:text-right">
             <button className="bg-white text-black px-6 py-2 rounded-full text-lg  font-semibold shadow-md mb-8">
               Try Now
             </button>
           </div>
-          <img src="/images/chat1.png" alt="Robot" className="" />
+          <img src="/images/chat1.png" alt="Robot" className="m-auto" />
         </div>
       </div>
     </div>

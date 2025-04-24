@@ -3,7 +3,10 @@ import React from "react";
 
 const WhyChooseChatbot = () => {
   return (
-    <div id="features" className="bg-white mt-[88px] px-4 lg:px-24 bg-[url('/images/roboot.png')] bg-no-repeat bg-left-bottom">
+    <div
+      id="features"
+      className="bg-white mt-[88px] px-4 lg:px-24 bg-no-repeat bg-left-bottom lg:bg-[url('/images/roboot.png')]"
+    >
       <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row  gap-10">
         {/* Left Section */}
         <div className="lg:w-1/2 text-center lg:text-left">
@@ -21,7 +24,7 @@ const WhyChooseChatbot = () => {
         </div>
 
         {/* Right Section */}
-        <div className="lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-6 m-auto ">
           <div className="w-[235px]">
             <div className="flex justify-between items-center">
               <div className="">
