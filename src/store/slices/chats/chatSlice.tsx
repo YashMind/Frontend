@@ -210,7 +210,7 @@ export const conversationMessage = createAsyncThunk<
   any,
   { payload: TextMessage }
 >(
-  "chat/getSingleChatbot",
+  "chat/conversationMessage",
   async ({ payload }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());

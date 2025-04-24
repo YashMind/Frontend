@@ -28,7 +28,7 @@ export default function middleware(request: NextRequest) {
 
   // Protected routes without token
   if (!accessToken) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/signin", request.url));
   }
 
   // Authenticated, but unknown route

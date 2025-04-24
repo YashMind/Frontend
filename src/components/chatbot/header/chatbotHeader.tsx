@@ -72,7 +72,7 @@ const ChatbotHeader = ({
 
                 {/* Dropdown */}
                 <div className="relative inline-block text-left" ref={menuRef}>
-                  <button
+                  {userData?.email!=="" ? <button
                     onClick={() => setIsOpen(!isOpen)}
                     className="focus:outline-none"
                   >
@@ -89,7 +89,7 @@ const ChatbotHeader = ({
                         fill="white"
                       />
                     </svg>
-                  </button>
+                  </button> : null}
                   {isOpen && (
                     <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-10">
                       <div className="py-1">
@@ -201,7 +201,7 @@ const ChatbotHeader = ({
                 </li>
                 <li>
                   <Link
-                    href="/chatbot"
+                    href="/llm"
                     className={`block py-2 px-3 text-white ${
                       bot === 3 ? "bg-[#434343]" : ""
                     } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:text-blue-500`}
