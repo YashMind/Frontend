@@ -37,7 +37,7 @@ const ChatbotHeader = ({
   };
 
   return (
-    <div className="bg-white mt-3">
+    <div className="bg-white">
       <nav
         className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${
           fix ? "fixed" : ""
@@ -69,7 +69,13 @@ const ChatbotHeader = ({
                 >
                   Return to Home
                 </Link>
-
+                <Image
+                  alt="alt"
+                  src="/images/user1.png"
+                  height={44}
+                  width={44}
+                />
+                <span className="text-white">user</span>
                 {/* Dropdown */}
                 <div className="relative inline-block text-left" ref={menuRef}>
                   {userData?.email!=="" ? <button
@@ -170,7 +176,7 @@ const ChatbotHeader = ({
               } w-full md:flex md:flex-row md:w-auto md:order-1`}
               id="navbar-sticky"
             >
-              <ul className="flex flex-col items-center text-[15px] font-normal p-4 md:p-0 md:space-x-4 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 rounded-lg [font-family:'Roboto_Flex',sans-serif] border md:border-none ">
+              <ul className="flex flex-col items-center text-[15px] font-normal p-4 md:p-0 md:space-x-4 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 rounded-lg [font-family:'Roboto_Flex',sans-serif]  ">
                 <li>
                   <Link
                     href="/chatbot-dashboard/main"

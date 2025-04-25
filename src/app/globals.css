@@ -141,9 +141,28 @@ input:-webkit-autofill:active {
     height: 100% !important;
   }
 }
-@media (max-width: 767px) {
+@media (max-width: 991px) {
+  .absolute-mob {
+    position: relative;
+    /* text-align: center; */
+    width: 100%;
+    margin: 0 auto;
+  }
+  .mob-view {
+    width: 100%;
+    text-align: center;
+  }
+}
+@media (max-width: 768px) {
   .left img {
     width: 100%;
+  }
+  .space-mob {
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+  .mob-view {
+    text-align: center;
   }
   .bg-clr:before {
     display: none;
@@ -151,6 +170,7 @@ input:-webkit-autofill:active {
   .gap-mob {
     gap: 20px;
   }
+
   .custom-gap-margin {
     gap: 0px;
     margin: 0 59px;
