@@ -6,7 +6,7 @@ export default function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("access_token")?.value;
   const { pathname } = request.nextUrl;
 
-  const publicRoutes = ["/", "/signin", "/signup", "/chatbot", "/voice-agent", "/llm",];
+  const publicRoutes = ["/", "/signin", "/signup", "/chatbot", "/voice-agent", "/llm"];
   const knownRoutes = ["/profile", "/settings", "/voice-agent", "/chatbot-dashboard", "/chatbot-products", 
     "/admin"];
 

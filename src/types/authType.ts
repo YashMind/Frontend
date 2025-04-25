@@ -29,6 +29,7 @@ interface UserProfileData {
 }
 
 interface TrainingText {
+  id?: number;
   text_content: string;
 }
 

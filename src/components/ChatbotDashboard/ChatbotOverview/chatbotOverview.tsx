@@ -9,7 +9,6 @@ import ChatbotDetails from "./chatbotDetails/chatbotDetails";
 import { createChatsId } from "@/store/slices/chats/chatSlice";
 const ChatbotOverview = ({botPage, botId}:{botPage?: string, botId?: number}) => {
   const chatbotData: ChatbotsData = useSelector((state: RootState)=> state.chat.chatbotData);
-  console.log("chatbotData ", chatbotData);
   const dispatch = useDispatch<AppDispatch>();
   const hasRun = useRef(false);
   useEffect(()=>{

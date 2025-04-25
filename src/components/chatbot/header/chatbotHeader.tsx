@@ -69,13 +69,12 @@ const ChatbotHeader = ({
                 >
                   Return to Home
                 </Link>
-                <Image
+                {userData?.email!=="" ? <Image
                   alt="alt"
                   src="/images/user1.png"
                   height={44}
                   width={44}
-                />
-                <span className="text-white">user</span>
+                /> : null }
                 {/* Dropdown */}
                 <div className="relative inline-block text-left" ref={menuRef}>
                   {userData?.email!=="" ? <button

@@ -1,9 +1,12 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { createChatbotFaqs, deleteChatbotsAllFaqs, deleteChatbotsFaqs, getChatbotsFaqs } from "@/store/slices/chats/chatSlice";
 
 const schema = yup.object().shape({
   questions: yup.array().of(
@@ -14,11 +17,14 @@ const schema = yup.object().shape({
   ),
 });
 
-const ChatbotQA = () => {
+const ChatbotQA = ({botId}:{botId?: number}) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const chatbotFaqs:ChatbotFaqsQuesAnswer[] = useSelector((state: RootState)=> state.chat.chatbotFaqs);
   const {
     register,
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -33,8 +39,38 @@ const ChatbotQA = () => {
   });
 
   const onSubmit = (data: any) => {
-    console.log("Submitted Data:", data);
+    data.bot_id = Number(botId);
+    data.questions = data.questions?.filter((item:ChatbotFaqsQuesAnswer)=> !item?.faqId);
+    dispatch(createChatbotFaqs({payload:data}));
   };
+
+  useEffect(()=>{
+    dispatch(getChatbotsFaqs({bot_id: botId}));
+  }, [])
+
+  useEffect(() => {
+    if (chatbotFaqs && chatbotFaqs?.length > 0) {
+      reset({
+        questions: chatbotFaqs.map((faq: ChatbotFaqsQuesAnswer) => ({
+          question: faq.question,
+          answer: faq.answer,
+          faqId: faq.id,
+        })),
+      });
+    }
+  }, [chatbotFaqs, reset]);
+
+  const handleDeleteAllFaqs = () => {
+    dispatch(deleteChatbotsAllFaqs({bot_id: botId}));
+    remove();
+  }
+
+  const handleDeleteFaq = (item:ChatbotFaqsQuesAnswer, index:number) => {
+    if(item?.faqId){
+      dispatch(deleteChatbotsFaqs({bot_id: botId, faq_id: item?.faqId}));
+    }
+    remove(index)
+  }
 
   return (
     <div className="w-full">
@@ -67,19 +103,20 @@ const ChatbotQA = () => {
             </div>
           </div>
           <div className="flex gap-2">
-            <button className="bg-[#340555] text-white text-sm px-3 py-1 font-bold rounded-md">
+            <button className="bg-[#340555] text-white text-sm px-3 py-1 font-bold rounded-md cursor-pointer">
               Export All
             </button>
             <button
-              className="bg-[#4B4351] text-white text-sm px-3 py-1 font-bold rounded-md"
+              className="bg-[#4B4351] text-white text-sm px-3 py-1 font-bold rounded-md cursor-pointer"
+              type="button"
               onClick={() => {
-                remove();
+                handleDeleteAllFaqs();
               }}
             >
               Delete
             </button>
             <button
-              className="bg-[#18B91F]  text-white text-sm px-3 py-1 font-bold rounded-md"
+              className="bg-[#18B91F]  text-white text-sm px-3 py-1 font-bold rounded-md cursor-pointer"
               type="submit"
               form="dynamicQAForm"
             >
@@ -95,14 +132,15 @@ const ChatbotQA = () => {
           id="dynamicQAForm"
         >
           {fields &&
-            fields.map((item, index) => {
+            fields.map((item:any, index:number) => {
               return (
                 <div className="bg-white rounded-b-xl p-5" key={index}>
                   <div className="flex justify-between items-center mb-2">
                     <h2 className="text-xl font-bold text-black">Question</h2>
                     <button
                       className="bg-[#FF0004] text-white px-3 py-1 text-sm rounded-md font-bold"
-                      onClick={() => remove(index)}
+                      type="button"
+                      onClick={() => handleDeleteFaq(item, index)}
                     >
                       Delete
                     </button>

@@ -1,29 +1,36 @@
 "use client"
-import React from "react";
-import { AppDispatch } from "@/store/store";
+import React, { useEffect } from "react";
+import { AppDispatch, RootState } from "@/store/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
+import { updateChatbotTextContent } from "@/store/slices/chats/chatSlice";
 // yup schema
 const schema = yup.object().shape({
   text_content: yup
   .string()
   .required("Text is a required field"),
 });
-const ChatbotTexts = () => {
+const ChatbotTexts = ({botId}:{botId?: number}) => {
+  const {chatbotData} = useSelector((state:RootState)=> state.chat);
   const dispatch = useDispatch<AppDispatch>();
   const {
       register,
       handleSubmit,
+      setValue,
       reset,
       formState: { errors },
     } = useForm<TrainingText>({ resolver: yupResolver(schema) });
   
     const onSubmit = (data: TrainingText) => {
-      console.log(data);
-      reset();
+      data.id=botId
+      dispatch(updateChatbotTextContent({payload: data}))
     };
+
+    useEffect(()=>{
+      setValue("text_content", chatbotData?.text_content)
+    },[chatbotData?.text_content])
   return (
     <div className="w-full">
       <h2 className="text-2xl font-bold my-4">Texts</h2>

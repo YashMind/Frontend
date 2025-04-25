@@ -13,6 +13,7 @@ const schema = yup.object().shape({
   bot_id: yup.number(),
 });
 const ChatbotSection = ({ chatbotData }: { chatbotData: ChatbotsData }) => {
+  const [isBotTyping, setIsBotTyping] = useState(false);
   const {
     register,
     handleSubmit,
@@ -37,7 +38,10 @@ const ChatbotSection = ({ chatbotData }: { chatbotData: ChatbotsData }) => {
     (state: RootState) => state.chat.chatMessages
   );
   const onSubmit = (data: TextMessage) => {
-    dispatch(conversationMessage({ payload: data }))
+    setIsBotTyping(true);
+    dispatch(conversationMessage({ payload: data })).finally(() => {
+      setIsBotTyping(false);
+    });
     reset();
   };
 
@@ -109,6 +113,25 @@ const ChatbotSection = ({ chatbotData }: { chatbotData: ChatbotsData }) => {
             </div>
           </div>
         )}
+        {isBotTyping && (
+          <div className="flex justify-start items-center gap-2 mb-2">
+            <Image
+              src="/images/face2.webp"
+              alt="Bot"
+              className="w-8 h-8 rounded-full"
+              width={20}
+              height={20}
+            />
+            <div className="bg-gray-200 text-black p-1 rounded-xl max-w-xs text-sm animate-pulse">
+              <span className="flex gap-1 text-3xl">
+                <span className="animate-bounce">.</span>
+                <span className="animate-bounce delay-150">.</span>
+                <span className="animate-bounce delay-300">.</span>
+              </span>
+            </div>
+          </div>
+        )}
+
         <div ref={messagesEndRef} />
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>

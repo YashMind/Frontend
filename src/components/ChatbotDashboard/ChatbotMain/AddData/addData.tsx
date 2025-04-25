@@ -17,6 +17,7 @@ const schema = yup.object().shape({
   target_link: yup.string().url("Please enter a valid URL").notRequired(),
   train_from: yup.string().optional(),
   document_link: yup.string().optional(),
+  text_content: yup.string().optional(),
 });
 
 const AddBotData = ({ botId }: { botId?: number }) => {
@@ -40,6 +41,7 @@ const AddBotData = ({ botId }: { botId?: number }) => {
       train_from: "Full website",
       target_link: "",
       document_link: "",
+      text_content:""
     },
   });
 
@@ -127,7 +129,7 @@ const AddBotData = ({ botId }: { botId?: number }) => {
           </p>
           <form onSubmit={handleSubmit(onSubmit("form1"))}>
             <div className="flex flex-wrap gap-2 mb-9">
-              {["Full website", "Webpage", "Pdf", "WordDoc"].map((label) => (
+              {["Full website", "Webpage", "Pdf", "WordDoc"].map((label:string) => (
                 <button
                   key={label}
                   type="button"

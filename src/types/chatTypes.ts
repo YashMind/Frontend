@@ -6,8 +6,9 @@ interface CreatebotForm {
 interface UpdateChatbotData {
   id?: number;
   target_link: string;
-  train_from: string;
+  train_from?: string;
   document_link?: string;
+  text_content?: string;
 }
 
 interface ChatbotsData {
@@ -20,6 +21,7 @@ interface ChatbotsData {
   public: boolean;
   created_at: string;
   updated_at: string;
+  text_content: string;
 }
 
 interface TextMessage {
@@ -48,8 +50,29 @@ interface ChatbotMessages {
 }
 
 interface ChatbotHistoryMessages {
-  data:ChatbotMessages
-  totalCount: number,
-  totalPages: number,
-  currentPage: number
+  data:ChatbotMessages;
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+  chatBot: ChatbotsData;
+}
+
+interface ChatbotFaqs {
+  bot_id?: number;
+  questions:{
+    question: string;
+    answer: string;
+  }
+}
+
+interface ChatbotFaqsQuesAnswer {
+  answer: string;
+  bot_id: number;
+  created_at: string;
+  id: number;
+  question: string;
+  updated_at: string
+  user_id: number;
+  length?: number;
+  faqId?: number;
 }

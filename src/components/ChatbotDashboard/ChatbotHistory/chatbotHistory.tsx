@@ -2,16 +2,28 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { deleteChats, getChatbotsUserHistory } from "@/store/slices/chats/chatSlice";
+import {
+  deleteChats,
+  getChatbotsUserHistory,
+} from "@/store/slices/chats/chatSlice";
 import { formatDistanceToNow } from "date-fns";
 import { FaEye } from "react-icons/fa6";
 import { MdSimCardDownload } from "react-icons/md";
+import ViewChatModal from "./viewChats/viewChats";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import { format } from "date-fns";
 
 const ChatbotHistory = ({ botId }: { botId?: number }) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [modalShow, setModalShow] = useState<boolean>(false);
+  const [currentMessages, setCurrentMessages] = useState<[]>([]);
+  const showModal = () => {
+    setModalShow(true);
+  };
   const dispatch = useDispatch<AppDispatch>();
-  const chatUserHistory = useSelector(
+  const chatUserHistory: any = useSelector(
     (state: RootState) => state.chat.chatbotHistory
   );
   useEffect(() => {
@@ -23,9 +35,10 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
-    const allRowIds = Object.keys(chatUserHistory).map((id) => Number(id));
+    const allRowIds = Object.keys(chatUserHistory?.data).map((id) => Number(id));
     setSelectedIds(isChecked ? allRowIds : []);
   };
+
 
   const handleSelectRow = (id: number, checked: boolean) => {
     setSelectedIds((prev) =>
@@ -35,14 +48,78 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
 
   const isDisabled = selectedIds.length === 0;
 
-  
   const handleDeleteChat = () => {
-    dispatch(deleteChats({bot_id:botId, chat_ids:selectedIds}));
-  }
+    dispatch(deleteChats({ bot_id: botId, chat_ids: selectedIds }));
+  };
+  const handleViewChats = (chats: []) => {
+    setModalShow(true);
+    setCurrentMessages(chats);
+  };
+
+  const handleCreateDownloadPdf = (messages: any[], chatBot:ChatbotsData) => {
+    const doc = new jsPDF();
+    const botId = messages[0]?.bot_id || "Unknown";
+    const chatId = messages[0]?.chat_id || "Unknown";
+    const userId = messages[0]?.user_id || "Unknown";
+    const chatbotCreatedAt = format(new Date(chatBot?.created_at), "PPpp");
+    const createdAt = format(new Date(messages[0]?.created_at), "PPpp");
+    const endAt = format(new Date(messages[messages.length-1]?.created_at), "PPpp");
+  
+    doc.setFontSize(18);
+    doc.text("Chat History", 14, 20);
+    
+    autoTable(doc, {
+      startY: 30,
+      head: [["Chatbot ID", "Chatbot Name", "User Id", "Started On"]],
+      body: [[botId, chatBot?.chatbot_name, userId, chatbotCreatedAt]],
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [98, 77, 227], textColor: 255 },
+    });
+    
+    autoTable(doc, {
+      startY: 60,
+      head: [["Chat ID", "Location", "Started On", "Ended On"]],
+      body: [[chatId, "Unknown", createdAt, endAt]],
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [98, 77, 227], textColor: 255 }
+    });
+  
+
+    const rows = messages.map((msg, idx) => [
+      idx + 1,
+      msg.sender === "user" ? "User" : "Bot",
+      msg.message,
+      format(new Date(msg.created_at), "PPpp")
+    ]);
+  
+    autoTable(doc, {
+      startY: 90,
+      head: [["#", "Sender", "Message", "Timestamp"]],
+      body: rows,
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [98, 77, 227], textColor: 255 },
+      columnStyles: {
+        2: { cellWidth: 100 },
+      },
+    });
+  
+    doc.save(`Chat_History_${chatId}.pdf`);
+  };
+
+  const handleExportDownloadPdf = () => {
+    if (!chatUserHistory?.data) return;
+  
+    selectedIds.forEach((chatId:number) => {
+      const messages = chatUserHistory?.data[chatId];
+      if (messages && messages.length > 0) {
+        handleCreateDownloadPdf(messages, chatUserHistory?.chatBot);
+      }
+    });
+  };
+  
   return (
     <div className="w-full">
       <h2 className="text-2xl font-bold my-4">Chat History</h2>
-      {/* <table></table> */}
       <div className="bg-white rounded-b-xl overflow-hidden text-sm w-[550px] xl:w-full rounded-[40px] mb-8 mr-3">
         {/* Top Actions */}
         <div className="flex flex-wrap items-center justify-between gap-4 bg-[#9592AE] px-6 py-4 ">
@@ -55,6 +132,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
                     : "bg-purple-600 hover:bg-purple-700"
                 }`}
                 disabled={isDisabled}
+                onClick={()=>handleExportDownloadPdf()}
               >
                 Export
               </button>
@@ -65,7 +143,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
                     : "bg-red-500 hover:bg-red-600"
                 }`}
                 disabled={isDisabled}
-                onClick={()=>handleDeleteChat()}
+                onClick={() => handleDeleteChat()}
               >
                 Delete
               </button>
@@ -94,7 +172,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
               />
             </div>
 
-            <div className="flex items-center gap-2 px-4 py-2 rounded-md  border border-white text-white bg-[#928eb0] focus:outline-none focus:ring-2 focus:ring-purple-500 ">
+            {/* <div className="flex items-center gap-2 px-4 py-2 rounded-md  border border-white text-white bg-[#928eb0] focus:outline-none focus:ring-2 focus:ring-purple-500 ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -110,12 +188,12 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
                 />
               </svg>
               <span>Feb/2/2025</span>
-            </div>
+            </div> */}
           </div>
           <div className="flex items-center gap-3">
-            <button className="bg-[#340555] text-white rounded  text-[11px] font-bold py-[7px] px-[11px]">
+            {/* <button className="bg-[#340555] text-white rounded  text-[11px] font-bold py-[7px] px-[11px]">
               Configure mails
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -155,85 +233,112 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
               </tr>
             </thead>
             <tbody className="bg-[#f7f6fd]">
-              {chatUserHistory?.data && Object.entries(chatUserHistory?.data).map(
-                ([chatId, messages]: any, idx) => {
-                  const lastMessage = messages[messages?.length - 2];
-                  const timeAgo = formatDistanceToNow(
-                    new Date(lastMessage?.created_at),
-                    { addSuffix: true }
-                  );
-
-                  return (
-                    <tr key={chatId} className="border-b border-gray-200">
-                      <td className="p-4">
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 accent-[#5E2EFF]"
-                          checked={selectedIds.includes(Number(chatId))}
-                          onChange={(e) =>
-                            handleSelectRow(Number(chatId), e.target.checked)
-                          }
-                        />
-                      </td>
-                      <td className="p-4 text-xs font-medium text-black">
-                        India
-                      </td>
-                      <td className="p-4 text-xs font-medium text-black">
-                        {timeAgo}
-                      </td>
-                      <td className="p-4 text-xs font-medium text-black">
-                        Original
-                      </td>
-                      <td className="p-4 text-xs font-medium text-black">
-                        Original
-                      </td>
-                      <td className=" truncate max-w-[150px] p-4 text-xs font-medium text-black">
-                        {lastMessage?.message?.slice(0, 25)}...
-                      </td>
-                      <td className="py-4">
-                        <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black">
-                          Web
-                        </span>
-                      </td>
-                      <td className="py-4 flex items-center gap-2">
-                        <button>
-                          <FaEye size={20} />
-                        </button>
-                        <button>
-                          <MdSimCardDownload size={20} />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                }
-              )}
+              {chatUserHistory?.data &&
+                Object.entries(chatUserHistory?.data).map(
+                  ([chatId, messages]: any, idx) => {
+                    const lastMessage = messages[messages?.length - 2];
+                    const timeAgo = formatDistanceToNow(
+                      new Date(lastMessage?.created_at),
+                      { addSuffix: true }
+                    );
+                    return (
+                      <tr key={chatId} className="border-b border-gray-200">
+                        <td className="p-4">
+                          <input
+                            type="checkbox"
+                            className="w-4 h-4 accent-[#5E2EFF]"
+                            checked={selectedIds.includes(Number(chatId))}
+                            onChange={(e) =>
+                              handleSelectRow(Number(chatId), e.target.checked)
+                            }
+                          />
+                        </td>
+                        <td className="p-4 text-xs font-medium text-black">
+                          India
+                        </td>
+                        <td className="p-4 text-xs font-medium text-black">
+                          {timeAgo}
+                        </td>
+                        <td className="p-4 text-xs font-medium text-black">
+                          Original
+                        </td>
+                        <td className="p-4 text-xs font-medium text-black">
+                          Original
+                        </td>
+                        <td className=" truncate max-w-[150px] p-4 text-xs font-medium text-black">
+                          {lastMessage?.message?.slice(0, 25)}...
+                        </td>
+                        <td className="py-4">
+                          <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black">
+                            Web
+                          </span>
+                        </td>
+                        <td className="py-4 flex items-center gap-2">
+                          <button onClick={() => handleViewChats(messages)}>
+                            <FaEye size={20} />
+                          </button>
+                          <button>
+                            <MdSimCardDownload size={20} onClick={()=>handleCreateDownloadPdf(messages, chatUserHistory?.chatBot)} />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  }
+                )}
             </tbody>
           </table>
         </div>
         {/* Pagination */}
         <div className="flex justify-center items-center gap-2 px-6 py-4 bg-white border-t border-gray-200">
-          <button className="text-sm text-[#9E9E9E] font-medium disabled:opacity-50"
-          disabled={page === 1}
-          onClick={() => setPage(page - 1)}>
+          <button
+            className="text-sm text-[#9E9E9E] font-medium disabled:opacity-50"
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
             Previous
           </button>
-          {chatUserHistory?.totalPages>=1 ? 
-          <button className={`w-6 h-6 ${page===1 ? "bg-[#624DE3]" : "bg-gray-200"}   text-black rounded-[7px] text-sm`}>
-            1
-          </button> : null}
-          {chatUserHistory?.totalPages >1 ? 
-          <button className="w-6 h-6 bg-gray-200 text-black rounded-[7px] text-sm" disabled>
-          ...
-          </button> : null}
-          {chatUserHistory?.totalPages>1 ? 
-          <button className={`w-6 h-6 ${chatUserHistory?.totalPages===page ? "bg-[#624DE3]" : "bg-gray-200"} text-black rounded-[7px] text-sm`}>
-            {chatUserHistory?.totalPages}
-          </button>:null}
-          <button className="text-sm text-[#9E9E9E] font-medium"
-          onClick={() => setPage(page + 1)}
-          disabled={chatUserHistory?.totalPages===page}>Next</button>
+          {chatUserHistory?.totalPages >= 1 ? (
+            <button
+              className={`w-6 h-6 ${
+                page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
+              }   text-black rounded-[7px] text-sm`}
+            >
+              1
+            </button>
+          ) : null}
+          {chatUserHistory?.totalPages > 1 ? (
+            <button
+              className="w-6 h-6 bg-gray-200 text-black rounded-[7px] text-sm"
+              disabled
+            >
+              ...
+            </button>
+          ) : null}
+          {chatUserHistory?.totalPages > 1 ? (
+            <button
+              className={`w-6 h-6 ${
+                chatUserHistory?.totalPages === page
+                  ? "bg-[#624DE3]"
+                  : "bg-gray-200"
+              } text-black rounded-[7px] text-sm`}
+            >
+              {chatUserHistory?.totalPages}
+            </button>
+          ) : null}
+          <button
+            className="text-sm text-[#9E9E9E] font-medium"
+            onClick={() => setPage(page + 1)}
+            disabled={chatUserHistory?.totalPages === page}
+          >
+            Next
+          </button>
         </div>
       </div>
+      <ViewChatModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        currentMesssages={currentMessages}
+      />
     </div>
   );
 };

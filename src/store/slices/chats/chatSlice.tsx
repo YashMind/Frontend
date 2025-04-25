@@ -90,6 +90,149 @@ export const updateChatbot = createAsyncThunk<
   }
 );
 
+export const updateChatbotTextContent = createAsyncThunk<
+  any,
+  { payload: TrainingText }
+>(
+  "chat/updateChatbotTextContent",
+  async ({ payload }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.put("/chatbot/update-bot", payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toast.success("chatbot updated successfully!");
+        dispatch(getChatbots());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to create chatbot!");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during chatbot");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const getChatbotsFaqs = createAsyncThunk<
+  any,
+  { bot_id?: number }
+>(
+  "chat/getChatbotsFaqs",
+  async ({ bot_id }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.get(`/chatbot/get-bot-faqs/${bot_id}`);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get chats!");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const deleteChatbotsFaqs = createAsyncThunk<
+  any,
+  { bot_id?: number, faq_id?: number }
+>(
+  "chat/deleteChatbotsFaqs",
+  async ({ bot_id, faq_id }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response:any = await http.delete(`/chatbot/delete-faq/${bot_id}/${faq_id}`);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        getChatbotsFaqs({bot_id:bot_id});
+        toast.success("Faq deleted successfully!");
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get chats!");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const deleteChatbotsAllFaqs = createAsyncThunk<
+  any,
+  { bot_id?: number }
+>(
+  "chat/deleteChatbotsAllFaqs",
+  async ({ bot_id }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.delete(`/chatbot/delete-all-faqs/${bot_id}`);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        getChatbotsFaqs({bot_id:bot_id});
+        toast.success("Deleted all faqs successfully!");
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get chats!");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const createChatbotFaqs = createAsyncThunk<
+  any,
+  { payload: ChatbotFaqs }
+>(
+  "chat/createChatbotFaqs",
+  async ({ payload }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.post("/chatbot/create-bot-faqs", payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toast.success("chatbot faqs created successfully!");
+        dispatch(getChatbotsFaqs({bot_id: payload?.bot_id}));
+        return response.data;
+      } else {
+        return rejectWithValue("failed to create chatbot!");
+      }
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during chatbot");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 export const uploadDocument = createAsyncThunk<
   any,
   { payload: FormData }
@@ -157,7 +300,6 @@ export const getChatbotsMessages = createAsyncThunk<
     try {
       dispatch(startLoadingActivity());
       const response = await http.get(`/chatbot/chats/${chat_id}`);
-      console.log("chat bot ", response);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         return response.data;
@@ -303,7 +445,8 @@ const initialState = {
   chatbotData:{} as ChatbotsData,
   chatIdData:{} as chatsIdData,
   chatMessages:[] as ChatbotMessages[],
-  chatbotHistory:{} as ChatbotHistoryMessages
+  chatbotHistory:{} as ChatbotHistoryMessages,
+  chatbotFaqs: [] as ChatbotFaqsQuesAnswer[]
 };
 
 const chatSlice = createSlice({
@@ -379,6 +522,17 @@ const chatSlice = createSlice({
         state.chatbotHistory = action?.payload;
       })
       .addCase(getChatbotsUserHistory.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(getChatbotsFaqs.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getChatbotsFaqs.fulfilled, (state, action) => {
+        state.loading = false;
+        state.chatbotFaqs = action?.payload;
+      })
+      .addCase(getChatbotsFaqs.rejected, (state, action) => {
         state.loading = false;
       })
   },
