@@ -55,7 +55,7 @@ const ProfileProducts = () => {
     }
   }, [reset, userData?.fullName]);
   const onSubmit = (data: ProfileForm) => {
-    dispatch(updateUserProfile({payload: data}))
+    dispatch(updateUserProfile({ payload: data }));
     reset();
   };
   return (
@@ -85,11 +85,10 @@ const ProfileProducts = () => {
       </div>
 
       {/* Personal Info Section */}
-      <div className="bg-[#081028] p-[30px]  rounded-[22px]">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-[21px] mb-4 font-semibold">
-            Personal Information
-          </h2>
+      <div className="bg-[#081028] p-6 rounded-[22px]">
+        {/* Responsive Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+          <h2 className="text-[21px] font-semibold">Personal Information</h2>
           <button
             className="bg-[#2F0448] text-white px-4 py-1 rounded-[24px] text-lg font-medium flex items-center gap-1"
             onClick={() => setEdit(true)}
@@ -98,41 +97,46 @@ const ProfileProducts = () => {
             <RiEditLine />
           </button>
         </div>
-        <table className="w-full text-sm text-gray-300">
-          <thead>
-            <tr>
-              <th className="text-left text-[#87888C] font-medium text-lg">
-                Name
-              </th>
-              <th className="text-left text-[#87888C] font-medium text-lg">
-                Email
-              </th>
-              <th className="text-left text-[#87888C] font-medium text-lg">
-                Password
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="pt-[13] text-sm font-medium">
-                {userData?.fullName}
-              </td>
-              <td className="pt-[13] text-sm font-medium">{userData?.email}</td>
-              <td className="pt-[13] text-sm font-medium">******</td>
-            </tr>
-          </tbody>
-        </table>
+
+        {/* Responsive Table */}
+        <div className="">
+          <table className="min-w-full text-sm text-gray-300">
+            <thead>
+              <tr>
+                <th className="text-left text-[#87888C] font-medium text-lg">
+                  Name
+                </th>
+                <th className="text-left text-[#87888C] font-medium text-lg">
+                  Email
+                </th>
+                <th className="text-left text-[#87888C] font-medium text-lg">
+                  Password
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="pt-3 text-sm font-medium">
+                  {userData?.fullName}
+                </td>
+                <td className="pt-3 text-sm font-medium">{userData?.email}</td>
+                <td className="pt-3 text-sm font-medium">******</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+
       {/* edit profile */}
       {edit ? (
         <div className="edit-profile p-6 space-y-6 bg-[#2B255C] ml-[8px]">
           <h1 className="font-semibold text-[21px]">Edit Profile</h1>
           <form
-            className="grid grid-cols-1 md:grid-cols-2 gap-6 "
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
             onSubmit={handleSubmit(onSubmit)}
           >
             {/* First Name */}
-            <div className="flex flex-col w-[422px]">
+            <div className="flex flex-col w-full">
               <label
                 htmlFor="fullName"
                 className="mb-[8px] text-lg font-medium"
@@ -144,7 +148,7 @@ const ProfileProducts = () => {
                 type="text"
                 id="fullName"
                 placeholder="Alina"
-                className="bg-[#171821] text-white rounded-md p-[12]  outline-none placeholder-[#D2D2D2] text-xs font-medium"
+                className="bg-[#171821] text-white rounded-md p-3 outline-none placeholder-[#D2D2D2] text-xs font-medium"
               />
               {errors.fullName && (
                 <span className="text-red-500">
@@ -154,7 +158,7 @@ const ProfileProducts = () => {
             </div>
 
             {/* Email */}
-            <div className="flex flex-col w-[422px]">
+            <div className="flex flex-col w-full">
               <label htmlFor="email" className="mb-[8px] text-lg font-medium">
                 Email
               </label>
@@ -164,7 +168,7 @@ const ProfileProducts = () => {
                 type="email"
                 id="email"
                 placeholder="joli@gmail.com"
-                className="bg-[#171821] text-white rounded-md p-[12]  outline-none placeholder-[#D2D2D2] text-xs font-medium"
+                className="bg-[#171821] text-white rounded-md p-3 outline-none placeholder-[#D2D2D2] text-xs font-medium"
               />
               {errors.email && (
                 <span className="text-red-500">{errors?.email?.message}</span>
@@ -172,7 +176,7 @@ const ProfileProducts = () => {
             </div>
 
             {/* Password */}
-            <div className="flex flex-col md:col-span-2 w-[422px]">
+            <div className="flex flex-col md:col-span-2 w-full">
               <label
                 htmlFor="password"
                 className="mb-[8px] text-lg font-medium"
@@ -181,11 +185,11 @@ const ProfileProducts = () => {
               </label>
               <input
                 {...register("password")}
-                type=" Password"
+                type="password"
                 id="pwd"
                 placeholder="password"
-                className="bg-[#171821] text-white rounded-md p-[12]  outline-none placeholder-[#D2D2D2] text-xs font-medium"
-              ></input>
+                className="bg-[#171821] text-white rounded-md p-3 outline-none placeholder-[#D2D2D2] text-xs font-medium"
+              />
               {errors.password && (
                 <span className="text-red-500">
                   {errors?.password?.message}
@@ -197,7 +201,7 @@ const ProfileProducts = () => {
             <div>
               <button
                 type="submit"
-                className="bg-[#2F0448] px-6 py-2 rounded-[8px] text-white font-mediumtext-lg"
+                className="bg-[#2F0448] px-6 py-2 rounded-[8px] text-white font-medium text-lg"
               >
                 Save
               </button>

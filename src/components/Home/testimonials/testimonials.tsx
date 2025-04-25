@@ -29,7 +29,7 @@ const Testimonials = () => {
   });
 
   const slideCount = instanceRef.current?.track.details.slides.length || 0;
-  
+
   const testimonials = [
     {
       name: "Hannah Schmitt1",
@@ -119,10 +119,12 @@ const Testimonials = () => {
                           />
                         </div>
                         <div className="text-center">
-                          <p className="font-semibold text-white mb-1">
+                          <p className="font-semibold text-white">
                             {item?.name} {index + 1}
                           </p>
-                          <div className="flex justify-center">
+
+                          <p className="text-sm text-gray-300">{item?.title}</p>
+                          <div className="flex justify-center mt-[9px]">
                             <svg
                               width="24"
                               height="24"
@@ -140,7 +142,6 @@ const Testimonials = () => {
                               />
                             </svg>
                           </div>
-                          <p className="text-sm text-gray-300">{item?.title}</p>
                         </div>
                       </div>
 

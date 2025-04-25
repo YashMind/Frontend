@@ -335,13 +335,14 @@ const Chatbot = () => {
             {/* Right Section */}
             <div className="lg:w-1/3 text-center mt-12 lg:mt-0">
               <h2
-                className="text-[40px] font-normal leading-tight"
+                className="text-[32px] sm:text-[36px] md:text-[40px] lg:text-[48px] font-normal leading-tight sm:leading-snug md:leading-tight lg:leading-[1.2] text-center sm:text-left"
                 style={{ fontFamily: "'Audiowide', sans-serif" }}
               >
                 3 steps to <br />
                 your custom <br />
                 <span className="text-[#34C8FB]">ChatGPT agent</span>
               </h2>
+
               <p className="text-base font-bold mt-[22px]">
                 Gain a new employee who helps 24/7/365 answer any questions
                 about your business or chosen data.
@@ -365,29 +366,28 @@ const Chatbot = () => {
         </div>
       </div>
 
-
       {/* 3 add your chatbot */}
       <div>
         <div className="bg-white py-16 px-4 lg:px-24">
           <div className="container">
             <div className="  grid grid-cols-1 lg:grid-cols-2 gap-10 ">
               {/* Left Text */}
-              <div className="text-center lg:text-left">
+              <div className="text-center lg:text-left px-4 sm:px-6 md:px-8">
                 <h2
-                  className="text-[40px] font-normal  text-black leading-snug "
+                  className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-normal text-black leading-snug"
                   style={{ fontFamily: "'Audiowide', sans-serif" }}
                 >
                   Add Your Chatbot <br />
                   To <span className="text-[#34C8FB]">Any Website</span>
                 </h2>
-                <p className="text-base text-[#686868] mt-4 font-bold lg:w-[439px] w-full">
+                <p className="text-sm sm:text-base text-[#686868] mt-4 font-bold w-full lg:w-[439px] mx-auto lg:mx-0">
                   Install our Chatbots on any Website platform by adding one
                   line of code
                 </p>
               </div>
 
               {/* Right Platforms */}
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 w-full">
                 {/* Wordpress */}
                 <div className="border border-[#2D2095] rounded-full  px-2 flex  items-center shadow-sm relative justify-center pt-[33px] pb-[18] mb-[18px]">
                   <Image
@@ -415,7 +415,7 @@ const Chatbot = () => {
                 </div>
 
                 {/* Shopify */}
-                <div className="border border-[#2D2095] rounded-full  px-2 flex  items-center shadow-sm relative justify-center pt-[33px] pb-[18]">
+                <div className="border border-[#2D2095] rounded-full  px-2 flex  items-center shadow-sm relative justify-center pt-[33px] pb-[18] lg:mb-0 mb-[18px]">
                   <Image
                     alt="alt"
                     className="absolute top-[-33px] left-1/2 transform -translate-x-1/2 -translate-y-1/"
@@ -428,7 +428,7 @@ const Chatbot = () => {
                 </div>
 
                 {/* GoDaddy */}
-                <div className="border border-[#2D2095] rounded-full  px-2 flex  items-center shadow-sm relative justify-center pt-[33px] pb-[18]">
+                <div className="border border-[#2D2095] rounded-full  px-2 flex  items-center shadow-sm relative justify-center pt-[33px] pb-[18] lg:mb-0  mb-[18px]">
                   <Image
                     alt="alt"
                     className="absolute top-[-33px] left-1/2 transform -translate-x-1/2 -translate-y-1/"

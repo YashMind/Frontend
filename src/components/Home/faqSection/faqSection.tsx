@@ -70,7 +70,7 @@ const FaqSection = () => {
                 {/* Left Side */}
                 <div className="w-full md:w-[30%] text-center md:text-left flex flex-col items-center md:items-start">
                   <h2
-                    className="text-[30px] md:text-[40px] font-normal text-white leading-tight md:leading-[100%]"
+                    className="text-[30px] md:text-[40px] font-normal text-white"
                     style={{
                       fontFamily: "'Audiowide', sans-serif",
                     }}
@@ -95,12 +95,12 @@ const FaqSection = () => {
                           : "border-[#747474]"
                       } rounded-lg overflow-hidden bg-[#0f003e]`}
                     >
-                      <div className="flex items-center justify-between pl-6 pr-4 py-4">
+                      <div className="flex items-center justify-between pl-6 pr-4 pb-4 pt-[16]">
                         <div className="flex gap-3 items-center">
                           <span className="text-white font-medium text-xl md:text-2xl">
                             0{index}
                           </span>
-                          <h3 className="text-white font-normal text-[18px] md:text-[22px]">
+                          <h3 className="text-white font-normal text-[18px] md:text-[20px]">
                             {item?.title}
                           </h3>
                         </div>
@@ -117,7 +117,7 @@ const FaqSection = () => {
                       </div>
 
                       {accordianItems.includes(item?.title) && (
-                        <div className="px-6 py-4 text-sm leading-relaxed text-gray-300">
+                        <div className="px-6 py-4 mb-[16px]  text-base leading-relaxed text-white">
                           {item?.paragraph}
                         </div>
                       )}

@@ -7,7 +7,7 @@ const OurChatbots = () => {
         {/* Left Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6  w-full lg:w-2/3 text-center">
           {/* Card 1 */}
-          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative">
+          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mb-[22px]">
             <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#DF437E] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
               <img className="" src="/images/icon1.png" />
             </div>
@@ -22,7 +22,7 @@ const OurChatbots = () => {
           </div>
 
           {/* Card 2 */}
-          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative ">
+          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mb-[22px]">
             <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#60D669] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
               <img className="" src="/images/logos_whatsapp-icon.png" />
             </div>
@@ -37,7 +37,7 @@ const OurChatbots = () => {
           </div>
 
           {/* Card 3 */}
-          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative my-[22px]">
+          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mb-[22px]">
             <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#0073AA] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
               <img className="" src="/images/wordpress.png" />
             </div>
@@ -51,7 +51,7 @@ const OurChatbots = () => {
           </div>
 
           {/* Card 4 */}
-          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative my-[22px]">
+          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mb-[22px]">
             <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#FF4F00] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
               <img className="" src="/images/logos_zapier.png" />
             </div>
@@ -66,7 +66,7 @@ const OurChatbots = () => {
           </div>
 
           {/* Card 5 */}
-          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative">
+          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mb-[22px]">
             <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#EBB02E] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
               <img className="" src="/images/devicon_slack.png" />
             </div>
@@ -80,7 +80,7 @@ const OurChatbots = () => {
           </div>
 
           {/* Card 6 */}
-          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative ">
+          <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mb-[22px]">
             <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#466CFF] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
               <img className="" src="/images/facebook-messenger-icon 1.png" />
             </div>

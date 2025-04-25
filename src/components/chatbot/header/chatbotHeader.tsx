@@ -65,13 +65,13 @@ const ChatbotHeader = ({
               <div className="flex items-center gap-3 md:gap-4">
                 <Link
                   href="/"
-                  className="text-white bg-[#05BDFD] text-[15px] rounded-[18px] font-semibold focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className="text-white bg-[#05BDFD] sm:text-[15px] text-[13px] rounded-[18px] font-semibold focus:ring-4 focus:outline-none focus:ring-blue-300  px-4 py-2 text-center "
                 >
                   Return to Home
                 </Link>
                 <Image
                   alt="alt"
-                  src="/images/user1.png"
+                  src="/images/usergit add .1.png"
                   height={44}
                   width={44}
                 />

@@ -157,6 +157,9 @@ input:-webkit-autofill:active {
   .left img {
     width: 100%;
   }
+  .chatbot-banner {
+    padding-top: 20px;
+  }
   .space-mob {
     margin-top: 50px;
     margin-bottom: 50px;

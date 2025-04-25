@@ -25,22 +25,18 @@ const HomeBanner = () => {
           <div className="container">
             <div className="banner-text pt-44 text-white max-w-[682px] ">
               <h2
-                className="text-[74px] leading-[100%] py-4"
+                className="text-[36px] sm:text-[48px] md:text-[60px] lg:text-[74px] leading-[100%] py-4"
                 style={{
                   fontFamily: "'Audiowide', sans-serif",
                 }}
               >
                 AI That Thinks Ahead
               </h2>
+
               <p className="my-[26px] font-bold  [font-family:'Roboto_Flex',sans-serif]">
                 Innovative AI solutions designed to simplify and accelerate your
                 workflow.
               </p>
-              <Link href="/signup"
-                className="py-[14px] px-[43px] text-white text-base font-medium rounded-[18px] bg-[linear-gradient(90.04deg,_#501794_0.03%,_#3E70A1_101.88%)] hover:from-purple-700 hover:to-blue-600 transition-all cursor-pointer"
-              >
-                Sign up
-              </Link>
             </div>
           </div>
         </div>

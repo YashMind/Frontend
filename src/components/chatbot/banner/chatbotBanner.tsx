@@ -19,7 +19,7 @@ const ChatbotBanner = () => {
         <div className="keen-slider__slide flex">
           <div className="">
             <h1
-              className="text-[74px] leading-[100%] py-4 text-white"
+              className="text-[36px] sm:text-[48px] md:text-[60px] lg:text-[74px] leading-[100%] py-4 text-white"
               style={{ fontFamily: "'Audiowide', sans-serif" }}
             >
               Custom AI Chatbots
@@ -42,7 +42,7 @@ const ChatbotBanner = () => {
         <div className="keen-slider__slide flex">
           <div className="">
             <h1
-              className="text-[74px] leading-[100%] py-4 text-white"
+              className="text-[36px] sm:text-[48px] md:text-[60px] lg:text-[74px] leading-[100%] py-4 text-white"
               style={{ fontFamily: "'Audiowide', sans-serif" }}
             >
               Custom AI Chatbots
@@ -66,7 +66,7 @@ const ChatbotBanner = () => {
         <div className="keen-slider__slide flex">
           <div className="">
             <h1
-              className="text-[74px] leading-[100%] py-4 text-white"
+              className="text-[36px] sm:text-[48px] md:text-[60px] lg:text-[74px] leading-[100%] py-4 text-white"
               style={{ fontFamily: "'Audiowide', sans-serif" }}
             >
               Custom AI Chatbots

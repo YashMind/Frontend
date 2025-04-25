@@ -18,18 +18,18 @@ const OurPlans = () => {
               <span className="ml-3 font-medium text-gray-700">Annually</span>
             </div>
             <div className="my-[50px]">
-              <div className="flex gap-4 items-center justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
                 {/* Active Button */}
-                <button className="bg-[#2D2095] text-white  px-6 py-2 rounded-[22px] text-lg font-semibold">
+                <button className="bg-[#2D2095] text-white px-6 py-2 rounded-[22px] text-lg font-semibold w-full sm:w-auto">
                   Chat Bot
                 </button>
 
                 {/* Inactive Buttons */}
-                <button className="border border-[#2D2095] text-black text-lg font-semibold px-6 py-2 rounded-[22px]">
+                <button className="border border-[#2D2095] text-black text-lg font-semibold px-6 py-2 rounded-[22px] w-full sm:w-auto">
                   Voice agent
                 </button>
 
-                <button className="border border-[#2D2095] text-black ftext-lg font-semibold px-6 py-2 rounded-[22px]">
+                <button className="border border-[#2D2095] text-black text-lg font-semibold px-6 py-2 rounded-[22px] w-full sm:w-auto">
                   Chat LLM
                 </button>
               </div>

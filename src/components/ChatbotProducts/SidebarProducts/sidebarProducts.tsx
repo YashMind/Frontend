@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,14 +7,14 @@ import { AppDispatch } from "@/store/store";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 
-const SidebarProducts = ({productMenu}:{productMenu: string}) => {
+const SidebarProducts = ({ productMenu }: { productMenu: string }) => {
   const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
   const handleLogOut = () => {
-    dispatch(logoutUser({router}))
-  }
+    dispatch(logoutUser({ router }));
+  };
   return (
-    <aside className="w-[294px] bg-[#2B255C]  flex flex-col gap-2 rounded-tl-[15px] rounded-bl-[15px]">
+    <aside className="hidden md:flex w-[294px] bg-[#2B255C] flex-col gap-2 rounded-tl-[15px] rounded-bl-[15px]">
       <div className="relative mb-4 p-4">
         <Image
           className="absolute left-8 top-1/2 transform -translate-y-1/2"
@@ -33,7 +33,9 @@ const SidebarProducts = ({productMenu}:{productMenu: string}) => {
       <nav className="flex flex-col gap-2 p-4">
         <Link
           href="/chatbot-products/profile"
-          className={`flex items-center text-sm font-medium gap-2 px-3 py-[10px]  hover:bg-[#2B1B55] ${productMenu==="profile" ? "bg-[#081028] text-[#01BEED]" :""} rounded-[15px]`}
+          className={`flex items-center text-sm font-medium gap-2 px-3 py-[10px]  hover:bg-[#2B1B55] ${
+            productMenu === "profile" ? "bg-[#081028] text-[#01BEED]" : ""
+          } rounded-[15px]`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +56,9 @@ const SidebarProducts = ({productMenu}:{productMenu: string}) => {
         </Link>
         <Link
           href="/chatbot-products/preference"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-light text-sm ${productMenu==="preference" ? "bg-[#081028] text-[#01BEED]" :""}`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-light text-sm ${
+            productMenu === "preference" ? "bg-[#081028] text-[#01BEED]" : ""
+          }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +79,9 @@ const SidebarProducts = ({productMenu}:{productMenu: string}) => {
         </Link>
         <Link
           href="/chatbot-products/team"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-light text-sm ${productMenu==="team" ? "bg-[#081028] text-[#01BEED]" :""}`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-light text-sm ${
+            productMenu === "team" ? "bg-[#081028] text-[#01BEED]" : ""
+          }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +102,9 @@ const SidebarProducts = ({productMenu}:{productMenu: string}) => {
         </Link>
         <Link
           href="/chatbot-products/help"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-light text-sm ${productMenu==="help" ? "bg-[#081028] text-[#01BEED]" :""}`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-light text-sm ${
+            productMenu === "help" ? "bg-[#081028] text-[#01BEED]" : ""
+          }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +125,9 @@ const SidebarProducts = ({productMenu}:{productMenu: string}) => {
         </Link>
         <Link
           href="/chatbot-products/settings"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-light text-sm ${productMenu==="settings" ? "bg-[#081028] text-[#01BEED]" :""}`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-light text-sm ${
+            productMenu === "settings" ? "bg-[#081028] text-[#01BEED]" : ""
+          }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
