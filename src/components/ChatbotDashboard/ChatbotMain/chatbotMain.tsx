@@ -37,7 +37,7 @@ const ChatbotMain = ({
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
       <ChatbotDashboardHeader fix={true} addBgColor={true} />
-      <div className="min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 ">
+      <div className="min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4  ">
         {/* Real Time Count + Table */}
         <RealTimeCount />
 
@@ -45,7 +45,7 @@ const ChatbotMain = ({
         <div className="flex gap-6">
           <div
             className={`bg-[#2a2561] pr-5 rounded-[58px] w-full lg:w-[90%] flex ${
-              botId ? "" : "gap-[25px]"
+              botId ? "" : "gap-[50px]"
             }`}
           >
             {botPage !== "main" ? <ChatbotSidebar /> : null}
@@ -84,7 +84,7 @@ const ChatbotMain = ({
               height={68}
               width={58}
             />
-            <hr className="bg-[linear-gradient(90deg,#501794_49.49%,#3E70A1_50.51%)] p-[1px] rounded-md my-6"></hr>
+            <hr className="border border-transparent bg-gradient-to-r from-[#501794] to-[#3E70A1] p-[1px] rounded-md my-[28px]"></hr>
             <Image
               className="m-auto"
               alt="alt"

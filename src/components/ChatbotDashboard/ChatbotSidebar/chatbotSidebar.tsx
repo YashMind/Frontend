@@ -57,6 +57,26 @@ const ChatbotSidebar = () => {
           >
             Chat logs
           </Link>
+
+          {pathname === "/chatbot-dashboard/chat-history" ? (
+            <BiSolidRightArrow />
+          ) : null}
+        </p>
+        <p
+          className={`flex items-center gap-2 ${
+            pathname === "/chatbot-dashboard/chat-history"
+              ? "text-[#01BEED]"
+              : ""
+          }`}
+        >
+          <RiChatHistoryFill />
+          <Link
+            className="text-xs font-light"
+            href="/chatbot-dashboard/chat-history"
+          >
+            Links and Docs
+          </Link>
+
           {pathname === "/chatbot-dashboard/chat-history" ? (
             <BiSolidRightArrow />
           ) : null}

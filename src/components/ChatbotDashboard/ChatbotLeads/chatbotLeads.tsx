@@ -8,21 +8,45 @@ const ChatbotLeads = () => {
       {/* <table></table> */}
       <div className="bg-white rounded-b-xl overflow-hidden  text-sm w-full rounded-[40px] mb-8 mr-3 ">
         {/* Top Actions */}
-        <div className="flex flex-wrap items-center justify-between gap-4 bg-[#9592AE] px-6 py-4 ">
-          <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-4  px-6 py-4 ">
+          <div className="flex items-center gap-5">
             <label htmlFor="entries" className="text-gray-700 font-medium">
               Show
             </label>
-            <select
-              id="entries"
-              className=" px-2 py-1 bg-[#E0E0E0] rounded-md text-black outline-0"
-            >
-              <option>10</option>
-              <option>25</option>
-              <option>50</option>
-            </select>
-            <span className="text-gray-700 font-medium">entries</span>
-            <div className="relative w-full max-w-xs">
+            <div className="relative">
+              <select
+                id="entries"
+                className=" px-2 py-1 bg-[#F8F9FD] rounded-md text-black outline-0 w-[150px]"
+              >
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select>
+              <span className="text-gray-700 font-medium absolute right-[23px] top-[5px]">
+                entries
+              </span>
+            </div>
+            <div className="flex items-center bg-gray-100 rounded-lg p-3 w-full max-w-md">
+              <svg
+                className="w-5 h-5 text-gray-500 mr-3"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z"
+                />
+              </svg>
+              <input
+                type="text"
+                placeholder="Search..."
+                className=" focus:outline-none  text-gray-700 placeholder-gray-500 w-[253px]"
+              />
+            </div>
+            {/* <div className="relative w-full max-w-xs">
               <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg
                   className="w-4 h-4 text-white"
@@ -36,28 +60,23 @@ const ChatbotLeads = () => {
                   />
                 </svg>
               </span>
-              <input
-                type="text"
-                placeholder="Search..."
-                className="border border-white placeholder-white  pl-9  py-2 rounded-md  focus:outline-none focus:ring-2 focus:ring-purple-500 w-[140px]"
-              />
-            </div>
+              <input type="text" placeholder="search" />
+            </div> */}
 
-            <div className="flex items-center gap-2 px-4 py-2 rounded-md  border border-white text-white bg-[#928eb0] focus:outline-none focus:ring-2 focus:ring-purple-500 ">
+            <div className=" flex items-center gap-2 px-4 py-2 rounded-md w-[370px]  border border-white text-[#505A65] bg-[#F8F9FD] focus:outline-none focus:ring-2 focus:ring-purple-500 ">
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                width="15"
+                height="15"
+                viewBox="0 0 15 15"
                 fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M8 7V3m8 4V3m-9 8h10m-12 8h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  d="M13.7704 1.82418L10.1312 1.8242V0.918372C10.1312 0.667258 9.92778 0.463867 9.67667 0.463867C9.42555 0.463867 9.22216 0.667258 9.22216 0.918372V1.82397H5.58613V0.918372C5.58613 0.667258 5.38274 0.463867 5.13162 0.463867C4.88051 0.463867 4.67712 0.667258 4.67712 0.918372V1.82397H1.04426C0.542263 1.82397 0.135254 2.23098 0.135254 2.73298V14.0956C0.135254 14.5976 0.542263 15.0046 1.04426 15.0046H13.7704C14.2724 15.0046 14.6794 14.5976 14.6794 14.0956V2.73298C14.6794 2.23119 14.2724 1.82418 13.7704 1.82418ZM13.7704 14.0956H1.04426V2.73298H4.67712V3.19089C4.67712 3.44199 4.88051 3.6454 5.13162 3.6454C5.38274 3.6454 5.58613 3.44199 5.58613 3.19089V2.73321H9.22216V3.19112C9.22216 3.44223 9.42555 3.64563 9.67667 3.64563C9.92778 3.64563 10.1312 3.44223 10.1312 3.19112V2.73321H13.7704V14.0956ZM10.5889 7.73274H11.4979C11.7488 7.73274 11.9524 7.52913 11.9524 7.27824V6.36923C11.9524 6.11834 11.7488 5.91473 11.4979 5.91473H10.5889C10.338 5.91473 10.1344 6.11834 10.1344 6.36923V7.27824C10.1344 7.52913 10.338 7.73274 10.5889 7.73274ZM10.5889 11.3686H11.4979C11.7488 11.3686 11.9524 11.1652 11.9524 10.914V10.005C11.9524 9.75415 11.7488 9.55053 11.4979 9.55053H10.5889C10.338 9.55053 10.1344 9.75415 10.1344 10.005V10.914C10.1344 11.1654 10.338 11.3686 10.5889 11.3686ZM7.86183 9.55053H6.95282C6.70194 9.55053 6.49832 9.75415 6.49832 10.005V10.914C6.49832 11.1652 6.70194 11.3686 6.95282 11.3686H7.86183C8.11272 11.3686 8.31634 11.1652 8.31634 10.914V10.005C8.31634 9.75438 8.11272 9.55053 7.86183 9.55053ZM7.86183 5.91473H6.95282C6.70194 5.91473 6.49832 6.11834 6.49832 6.36923V7.27824C6.49832 7.52913 6.70194 7.73274 6.95282 7.73274H7.86183C8.11272 7.73274 8.31634 7.52913 8.31634 7.27824V6.36923C8.31634 6.11812 8.11272 5.91473 7.86183 5.91473ZM4.22579 5.91473H3.31679C3.0659 5.91473 2.86228 6.11834 2.86228 6.36923V7.27824C2.86228 7.52913 3.0659 7.73274 3.31679 7.73274H4.22579C4.47668 7.73274 4.6803 7.52913 4.6803 7.27824V6.36923C4.6803 6.11812 4.47668 5.91473 4.22579 5.91473ZM4.22579 9.55053H3.31679C3.0659 9.55053 2.86228 9.75415 2.86228 10.005V10.914C2.86228 11.1652 3.0659 11.3686 3.31679 11.3686H4.22579C4.47668 11.3686 4.6803 11.1652 4.6803 10.914V10.005C4.6803 9.75438 4.47668 9.55053 4.22579 9.55053Z"
+                  fill="#505A65"
                 />
               </svg>
+
               <span>Feb/2/2025</span>
             </div>
           </div>
@@ -75,23 +94,27 @@ const ChatbotLeads = () => {
               <th className="p-4">
                 <input type="checkbox" className="w-4 h-4 accent-[#5E2EFF]" />
               </th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Country
+              <th className="py-[14px] text-sm font-bold text-black p-4">
+                Lead Intiated
               </th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Started
+              <th className="py-[14px] text-sm font-bold text-black p-4">
+                Lead Status
               </th>
-              <th className="py-[14px] text-sm font-bold text-black">Status</th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Language
+              <th className="py-[14px] text-sm font-bold text-black p-4">
+                Status
               </th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Last message
+              <th className="py-[14px] text-sm font-bold text-black p-4">
+                Preferred Language
               </th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Platform
+              <th className="py-[14px] text-sm font-bold text-black p-4">
+                Recent
               </th>
-              <th className="py-[14px] text-sm font-bold text-black">Action</th>
+              <th className="py-[14px] text-sm font-bold text-black p-4">
+                Manage
+              </th>
+              <th className="py-[14px] text-sm font-bold text-black p-4">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody className="bg-[#f7f6fd]">
@@ -119,11 +142,11 @@ const ChatbotLeads = () => {
                     Hi, how are....
                   </td>
                   <td className="py-4">
-                    <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black">
+                    <span className="p-4 text-xs font-medium text-black">
                       Web
                     </span>
                   </td>
-                  <td className="py-4 flex items-center gap-2">
+                  <td className="py-4 flex items-center gap-5">
                     <button>
                       <Image
                         className="m-auto mb-4"
