@@ -8,7 +8,7 @@ const ChatbotSettings = () => {
       <div className="bg-[#312d63] min-h-screen p-4 w-[675px] rounded-[38px] mb-5">
         <div className="w-full  py-[50] ">
           {/* Basic Section */}
-          <div className="bg-white rounded-2xl overflow-hidden shadow-md">
+          <div className="bg-white rounded-2xl overflow-hidden shadow-md mb-5">
             <div className="bg-black text-white px-4 py-2 font-bold text-[22px]">
               Basic
             </div>
@@ -38,7 +38,7 @@ const ChatbotSettings = () => {
           </div>
 
           {/* Security Section */}
-          <div className="bg-white rounded-2xl overflow-hidden shadow-md">
+          <div className="bg-white rounded-2xl overflow-hidden shadow-md mb-5">
             <div className="bg-black  text-white px-4 py-2 font-bold text-[22px]">
               Security
             </div>
@@ -72,7 +72,7 @@ const ChatbotSettings = () => {
           </div>
 
           {/* Delete Account Section */}
-          <div className="bg-white rounded-2xl overflow-hidden shadow-md">
+          <div className="bg-white rounded-2xl overflow-hidden shadow-md mb-5">
             <div className="bg-black text-white px-4 py-2 font-bold text-[22px]">
               Delete Account
             </div>
@@ -90,6 +90,43 @@ const ChatbotSettings = () => {
               <div>
                 <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-1.5 text-sm font-bold rounded-[10px]">
                   Save
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* email branding Section */}
+          <div className="bg-white rounded-2xl overflow-hidden shadow-md mb-5">
+            <div className="bg-black text-white px-4 py-2 font-bold text-[22px]">
+              Email Branding
+            </div>
+            <div className="p-4 space-y-4 text-base text-black  font-light">
+              <p>
+                Email branding and removing chatbots branding is not available
+                on your plan
+              </p>
+
+              <div>
+                <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-1.5 text-sm font-bold rounded-[10px]">
+                  Upgrade Now
+                </button>
+              </div>
+            </div>
+          </div>
+
+            {/* Custom Domain Section */}
+            <div className="bg-white rounded-2xl overflow-hidden shadow-md mb-5">
+            <div className="bg-black text-white px-4 py-2 font-bold text-[22px]">
+            Custom Domain
+            </div>
+            <div className="p-4 space-y-4 text-base text-black  font-light">
+              <p>
+              Custom domains ar not available on your plan
+              </p>
+
+              <div>
+                <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-1.5 text-sm font-bold rounded-[10px]">
+                  Upgrade Now
                 </button>
               </div>
             </div>
