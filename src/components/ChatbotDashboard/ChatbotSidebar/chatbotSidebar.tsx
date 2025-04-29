@@ -51,12 +51,12 @@ const ChatbotSidebar = ({botPage, botId}:{botPage?: string, botId?: number}) => 
         <p className="text-gray-400">Training Data</p>
         <p className={`flex items-center gap-2 ${botPage==="links-docs" ? "text-[#01BEED]":""}`}>
         <MdOutlineDatasetLinked />
-        <Link className="text-xs font-light" href={`/chatbot-dashboard/links-docs/${botId}`}>Data Input</Link>
+        <Link className="text-xs font-light" href={`/chatbot-dashboard/links-docs/${botId}`}>Content Upload</Link>
         {botPage==="links-docs" ?  <BiSolidRightArrow /> : null }
         </p>
         <p className={`flex items-center gap-2 text-xs font-light ${botPage==="texts" ? "text-[#01BEED]":""}`}>
         <RxUpload /> 
-        <Link className="text-xs font-light" href={`/chatbot-dashboard/texts/${botId}`}>Content Upload</Link>
+        <Link className="text-xs font-light" href={`/chatbot-dashboard/texts/${botId}`}>Data Input</Link>
         {botPage==="texts" ?  <BiSolidRightArrow /> : null }
         </p>
         <p className={`flex items-center gap-2 text-xs font-light ${botPage==="faqs" ? "text-[#01BEED]":""}`}>

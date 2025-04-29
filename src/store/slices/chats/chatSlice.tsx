@@ -19,7 +19,7 @@ export const getChatbots = createAsyncThunk<any, void>(
       } else {
         return rejectWithValue("failed to fetch chatbots");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         return rejectWithValue(error.response.data.message);
       }
@@ -48,7 +48,7 @@ export const createChatbot = createAsyncThunk<
       } else {
         return rejectWithValue("failed to create chatbot!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
@@ -78,7 +78,7 @@ export const updateChatbot = createAsyncThunk<
       } else {
         return rejectWithValue("failed to create chatbot!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
@@ -90,9 +90,9 @@ export const updateChatbot = createAsyncThunk<
   }
 );
 
-export const updateChatbotTextContent = createAsyncThunk<
+export const updateChatbotWithoutRouter = createAsyncThunk<
   any,
-  { payload: TrainingText }
+  { payload: any }
 >(
   "chat/updateChatbotTextContent",
   async ({ payload }, { dispatch, rejectWithValue }) => {
@@ -107,7 +107,7 @@ export const updateChatbotTextContent = createAsyncThunk<
       } else {
         return rejectWithValue("failed to create chatbot!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
@@ -119,10 +119,7 @@ export const updateChatbotTextContent = createAsyncThunk<
   }
 );
 
-export const getChatbotsFaqs = createAsyncThunk<
-  any,
-  { bot_id?: number }
->(
+export const getChatbotsFaqs = createAsyncThunk<any, { bot_id?: number }>(
   "chat/getChatbotsFaqs",
   async ({ bot_id }, { dispatch, rejectWithValue }) => {
     try {
@@ -134,7 +131,7 @@ export const getChatbotsFaqs = createAsyncThunk<
       } else {
         return rejectWithValue("failed to get chats!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
@@ -148,22 +145,24 @@ export const getChatbotsFaqs = createAsyncThunk<
 
 export const deleteChatbotsFaqs = createAsyncThunk<
   any,
-  { bot_id?: number, faq_id?: number }
+  { bot_id?: number; faq_id?: number }
 >(
   "chat/deleteChatbotsFaqs",
   async ({ bot_id, faq_id }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response:any = await http.delete(`/chatbot/delete-faq/${bot_id}/${faq_id}`);
+      const response: any = await http.delete(
+        `/chatbot/delete-faq/${bot_id}/${faq_id}`
+      );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        getChatbotsFaqs({bot_id:bot_id});
+        getChatbotsFaqs({ bot_id: bot_id });
         toast.success("Faq deleted successfully!");
         return response.data;
       } else {
         return rejectWithValue("failed to get chats!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
@@ -175,10 +174,7 @@ export const deleteChatbotsFaqs = createAsyncThunk<
   }
 );
 
-export const deleteChatbotsAllFaqs = createAsyncThunk<
-  any,
-  { bot_id?: number }
->(
+export const deleteChatbotsAllFaqs = createAsyncThunk<any, { bot_id?: number }>(
   "chat/deleteChatbotsAllFaqs",
   async ({ bot_id }, { dispatch, rejectWithValue }) => {
     try {
@@ -186,13 +182,13 @@ export const deleteChatbotsAllFaqs = createAsyncThunk<
       const response = await http.delete(`/chatbot/delete-all-faqs/${bot_id}`);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        getChatbotsFaqs({bot_id:bot_id});
+        getChatbotsFaqs({ bot_id: bot_id });
         toast.success("Deleted all faqs successfully!");
         return response.data;
       } else {
         return rejectWithValue("failed to get chats!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
@@ -216,12 +212,12 @@ export const createChatbotFaqs = createAsyncThunk<
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toast.success("chatbot faqs created successfully!");
-        dispatch(getChatbotsFaqs({bot_id: payload?.bot_id}));
+        dispatch(getChatbotsFaqs({ bot_id: payload?.bot_id }));
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
@@ -233,17 +229,16 @@ export const createChatbotFaqs = createAsyncThunk<
   }
 );
 
-export const uploadDocument = createAsyncThunk<
-  any,
-  { payload: FormData }
->(
+export const uploadDocument = createAsyncThunk<any, { payload: FormData }>(
   "chat/uploadDocument",
   async ({ payload }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await http.post("/chatbot/upload-document", payload, {headers: {
-        "Content-Type": "multipart/form-data"
-      }});
+      const response = await http.post("/chatbot/upload-document", payload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toast.success("Document uploaded successfully!");
@@ -252,7 +247,7 @@ export const uploadDocument = createAsyncThunk<
       } else {
         return rejectWithValue("failed to create chatbot!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
@@ -264,22 +259,21 @@ export const uploadDocument = createAsyncThunk<
   }
 );
 
-export const getSingleChatbot = createAsyncThunk<
-  any,
-  { botId: number }
->(
+export const getSingleChatbot = createAsyncThunk<any, { botId: number }>(
   "chat/getSingleChatbot",
   async ({ botId }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await http.get("/chatbot/get-bot", { params: { botId }});
+      const response = await http.get("/chatbot/get-bot", {
+        params: { botId },
+      });
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
@@ -291,10 +285,7 @@ export const getSingleChatbot = createAsyncThunk<
   }
 );
 
-export const getChatbotsMessages = createAsyncThunk<
-  any,
-  { chat_id?: number }
->(
+export const getChatbotsMessages = createAsyncThunk<any, { chat_id?: number }>(
   "chat/getChatbotsMessages",
   async ({ chat_id }, { dispatch, rejectWithValue }) => {
     try {
@@ -306,7 +297,7 @@ export const getChatbotsMessages = createAsyncThunk<
       } else {
         return rejectWithValue("failed to get chats!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
@@ -318,23 +309,20 @@ export const getChatbotsMessages = createAsyncThunk<
   }
 );
 
-export const createChatsId = createAsyncThunk<
-  any,
-  { bot_id?: number }
->(
+export const createChatsId = createAsyncThunk<any, { bot_id?: number }>(
   "chat/createChatsId",
   async ({ bot_id }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await http.post("/chatbot/chats-id",  {bot_id} );
+      const response = await http.post("/chatbot/chats-id", { bot_id });
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        dispatch(getChatbotsMessages({chat_id: response?.data?.id}))
+        dispatch(getChatbotsMessages({ chat_id: response?.data?.id }));
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot id!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
@@ -346,7 +334,9 @@ export const createChatsId = createAsyncThunk<
   }
 );
 
-export const addUserMessage = createAction<{ message: string; sender: string }>('chat/addUserMessage');
+export const addUserMessage = createAction<{ message: string; sender: string }>(
+  "chat/addUserMessage"
+);
 
 export const conversationMessage = createAsyncThunk<
   any,
@@ -357,15 +347,18 @@ export const conversationMessage = createAsyncThunk<
     try {
       dispatch(startLoadingActivity());
       dispatch(addUserMessage({ message: payload.message, sender: "user" }));
-      const response = await http.post(`/chatbot/chats/${payload?.chat_id}/message`, payload);
+      const response = await http.post(
+        `/chatbot/chats/${payload?.chat_id}/message`,
+        payload
+      );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        dispatch(getChatbotsMessages({chat_id: payload.chat_id}))
+        dispatch(getChatbotsMessages({ chat_id: payload.chat_id }));
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
@@ -379,22 +372,30 @@ export const conversationMessage = createAsyncThunk<
 
 export const getChatbotsUserHistory = createAsyncThunk<
   any,
-  { bot_id?: number, page?: number; limit?: number; search?: string }
+  { bot_id?: number; page?: number; limit?: number; search?: string }
 >(
   "chat/getChatbotsUserHistory",
-  async ({ bot_id, page = 1, limit = 10, search }, { dispatch, rejectWithValue }) => {
+  async (
+    { bot_id, page = 1, limit = 10, search },
+    { dispatch, rejectWithValue }
+  ) => {
     try {
       dispatch(startLoadingActivity());
-      const params = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+      });
       if (search) params.append("search", search);
-      const response = await http.get(`/chatbot/chats-history/${bot_id}?${params}`);
+      const response = await http.get(
+        `/chatbot/chats-history/${bot_id}?${params}`
+      );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         return response.data;
       } else {
         return rejectWithValue("failed to get chats!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
@@ -408,22 +409,24 @@ export const getChatbotsUserHistory = createAsyncThunk<
 
 export const deleteChats = createAsyncThunk<
   any,
-  { bot_id?: number, chat_ids?:number[] }
+  { bot_id?: number; chat_ids?: number[] }
 >(
   "chat/deleteChats",
   async ({ bot_id, chat_ids }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await http.delete(`/chatbot/delete-chats/${bot_id}`, {data:{chat_ids}});
+      const response = await http.delete(`/chatbot/delete-chats/${bot_id}`, {
+        data: { chat_ids },
+      });
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toast.success("Chats deleted Successfully!");
-        dispatch(getChatbotsUserHistory({bot_id: bot_id}));
+        dispatch(getChatbotsUserHistory({ bot_id: bot_id }));
         return response.data;
       } else {
         return rejectWithValue("failed to delete chats!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
@@ -435,18 +438,16 @@ export const deleteChats = createAsyncThunk<
   }
 );
 
-
-
 const initialState = {
   loading: false,
   data: [],
   botData: {},
   chatbots: [],
-  chatbotData:{} as ChatbotsData,
-  chatIdData:{} as chatsIdData,
-  chatMessages:[] as ChatbotMessages[],
-  chatbotHistory:{} as ChatbotHistoryMessages,
-  chatbotFaqs: [] as ChatbotFaqsQuesAnswer[]
+  chatbotData: {} as ChatbotsData,
+  chatIdData: {} as chatsIdData,
+  chatMessages: [] as ChatbotMessages[],
+  chatbotHistory: {} as ChatbotHistoryMessages,
+  chatbotFaqs: [] as ChatbotFaqsQuesAnswer[],
 };
 
 const chatSlice = createSlice({
@@ -534,7 +535,7 @@ const chatSlice = createSlice({
       })
       .addCase(getChatbotsFaqs.rejected, (state, action) => {
         state.loading = false;
-      })
+      });
   },
 });
 

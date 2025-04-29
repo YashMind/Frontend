@@ -27,7 +27,7 @@ const ChatbotDetails = () => {
                 <span className="text-[#6B6B6B]">Users:</span> 0
               </h2>
               <h2 className="text-black font-semibold text-lg ">
-                <span className="text-[#6B6B6B]">Messages:</span> 0
+                <span className="text-[#6B6B6B]">Tokens:</span> 0
               </h2>
             </div>
           </div>
@@ -54,7 +54,7 @@ const ChatbotDetails = () => {
                 <span className="text-[#6B6B6B]">Users:</span> 0
               </h2>
               <h2 className="text-black font-semibold text-lg ">
-                <span className="text-[#6B6B6B]">Messages:</span>
+                <span className="text-[#6B6B6B]">Tokens:</span>
               </h2>
             </div>
           </div>

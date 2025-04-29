@@ -22,6 +22,7 @@ interface ChatbotsData {
   created_at: string;
   updated_at: string;
   text_content: string;
+  creativity: number;
 }
 
 interface TextMessage {
@@ -50,7 +51,7 @@ interface ChatbotMessages {
 }
 
 interface ChatbotHistoryMessages {
-  data:ChatbotMessages;
+  data: ChatbotMessages;
   totalCount: number;
   totalPages: number;
   currentPage: number;
@@ -59,10 +60,10 @@ interface ChatbotHistoryMessages {
 
 interface ChatbotFaqs {
   bot_id?: number;
-  questions:{
+  questions: {
     question: string;
     answer: string;
-  }
+  };
 }
 
 interface ChatbotFaqsQuesAnswer {
@@ -71,7 +72,7 @@ interface ChatbotFaqsQuesAnswer {
   created_at: string;
   id: number;
   question: string;
-  updated_at: string
+  updated_at: string;
   user_id: number;
   length?: number;
   faqId?: number;

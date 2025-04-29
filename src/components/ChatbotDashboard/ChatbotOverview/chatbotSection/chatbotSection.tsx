@@ -56,6 +56,7 @@ const ChatbotSection = ({ chatbotData }: { chatbotData: ChatbotsData }) => {
   }, [chatMessages, chatIdData.bot_id, chatIdData.id]);
   return (
     <div className="w-[320] bg-white  h-[500px] rounded-lg shadow-md flex flex-col justify-between ">
+      
       <div className="p-4 flex items-center gap-2 border-b">
         <img
           src="/images/face2.webp"

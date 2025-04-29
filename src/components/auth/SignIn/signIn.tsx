@@ -26,6 +26,7 @@ const schema = yup.object().shape({
     .matches(/\d/, "Password must contain at least one number")
     .matches(/[@$!%*?&#]/, "Password must contain at least one special character")
 });
+
 const SignIn = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
