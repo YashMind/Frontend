@@ -6,11 +6,12 @@ import { useForm, Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   createChatbot,
+  createChatbotDocLinks,
   updateChatbot,
   uploadDocument,
 } from "@/store/slices/chats/chatSlice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
 import toast from "react-hot-toast";
 
 const schema = yup.object().shape({
@@ -26,6 +27,7 @@ const AddBotData = ({ botId }: { botId?: number }) => {
   );
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [dragActive, setDragActive] = useState(false);
+  const { chatbotData } = useSelector((state: RootState) => state.chat);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
@@ -41,7 +43,7 @@ const AddBotData = ({ botId }: { botId?: number }) => {
       train_from: "Full website",
       target_link: "",
       document_link: "",
-      text_content:""
+      text_content: "",
     },
   });
 
@@ -100,20 +102,24 @@ const AddBotData = ({ botId }: { botId?: number }) => {
   };
 
   const onSubmit =
-    (formType: "form1" | "form2") => (data: UpdateChatbotData) => {
-      data.id = botId;
+    (formType: "form1" | "form2") => (data: ChatbotDocLinksData) => {
+      data.bot_id = botId;
+      data.chatbot_name = chatbotData?.chatbot_name;
       if (formType === "form2" && data.document_link === "") {
         toast.error("please upload a file!");
       } else {
-        dispatch(updateChatbot({ payload: data, router }));
+        console.log("data ", data);
+        dispatch(createChatbotDocLinks({ payload: data }));
+        reset();
       }
-      reset();
     };
 
   const handleTrainFromClick = (value: string) => {
     setActiveTrainFrom(value);
     setValue("train_from", value);
   };
+
+  console.log("chatbotData111111 ", chatbotData);
   return (
     <div className="min-h-screen bg-[#241E4E] text-white p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
@@ -129,20 +135,22 @@ const AddBotData = ({ botId }: { botId?: number }) => {
           </p>
           <form onSubmit={handleSubmit(onSubmit("form1"))}>
             <div className="flex flex-wrap gap-2 mb-9">
-              {["Full website", "Webpage", "Pdf", "WordDoc"].map((label:string) => (
-                <button
-                  key={label}
-                  type="button"
-                  onClick={() => handleTrainFromClick(label)}
-                  className={`px-4 py-1 rounded-md text-sm font-semibold ${
-                    activeTrainFrom === label
-                      ? "bg-cyan-500 text-white"
-                      : "bg-gray-400 text-white"
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
+              {["Full website", "Webpage", "Pdf", "WordDoc"].map(
+                (label: string) => (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => handleTrainFromClick(label)}
+                    className={`px-4 py-1 rounded-md text-sm font-semibold ${
+                      activeTrainFrom === label
+                        ? "bg-cyan-500 text-white"
+                        : "bg-gray-400 text-white"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                )
+              )}
             </div>
 
             <div className="flex items-center gap-2">

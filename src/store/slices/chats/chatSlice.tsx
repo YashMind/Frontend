@@ -90,6 +90,35 @@ export const updateChatbot = createAsyncThunk<
   }
 );
 
+export const createChatbotDocLinks = createAsyncThunk<any, { payload: any }>(
+  "chat/createChatbotDocLinks",
+  async ({ payload }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.post(
+        "/chatbot/create-bot-doc-links",
+        payload
+      );
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toast.success("chatbot updated successfully!");
+        // dispatch(getChatbots());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to create chatbot!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during chatbot");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 export const updateChatbotWithoutRouter = createAsyncThunk<
   any,
   { payload: any }
@@ -438,6 +467,106 @@ export const deleteChats = createAsyncThunk<
   }
 );
 
+export const getChatbotsDocLinks = createAsyncThunk<
+  any,
+  {
+    bot_id?: number;
+    page?: number;
+    limit?: number;
+    search?: string;
+    sortBy?: string;
+    sortOrder?: string;
+  }
+>(
+  "chat/getChatbotsDocLinks",
+  async (
+    { bot_id, page, limit, search, sortBy, sortOrder },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      dispatch(startLoadingActivity());
+      const params = {
+        search: search,
+        page: page?.toString(),
+        limit: limit?.toString(),
+        sort_by: sortBy,
+        sort_order: sortOrder,
+      };
+      const response = await http.get(`/chatbot/get-bot-doc-links/${bot_id}`, {
+        params,
+      });
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get chats!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const deleteDocLinks = createAsyncThunk<
+  any,
+  {
+    bot_id?: number;
+    doc_ids?: number[];
+    page?: number;
+    limit?: number;
+    search?: string;
+    sortBy?: string;
+    sortOrder?: string;
+  }
+>(
+  "chat/deleteDocLinks",
+  async (
+    { bot_id, doc_ids, page, limit, search, sortBy, sortOrder },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.delete(
+        `/chatbot/delete-doc-links/${bot_id}`,
+        {
+          data: { doc_ids },
+        }
+      );
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toast.success("Chats deleted Successfully!");
+        dispatch(
+          getChatbotsDocLinks({
+            bot_id: bot_id,
+            page,
+            limit,
+            search,
+            sortBy,
+            sortOrder,
+          })
+        );
+        return response.data;
+      } else {
+        return rejectWithValue("failed to delete chats!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during delete chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 const initialState = {
   loading: false,
   data: [],
@@ -448,6 +577,7 @@ const initialState = {
   chatMessages: [] as ChatbotMessages[],
   chatbotHistory: {} as ChatbotHistoryMessages,
   chatbotFaqs: [] as ChatbotFaqsQuesAnswer[],
+  ChatbotDocLinksData: {} as ChatbotDocLinks,
 };
 
 const chatSlice = createSlice({
@@ -534,6 +664,17 @@ const chatSlice = createSlice({
         state.chatbotFaqs = action?.payload;
       })
       .addCase(getChatbotsFaqs.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(getChatbotsDocLinks.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getChatbotsDocLinks.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log("action?.payload ", action?.payload);
+        state.ChatbotDocLinksData = action?.payload;
+      })
+      .addCase(getChatbotsDocLinks.rejected, (state, action) => {
         state.loading = false;
       });
   },
