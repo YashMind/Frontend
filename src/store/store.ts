@@ -3,6 +3,7 @@ import signUpSlice from "@/store/slices/auth/authSlice";
 import activitySlice from "@/store/slices/activity/activitySlice";
 import chatSlice from "@/store/slices/chats/chatSlice";
 import promptsSlice from "@/store/slices/chats/tuningSlice";
+import appearanceSlice from "@/store/slices/chats/appearanceSettings";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     activity: activitySlice,
     chat: chatSlice,
     tuning: promptsSlice,
+    appearance: appearanceSlice,
   },
 });
 

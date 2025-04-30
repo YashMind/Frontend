@@ -77,3 +77,24 @@ interface ChatbotFaqsQuesAnswer {
   length?: number;
   faqId?: number;
 }
+
+interface ChatbotSettings {
+  id: number;
+  title_value: string;
+  title_is_active: boolean;
+  welcome_message_value: string;
+  welcome_message_is_active: boolean;
+  suggestions_value: string;
+  suggestions_is_active: boolean;
+  placeholder_value: string;
+  placeholder_is_active: boolean;
+  lead_collection: boolean;
+  send_button_color: string;
+  chat_icon: string;
+  chat_icon_color: string;
+  user_message_bg: string;
+  image: string;
+  dots_color: string;
+  message_bg: string;
+  live_message_bg: string;
+}

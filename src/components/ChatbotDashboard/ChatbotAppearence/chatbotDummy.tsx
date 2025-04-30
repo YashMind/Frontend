@@ -1,0 +1,148 @@
+"use client";
+import React, { useRef, useState } from "react";
+
+import Image from "next/image";
+const ChatbotDummy = ({
+  chatbotSettings,
+}: {
+  chatbotSettings: Partial<Omit<ChatbotSettings, "id">>;
+}) => {
+  const messagesEndRef: any = useRef(null);
+
+  return (
+    <div className="w-[320] bg-white  h-[500px] rounded-lg shadow-md flex flex-col justify-between ">
+      <div className="p-4 flex items-center gap-2 border-b">
+        <img
+          src="/images/face2.webp"
+          alt="Bot"
+          className="w-8 h-8 rounded-full"
+        />
+        {chatbotSettings.title_is_active && (
+          <span className="font-semibold text-black">
+            {chatbotSettings?.title_value}
+          </span>
+        )}
+      </div>
+      <div className="flex-1 p-4 overflow-y-auto text-black bg-gray-50">
+        {chatbotSettings.welcome_message_is_active && (
+          <div className="flex justify-start gap-2 mb-2">
+            <Image
+              src="/images/face2.webp"
+              alt="Bot"
+              className="w-8 h-8 rounded-full"
+              width={20}
+              height={20}
+            />
+            <div
+              className="bg-gray-200 p-3 rounded-xl max-w-xs text-sm"
+              style={{
+                backgroundColor: chatbotSettings.message_bg
+                  ? chatbotSettings.message_bg
+                  : "#c2c2c2",
+              }}
+            >
+              {chatbotSettings.welcome_message_value}
+            </div>
+          </div>
+        )}
+        <div className={`flex mb-2 justify-end`}>
+          <div
+            className={`p-3 rounded-xl max-w-xs text-sm text-white`}
+            style={{
+              backgroundColor: chatbotSettings.user_message_bg
+                ? chatbotSettings.user_message_bg
+                : "135de8",
+            }}
+          >
+            What Services Do you provide?
+          </div>
+
+          <Image
+            src="/images/userimg.png"
+            alt="User"
+            className="w-8 h-8 rounded-full ml-2"
+            width={20}
+            height={20}
+          />
+        </div>
+
+        <div className="flex justify-start items-center gap-2 mb-2">
+          <Image
+            src="/images/face2.webp"
+            alt="Bot"
+            className="w-8 h-8 rounded-full"
+            width={20}
+            height={20}
+          />
+          {chatbotSettings.dots_color && (
+            <div className="bg-gray-200 text-black p-1 rounded-xl max-w-xs text-sm animate-pulse">
+              <span className="flex gap-1 text-3xl">
+                <span
+                  className="animate-bounce"
+                  style={{ color: chatbotSettings.dots_color ?? "#135de8" }}
+                >
+                  .
+                </span>
+                <span
+                  className="animate-bounce !delay-150"
+                  style={{ color: chatbotSettings.dots_color ?? "#135de8" }}
+                >
+                  .
+                </span>
+                <span
+                  className="animate-bounce !delay-300"
+                  style={{ color: chatbotSettings.dots_color ?? "#135de8" }}
+                >
+                  .
+                </span>
+              </span>
+            </div>
+          )}
+        </div>
+
+        <div ref={messagesEndRef} />
+      </div>
+      <form>
+        {chatbotSettings.suggestions_is_active && (
+          <div className="bg-gray-300 text-gray-600 mx-2 rounded-md text-sm py-0.5 px-1.5">
+            <p>{chatbotSettings.suggestions_value}</p>
+          </div>
+        )}
+        <div className="border-t p-2 flex items-center gap-2">
+          <input
+            type="text"
+            placeholder={
+              chatbotSettings.placeholder_is_active
+                ? chatbotSettings.placeholder_value
+                : "Type a message..."
+            }
+            className={` w-full p-2 text-sm rounded-md border text-black border-gray-300 focus:outline-none`}
+          />
+          <button
+            className=" p-2 rounded text-white"
+            style={{
+              backgroundColor: chatbotSettings.send_button_color
+                ? chatbotSettings.send_button_color
+                : "#135de8",
+            }}
+            type="submit"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z" />
+            </svg>
+          </button>
+        </div>
+      </form>
+      <div className="text-[#6B6B6B] text-center text-sm py-5">
+        <h6>powered by fasterbots</h6>
+      </div>
+    </div>
+  );
+};
+
+export default ChatbotDummy;

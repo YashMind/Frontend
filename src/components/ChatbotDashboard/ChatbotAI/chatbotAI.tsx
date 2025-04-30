@@ -10,6 +10,7 @@ import {
   createPrompt,
   fetchBotPrompts,
 } from "@/store/slices/chats/tuningSlice";
+import toast from "react-hot-toast";
 // yup schema
 const schema = yup.object().shape({
   type: yup.string().required("Prompt type is a required field"),
@@ -44,28 +45,56 @@ const promptTypes = [
 ];
 
 const ChatbotAI = ({ botId }: { botId?: number }) => {
-  const [service, setService] = useState("General Customer Service");
   const { chatbotData } = useSelector((state: RootState) => state.chat);
   const prompts = useSelector(
-    (state: RootState) => state.tuning.promptsByBotId
+    (state: RootState) => state.tuning.promptsByBotId[botId]
   );
   const [creativity, setCreativity] = useState<number>(
     chatbotData.creativity || 0
   );
+
+  const [saved, setSaved] = useState<boolean>(true);
+
   const dispatch = useDispatch<AppDispatch>();
   const {
     register,
     handleSubmit,
     reset,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<Prompts>({
     resolver: yupResolver(schema),
     defaultValues: {
-      type: "General Customer Service",
+      type: "E-commerce",
       prompt: "",
     },
   });
+
+  useEffect(() => {
+    if (prompts && prompts.length) {
+      const defaultPrompt: any = prompts[0];
+      if (defaultPrompt) {
+        setValue("type", defaultPrompt.type);
+        setValue("prompt", defaultPrompt.prompt);
+      } else {
+        setValue("type", "E-commerce");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (prompts) {
+      const selectedType = watch("type");
+      const prompt = prompts.find((item) => item.type === selectedType);
+
+      if (prompt) {
+        setValue("prompt", prompt.prompt);
+      } else {
+        setValue("prompt", "");
+      }
+    }
+  }, [watch("type")]);
 
   useEffect(() => {
     if (botId) dispatch(fetchBotPrompts(botId));
@@ -73,8 +102,37 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
 
   const onSubmit = (data: Prompts) => {
     if (promptTypes.includes(data.type) && data.prompt.trim() != "" && botId) {
-      dispatch(createPrompt({ prompts: [{ ...data }], bot_id: botId }));
+      dispatch(createPrompt({ prompts: [{ ...data }], bot_id: botId }))
+        .unwrap()
+        .then(() => {
+          toast.success("Prompt Updated Successfully");
+          dispatch(fetchBotPrompts(botId));
+          setSaved(true);
+        })
+        .catch((e) => {
+          toast.error(e);
+        });
     }
+  };
+
+  const onDelete = () => {
+    if (botId)
+      dispatch(
+        createPrompt({
+          bot_id: botId,
+          prompts: [{ prompt: "", type: watch("type") }],
+        })
+      )
+        .unwrap()
+        .then(() => {
+          toast.success("Prompt Deleted Successfully");
+          setValue("prompt", "");
+          dispatch(fetchBotPrompts(botId));
+          setSaved(true);
+        })
+        .catch((e) => {
+          toast.error(e);
+        });
   };
 
   const handleCreativityChange = (e: React.MouseEvent<HTMLInputElement>) => {
@@ -86,7 +144,6 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
     }
   };
 
-  console.log(prompts, "PROMPTS");
   return (
     <div className="w-full">
       <h2 className="text-2xl font-bold my-4">AI</h2>
@@ -140,13 +197,35 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
             <select
               className="bg-[#797879] text-sm font-bold px-4 py-2 rounded-md border-transparent outline-0"
               {...register("type")}
+              value={watch("type")}
+              onChange={(e) => {
+                const target = e.target.value;
+                if (!saved) {
+                  showConfirmToast(
+                    `The Changes in ${watch(
+                      "type"
+                    )} is not saved yet. you want to delete changes?
+                    `,
+                    () => {
+                      setValue("type", target);
+                      setSaved(true);
+                    },
+                    () => null
+                  );
+                } else {
+                  setValue("type", e.target.value);
+                }
+              }}
             >
               {promptTypes.map((item) => {
                 return <option value={item}>{item}</option>;
               })}
             </select>
             <div className="flex gap-2">
-              <button className="bg-[#4B4351] text-white text-sm px-4 py-2 rounded-md">
+              <button
+                onClick={() => onDelete()}
+                className="bg-[#4B4351] text-white text-sm px-4 py-2 rounded-md cursor-pointer"
+              >
                 Delete
               </button>
               <button
@@ -170,6 +249,10 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
                 placeholder="Enter your content training here"
                 className="flex-grow bg-[#DADADA] rounded-xl p-4 placeholder-[#727272] text-black resize-none outline-none text-sm font-bold"
                 {...register("prompt")}
+                onChange={(e) => {
+                  setValue("prompt", e.target.value);
+                  setSaved(false);
+                }}
               />
               {errors.prompt && (
                 <span className="text-red-500">{errors?.prompt?.message}</span>
@@ -180,7 +263,10 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
           {/* Reset Button */}
           <div className="flex justify-end mt-2">
             <button
-              onClick={() => reset()}
+              onClick={() => {
+                reset();
+                setSaved(false);
+              }}
               className="bg-[#625A67] px-4 py-1 rounded-md text-sm"
             >
               Reset
@@ -189,6 +275,42 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
         </div>
       </div>
     </div>
+  );
+};
+
+const showConfirmToast = (
+  message: string,
+  onConfirm: () => void,
+  onDismiss: () => void
+) => {
+  // TODO: Need Designing
+  toast.dismiss();
+  toast(
+    (t) => (
+      <div>
+        <p>{message}</p>
+        <div style={{ marginTop: "8px" }}>
+          <button
+            onClick={() => {
+              onConfirm();
+              toast.dismiss(t.id);
+            }}
+            style={{ marginRight: "8px" }}
+          >
+            Yes
+          </button>
+          <button
+            onClick={() => {
+              onDismiss();
+              toast.dismiss(t.id);
+            }}
+          >
+            No
+          </button>
+        </div>
+      </div>
+    ),
+    { duration: 60000 }
   );
 };
 

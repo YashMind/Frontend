@@ -72,7 +72,9 @@ const ChatbotMain = ({
             {botPage === "texts" ? <ChatbotTexts botId={botId} /> : null}
             {botPage === "faqs" ? <ChatbotQA botId={botId} /> : null}
             {botPage === "ai" ? <ChatbotAI botId={botId} /> : null}
-            {botPage === "appearence" ? <ChatbotAppearence /> : null}
+            {botPage === "appearence" ? (
+              <ChatbotAppearence botId={botId} />
+            ) : null}
             {botPage === "deploy" ? <ChatbotDeploy /> : null}
             {botPage === "integration" ? <ChatbotIntegration /> : null}
             {botPage === "settings" ? <ChatbotSettings /> : null}
