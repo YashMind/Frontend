@@ -1,7 +1,7 @@
 import ChatbotEmbedComponent from "@/components/ChatbotEmbed/ChatbotEmbed";
 
 interface EmbedChatbotProps {
-  params: Promise<{ botId?: string }>;
+  params: Promise<{ botId?: string; }>;
 }
 const EmbedChatbotPage = async (props: EmbedChatbotProps) => {
   const { botId } = await props.params;

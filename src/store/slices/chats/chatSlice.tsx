@@ -363,6 +363,57 @@ export const createChatsId = createAsyncThunk<any, { bot_id?: number }>(
   }
 );
 
+export const createChatsIdToken = createAsyncThunk<any, { token?: string }>(
+  "chat/createChatsIdToken",
+  async ({ token }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.post("/chatbot/chats-id-token", { token });
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        dispatch(getChatbotsMessages({ chat_id: response?.data?.id }));
+        dispatch(getSingleChatbot({botId: response?.data?.bot_id}))
+        return response.data;
+      } else {
+        return rejectWithValue("failed to create chatbot id!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during creating chatbot id");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const deleteChatsMessagesToken = createAsyncThunk<any, { token?: string, chat_id?:number }>(
+  "chat/deleteChatsMessagesToken",
+  async ({ token, chat_id }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.delete(`/chatbot/chats-delete-token/${token}`);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        dispatch(getChatbotsMessages({ chat_id: chat_id }));
+        return response.data;
+      } else {
+        return rejectWithValue("failed to create chatbot id!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during creating chatbot id");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 export const addUserMessage = createAction<{ message: string; sender: string }>(
   "chat/addUserMessage"
 );
@@ -627,6 +678,17 @@ const chatSlice = createSlice({
         state.chatIdData = action?.payload;
       })
       .addCase(createChatsId.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(createChatsIdToken.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createChatsIdToken.fulfilled, (state, action) => {
+        state.loading = false;
+        state.chatIdData = action?.payload;
+      })
+      .addCase(createChatsIdToken.rejected, (state, action) => {
         state.loading = false;
       })
 

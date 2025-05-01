@@ -5,8 +5,10 @@ import { useForm, Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { conversationMessage } from "@/store/slices/chats/chatSlice";
+import { conversationMessage, createChatsId, createChatsIdToken, deleteChatsMessagesToken } from "@/store/slices/chats/chatSlice";
 import Image from "next/image";
+import { VscClearAll } from "react-icons/vsc";
+
 const schema = yup.object().shape({
   message: yup.string().required("Message is required"),
   chat_id: yup.number(),
@@ -35,15 +37,27 @@ const ChatbotEmbedSection = ({ botId, domainUrl }: { botId?: string; domainUrl?:
     (state: RootState) => state.chat.chatIdData
   );
   const chatMessages = useSelector(
-    (state: RootState) => state.chat.chatMessages
-  );
-  const onSubmit = (data: TextMessage) => {
+      (state: RootState) => state.chat.chatMessages
+    );
+    
+    const chatbotData = useSelector((state: RootState) => state.chat.chatbotData);
+    const onSubmit = (data: TextMessage) => {
     setIsBotTyping(true);
     dispatch(conversationMessage({ payload: data })).finally(() => {
       setIsBotTyping(false);
+      reset();
     });
-    reset();
   };
+
+  const hasRun = useRef(false);
+
+  useEffect(()=>{
+      if (hasRun.current) return;
+      hasRun.current = true;
+        if (botId !== undefined) {
+        dispatch(createChatsIdToken({token: botId}));
+        }
+      },[dispatch, botId])
 
   const messagesEndRef: any = useRef(null);
 
@@ -55,7 +69,11 @@ const ChatbotEmbedSection = ({ botId, domainUrl }: { botId?: string; domainUrl?:
     }
   }, [chatMessages, chatIdData.bot_id, chatIdData.id]);
 
-  console.log("botId, domainUrl ", botId, domainUrl)
+  
+  const handleDeleteChats = () => {
+    dispatch(deleteChatsMessagesToken({token:botId, chat_id: chatIdData.id}))
+  }
+
   return (
     <div className="w-full bg-white  h-[650px] rounded-lg shadow-md flex flex-col justify-between ">
       <div className="p-4 flex items-center gap-2 border-b">
@@ -65,7 +83,7 @@ const ChatbotEmbedSection = ({ botId, domainUrl }: { botId?: string; domainUrl?:
           className="w-8 h-8 rounded-full"
         />
         <span className="font-semibold text-black">
-          {/* {chatbotData?.chatbot_name} */}
+          {chatbotData?.chatbot_name}
         </span>
       </div>
       <div className="flex-1 p-4 overflow-y-auto text-black bg-gray-50">
@@ -137,15 +155,18 @@ const ChatbotEmbedSection = ({ botId, domainUrl }: { botId?: string; domainUrl?:
         <div ref={messagesEndRef} />
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="border-t p-2 flex items-center gap-2">
+        <div className="border-t p-2 flex items-center gap-2 w-full">
+        <div className="relative w-full">
+        {chatMessages?.length > 0 ? <VscClearAll size={25} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" onClick={()=>handleDeleteChats()} /> : null }
           <input
             {...register("message")}
             type="text"
             placeholder="Type a message..."
             className={`${
               errors.message ? "border-red-500" : ""
-            } w-full p-2 text-sm rounded-md border text-black border-gray-300 focus:outline-none`}
+            } w-full ${chatMessages?.length ? "pl-12" : ""} p-2 text-sm rounded-md border text-black border-gray-300 focus:outline-none`}
           />
+          </div>
           <button className="bg-[#05BDFD] p-2 rounded text-white" type="submit">
             <svg
               xmlns="http://www.w3.org/2000/svg"
