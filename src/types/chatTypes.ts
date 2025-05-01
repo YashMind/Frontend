@@ -34,6 +34,7 @@ interface ChatbotsData {
   updated_at: string;
   text_content: string;
   creativity: number;
+  token: string;
 }
 
 interface TextMessage {
