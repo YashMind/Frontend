@@ -26,6 +26,8 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
   const chatUserHistory: any = useSelector(
     (state: RootState) => state.chat.chatbotHistory
   );
+
+  console.log("chatUserHistory", chatUserHistory);
   useEffect(() => {
     if (botId) {
       dispatch(getChatbotsUserHistory({ bot_id: botId, page, search }));
@@ -35,10 +37,11 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
-    const allRowIds = Object.keys(chatUserHistory?.data).map((id) => Number(id));
+    const allRowIds = Object.keys(chatUserHistory?.data).map((id) =>
+      Number(id)
+    );
     setSelectedIds(isChecked ? allRowIds : []);
   };
-
 
   const handleSelectRow = (id: number, checked: boolean) => {
     setSelectedIds((prev) =>
@@ -56,18 +59,21 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
     setCurrentMessages(chats);
   };
 
-  const handleCreateDownloadPdf = (messages: any[], chatBot:ChatbotsData) => {
+  const handleCreateDownloadPdf = (messages: any[], chatBot: ChatbotsData) => {
     const doc = new jsPDF();
     const botId = messages[0]?.bot_id || "Unknown";
     const chatId = messages[0]?.chat_id || "Unknown";
     const userId = messages[0]?.user_id || "Unknown";
     const chatbotCreatedAt = format(new Date(chatBot?.created_at), "PPpp");
     const createdAt = format(new Date(messages[0]?.created_at), "PPpp");
-    const endAt = format(new Date(messages[messages.length-1]?.created_at), "PPpp");
-  
+    const endAt = format(
+      new Date(messages[messages.length - 1]?.created_at),
+      "PPpp"
+    );
+
     doc.setFontSize(18);
     doc.text("Chat History", 14, 20);
-    
+
     autoTable(doc, {
       startY: 30,
       head: [["Chatbot ID", "Chatbot Name", "User Id", "Started On"]],
@@ -75,23 +81,22 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
       styles: { fontSize: 10 },
       headStyles: { fillColor: [98, 77, 227], textColor: 255 },
     });
-    
+
     autoTable(doc, {
       startY: 60,
       head: [["Chat ID", "Location", "Started On", "Ended On"]],
       body: [[chatId, "Unknown", createdAt, endAt]],
       styles: { fontSize: 10 },
-      headStyles: { fillColor: [98, 77, 227], textColor: 255 }
+      headStyles: { fillColor: [98, 77, 227], textColor: 255 },
     });
-  
 
     const rows = messages.map((msg, idx) => [
       idx + 1,
       msg.sender === "user" ? "User" : "Bot",
       msg.message,
-      format(new Date(msg.created_at), "PPpp")
+      format(new Date(msg.created_at), "PPpp"),
     ]);
-  
+
     autoTable(doc, {
       startY: 90,
       head: [["#", "Sender", "Message", "Timestamp"]],
@@ -102,21 +107,21 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
         2: { cellWidth: 100 },
       },
     });
-  
+
     doc.save(`Chat_History_${chatId}.pdf`);
   };
 
   const handleExportDownloadPdf = () => {
     if (!chatUserHistory?.data) return;
-  
-    selectedIds.forEach((chatId:number) => {
+
+    selectedIds.forEach((chatId: number) => {
       const messages = chatUserHistory?.data[chatId];
       if (messages && messages.length > 0) {
         handleCreateDownloadPdf(messages, chatUserHistory?.chatBot);
       }
     });
   };
-  
+
   return (
     <div className="w-full">
       <h2 className="text-2xl font-bold my-4">Chat History</h2>
@@ -132,7 +137,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
                     : "bg-purple-600 hover:bg-purple-700"
                 }`}
                 disabled={isDisabled}
-                onClick={()=>handleExportDownloadPdf()}
+                onClick={() => handleExportDownloadPdf()}
               >
                 Export
               </button>
@@ -278,7 +283,15 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
                             <FaEye size={20} />
                           </button>
                           <button>
-                            <MdSimCardDownload size={20} onClick={()=>handleCreateDownloadPdf(messages, chatUserHistory?.chatBot)} />
+                            <MdSimCardDownload
+                              size={20}
+                              onClick={() =>
+                                handleCreateDownloadPdf(
+                                  messages,
+                                  chatUserHistory?.chatBot
+                                )
+                              }
+                            />
                           </button>
                         </td>
                       </tr>

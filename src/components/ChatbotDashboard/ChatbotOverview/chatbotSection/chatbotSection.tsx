@@ -7,13 +7,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { conversationMessage } from "@/store/slices/chats/chatSlice";
 import Image from "next/image";
+import { fetchChatbotSettings } from "@/store/slices/chats/appearanceSettings";
+import { pathToImage } from "@/services/utils/helpers";
 const schema = yup.object().shape({
   message: yup.string().required("Message is required"),
   chat_id: yup.number(),
   bot_id: yup.number(),
 });
-const ChatbotSection = ({ chatbotData }: { chatbotData: ChatbotsData }) => {
+const ChatbotSection = ({
+  chatbotData,
+  botId,
+}: {
+  chatbotData: ChatbotsData;
+  botId?: number;
+}) => {
   const [isBotTyping, setIsBotTyping] = useState(false);
+  const chatbotSetting = useSelector(
+    (state: RootState) => state.appearance.settings
+  );
+
   const {
     register,
     handleSubmit,
@@ -37,6 +49,9 @@ const ChatbotSection = ({ chatbotData }: { chatbotData: ChatbotsData }) => {
   const chatMessages = useSelector(
     (state: RootState) => state.chat.chatMessages
   );
+  useEffect(() => {
+    if (botId && !chatbotSetting) dispatch(fetchChatbotSettings(botId));
+  }, []);
   const onSubmit = (data: TextMessage) => {
     setIsBotTyping(true);
     dispatch(conversationMessage({ payload: data })).finally(() => {
@@ -44,6 +59,11 @@ const ChatbotSection = ({ chatbotData }: { chatbotData: ChatbotsData }) => {
     });
     reset();
   };
+
+  const chatbotImage =
+    chatbotSetting && chatbotSetting?.image
+      ? pathToImage(chatbotSetting?.image) ?? "/images/face2.webp"
+      : "/images/face2.webp";
 
   const messagesEndRef: any = useRef(null);
 
@@ -54,80 +74,123 @@ const ChatbotSection = ({ chatbotData }: { chatbotData: ChatbotsData }) => {
       setValue("bot_id", chatIdData.bot_id);
     }
   }, [chatMessages, chatIdData.bot_id, chatIdData.id]);
+
   return (
-    <div className="w-[320] bg-white  h-[500px] rounded-lg shadow-md flex flex-col justify-between ">
-      
+    <div
+      className="w-[320] h-[500px] rounded-lg shadow-md flex flex-col justify-between "
+      style={{ backgroundColor: chatbotSetting?.chat_window_bg ?? "#ffffff" }}
+    >
       <div className="p-4 flex items-center gap-2 border-b">
-        <img
-          src="/images/face2.webp"
+        <Image
+          src={chatbotImage}
           alt="Bot"
           className="w-8 h-8 rounded-full"
+          width={20}
+          height={20}
         />
         <span className="font-semibold text-black">
-          {chatbotData?.chatbot_name}
+          {chatbotSetting?.title_is_active
+            ? chatbotSetting?.title_value
+            : chatbotData?.chatbot_name}
         </span>
       </div>
-      <div className="flex-1 p-4 overflow-y-auto text-black bg-gray-50">
-        {chatMessages && chatMessages.length ? (
-          chatMessages.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className={`flex mb-2 ${
-                  item.sender === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                {item.sender === "bot" && (
-                  <Image
-                    src="/images/face2.webp"
-                    alt="Bot"
-                    className="w-8 h-8 rounded-full mr-2"
-                    width={20}
-                    height={20}
-                  />
-                )}
+      <div className="flex-1 p-4 overflow-y-auto text-black">
+        {chatMessages && chatMessages.length
+          ? chatMessages.map((item, index) => {
+              return (
                 <div
-                  className={`p-3 rounded-xl max-w-xs text-sm ${
-                    item.sender === "user"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 text-black"
+                  key={index}
+                  className={`flex mb-2 ${
+                    item.sender === "user" ? "justify-end" : "justify-start"
                   }`}
                 >
-                  {item.message}
+                  {item.sender === "bot" && (
+                    <Image
+                      src={chatbotImage}
+                      alt="Bot"
+                      className="w-8 h-8 rounded-full mr-2"
+                      width={20}
+                      height={20}
+                    />
+                  )}
+                  <div
+                    className={`p-3 rounded-xl max-w-xs text-sm `}
+                    style={{
+                      backgroundColor:
+                        item.sender === "user"
+                          ? chatbotSetting?.user_message_bg ?? "blue"
+                          : chatbotSetting?.message_bg ?? "lightslategray",
+                    }}
+                  >
+                    {item.message}
+                  </div>
+                  {item.sender === "user" && (
+                    <Image
+                      src="/images/userimg.png"
+                      alt="User"
+                      className="w-8 h-8 rounded-full ml-2"
+                      width={20}
+                      height={20}
+                    />
+                  )}
                 </div>
-                {item.sender === "user" && (
-                  <Image
-                    src="/images/userimg.png"
-                    alt="User"
-                    className="w-8 h-8 rounded-full ml-2"
-                    width={20}
-                    height={20}
-                  />
-                )}
+              );
+            })
+          : chatbotSetting?.welcome_message_is_active && (
+              <div className="flex justify-start gap-2 mb-2">
+                <Image
+                  src={chatbotImage}
+                  alt="Bot"
+                  className="w-8 h-8 rounded-full"
+                  width={20}
+                  height={20}
+                />
+                <div
+                  className="bg-gray-200 p-3 rounded-xl max-w-xs text-sm"
+                  style={{
+                    backgroundColor: chatbotSetting?.message_bg
+                      ? chatbotSetting?.message_bg
+                      : "#c2c2c2",
+                  }}
+                >
+                  {chatbotSetting?.welcome_message_value}
+                </div>
               </div>
-            );
-          })
-        ) : (
-          <div className="flex justify-start mb-2">
-            <div className="bg-gray-200 p-3 rounded-xl max-w-xs text-sm">
-              Hi, How can I help you today?
-            </div>
-          </div>
-        )}
+            )}
         {isBotTyping && (
           <div className="flex justify-start items-center gap-2 mb-2">
             <Image
-              src="/images/face2.webp"
+              src={chatbotImage}
               alt="Bot"
               className="w-8 h-8 rounded-full"
               width={20}
               height={20}
             />
-            <div className="bg-gray-200 text-black p-1 rounded-xl max-w-xs text-sm animate-pulse">
+            <div
+              className="  p-1 rounded-xl max-w-xs text-sm animate-pulse"
+              style={{
+                backgroundColor: chatbotSetting?.message_bg ?? "lightslategray",
+              }}
+            >
               <span className="flex gap-1 text-3xl">
-                <span className="animate-bounce">.</span>
-                <span className="animate-bounce delay-150">.</span>
-                <span className="animate-bounce delay-300">.</span>
+                <span
+                  className="animate-bounce"
+                  style={{ color: chatbotSetting?.dots_color ?? "#135de8" }}
+                >
+                  .
+                </span>
+                <span
+                  className="animate-bounce delay-150"
+                  style={{ color: chatbotSetting?.dots_color ?? "#135de8" }}
+                >
+                  .
+                </span>
+                <span
+                  className="animate-bounce delay-300"
+                  style={{ color: chatbotSetting?.dots_color ?? "#135de8" }}
+                >
+                  .
+                </span>
               </span>
             </div>
           </div>
@@ -136,16 +199,33 @@ const ChatbotSection = ({ chatbotData }: { chatbotData: ChatbotsData }) => {
         <div ref={messagesEndRef} />
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
+        {chatbotSetting?.suggestions_is_active && (
+          <div className="bg-gray-300 text-gray-600 mx-2 rounded-md text-sm py-0.5 px-1.5">
+            <p>{chatbotSetting?.suggestions_value}</p>
+          </div>
+        )}
         <div className="border-t p-2 flex items-center gap-2">
           <input
             {...register("message")}
             type="text"
-            placeholder="Type a message..."
+            placeholder={
+              chatbotSetting?.placeholder_is_active
+                ? chatbotSetting?.placeholder_value
+                : "Type a message..."
+            }
             className={`${
               errors.message ? "border-red-500" : ""
             } w-full p-2 text-sm rounded-md border text-black border-gray-300 focus:outline-none`}
           />
-          <button className="bg-[#05BDFD] p-2 rounded text-white" type="submit">
+          <button
+            className=" p-2 rounded text-white"
+            type="submit"
+            style={{
+              backgroundColor: chatbotSetting?.send_button_color
+                ? chatbotSetting?.send_button_color
+                : "#05BDFD",
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"

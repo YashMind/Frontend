@@ -1,3 +1,4 @@
+import http from "@/services/http/baseUrl";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -18,7 +19,7 @@ export const fetchChatbotSettings = createAsyncThunk(
   "chatbotSettings/fetch",
   async (botId: number, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`/settings/${botId}`);
+      const res = await http.get(`/appearance/settings/${botId}`);
       return res.data;
     } catch (err: any) {
       return rejectWithValue(err.response.data.detail);
@@ -28,9 +29,12 @@ export const fetchChatbotSettings = createAsyncThunk(
 
 export const createChatbotSettings = createAsyncThunk(
   "chatbotSettings/create",
-  async (data: Partial<ChatbotSettings>, { rejectWithValue }) => {
+  async (
+    data: { id: number; data: Partial<ChatbotSettings> },
+    { rejectWithValue }
+  ) => {
     try {
-      const res = await axios.post(`/settings/`, data);
+      const res = await http.post(`/appearance/settings/`, data.data);
       return res.data;
     } catch (err: any) {
       return rejectWithValue(err.response.data.detail);
@@ -45,7 +49,7 @@ export const updateChatbotSettings = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const res = await axios.put(`/settings/${id}`, data);
+      const res = await http.put(`/appearance/settings/${id}`, data);
       return res.data;
     } catch (err: any) {
       return rejectWithValue(err.response.data.detail);
@@ -57,7 +61,7 @@ export const deleteChatbotSettings = createAsyncThunk(
   "chatbotSettings/delete",
   async (id: number, { rejectWithValue }) => {
     try {
-      const res = await axios.delete(`/settings/${id}`);
+      const res = await http.delete(`/appearance/settings/${id}`);
       return res.data;
     } catch (err: any) {
       return rejectWithValue(err.response.data.detail);
