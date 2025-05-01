@@ -1,6 +1,5 @@
 "use client";
 import React, { useRef, useState } from "react";
-
 import Image from "next/image";
 const ChatbotDummy = ({
   chatbotSettings,
@@ -9,13 +8,20 @@ const ChatbotDummy = ({
 }) => {
   const messagesEndRef: any = useRef(null);
 
+  const chatbotAvatar = chatbotSettings.image || "/images/face2.webp";
+
   return (
-    <div className="w-[320] bg-white  h-[500px] rounded-lg shadow-md flex flex-col justify-between ">
+    <div
+      className="w-[320]  h-[500px] rounded-lg shadow-md flex flex-col justify-between "
+      style={{ backgroundColor: chatbotSettings.chat_window_bg ?? "#ffffff" }}
+    >
       <div className="p-4 flex items-center gap-2 border-b">
-        <img
-          src="/images/face2.webp"
+        <Image
+          src={chatbotAvatar}
           alt="Bot"
           className="w-8 h-8 rounded-full"
+          width={20}
+          height={20}
         />
         {chatbotSettings.title_is_active && (
           <span className="font-semibold text-black">
@@ -23,11 +29,11 @@ const ChatbotDummy = ({
           </span>
         )}
       </div>
-      <div className="flex-1 p-4 overflow-y-auto text-black bg-gray-50">
+      <div className="flex-1 p-4 overflow-y-auto text-black ">
         {chatbotSettings.welcome_message_is_active && (
           <div className="flex justify-start gap-2 mb-2">
             <Image
-              src="/images/face2.webp"
+              src={chatbotAvatar}
               alt="Bot"
               className="w-8 h-8 rounded-full"
               width={20}
@@ -68,14 +74,19 @@ const ChatbotDummy = ({
 
         <div className="flex justify-start items-center gap-2 mb-2">
           <Image
-            src="/images/face2.webp"
+            src={chatbotAvatar}
             alt="Bot"
             className="w-8 h-8 rounded-full"
             width={20}
             height={20}
           />
           {chatbotSettings.dots_color && (
-            <div className="bg-gray-200 text-black p-1 rounded-xl max-w-xs text-sm animate-pulse">
+            <div
+              className=" text-black p-1 rounded-xl max-w-xs text-sm animate-pulse"
+              style={{
+                backgroundColor: chatbotSettings.message_bg ?? "#135de8",
+              }}
+            >
               <span className="flex gap-1 text-3xl">
                 <span
                   className="animate-bounce"
@@ -102,7 +113,7 @@ const ChatbotDummy = ({
 
         <div ref={messagesEndRef} />
       </div>
-      <form>
+      <div>
         {chatbotSettings.suggestions_is_active && (
           <div className="bg-gray-300 text-gray-600 mx-2 rounded-md text-sm py-0.5 px-1.5">
             <p>{chatbotSettings.suggestions_value}</p>
@@ -137,7 +148,7 @@ const ChatbotDummy = ({
             </svg>
           </button>
         </div>
-      </form>
+      </div>
       <div className="text-[#6B6B6B] text-center text-sm py-5">
         <h6>powered by fasterbots</h6>
       </div>

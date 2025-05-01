@@ -80,6 +80,7 @@ interface ChatbotFaqsQuesAnswer {
 
 interface ChatbotSettings {
   id: number;
+  bot_id: number;
   title_value: string;
   title_is_active: boolean;
   welcome_message_value: string;
@@ -89,6 +90,7 @@ interface ChatbotSettings {
   placeholder_value: string;
   placeholder_is_active: boolean;
   lead_collection: boolean;
+  chat_window_bg: string;
   send_button_color: string;
   chat_icon: string;
   chat_icon_color: string;

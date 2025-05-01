@@ -1,7 +1,13 @@
 import Image from "next/image";
 import React from "react";
+import { useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
 
 const ChatbotDetails = () => {
+  const chatUserHistory: any = useSelector(
+    (state: RootState) => state.chat.chatbotHistory
+  );
+
   return (
     <div className="">
       <div className="flex flex-wrap gap-4 w-[650px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px] ">
