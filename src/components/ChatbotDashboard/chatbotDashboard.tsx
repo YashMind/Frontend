@@ -37,8 +37,9 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
           {chatbots &&
             chatbots?.map((item, index: number) => {
               return (
-                <div
+                <Link
                   key={index}
+                  href={`/chatbot-dashboard/update/${item?.id}`}
                   className="bg-white rounded-2xl p-4 w-full sm:w-[48%] "
                 >
                   <div className="flex justify-between mb-2">
@@ -61,12 +62,9 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                     <span className="w-3 h-3 bg-green-400 rounded-full" />
                   </div>
                   <div className="flex justify-between items-center">
-                    <Link
-                      href={`/chatbot-dashboard/update/${item?.id}`}
-                      className="text-[#23c4f2] text-sm underline"
-                    >
+                    <span className="text-[#23c4f2] text-sm cursor-pointer hover:underline">
                       Allocated message
-                    </Link>
+                    </span>
                     <Image
                       alt="alt"
                       src="/images/password.png"
@@ -74,7 +72,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                       width={16}
                     />
                   </div>
-                </div>
+                </Link>
               );
             })}
         </div>
