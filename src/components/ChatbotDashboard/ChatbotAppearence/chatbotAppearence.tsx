@@ -313,7 +313,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
             <div className="mt-[23] flex gap-3">
               <button
                 type="button"
-                onClick={(e) => handleResetAppearance(e)}
+                onClick={(e:any) => handleResetAppearance(e)}
                 className="bg-[#340555] text-white px-4 py-2 text-base  font-semibold rounded-[10px]"
               >
                 Reset Appearence
