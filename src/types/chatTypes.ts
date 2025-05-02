@@ -35,6 +35,9 @@ interface ChatbotsData {
   text_content: string;
   creativity: number;
   token: string;
+  domains?: string;
+  limit_to?: number;
+  every_minutes?: number;
 }
 
 interface TextMessage {
@@ -150,18 +153,25 @@ interface ChatbotDocLinks {
   data: ChatbotDocLinksArray[];
   total_count: number;
   total_pages: number;
-  Indexed?: number,
-  total_target_links?:number,
-  total_document_links?:number,
-  pending_count?:number,
-  failed_count?:number,
-  indexed_count?: number,
-  total_chars?: number
+  Indexed?: number;
+  total_target_links?: number;
+  total_document_links?: number;
+  pending_count?: number;
+  failed_count?: number;
+  indexed_count?: number;
+  total_chars?: number;
 }
 
 interface ChatbotCustomSettings {
   id?: number;
   chatbot_name?: string;
   public?: boolean;
-  
+}
+interface SecurityForm {
+  id?: number;
+  allow_domains: boolean;
+  rate_limit_enabled: boolean;
+  domains?: string;
+  limit_to?: number;
+  every_minutes?: number;
 }
