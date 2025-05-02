@@ -37,7 +37,6 @@ const ChatbotLinksDocs = ({
   };
 
   const isDisabled = selectedIds.length === 0;
-  console.log("botId 123 ", botId);
   const dispatch = useDispatch<AppDispatch>();
   const { ChatbotDocLinksData } = useSelector((state: RootState) => state.chat);
   useEffect(() => {
@@ -54,10 +53,8 @@ const ChatbotLinksDocs = ({
     setUploadDocs(false);
   }, [dispatch, search]);
 
-  console.log("ChatbotDocLinksData ", ChatbotDocLinksData);
 
   const handleDeleteDocLinks = () => {
-    console.log("selectedIds ", selectedIds);
     dispatch(
       deleteDocLinks({
         bot_id: botId,

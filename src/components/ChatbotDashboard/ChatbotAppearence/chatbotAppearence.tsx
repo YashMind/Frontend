@@ -151,7 +151,6 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
 
     if (typeof data.chat_icon === "object") {
       const chatIcon = new FormData();
-      console.log("chat_icon: ", !!data.chat_icon, "image: ", !!data.image);
       if (data.chat_icon[0]) {
         chatIcon.append("file", data.chat_icon[0]);
         await dispatch(uploadDocument({ payload: chatIcon }))

@@ -20,7 +20,6 @@ const PreferenceProducts = () => {
   });
 
   const onSubmit = (data: PreferenceForm) => {
-    console.log(data.lastUsedModel, data.preferedAiModel);
     reset();
   };
   return (

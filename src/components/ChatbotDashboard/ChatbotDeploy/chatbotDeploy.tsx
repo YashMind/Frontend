@@ -19,7 +19,6 @@ const ChatbotDeploy = () => {
     if (inputRef.current) {
       navigator.clipboard.writeText(inputRef.current.value)
       .then(() => {
-        console.log("Copied to clipboard!");
         toast.success("Copied to clipboard!")
       })
       .catch((err) => {

@@ -108,7 +108,6 @@ const AddBotData = ({ botId }: { botId?: number }) => {
       if (formType === "form2" && data.document_link === "") {
         toast.error("please upload a file!");
       } else {
-        console.log("data ", data);
         dispatch(createChatbotDocLinks({ payload: data }));
         reset();
       }
@@ -119,7 +118,6 @@ const AddBotData = ({ botId }: { botId?: number }) => {
     setValue("train_from", value);
   };
 
-  console.log("chatbotData111111 ", chatbotData);
   return (
     <div className="min-h-screen bg-[#241E4E] text-white p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
