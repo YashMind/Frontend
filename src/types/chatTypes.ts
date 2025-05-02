@@ -142,3 +142,10 @@ interface ChatbotDocLinks {
   indexed_count?: number,
   total_chars?: number
 }
+
+interface ChatbotCustomSettings {
+  id?: number;
+  chatbot_name?: string;
+  public?: boolean;
+  
+}

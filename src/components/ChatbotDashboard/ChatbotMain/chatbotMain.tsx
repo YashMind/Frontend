@@ -79,7 +79,7 @@ const ChatbotMain = ({
             ) : null}
             {botPage === "deploy" ? <ChatbotDeploy /> : null}
             {botPage === "integration" ? <ChatbotIntegration /> : null}
-            {botPage === "settings" ? <ChatbotSettings /> : null}
+            {botPage === "settings" ? <ChatbotSettings botId={botId} /> : null}
             {/* second div */}
           </div>
           <RightSection showModal={showModal} />

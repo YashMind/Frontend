@@ -51,7 +51,7 @@ const ChatbotLinksDocs = ({
       })
     );
     setUploadDocs(false);
-  }, [dispatch, search]);
+  }, [dispatch, search, page, limit, sortBy, sortOrder]);
 
 
   const handleDeleteDocLinks = () => {
@@ -104,7 +104,7 @@ const ChatbotLinksDocs = ({
           {/* Indexed */}
           <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#808080] text-white text-center">
             <span className="text-sm font-semibold">Indexed</span>
-            <span className="text-lg font-bold mt-1">{ChatbotDocLinksData?.Indexed}</span>
+            <span className="text-lg font-bold mt-1">{ChatbotDocLinksData?.indexed_count}</span>
           </div>
         </div>
       ) : (

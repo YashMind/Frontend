@@ -102,7 +102,8 @@ export const createChatbotDocLinks = createAsyncThunk<any, { payload: any }>(
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toast.success("chatbot updated successfully!");
-        // dispatch(getChatbots());
+        dispatch(getChatbotsDocLinks({
+            bot_id: payload?.bot_id}));
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot!");
@@ -132,6 +133,7 @@ export const updateChatbotWithoutRouter = createAsyncThunk<
         dispatch(stopLoadingActivity());
         toast.success("chatbot updated successfully!");
         dispatch(getChatbots());
+        dispatch(getSingleChatbot({botId: payload?.id}))
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot!");
@@ -612,6 +614,31 @@ export const deleteDocLinks = createAsyncThunk<
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during delete chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const deleteChatbot = createAsyncThunk<any, { bot_id?: number, router: ReturnType<typeof useRouter> }>(
+  "chat/deleteChatbot",
+  async ({ bot_id, router }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.delete(`/chatbot/delete-bot/${bot_id}`);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        router.push("/chatbot-dashboard/main");
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get chats!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
     } finally {
       dispatch(stopLoadingActivity());
     }
