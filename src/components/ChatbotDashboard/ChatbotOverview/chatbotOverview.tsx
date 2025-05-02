@@ -32,7 +32,7 @@ const ChatbotOverview = ({
         <h2 className="text-2xl font-bold my-4">Owner</h2>
       ) : null}
       {botPage === "overview" ? (
-        <div className="flex gap-10">
+        <div className="flex gap-10 w-full">
           <ChatbotDetails />
           {/* right chatbot */}
           <ChatbotSection botId={botId} chatbotData={chatbotData} />
