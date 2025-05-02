@@ -68,6 +68,10 @@ const ChatbotLinksDocs = ({
     );
     setSelectedIds([]);
   };
+
+  const handleBack = () => {
+    setUploadDocs(!uploadDocs);
+  }
   return (
     <div className="w-full">
       <h2 className="text-2xl font-bold mt-[30]">Links / Docs</h2>
@@ -76,38 +80,36 @@ const ChatbotLinksDocs = ({
           {/* Crawled Links */}
           <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#18B91F] text-white text-center">
             <span className="text-sm font-semibold">Crawled Links</span>
-            <span className="text-lg font-bold mt-1">0</span>
+            <span className="text-lg font-bold mt-1">{ChatbotDocLinksData?.total_target_links}</span>
           </div>
 
           {/* Chars */}
           <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-white text-black text-center">
             <span className="text-sm font-semibold">Chars</span>
-            <span className="text-lg font-bold text-purple-900 mt-1">0</span>
+            <span className="text-lg font-bold text-purple-900 mt-1">{ChatbotDocLinksData?.total_chars}</span>
           </div>
 
           {/* Failed */}
           <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#FF0000] text-white text-center">
             <span className="text-sm font-semibold">Failed</span>
-            <span className="text-lg font-bold mt-1">0</span>
+            <span className="text-lg font-bold mt-1">{ChatbotDocLinksData?.failed_count}</span>
           </div>
 
           {/* Pending */}
           <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#FFC107] text-black text-center">
             <span className="text-sm font-semibold">Pending</span>
-            <span className="text-lg font-bold mt-1">0</span>
+            <span className="text-lg font-bold mt-1">{ChatbotDocLinksData?.pending_count}</span>
           </div>
 
           {/* Indexed */}
           <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#808080] text-white text-center">
             <span className="text-sm font-semibold">Indexed</span>
-            <span className="text-lg font-bold mt-1">0</span>
+            <span className="text-lg font-bold mt-1">{ChatbotDocLinksData?.Indexed}</span>
           </div>
         </div>
       ) : (
-        // <ChatbotLinksDocsUpload />
-        <AddBotData botId={botId} />
+        <AddBotData botId={botId} handleBack={handleBack} />
       )}
-      {/* <table></table> */}
       {!uploadDocs ? (
         <div className="bg-white rounded-b-xl overflow-hidden  text-sm w-full rounded-[40px] mb-8 mr-3 ">
           {/* Top Actions */}
@@ -300,7 +302,7 @@ const ChatbotLinksDocs = ({
                     : "bg-gray-200"
                 } text-black rounded-[7px] text-sm`}
               >
-                {ChatbotDocLinksData?.total_pages}
+              {ChatbotDocLinksData?.total_pages}
               </button>
             ) : null}
             <button

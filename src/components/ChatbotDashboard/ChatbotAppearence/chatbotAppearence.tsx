@@ -41,7 +41,7 @@ interface IFormInput {
 type ImageFieldProps = {
   name: string;
   label: string;
-  value?: string;
+  value?: any;
   description?: string;
   register?: any;
 };
@@ -179,7 +179,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       action({
         id: botId!,
         data: {
-          bot_id: botId && parseInt(botId),
+          bot_id: botId,
           title_value: data.title_value,
           welcome_message_value: data.welcome_message_value,
           suggestions_value: data.suggestions_value,
@@ -342,7 +342,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
           <div className="mt-[23] flex gap-3">
             <button
               type="button"
-              onClick={(e) => handleResetAppearance(e)}
+              onClick={(e:any):any => handleResetAppearance(e)}
               className="bg-[#340555] text-white px-4 py-2 text-base  font-semibold rounded-[10px]"
             >
               Reset Appearence
