@@ -44,7 +44,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       image: chatbotSetting?.image,
       lead_collection: chatbotSetting?.lead_collection || false,
       name_lead_gen: chatbotSetting?.name_lead_gen || "Name",
-      is_name_lead_gen: chatbotSetting?.is_name_lead_gen || false,
+      is_name_lead_gen: chatbotSetting?.is_name_lead_gen || true,
       required_name_lead_gen: chatbotSetting?.required_name_lead_gen || false,
       mail_lead_gen: chatbotSetting?.mail_lead_gen || "Email",
       is_mail_lead_gen: chatbotSetting?.is_mail_lead_gen || false,
@@ -56,6 +56,14 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       is_message_lead_gen: chatbotSetting?.is_message_lead_gen || false,
       required_message_lead_gen:
         chatbotSetting?.required_message_lead_gen || false,
+      submission_message_heading_lead_gen:
+        chatbotSetting?.submission_message_heading_lead_gen || "Thanks",
+      sumbission_message_lead_gen:
+        chatbotSetting?.sumbission_message_lead_gen ||
+        "Your query have been submitted.",
+      submit_text_lead_gen: chatbotSetting?.submit_text_lead_gen || "Submit",
+      submit_button_color_lead_gen:
+        chatbotSetting?.submit_button_color_lead_gen || "#555555",
     },
   });
 

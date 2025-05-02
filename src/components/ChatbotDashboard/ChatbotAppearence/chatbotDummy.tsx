@@ -12,7 +12,7 @@ const ChatbotDummy = ({
   const chatbotAvatar = chatbotSettings.image || "/images/face2.webp";
   return (
     <div
-      className="w-[320]  h-max rounded-lg shadow-md flex flex-col justify-between sticky top-20"
+      className="w-[320]  h-full rounded-lg shadow-md flex flex-col justify-between sticky top-40"
       style={{ backgroundColor: chatbotSettings.chat_window_bg ?? "#ffffff" }}
     >
       <div className="p-4 flex items-center gap-2 border-b">
@@ -116,22 +116,24 @@ const ChatbotDummy = ({
             </div>
           )}
         </div>
-        <LeadGenForm
-          is_name={chatbotSettings.is_name_lead_gen}
-          is_phone={chatbotSettings.is_phone_lead_gen}
-          is_mail={chatbotSettings.is_mail_lead_gen}
-          is_message={chatbotSettings.is_message_lead_gen}
-          required_name={chatbotSettings.required_name_lead_gen}
-          required_phone={chatbotSettings.required_phone_lead_gen}
-          required_mail={chatbotSettings.required_mail_lead_gen}
-          required_message={chatbotSettings.required_message_lead_gen}
-          submit_button_text={chatbotSettings.submit_text_lead_gen}
-          submit_button_color={chatbotSettings.submit_button_color_lead_gen}
-          submission_message_heading={
-            chatbotSettings.submission_message_heading_lead_gen
-          }
-          sumbission_message={chatbotSettings.sumbission_message_lead_gen}
-        />
+        {chatbotSettings?.lead_collection && (
+          <LeadGenForm
+            is_name={chatbotSettings.is_name_lead_gen}
+            is_phone={chatbotSettings.is_phone_lead_gen}
+            is_mail={chatbotSettings.is_mail_lead_gen}
+            is_message={chatbotSettings.is_message_lead_gen}
+            required_name={chatbotSettings.required_name_lead_gen}
+            required_phone={chatbotSettings.required_phone_lead_gen}
+            required_mail={chatbotSettings.required_mail_lead_gen}
+            required_message={chatbotSettings.required_message_lead_gen}
+            submit_button_text={chatbotSettings.submit_text_lead_gen}
+            submit_button_color={chatbotSettings.submit_button_color_lead_gen}
+            submission_message_heading={
+              chatbotSettings.submission_message_heading_lead_gen
+            }
+            sumbission_message={chatbotSettings.sumbission_message_lead_gen}
+          />
+        )}
 
         <div ref={messagesEndRef} />
       </div>
