@@ -10,12 +10,12 @@ import Head from "next/head";
 
 const ChatbotDeploy = () => {
   const chatbotData: ChatbotsData = useSelector((state: RootState)=> state.chat.chatbotData);
-  console.log("chat bot data ", chatbotData)
-  console.log("process.env ", process.env.NEXT_PUBLIC_UI_URL)
   
-  const inputRef: any = useRef(null);
+  const inputRef1: any = useRef(null);
+  const inputRef2: any = useRef(null);
+  const inputRef3: any = useRef(null);
   
-  const handleCopy = () => {
+  const handleCopy = (inputRef:any) => {
     if (inputRef.current) {
       navigator.clipboard.writeText(inputRef.current.value)
       .then(() => {
@@ -75,7 +75,7 @@ const ChatbotDeploy = () => {
               </div>
               <div className="relative">
                 <input
-                  ref={inputRef}
+                  ref={inputRef1}
                   type="text"
                   className="w-full bg-[#D9D9D9] text-[#727272] px-4 py-2 rounded-full text-sm placeholder-[#727272]"
                   value={`${process.env.NEXT_PUBLIC_UI_URL}/embed/${chatbotData?.token}`}
@@ -88,7 +88,7 @@ const ChatbotDeploy = () => {
                     src="/images/file.png"
                     height={14}
                     width={16}
-                    onClick={()=> handleCopy()}
+                    onClick={()=> handleCopy(inputRef1)}
                   />
                 </span>
               </div>
@@ -125,7 +125,7 @@ const ChatbotDeploy = () => {
               </div>
               <div className="relative">
               <textarea
-                ref={inputRef}
+                ref={inputRef2}
                 className="w-full bg-[#D9D9D9] text-[#727272] px-4 py-2 rounded-xl text-sm placeholder-[#727272] h-20"
                 value={embedScript}
                 readOnly
@@ -137,7 +137,7 @@ const ChatbotDeploy = () => {
                     src="/images/file.png"
                     height={14}
                     width={16}
-                    onClick={()=> handleCopy()}
+                    onClick={()=> handleCopy(inputRef2)}
                   />
                 </span>
               </div>
@@ -165,7 +165,7 @@ const ChatbotDeploy = () => {
               <div className="relative">
                
                 <textarea
-                  ref={inputRef}
+                  ref={inputRef3}
                   readOnly
                   value={iframeCode}
                   className="h-20 w-full bg-[#D9D9D9] text-[#727272] px-4 py-2 rounded-xl text-sm placeholder-[#727272]"
@@ -179,7 +179,7 @@ const ChatbotDeploy = () => {
                     src="/images/file.png"
                     height={14}
                     width={16}
-                    onClick={()=> handleCopy()}
+                    onClick={()=> handleCopy(inputRef3)}
                   />
                 </span>
               </div>
