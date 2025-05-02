@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import Image from "next/image";
+import LeadGenForm from "./LeadGenForm";
 const ChatbotDummy = ({
   chatbotSettings,
 }: {
@@ -9,20 +10,21 @@ const ChatbotDummy = ({
   const messagesEndRef: any = useRef(null);
 
   const chatbotAvatar = chatbotSettings.image || "/images/face2.webp";
-
   return (
     <div
-      className="w-[320]  h-[500px] rounded-lg shadow-md flex flex-col justify-between "
+      className="w-[320]  h-full rounded-lg shadow-md flex flex-col justify-between sticky top-40"
       style={{ backgroundColor: chatbotSettings.chat_window_bg ?? "#ffffff" }}
     >
       <div className="p-4 flex items-center gap-2 border-b">
-        <Image
-          src={chatbotAvatar}
-          alt="Bot"
-          className="w-8 h-8 rounded-full"
-          width={20}
-          height={20}
-        />
+        {chatbotAvatar && (
+          <Image
+            src={chatbotAvatar}
+            alt="Bot"
+            className="w-8 h-8 rounded-full"
+            width={20}
+            height={20}
+          />
+        )}
         {chatbotSettings.title_is_active && (
           <span className="font-semibold text-black">
             {chatbotSettings?.title_value}
@@ -32,13 +34,15 @@ const ChatbotDummy = ({
       <div className="flex-1 p-4 overflow-y-auto text-black ">
         {chatbotSettings.welcome_message_is_active && (
           <div className="flex justify-start gap-2 mb-2">
-            <Image
-              src={chatbotAvatar}
-              alt="Bot"
-              className="w-8 h-8 rounded-full"
-              width={20}
-              height={20}
-            />
+            {chatbotAvatar && (
+              <Image
+                src={chatbotAvatar}
+                alt="Bot"
+                className="w-8 h-8 rounded-full"
+                width={20}
+                height={20}
+              />
+            )}
             <div
               className="bg-gray-200 p-3 rounded-xl max-w-xs text-sm"
               style={{
@@ -73,13 +77,15 @@ const ChatbotDummy = ({
         </div>
 
         <div className="flex justify-start items-center gap-2 mb-2">
-          <Image
-            src={chatbotAvatar}
-            alt="Bot"
-            className="w-8 h-8 rounded-full"
-            width={20}
-            height={20}
-          />
+          {chatbotAvatar && (
+            <Image
+              src={chatbotAvatar}
+              alt="Bot"
+              className="w-8 h-8 rounded-full"
+              width={20}
+              height={20}
+            />
+          )}
           {chatbotSettings.dots_color && (
             <div
               className=" text-black p-1 rounded-xl max-w-xs text-sm animate-pulse"
@@ -110,15 +116,41 @@ const ChatbotDummy = ({
             </div>
           )}
         </div>
+        {chatbotSettings?.lead_collection && (
+          <LeadGenForm
+            is_name={chatbotSettings.is_name_lead_gen}
+            is_phone={chatbotSettings.is_phone_lead_gen}
+            is_mail={chatbotSettings.is_mail_lead_gen}
+            is_message={chatbotSettings.is_message_lead_gen}
+            required_name={chatbotSettings.required_name_lead_gen}
+            required_phone={chatbotSettings.required_phone_lead_gen}
+            required_mail={chatbotSettings.required_mail_lead_gen}
+            required_message={chatbotSettings.required_message_lead_gen}
+            submit_button_text={chatbotSettings.submit_text_lead_gen}
+            submit_button_color={chatbotSettings.submit_button_color_lead_gen}
+            submission_message_heading={
+              chatbotSettings.submission_message_heading_lead_gen
+            }
+            sumbission_message={chatbotSettings.sumbission_message_lead_gen}
+          />
+        )}
 
         <div ref={messagesEndRef} />
       </div>
       <div>
-        {chatbotSettings.suggestions_is_active && (
-          <div className="bg-gray-300 text-gray-600 mx-2 rounded-md text-sm py-0.5 px-1.5">
-            <p>{chatbotSettings.suggestions_value}</p>
-          </div>
-        )}
+        <div className="flex flex-wrap gap-1 m-1 mx-2">
+          {chatbotSettings.suggestions_is_active &&
+            chatbotSettings.suggestions_value?.split(",").map((item, index) => {
+              return (
+                <div
+                  key={index + "suggestion"}
+                  className="bg-gray-300 text-gray-600 w-fit  rounded-md text-sm py-0.5 px-1.5"
+                >
+                  <p>{item.trim()}</p>
+                </div>
+              );
+            })}
+        </div>
         <div className="border-t p-2 flex items-center gap-2">
           <input
             type="text"
@@ -127,7 +159,7 @@ const ChatbotDummy = ({
                 ? chatbotSettings.placeholder_value
                 : "Type a message..."
             }
-            className={` w-full p-2 text-sm rounded-md border text-black border-gray-300 focus:outline-none`}
+            className={` w-full p-2 text-sm rounded-md border text-black border-gray-300 bg-gray-50 focus:outline-none`}
           />
           <button
             className=" p-2 rounded text-white"

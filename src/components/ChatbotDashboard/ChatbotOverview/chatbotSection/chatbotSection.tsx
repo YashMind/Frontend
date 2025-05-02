@@ -77,7 +77,7 @@ const ChatbotSection = ({
 
   return (
     <div
-      className="w-[320] h-[500px] rounded-lg shadow-md flex flex-col justify-between "
+      className="min-w-[320px] h-[500px] rounded-lg shadow-md flex flex-col justify-between "
       style={{ backgroundColor: chatbotSetting?.chat_window_bg ?? "#ffffff" }}
     >
       <div className="p-4 flex items-center gap-2 border-b">
@@ -199,11 +199,20 @@ const ChatbotSection = ({
         <div ref={messagesEndRef} />
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {chatbotSetting?.suggestions_is_active && (
-          <div className="bg-gray-300 text-gray-600 mx-2 rounded-md text-sm py-0.5 px-1.5">
-            <p>{chatbotSetting?.suggestions_value}</p>
-          </div>
-        )}
+        <div className="flex flex-wrap gap-1 m-1 mx-2">
+          {chatbotSetting?.suggestions_is_active &&
+            chatbotSetting?.suggestions_value?.split(",").map((item, index) => {
+              return (
+                <div
+                  key={index + "suggestion"}
+                  className="bg-gray-300 text-gray-600 w-fit  rounded-md text-sm py-0.5 px-1.5"
+                >
+                  <p>{item.trim()}</p>
+                </div>
+              );
+            })}
+        </div>
+
         <div className="border-t p-2 flex items-center gap-2">
           <input
             {...register("message")}
@@ -215,7 +224,7 @@ const ChatbotSection = ({
             }
             className={`${
               errors.message ? "border-red-500" : ""
-            } w-full p-2 text-sm rounded-md border text-black border-gray-300 focus:outline-none`}
+            } w-full p-2 text-sm rounded-md border text-black border-gray-300 bg-gray-50 focus:outline-none`}
           />
           <button
             className=" p-2 rounded text-white"

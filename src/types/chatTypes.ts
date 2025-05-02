@@ -111,6 +111,22 @@ interface ChatbotSettings {
   dots_color: string;
   message_bg: string;
   live_message_bg: string;
+  name_lead_gen: string;
+  is_name_lead_gen: boolean;
+  required_name_lead_gen: boolean;
+  mail_lead_gen: string;
+  is_mail_lead_gen: boolean;
+  required_mail_lead_gen: boolean;
+  phone_lead_gen: string;
+  is_phone_lead_gen: boolean;
+  required_phone_lead_gen: boolean;
+  message_lead_gen: string;
+  is_message_lead_gen: boolean;
+  required_message_lead_gen: boolean;
+  submission_message_heading_lead_gen: string;
+  sumbission_message_lead_gen: string;
+  submit_text_lead_gen: string;
+  submit_button_color_lead_gen: string;
 }
 
 interface ChatbotDocLinksArray {

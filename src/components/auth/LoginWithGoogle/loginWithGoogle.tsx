@@ -19,13 +19,17 @@ const LoginWithGoogle = () => {
       //   }
       // );
 
+      // console.log("profile ", profile)
+      // console.log("token ", accessToken)
       // const authData = {
       //   googleId: profile.sub,
       //   fullName: profile.name,
       //   email: profile.email,
       //   token: accessToken,
       // }
-      const { data } = await http.post("/auth/google-login", {token:accessToken});
+      const { data } = await http.post("/auth/google-login", {
+        token: accessToken,
+      });
       return data;
     } catch (error) {
       console.error("Google Sign-Up/Login failed:", error);
@@ -38,12 +42,12 @@ const LoginWithGoogle = () => {
       try {
         const user = await signUpWithGoogle(response.access_token);
         // Optionally: store tokens or user info here
-        if(user){
-            toast.success("Logged with google successfully!")
-            router.push("/chatbot");
+        if (user) {
+          toast.success("Logged with google successfully!");
+          router.push("/chatbot");
         }
       } catch (err) {
-        toast.error("Login with google failed!")
+        toast.error("Login with google failed!");
       }
     },
     onError: () => toast.error("Error in Login with google!"),

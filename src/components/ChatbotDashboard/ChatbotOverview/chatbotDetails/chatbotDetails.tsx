@@ -9,7 +9,7 @@ const ChatbotDetails = () => {
   );
 
   return (
-    <div className="">
+    <div className="w-full">
       <div className="flex flex-wrap gap-4 w-[650px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px] ">
         {[1, 2].map((_, i) => (
           <div key={i} className="bg-white rounded-2xl p-4 w-full sm:w-[48%] ">
