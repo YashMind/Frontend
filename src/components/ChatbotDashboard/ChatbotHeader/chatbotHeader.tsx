@@ -51,9 +51,9 @@ const ChatbotDashboardHeader = ({
           >
             <Image
               alt="alt"
-              src="/images/bot-logo.png"
-              height={80}
-              width={65}
+              src="/images/yash-removebg-preview.png"
+              height={100}
+              width={100}
             />
             <div className="mob-show text-white">
               <svg

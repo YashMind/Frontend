@@ -15,6 +15,13 @@ export default function middleware(request: NextRequest) {
     (route) => pathname === route || pathname.startsWith(route + "/")
   );
 
+
+  // Check if the pathname matches a dynamic public route like "/embed/{botId}"
+  const dynamicPublicRoutePattern = /^\/embed\/[^/]+$/;
+  if (dynamicPublicRoutePattern.test(pathname)) {
+    return;
+  }
+
   // User is visiting /signin
 
   if (isPublic) {

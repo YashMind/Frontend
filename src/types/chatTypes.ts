@@ -11,6 +11,17 @@ interface UpdateChatbotData {
   text_content?: string;
 }
 
+interface ChatbotDocLinksData {
+  id?: number;
+  user_id?: number;
+  bot_id?: number;
+  chatbot_name?: string;
+  target_link: string;
+  train_from?: string;
+  document_link?: string;
+  public?: string;
+}
+
 interface ChatbotsData {
   id: number;
   chatbot_name: string;
@@ -23,6 +34,7 @@ interface ChatbotsData {
   updated_at: string;
   text_content: string;
   creativity: number;
+  token: string;
 }
 
 interface TextMessage {
@@ -115,4 +127,27 @@ interface ChatbotSettings {
   sumbission_message_lead_gen: string;
   submit_text_lead_gen: string;
   submit_button_color_lead_gen: string;
+}
+
+interface ChatbotDocLinksArray {
+  bot_id: number;
+  chars?: number;
+  chatbot_name: string;
+  created_at: string;
+  document_link: string;
+  id: number;
+  public: false;
+  status: string;
+  target_link: string;
+  text_content?: string;
+  train_from: string;
+  updated_at: string;
+  user_id: number;
+}
+
+interface ChatbotDocLinks {
+  current_page: number;
+  data: ChatbotDocLinksArray[];
+  total_count: number;
+  total_pages: number;
 }

@@ -43,7 +43,7 @@ const ChatbotMain = ({
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
-      {/* <ChatbotDashboardHeader fix={true} addBgColor={true} /> */}
+      <ChatbotDashboardHeader fix={true} addBgColor={true} />
       <div className="min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 ">
         {/* Real Time Count + Table */}
         <RealTimeCount />
@@ -68,7 +68,9 @@ const ChatbotMain = ({
               <ChatbotHistory botId={botId} />
             ) : null}
             {botPage === "chat-leads" ? <ChatbotLeads /> : null}
-            {botPage === "links-docs" ? <ChatbotLinksDocs /> : null}
+            {botPage === "links-docs" ? (
+              <ChatbotLinksDocs botPage={botPage} botId={botId} />
+            ) : null}
             {botPage === "texts" ? <ChatbotTexts botId={botId} /> : null}
             {botPage === "faqs" ? <ChatbotQA botId={botId} /> : null}
             {botPage === "ai" ? <ChatbotAI botId={botId} /> : null}

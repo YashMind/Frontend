@@ -1,7 +1,52 @@
-import React from "react";
+"use client"
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import toast from "react-hot-toast";
+import { QRCodeCanvas } from 'qrcode.react';
+import Head from "next/head";
+
 
 const ChatbotDeploy = () => {
+  const chatbotData: ChatbotsData = useSelector((state: RootState)=> state.chat.chatbotData);
+  
+  const inputRef1: any = useRef(null);
+  const inputRef2: any = useRef(null);
+  const inputRef3: any = useRef(null);
+  
+  const handleCopy = (inputRef:any) => {
+    if (inputRef.current) {
+      navigator.clipboard.writeText(inputRef.current.value)
+      .then(() => {
+        console.log("Copied to clipboard!");
+        toast.success("Copied to clipboard!")
+      })
+      .catch((err) => {
+        toast.error("Failed to copy!")
+      });
+    }
+  };
+  
+  const chatbotUrl = `${process.env.NEXT_PUBLIC_UI_URL}/embed/${chatbotData?.token}`;
+
+  const downloadQRCode = () => {
+    const canvas = document.querySelector('canvas') as HTMLCanvasElement;
+    const pngUrl = canvas
+      .toDataURL('image/png')
+      .replace('image/png', 'image/octet-stream');
+    const downloadLink = document.createElement('a');
+    downloadLink.href = pngUrl;
+    downloadLink.download = 'chatbot-qr.png';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  };
+
+  const iframeCode = `<iframe style="width: 400px; height: 600px;" src="${process.env.NEXT_PUBLIC_UI_URL}/embed/${chatbotData?.token}"></iframe>`;
+
+  const embedScript = `<script defer src="${process.env.NEXT_PUBLIC_UI_URL}/embed.js" data-bot-id="${chatbotData?.token}"></script>`;
+
   return (
     <div className="w-full">
       <h2 className="text-2xl font-bold my-[30]">Deploy</h2>
@@ -30,9 +75,10 @@ const ChatbotDeploy = () => {
               </div>
               <div className="relative">
                 <input
+                  ref={inputRef1}
                   type="text"
                   className="w-full bg-[#D9D9D9] text-[#727272] px-4 py-2 rounded-full text-sm placeholder-[#727272]"
-                  value="1234kbk@job.com"
+                  value={`${process.env.NEXT_PUBLIC_UI_URL}/embed/${chatbotData?.token}`}
                   readOnly
                 />
                 <span className="absolute right-3 top-2.5 text-gray-400 cursor-pointer">
@@ -42,24 +88,16 @@ const ChatbotDeploy = () => {
                     src="/images/file.png"
                     height={14}
                     width={16}
+                    onClick={()=> handleCopy(inputRef1)}
                   />
                 </span>
               </div>
-              <button className="bg-green-500 hover:bg-green-600 text-white text-sm font-medium px-6 py-1.5 rounded mt-[15px]">
-                Save
-              </button>
             </div>
 
             {/* Right (QR) */}
             <div className="flex flex-col items-center justify-center gap-4">
-              <Image
-                className="m-auto mb-4"
-                alt="alt"
-                src="/images/qr.png"
-                height={304}
-                width={304}
-              />
-              <button className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-6 py-1.5 rounded">
+              <QRCodeCanvas value={chatbotUrl} size={304} />
+              <button onClick={() => downloadQRCode()} className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-6 py-1.5 rounded">
                 Download QR
               </button>
             </div>
@@ -67,7 +105,7 @@ const ChatbotDeploy = () => {
 
           {/* Bottom Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Display Inside Webpage */}
+            {/* Display Script Inside Webpage */}
             <div className="bg-white rounded-2xl shadow-md p-6 space-y-4">
               <Image
                 className="m-auto mb-4"
@@ -86,12 +124,12 @@ const ChatbotDeploy = () => {
                 </p>
               </div>
               <div className="relative">
-                <input
-                  type="text"
-                  className="w-full bg-[#D9D9D9] text-[#727272] px-4 py-2 rounded-full text-sm placeholder-[#727272]"
-                  value="1234kbk@job.com"
-                  readOnly
-                />
+              <textarea
+                ref={inputRef2}
+                className="w-full bg-[#D9D9D9] text-[#727272] px-4 py-2 rounded-xl text-sm placeholder-[#727272] h-20"
+                value={embedScript}
+                readOnly
+              />
                 <span className="absolute right-3 top-2.5 text-gray-400 cursor-pointer">
                   <Image
                     className=""
@@ -99,12 +137,11 @@ const ChatbotDeploy = () => {
                     src="/images/file.png"
                     height={14}
                     width={16}
+                    onClick={()=> handleCopy(inputRef2)}
                   />
                 </span>
               </div>
-              <button className="bg-green-500 hover:bg-green-600 text-white text-sm font-medium px-6 py-1.5 rounded mt-[15px]">
-                Save
-              </button>
+              
             </div>
 
             {/* Add to a Website */}
@@ -126,12 +163,15 @@ const ChatbotDeploy = () => {
                 </p>
               </div>
               <div className="relative">
-                <input
-                  type="text"
-                  className="w-full bg-[#D9D9D9] text-[#727272] px-4 py-2 rounded-full text-sm placeholder-[#727272]"
-                  value="1234kbk@job.com"
+               
+                <textarea
+                  ref={inputRef3}
                   readOnly
+                  value={iframeCode}
+                  className="h-20 w-full bg-[#D9D9D9] text-[#727272] px-4 py-2 rounded-xl text-sm placeholder-[#727272]"
                 />
+
+                
                 <span className="absolute right-3 top-2.5 text-gray-400 cursor-pointer">
                   <Image
                     className=""
@@ -139,12 +179,10 @@ const ChatbotDeploy = () => {
                     src="/images/file.png"
                     height={14}
                     width={16}
+                    onClick={()=> handleCopy(inputRef3)}
                   />
                 </span>
               </div>
-              <button className="bg-green-500 hover:bg-green-600 text-white text-sm font-medium px-6 py-1.5 rounded mt-[15px]d">
-                Save
-              </button>
             </div>
           </div>
         </div>

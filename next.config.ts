@@ -7,9 +7,16 @@ const nextConfig: NextConfig = {
       {
         protocol: "http",
         hostname: "**",
+      },      {
+        protocol: "https",
+        hostname: "**",
       },
       {
         protocol: "http",
+        hostname: "images.example.io",
+        pathname: "/uploads/**",
+      }, {
+        protocol: "https",
         hostname: "images.example.io",
         pathname: "/uploads/**",
       },
