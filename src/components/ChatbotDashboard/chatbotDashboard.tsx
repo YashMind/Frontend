@@ -13,7 +13,6 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
   const chatbots: ChatbotsData[] = useSelector(
     (state: RootState) => state.chat.chatbots
   );
-  console.log("chatbots ", chatbots);
   useEffect(() => {
     dispatch(getChatbots());
   }, [dispatch]);

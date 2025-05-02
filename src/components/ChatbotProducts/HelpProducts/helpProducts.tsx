@@ -19,7 +19,6 @@ const HelpProducts = () => {
   });
 
   const onSubmit = (data: HelpSupportForm) => {
-    console.log(data);
     reset();
   };
   return (

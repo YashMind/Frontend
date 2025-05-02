@@ -21,7 +21,7 @@ const schema = yup.object().shape({
   text_content: yup.string().optional(),
 });
 
-const AddBotData = ({ botId }: { botId?: number }) => {
+const AddBotData = ({ botId, handleBack }: { botId?: number, handleBack:()=>void }) => {
   const [activeTrainFrom, setActiveTrainFrom] = useState<string | null>(
     "Full website"
   );
@@ -108,8 +108,8 @@ const AddBotData = ({ botId }: { botId?: number }) => {
       if (formType === "form2" && data.document_link === "") {
         toast.error("please upload a file!");
       } else {
-        console.log("data ", data);
         dispatch(createChatbotDocLinks({ payload: data }));
+        handleBack();
         reset();
       }
     };

@@ -150,4 +150,11 @@ interface ChatbotDocLinks {
   data: ChatbotDocLinksArray[];
   total_count: number;
   total_pages: number;
+  Indexed?: number,
+  total_target_links?:number,
+  total_document_links?:number,
+  pending_count?:number,
+  failed_count?:number,
+  indexed_count?: number,
+  total_chars?: number
 }

@@ -1,9 +1,6 @@
-(function () {
-    console.log("👀 Script loaded");
-  
+(function () {  
     // If the script is running inside the iframe, return early to avoid creating another bubble
     if (window !== window.parent) {
-      console.log("🚫 Inside iframe. Skipping bubble creation.");
       return;
     }
   
@@ -19,7 +16,6 @@
       }
     }
   
-    console.log("🤖 Bot ID:", BOT_ID);
     if (!BOT_ID) return;
   
     const CHAT_IFRAME_URL = `http://localhost:3000/embed/${BOT_ID}`;

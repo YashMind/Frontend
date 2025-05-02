@@ -146,7 +146,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       action({
         id: botId!,
         data: {
-          bot_id: botId && parseInt(botId),
+          bot_id: botId,
           title_value: data.title_value,
           welcome_message_value: data.welcome_message_value,
           suggestions_value: data.suggestions_value,

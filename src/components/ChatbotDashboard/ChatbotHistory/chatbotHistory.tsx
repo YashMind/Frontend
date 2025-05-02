@@ -27,7 +27,6 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
     (state: RootState) => state.chat.chatbotHistory
   );
 
-  console.log("chatUserHistory", chatUserHistory);
   useEffect(() => {
     if (botId) {
       dispatch(getChatbotsUserHistory({ bot_id: botId, page, search }));
