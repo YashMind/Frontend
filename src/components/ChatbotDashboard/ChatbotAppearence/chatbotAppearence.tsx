@@ -33,6 +33,8 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
         chatbotSetting?.welcome_message_is_active || false,
       suggestions_is_active: chatbotSetting?.suggestions_is_active || false,
       placeholder_is_active: chatbotSetting?.placeholder_is_active || false,
+
+      // Branding
       chat_window_bg: chatbotSetting?.chat_window_bg || "",
       send_button_color: chatbotSetting?.send_button_color || "",
       chat_icon_color: chatbotSetting?.chat_icon_color || "",
@@ -42,6 +44,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       live_message_bg: chatbotSetting?.live_message_bg,
       chat_icon: chatbotSetting?.chat_icon,
       image: chatbotSetting?.image,
+      // Lead collection
       lead_collection: chatbotSetting?.lead_collection || false,
       name_lead_gen: chatbotSetting?.name_lead_gen || "Name",
       is_name_lead_gen: chatbotSetting?.is_name_lead_gen || true,
@@ -109,6 +112,92 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
         const image = pathToImage(chatbotSetting.image);
         image ? setValue("image", image) : setValue("image", "");
       }
+      if (chatbotSetting?.lead_collection !== undefined) {
+        setValue("lead_collection", chatbotSetting.lead_collection);
+      }
+
+      if (chatbotSetting?.name_lead_gen !== undefined) {
+        setValue("name_lead_gen", chatbotSetting.name_lead_gen);
+      }
+
+      setValue("is_name_lead_gen", chatbotSetting?.is_name_lead_gen ?? true);
+
+      if (chatbotSetting?.required_name_lead_gen !== undefined) {
+        setValue(
+          "required_name_lead_gen",
+          chatbotSetting.required_name_lead_gen
+        );
+      }
+
+      if (chatbotSetting?.mail_lead_gen !== undefined) {
+        setValue("mail_lead_gen", chatbotSetting.mail_lead_gen);
+      }
+
+      if (chatbotSetting?.is_mail_lead_gen !== undefined) {
+        setValue("is_mail_lead_gen", chatbotSetting.is_mail_lead_gen);
+      }
+
+      if (chatbotSetting?.required_mail_lead_gen !== undefined) {
+        setValue(
+          "required_mail_lead_gen",
+          chatbotSetting.required_mail_lead_gen
+        );
+      }
+
+      if (chatbotSetting?.phone_lead_gen !== undefined) {
+        setValue("phone_lead_gen", chatbotSetting.phone_lead_gen);
+      }
+
+      if (chatbotSetting?.is_phone_lead_gen !== undefined) {
+        setValue("is_phone_lead_gen", chatbotSetting.is_phone_lead_gen);
+      }
+
+      if (chatbotSetting?.required_phone_lead_gen !== undefined) {
+        setValue(
+          "required_phone_lead_gen",
+          chatbotSetting.required_phone_lead_gen
+        );
+      }
+
+      if (chatbotSetting?.message_lead_gen !== undefined) {
+        setValue("message_lead_gen", chatbotSetting.message_lead_gen);
+      }
+
+      if (chatbotSetting?.is_message_lead_gen !== undefined) {
+        setValue("is_message_lead_gen", chatbotSetting.is_message_lead_gen);
+      }
+
+      if (chatbotSetting?.required_message_lead_gen !== undefined) {
+        setValue(
+          "required_message_lead_gen",
+          chatbotSetting.required_message_lead_gen
+        );
+      }
+
+      if (chatbotSetting?.submission_message_heading_lead_gen !== undefined) {
+        setValue(
+          "submission_message_heading_lead_gen",
+          chatbotSetting.submission_message_heading_lead_gen
+        );
+      }
+
+      if (chatbotSetting?.sumbission_message_lead_gen !== undefined) {
+        setValue(
+          "sumbission_message_lead_gen",
+          chatbotSetting.sumbission_message_lead_gen
+        );
+      }
+
+      if (chatbotSetting?.submit_text_lead_gen !== undefined) {
+        setValue("submit_text_lead_gen", chatbotSetting.submit_text_lead_gen);
+      }
+
+      if (chatbotSetting?.submit_button_color_lead_gen !== undefined) {
+        setValue(
+          "submit_button_color_lead_gen",
+          chatbotSetting.submit_button_color_lead_gen
+        );
+      }
     }
   }, [chatbotSetting, setValue]);
 
@@ -164,6 +253,24 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
           live_message_bg: data.live_message_bg,
           image: data.image,
           chat_icon: data.chat_icon,
+          lead_collection: data.lead_collection,
+          name_lead_gen: data.name_lead_gen,
+          is_name_lead_gen: data.is_name_lead_gen || true,
+          required_name_lead_gen: data.required_name_lead_gen,
+          mail_lead_gen: data.mail_lead_gen,
+          is_mail_lead_gen: data.is_mail_lead_gen,
+          required_mail_lead_gen: data.required_mail_lead_gen,
+          phone_lead_gen: data.phone_lead_gen,
+          is_phone_lead_gen: data.is_phone_lead_gen,
+          required_phone_lead_gen: data.required_phone_lead_gen,
+          message_lead_gen: data.message_lead_gen,
+          is_message_lead_gen: data.is_message_lead_gen,
+          required_message_lead_gen: data.required_message_lead_gen,
+          submission_message_heading_lead_gen:
+            data.submission_message_heading_lead_gen,
+          sumbission_message_lead_gen: data.sumbission_message_lead_gen,
+          submit_text_lead_gen: data.submit_text_lead_gen,
+          submit_button_color_lead_gen: data.submit_button_color_lead_gen,
         },
       })
     )

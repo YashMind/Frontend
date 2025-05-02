@@ -38,7 +38,9 @@ const ChatbotOverview = ({
           <ChatbotSection botId={botId} chatbotData={chatbotData} />
         </div>
       ) : null}
-      {botPage === "update" && botId ? <AddBotData botId={botId} /> : null}
+      {botPage === "update" && botId ? (
+        <AddBotData botId={botId} handleBack={() => null} />
+      ) : null}
     </div>
   );
 };
