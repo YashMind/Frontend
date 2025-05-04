@@ -53,7 +53,6 @@ const ChatbotLinksDocs = ({
     setUploadDocs(false);
   }, [dispatch, search, page, limit, sortBy, sortOrder]);
 
-
   const handleDeleteDocLinks = () => {
     dispatch(
       deleteDocLinks({
@@ -71,7 +70,7 @@ const ChatbotLinksDocs = ({
 
   const handleBack = () => {
     setUploadDocs(!uploadDocs);
-  }
+  };
   return (
     <div className="w-full">
       <h2 className="text-2xl font-bold mt-[30]">Links / Docs</h2>
@@ -80,31 +79,41 @@ const ChatbotLinksDocs = ({
           {/* Crawled Links */}
           <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#18B91F] text-white text-center">
             <span className="text-sm font-semibold">Crawled Links</span>
-            <span className="text-lg font-bold mt-1">{ChatbotDocLinksData?.total_target_links}</span>
+            <span className="text-lg font-bold mt-1">
+              {ChatbotDocLinksData?.total_target_links}
+            </span>
           </div>
 
           {/* Chars */}
           <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-white text-black text-center">
             <span className="text-sm font-semibold">Chars</span>
-            <span className="text-lg font-bold text-purple-900 mt-1">{ChatbotDocLinksData?.total_chars}</span>
+            <span className="text-lg font-bold text-purple-900 mt-1">
+              {ChatbotDocLinksData?.total_chars}
+            </span>
           </div>
 
           {/* Failed */}
           <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#FF0000] text-white text-center">
             <span className="text-sm font-semibold">Failed</span>
-            <span className="text-lg font-bold mt-1">{ChatbotDocLinksData?.failed_count}</span>
+            <span className="text-lg font-bold mt-1">
+              {ChatbotDocLinksData?.failed_count}
+            </span>
           </div>
 
           {/* Pending */}
           <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#FFC107] text-black text-center">
             <span className="text-sm font-semibold">Pending</span>
-            <span className="text-lg font-bold mt-1">{ChatbotDocLinksData?.pending_count}</span>
+            <span className="text-lg font-bold mt-1">
+              {ChatbotDocLinksData?.pending_count}
+            </span>
           </div>
 
           {/* Indexed */}
           <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#808080] text-white text-center">
             <span className="text-sm font-semibold">Indexed</span>
-            <span className="text-lg font-bold mt-1">{ChatbotDocLinksData?.indexed_count}</span>
+            <span className="text-lg font-bold mt-1">
+              {ChatbotDocLinksData?.indexed_count}
+            </span>
           </div>
         </div>
       ) : (
@@ -167,24 +176,6 @@ const ChatbotLinksDocs = ({
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
-
-              {/* <div className="flex items-center gap-2 px-4 py-2 rounded-md  border border-white text-white bg-[#928eb0] focus:outline-none focus:ring-2 focus:ring-purple-500 ">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M8 7V3m8 4V3m-9 8h10m-12 8h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
-                <span>Feb/2/2025</span>
-              </div> */}
             </div>
             <div className="flex items-center gap-3">
               <button
@@ -302,7 +293,7 @@ const ChatbotLinksDocs = ({
                     : "bg-gray-200"
                 } text-black rounded-[7px] text-sm`}
               >
-              {ChatbotDocLinksData?.total_pages}
+                {ChatbotDocLinksData?.total_pages}
               </button>
             ) : null}
             <button

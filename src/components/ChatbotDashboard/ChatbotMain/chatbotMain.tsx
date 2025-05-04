@@ -67,7 +67,9 @@ const ChatbotMain = ({
             {botPage === "chat-history" ? (
               <ChatbotHistory botId={botId} />
             ) : null}
-            {botPage === "chat-leads" ? <ChatbotLeads /> : null}
+            {botPage === "chat-leads" ? (
+              <ChatbotLeads botPage={botPage} botId={botId} />
+            ) : null}
             {botPage === "links-docs" ? (
               <ChatbotLinksDocs botPage={botPage} botId={botId} />
             ) : null}

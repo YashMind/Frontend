@@ -102,8 +102,11 @@ export const createChatbotDocLinks = createAsyncThunk<any, { payload: any }>(
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toast.success("chatbot updated successfully!");
-        dispatch(getChatbotsDocLinks({
-            bot_id: payload?.bot_id}));
+        dispatch(
+          getChatbotsDocLinks({
+            bot_id: payload?.bot_id,
+          })
+        );
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot!");
@@ -133,7 +136,7 @@ export const updateChatbotWithoutRouter = createAsyncThunk<
         dispatch(stopLoadingActivity());
         toast.success("chatbot updated successfully!");
         dispatch(getChatbots());
-        dispatch(getSingleChatbot({botId: payload?.id}))
+        dispatch(getSingleChatbot({ botId: payload?.id }));
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot!");
@@ -374,7 +377,7 @@ export const createChatsIdToken = createAsyncThunk<any, { token?: string }>(
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         dispatch(getChatbotsMessages({ chat_id: response?.data?.id }));
-        dispatch(getSingleChatbot({botId: response?.data?.bot_id}))
+        dispatch(getSingleChatbot({ botId: response?.data?.bot_id }));
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot id!");
@@ -391,18 +394,54 @@ export const createChatsIdToken = createAsyncThunk<any, { token?: string }>(
   }
 );
 
-export const deleteChatsMessagesToken = createAsyncThunk<any, { token?: string, chat_id?:number }>(
+export const deleteChatsMessagesToken = createAsyncThunk<
+  any,
+  { token?: string; chat_id?: number }
+>(
   "chat/deleteChatsMessagesToken",
   async ({ token, chat_id }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await http.delete(`/chatbot/chats-delete-token/${token}`);
+      const response = await http.delete(
+        `/chatbot/chats-delete-token/${token}`
+      );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         dispatch(getChatbotsMessages({ chat_id: chat_id }));
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot id!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during creating chatbot id");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const deleteUserChatsMessages = createAsyncThunk<
+  any,
+  { token?: string; chat_id?: number }
+>(
+  "chat/deleteUserChatsMessages",
+  async ({ chat_id }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.delete(
+        `/chatbot/user-chats-delete/${chat_id}`
+      );
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        dispatch(getChatbotsMessages({ chat_id: chat_id }));
+        toast.success("Chat messages deleted successfully!");
+        return response.data;
+      } else {
+        return rejectWithValue("failed to delete chat messages!");
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
@@ -620,7 +659,10 @@ export const deleteDocLinks = createAsyncThunk<
   }
 );
 
-export const deleteChatbot = createAsyncThunk<any, { bot_id?: number, router: ReturnType<typeof useRouter> }>(
+export const deleteChatbot = createAsyncThunk<
+  any,
+  { bot_id?: number; router: ReturnType<typeof useRouter> }
+>(
   "chat/deleteChatbot",
   async ({ bot_id, router }, { dispatch, rejectWithValue }) => {
     try {
@@ -629,6 +671,158 @@ export const deleteChatbot = createAsyncThunk<any, { bot_id?: number, router: Re
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         router.push("/chatbot-dashboard/main");
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get chats!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const createChatbotLeads = createAsyncThunk<any, { payload: any }>(
+  "chat/createChatbotLeads",
+  async ({ payload }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.post("/chatbot/create-bot-leads", payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toast.success("chatbot lead created successfully!");
+        return response.data;
+      } else {
+        return rejectWithValue("failed to create chatbot!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during chatbot");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const getChatbotsLeads = createAsyncThunk<
+  any,
+  {
+    bot_id?: number;
+    page?: number;
+    limit?: number;
+    search?: string;
+    sortBy?: string;
+    sortOrder?: string;
+  }
+>(
+  "chat/getChatbotsLeads",
+  async (
+    { bot_id, page, limit, search, sortBy, sortOrder },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      dispatch(startLoadingActivity());
+      const params = {
+        search: search,
+        page: page?.toString(),
+        limit: limit?.toString(),
+        sort_by: sortBy,
+        sort_order: sortOrder,
+      };
+      const response = await http.get(`/chatbot/get-chatbot-leads/${bot_id}`, {
+        params,
+      });
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get chats!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const deleteChatbotLeads = createAsyncThunk<
+  any,
+  {
+    bot_id?: number;
+    lead_ids?: number[];
+    page?: number;
+    limit?: number;
+    search?: string;
+    sortBy?: string;
+    sortOrder?: string;
+  }
+>(
+  "chat/deleteChatbotLeads",
+  async (
+    { bot_id, lead_ids, page, limit, search, sortBy, sortOrder },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.delete(
+        `/chatbot/delete-chatbot-leads/${bot_id}`,
+        {
+          data: { lead_ids },
+        }
+      );
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toast.success("Chatbot leads deleted Successfully!");
+        dispatch(
+          getChatbotsLeads({
+            bot_id: bot_id,
+            page,
+            limit,
+            search,
+            sortBy,
+            sortOrder,
+          })
+        );
+        return response.data;
+      } else {
+        return rejectWithValue("failed to delete chats!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during delete chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const getChatbotsLeadMessages = createAsyncThunk<
+  any,
+  { chat_id?: number }
+>(
+  "chat/getChatbotsLeadMessages",
+  async ({ chat_id }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.get(`/chatbot/leads/${chat_id}/messages`);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
         return response.data;
       } else {
         return rejectWithValue("failed to get chats!");
@@ -656,6 +850,8 @@ const initialState = {
   chatbotHistory: {} as ChatbotHistoryMessages,
   chatbotFaqs: [] as ChatbotFaqsQuesAnswer[],
   ChatbotDocLinksData: {} as ChatbotDocLinks,
+  chatbotLeadsData: {} as ChatbotLeads,
+  chatbotLeadMessages: [] as ChatbotMessages[],
 };
 
 const chatSlice = createSlice({
@@ -763,6 +959,28 @@ const chatSlice = createSlice({
         state.ChatbotDocLinksData = action?.payload;
       })
       .addCase(getChatbotsDocLinks.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(getChatbotsLeads.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getChatbotsLeads.fulfilled, (state, action) => {
+        state.loading = false;
+        state.chatbotLeadsData = action?.payload;
+      })
+      .addCase(getChatbotsLeads.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(getChatbotsLeadMessages.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getChatbotsLeadMessages.fulfilled, (state, action) => {
+        state.loading = false;
+        state.chatbotLeadMessages = action?.payload;
+      })
+      .addCase(getChatbotsLeadMessages.rejected, (state, action) => {
         state.loading = false;
       });
   },

@@ -7,8 +7,7 @@ interface EditUserModalProps {
 }
 
 const EditUserModal = ({ show, onHide }: EditUserModalProps) => {
-  if (!show) return null;
-  return (
+  return show ? (
     <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[800px] max-w-full shadow-5xl relative">
         <button
@@ -104,7 +103,7 @@ const EditUserModal = ({ show, onHide }: EditUserModalProps) => {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default EditUserModal;

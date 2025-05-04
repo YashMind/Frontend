@@ -1,14 +1,25 @@
+"use client";
+import { createChatbotLeads } from "@/store/slices/chats/chatSlice";
+import { AppDispatch } from "@/store/store";
+import { yupResolver } from "@hookform/resolvers/yup";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import * as yup from "yup";
 
 interface FormFields {
   name?: string;
-  phone?: string;
+  contact?: string;
   email?: string;
   message?: string;
+  type?: string;
+  bot_id?: number;
+  chat_id?: number;
 }
 
 interface LeadGenFormProps {
+  bot_id: number;
+  chat_id: number;
   is_name: boolean;
   is_phone: boolean;
   is_mail: boolean;
@@ -25,21 +36,53 @@ interface LeadGenFormProps {
   submit_button_text_color: string;
 }
 
+const schema = yup.object().shape({
+  bot_id: yup.number(),
+  chat_id: yup.number(),
+  name: yup.string().required("Name is required"),
+  contact: yup
+    .string()
+    .required("Contact is required")
+    .matches(/^\d+$/, "Contact must be a number"),
+  email: yup
+    .string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  type: yup.string().required("Type is required"),
+  message: yup.string().required("Message is required"),
+});
+
 const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<FormFields>();
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      bot_id: 0,
+      chat_id: 0,
+      name: "",
+      contact: "",
+      email: "",
+      type: "Lead",
+      message: "",
+    },
+  });
   const [isSubmitted, setIsSubmitted] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       // TODO: Replace with actual API call using thunk
-      console.log("Form data:", data);
-      setIsSubmitted(true);
-      setIsError(false);
+      data.bot_id = fields.bot_id;
+      data.chat_id = fields.chat_id;
+      dispatch(createChatbotLeads({ payload: data })).finally(() => {
+        setIsSubmitted(true);
+        setIsError(false);
+      });
     } catch (error) {
       setIsError(true);
       setIsSubmitted(false);
@@ -84,7 +127,7 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
             {fields.is_phone && (
               <div>
                 <label
-                  htmlFor="phone"
+                  htmlFor="contact"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Phone{" "}
@@ -93,18 +136,18 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
                   )}
                 </label>
                 <input
-                  {...register("phone", {
-                    required: fields.required_phone && "Phone is required",
+                  {...register("contact", {
+                    required: fields.required_phone && "Contact is required",
                   })}
                   id="phone"
                   type="tel"
                   className={`mt-1 block w-full rounded-md border p-1 ${
-                    errors.phone ? "border-red-500" : "border-gray-300"
+                    errors.contact ? "border-red-500" : "border-gray-300"
                   } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
                 />
-                {errors.phone && (
+                {errors.contact && (
                   <p className="mt-1 text-sm text-red-600">
-                    {errors.phone.message}
+                    {errors?.contact?.message}
                   </p>
                 )}
               </div>

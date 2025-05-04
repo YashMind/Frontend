@@ -19,8 +19,6 @@ const LoginWithGoogle = () => {
       //   }
       // );
 
-      // console.log("profile ", profile)
-      // console.log("token ", accessToken)
       // const authData = {
       //   googleId: profile.sub,
       //   fullName: profile.name,

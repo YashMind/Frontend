@@ -1,7 +1,75 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import {
+  deleteChatbotLeads,
+  getChatbotsLeadMessages,
+  getChatbotsLeads,
+} from "@/store/slices/chats/chatSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { formatDistanceToNow } from "date-fns";
+import { FaEye } from "react-icons/fa6";
+import ViewLeadChatModal from "./viewLeadChats/viewLeadChats";
 
-const ChatbotLeads = () => {
+const ChatbotLeads = ({
+  botPage,
+  botId,
+}: {
+  botPage: string;
+  botId?: number;
+}) => {
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [sortBy, setSortBy] = useState("created_at");
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [modalShow, setModalShow] = useState<boolean>(false);
+  const { chatbotLeadsData } = useSelector((state: RootState) => state.chat);
+  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+    const allRowIds = chatbotLeadsData?.data.map((item) => Number(item?.id));
+    setSelectedIds(isChecked ? allRowIds : []);
+  };
+  const handleSelectRow = (id: number, checked: boolean) => {
+    setSelectedIds((prev) =>
+      checked ? [...prev, id] : prev.filter((item) => item !== id)
+    );
+  };
+
+  const isDisabled = selectedIds.length === 0;
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    dispatch(
+      getChatbotsLeads({
+        bot_id: botId,
+        page,
+        limit,
+        search,
+        sortBy,
+        sortOrder,
+      })
+    );
+  }, [dispatch, search, page, limit, sortBy, sortOrder]);
+  const handleDeleteChatbotLeads = () => {
+    dispatch(
+      deleteChatbotLeads({
+        bot_id: botId,
+        lead_ids: selectedIds,
+        page,
+        limit,
+        search,
+        sortBy,
+        sortOrder,
+      })
+    );
+    setSelectedIds([]);
+  };
+  const handleViewChats = (chat_id: number) => {
+    dispatch(getChatbotsLeadMessages({ chat_id: chat_id })).finally(() => {
+      setModalShow(true);
+    });
+  };
   return (
     <div className="w-full">
       <h2 className="text-2xl font-bold my-4">Leads</h2>
@@ -16,12 +84,28 @@ const ChatbotLeads = () => {
             <select
               id="entries"
               className=" px-2 py-1 bg-[#E0E0E0] rounded-md text-black outline-0"
+              value={limit}
+              onChange={(e) => {
+                setLimit(Number(e.target.value));
+                setPage(1);
+              }}
             >
-              <option>10</option>
-              <option>25</option>
-              <option>50</option>
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
             </select>
             <span className="text-gray-700 font-medium">entries</span>
+            <button
+              className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
+                isDisabled
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-red-500 hover:bg-red-600"
+              }`}
+              disabled={isDisabled}
+              onClick={() => handleDeleteChatbotLeads()}
+            >
+              Delete
+            </button>
             <div className="relative w-full max-w-xs">
               <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg
@@ -40,10 +124,12 @@ const ChatbotLeads = () => {
                 type="text"
                 placeholder="Search..."
                 className="border border-white placeholder-white  pl-9  py-2 rounded-md  focus:outline-none focus:ring-2 focus:ring-purple-500 w-[140px]"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
             </div>
 
-            <div className="flex items-center gap-2 px-4 py-2 rounded-md  border border-white text-white bg-[#928eb0] focus:outline-none focus:ring-2 focus:ring-purple-500 ">
+            {/* <div className="flex items-center gap-2 px-4 py-2 rounded-md  border border-white text-white bg-[#928eb0] focus:outline-none focus:ring-2 focus:ring-purple-500 ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -58,8 +144,8 @@ const ChatbotLeads = () => {
                   d="M8 7V3m8 4V3m-9 8h10m-12 8h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                 />
               </svg>
-              <span>Feb/2/2025</span>
-            </div>
+              <span>Feb/2/2025</span> */}
+            {/* </div> */}
           </div>
           <div className="flex items-center gap-3">
             <button className="bg-[#340555] text-white rounded  text-[11px] font-bold py-[7px] px-[11px]">
@@ -73,100 +159,144 @@ const ChatbotLeads = () => {
           <thead className="bg-white text-gray-600 border-y border-gray-300">
             <tr>
               <th className="p-4">
-                <input type="checkbox" className="w-4 h-4 accent-[#5E2EFF]" />
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 accent-[#5E2EFF]"
+                  onChange={handleSelectAll}
+                />
+              </th>
+              <th className="py-[14px] text-sm font-bold text-black">Name</th>
+              <th className="py-[14px] text-sm font-bold text-black">Email</th>
+              <th className="py-[14px] text-sm font-bold text-black">
+                Contact
               </th>
               <th className="py-[14px] text-sm font-bold text-black">
-                Country
+                Message
               </th>
               <th className="py-[14px] text-sm font-bold text-black">
-                Started
+                Submitted
               </th>
-              <th className="py-[14px] text-sm font-bold text-black">Status</th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Language
-              </th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Last message
-              </th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Platform
-              </th>
+              <th className="py-[14px] text-sm font-bold text-black">Type</th>
               <th className="py-[14px] text-sm font-bold text-black">Action</th>
             </tr>
           </thead>
           <tbody className="bg-[#f7f6fd]">
-            {Array(7)
-              .fill(0)
-              .map((_, idx) => (
-                <tr key={idx} className="border-b border-gray-200">
-                  <td className="p-4">
-                    <input
-                      type="checkbox"
-                      className="w-4 h-4 accent-[#5E2EFF]"
-                    />
-                  </td>
-                  <td className="p-4 text-xs font-medium text-black">India</td>
-                  <td className="p-4 text-xs font-medium text-black">
-                    2 hours ago
-                  </td>
-                  <td className="p-4 text-xs font-medium text-black">
-                    Original
-                  </td>
-                  <td className="p-4 text-xs font-medium text-black">
-                    Original
-                  </td>
-                  <td className=" truncate max-w-[150px] p-4 text-xs font-medium text-black">
-                    Hi, how are....
-                  </td>
-                  <td className="py-4">
-                    <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black">
-                      Web
-                    </span>
-                  </td>
-                  <td className="py-4 flex items-center gap-2">
-                    <button>
-                      <Image
-                        className="m-auto mb-4"
-                        alt="alt"
-                        src="/images/eye.png"
-                        height={24}
-                        width={24}
+            {chatbotLeadsData?.data &&
+              chatbotLeadsData?.data?.map((item, index) => {
+                const timeAgo = formatDistanceToNow(
+                  new Date(item?.created_at),
+                  { addSuffix: true }
+                );
+                return (
+                  <tr key={index} className="border-b border-gray-200">
+                    <td className="p-4">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 accent-[#5E2EFF]"
+                        checked={selectedIds.includes(Number(item?.id))}
+                        onChange={(e) =>
+                          handleSelectRow(Number(item?.id), e.target.checked)
+                        }
                       />
-                    </button>
-                    <button>
-                      <Image
-                        className="m-auto mb-4"
-                        alt="alt"
-                        src="/images/bx_edit.png"
-                        height={24}
-                        width={24}
-                      />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                    <td className="text-xs font-medium text-black">
+                      {item?.name}
+                    </td>
+                    <td className="text-xs font-medium text-black">
+                      {item?.email}
+                    </td>
+                    <td className="text-xs font-medium text-black">
+                      {item?.contact}
+                    </td>
+                    <td className=" truncate max-w-[150px] text-xs font-medium text-black">
+                      {item?.message?.slice(0, 20)}...
+                    </td>
+                    <td className="text-xs font-medium text-black">
+                      {timeAgo}
+                    </td>
+                    <td className="">
+                      <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black">
+                        {item?.type}
+                      </span>
+                    </td>
+                    <td className="py-4 flex items-center gap-2">
+                      {/* <button>
+                        <Image
+                          className="m-auto mb-4"
+                          alt="alt"
+                          src="/images/eye.png"
+                          height={24}
+                          width={24}
+                        />
+                      </button> */}
+                      <button onClick={() => handleViewChats(item?.chat_id)}>
+                        <FaEye size={20} />
+                      </button>
+                      {/* <button>
+                        <Image
+                          className="m-auto mb-4"
+                          alt="alt"
+                          src="/images/bx_edit.png"
+                          height={24}
+                          width={24}
+                        />
+                      </button> */}
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
 
         {/* Pagination */}
         <div className="flex justify-center items-center gap-2 px-6 py-4 bg-white border-t border-gray-200">
-          <button className="text-sm text-[#9E9E9E] font-medium">
+          <button
+            className="text-sm text-[#9E9E9E] font-medium disabled:opacity-50"
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
             Previous
           </button>
-          <button className="w-6 h-6 bg-[#624DE3] text-white rounded-[7px] text-sm">
-            1
+          {chatbotLeadsData?.total_pages >= 1 ? (
+            <button
+              className={`w-6 h-6 ${
+                page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
+              }   text-black rounded-[7px] text-sm`}
+            >
+              1
+            </button>
+          ) : null}
+          {chatbotLeadsData?.total_pages > 1 ? (
+            <button
+              className="w-6 h-6 bg-gray-200 text-black rounded-[7px] text-sm"
+              disabled
+            >
+              ...
+            </button>
+          ) : null}
+          {chatbotLeadsData?.total_pages > 1 ? (
+            <button
+              className={`w-6 h-6 ${
+                chatbotLeadsData?.total_pages === page
+                  ? "bg-[#624DE3]"
+                  : "bg-gray-200"
+              } text-black rounded-[7px] text-sm`}
+            >
+              {chatbotLeadsData?.total_pages}
+            </button>
+          ) : null}
+          <button
+            className="text-sm text-[#9E9E9E] font-medium"
+            onClick={() => setPage(page + 1)}
+            disabled={chatbotLeadsData?.total_pages === page}
+          >
+            Next
           </button>
-          <button className="w-6 h-6 bg-gray-200 text-black rounded-[7px] text-sm">
-            2
-          </button>
-          <button className="w-6 h-6 bg-gray-200 text-black rounded-[7px] text-sm">
-            3
-          </button>
-          <button className="text-sm text-[#9E9E9E] font-medium">Next</button>
         </div>
       </div>
 
       {/* table */}
+      <ViewLeadChatModal show={modalShow} onHide={() => setModalShow(false)} />
     </div>
   );
 };

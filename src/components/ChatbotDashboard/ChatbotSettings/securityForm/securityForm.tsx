@@ -46,11 +46,9 @@ const SecuritySettings = ({ botId }: { botId?: number }) => {
   const rateLimitEnabled = watch("rate_limit_enabled");
 
   const onSubmit = (data: SecurityForm) => {
-    console.log("Form Data:", data);
     dispatch(updateChatbotWithoutRouter({ payload: data }));
   };
 
-  console.log("errors ", errors);
   const { chatbotData } = useSelector((state: RootState) => state.chat);
   useEffect(() => {
     setValue("domains", chatbotData?.domains);

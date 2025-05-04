@@ -46,9 +46,10 @@ const promptTypes = [
 
 const ChatbotAI = ({ botId }: { botId?: number }) => {
   const { chatbotData } = useSelector((state: RootState) => state.chat);
-  const prompts = useSelector(
-    (state: RootState) => state.tuning.promptsByBotId[botId]
+  const prompts = useSelector((state: RootState) =>
+    botId !== undefined ? state.tuning.promptsByBotId[botId] : []
   );
+
   const [creativity, setCreativity] = useState<number>(
     chatbotData.creativity || 0
   );
@@ -86,7 +87,7 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
   useEffect(() => {
     if (prompts) {
       const selectedType = watch("type");
-      const prompt = prompts.find((item) => item.type === selectedType);
+      const prompt = prompts.find((item: any) => item.type === selectedType);
 
       if (prompt) {
         setValue("prompt", prompt.prompt);
@@ -135,7 +136,7 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
         });
   };
 
-  const handleCreativityChange = (e: React.MouseEvent<HTMLInputElement>) => {
+  const handleCreativityChange = (e: any) => {
     const val = e.target.value;
     if (val > 0 && val < 100) {
       dispatch(
@@ -217,8 +218,12 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
                 }
               }}
             >
-              {promptTypes.map((item) => {
-                return <option value={item}>{item}</option>;
+              {promptTypes.map((item, index) => {
+                return (
+                  <option value={item} key={index}>
+                    {item}
+                  </option>
+                );
               })}
             </select>
             <div className="flex gap-2">

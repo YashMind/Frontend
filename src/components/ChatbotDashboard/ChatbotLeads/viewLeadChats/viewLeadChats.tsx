@@ -1,20 +1,18 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 interface ChatUserModalProps {
   show: boolean;
   onHide: () => void;
-  currentMesssages: [];
 }
 
-const ViewChatModal = ({
-  show,
-  onHide,
-  currentMesssages,
-}: ChatUserModalProps) => {
+const ViewLeadChatModal = ({ show, onHide }: ChatUserModalProps) => {
+  const { chatbotLeadMessages } = useSelector((state: RootState) => state.chat);
+
   return show ? (
     <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex items-center justify-center z-50 mb-5">
       <div className="bg-white rounded-2xl shadow-xl w-[600px] p-8 relative">
@@ -24,11 +22,11 @@ const ViewChatModal = ({
         >
           &times;
         </button>
-        <h4 className=" font-bold text-black mb-6">View chats</h4>
+        <h4 className=" font-bold text-black mb-6">View lead chats</h4>
 
         <div className="h-[400px] overflow-y-auto space-y-4 pr-2">
-          {currentMesssages &&
-            currentMesssages.map((msg: any, idx: number) => {
+          {chatbotLeadMessages &&
+            chatbotLeadMessages.map((msg: any, idx: number) => {
               const timeAgo = formatDistanceToNow(new Date(msg?.created_at), {
                 addSuffix: true,
               });
@@ -80,4 +78,4 @@ const ViewChatModal = ({
   ) : null;
 };
 
-export default ViewChatModal;
+export default ViewLeadChatModal;

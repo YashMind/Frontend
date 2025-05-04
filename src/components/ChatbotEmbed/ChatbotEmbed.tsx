@@ -5,16 +5,29 @@ import { useForm, Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { conversationMessage, createChatsId, createChatsIdToken, deleteChatsMessagesToken } from "@/store/slices/chats/chatSlice";
+import {
+  conversationMessage,
+  createChatsId,
+  createChatsIdToken,
+  deleteChatsMessagesToken,
+} from "@/store/slices/chats/chatSlice";
 import Image from "next/image";
 import { VscClearAll } from "react-icons/vsc";
+import LeadGenForm from "../ChatbotDashboard/ChatbotOverview/chatbotSection/LeadGenForm";
+import { fetchChatbotSettings } from "@/store/slices/chats/appearanceSettings";
 
 const schema = yup.object().shape({
   message: yup.string().required("Message is required"),
   chat_id: yup.number(),
   bot_id: yup.number(),
 });
-const ChatbotEmbedSection = ({ botId, domainUrl }: { botId?: string; domainUrl?: string }) => {
+const ChatbotEmbedSection = ({
+  botId,
+  domainUrl,
+}: {
+  botId?: string;
+  domainUrl?: string;
+}) => {
   const [isBotTyping, setIsBotTyping] = useState(false);
   const {
     register,
@@ -37,11 +50,11 @@ const ChatbotEmbedSection = ({ botId, domainUrl }: { botId?: string; domainUrl?:
     (state: RootState) => state.chat.chatIdData
   );
   const chatMessages = useSelector(
-      (state: RootState) => state.chat.chatMessages
-    );
-    
-    const chatbotData = useSelector((state: RootState) => state.chat.chatbotData);
-    const onSubmit = (data: TextMessage) => {
+    (state: RootState) => state.chat.chatMessages
+  );
+
+  const chatbotData = useSelector((state: RootState) => state.chat.chatbotData);
+  const onSubmit = (data: TextMessage) => {
     setIsBotTyping(true);
     dispatch(conversationMessage({ payload: data })).finally(() => {
       setIsBotTyping(false);
@@ -51,13 +64,13 @@ const ChatbotEmbedSection = ({ botId, domainUrl }: { botId?: string; domainUrl?:
 
   const hasRun = useRef(false);
 
-  useEffect(()=>{
-      if (hasRun.current) return;
-      hasRun.current = true;
-        if (botId !== undefined) {
-        dispatch(createChatsIdToken({token: botId}));
-        }
-      },[dispatch, botId])
+  useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
+    if (botId !== undefined) {
+      dispatch(createChatsIdToken({ token: botId }));
+    }
+  }, [dispatch, botId]);
 
   const messagesEndRef: any = useRef(null);
 
@@ -69,10 +82,21 @@ const ChatbotEmbedSection = ({ botId, domainUrl }: { botId?: string; domainUrl?:
     }
   }, [chatMessages, chatIdData.bot_id, chatIdData.id]);
 
-  
   const handleDeleteChats = () => {
-    dispatch(deleteChatsMessagesToken({token:botId, chat_id: chatIdData.id}))
-  }
+    dispatch(
+      deleteChatsMessagesToken({ token: botId, chat_id: chatIdData.id })
+    );
+  };
+
+  const chatbotSetting = useSelector(
+    (state: RootState) => state.appearance.settings
+  );
+
+  useEffect(() => {
+    if (chatIdData?.bot_id && !chatbotSetting) {
+      dispatch(fetchChatbotSettings(chatIdData?.bot_id));
+    }
+  }, [chatIdData?.bot_id]);
 
   return (
     <div className="w-full bg-white  h-[650px] rounded-lg shadow-md flex flex-col justify-between ">
@@ -90,39 +114,69 @@ const ChatbotEmbedSection = ({ botId, domainUrl }: { botId?: string; domainUrl?:
         {chatMessages && chatMessages.length ? (
           chatMessages.map((item, index) => {
             return (
-              <div
-                key={index}
-                className={`flex mb-2 ${
-                  item.sender === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                {item.sender === "bot" && (
-                  <Image
-                    src="/images/face2.webp"
-                    alt="Bot"
-                    className="w-8 h-8 rounded-full mr-2"
-                    width={20}
-                    height={20}
-                  />
-                )}
+              <div key={index}>
                 <div
-                  className={`p-3 rounded-xl max-w-xs text-sm ${
-                    item.sender === "user"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 text-black"
+                  className={`flex mb-2 ${
+                    item.sender === "user" ? "justify-end" : "justify-start"
                   }`}
                 >
-                  {item.message}
+                  {item.sender === "bot" && (
+                    <Image
+                      src="/images/face2.webp"
+                      alt="Bot"
+                      className="w-8 h-8 rounded-full mr-2"
+                      width={20}
+                      height={20}
+                    />
+                  )}
+                  <div
+                    className={`p-3 rounded-xl max-w-xs text-sm ${
+                      item.sender === "user"
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 text-black"
+                    }`}
+                  >
+                    {item.message}
+                  </div>
+                  {item.sender === "user" && (
+                    <Image
+                      src="/images/userimg.png"
+                      alt="User"
+                      className="w-8 h-8 rounded-full ml-2"
+                      width={20}
+                      height={20}
+                    />
+                  )}
                 </div>
-                {item.sender === "user" && (
-                  <Image
-                    src="/images/userimg.png"
-                    alt="User"
-                    className="w-8 h-8 rounded-full ml-2"
-                    width={20}
-                    height={20}
-                  />
-                )}
+
+                {item.sender === "bot" &&
+                  chatbotSetting?.lead_collection &&
+                  index <= 2 && (
+                    <LeadGenForm
+                      bot_id={chatIdData?.bot_id}
+                      chat_id={chatIdData?.id}
+                      is_name={chatbotSetting?.is_name_lead_gen}
+                      is_phone={chatbotSetting?.is_phone_lead_gen}
+                      is_mail={chatbotSetting?.is_mail_lead_gen}
+                      is_message={chatbotSetting?.is_message_lead_gen}
+                      required_name={chatbotSetting?.required_name_lead_gen}
+                      required_phone={chatbotSetting?.required_phone_lead_gen}
+                      required_mail={chatbotSetting?.required_mail_lead_gen}
+                      required_message={
+                        chatbotSetting?.required_message_lead_gen
+                      }
+                      submit_button_text={chatbotSetting?.submit_text_lead_gen}
+                      submit_button_color={
+                        chatbotSetting?.submit_button_color_lead_gen
+                      }
+                      submission_message_heading={
+                        chatbotSetting?.submission_message_heading_lead_gen
+                      }
+                      sumbission_message={
+                        chatbotSetting?.sumbission_message_lead_gen
+                      }
+                    />
+                  )}
               </div>
             );
           })
@@ -156,16 +210,23 @@ const ChatbotEmbedSection = ({ botId, domainUrl }: { botId?: string; domainUrl?:
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="border-t p-2 flex items-center gap-2 w-full">
-        <div className="relative w-full">
-        {chatMessages?.length > 0 ? <VscClearAll size={25} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" onClick={()=>handleDeleteChats()} /> : null }
-          <input
-            {...register("message")}
-            type="text"
-            placeholder="Type a message..."
-            className={`${
-              errors.message ? "border-red-500" : ""
-            } w-full ${chatMessages?.length ? "pl-12" : ""} p-2 text-sm rounded-md border text-black border-gray-300 focus:outline-none`}
-          />
+          <div className="relative w-full">
+            {chatMessages?.length > 0 ? (
+              <VscClearAll
+                color="gray"
+                size={25}
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                onClick={() => handleDeleteChats()}
+              />
+            ) : null}
+            <input
+              {...register("message")}
+              type="text"
+              placeholder="Type a message..."
+              className={`${errors.message ? "border-red-500" : ""} w-full ${
+                chatMessages?.length ? "pl-12" : ""
+              } p-2 text-sm rounded-md border text-black border-gray-300 focus:outline-none`}
+            />
           </div>
           <button className="bg-[#05BDFD] p-2 rounded text-white" type="submit">
             <svg

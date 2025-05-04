@@ -175,3 +175,24 @@ interface SecurityForm {
   limit_to?: number;
   every_minutes?: number;
 }
+
+interface ChatbotLeadsArray {
+  id: number;
+  user_id: number;
+  bot_id: number;
+  chat_id: number;
+  name: string;
+  email: string;
+  contact: string;
+  message: string;
+  type: string;
+  created_at: string;
+  updated_at: string;
+}
+
+interface ChatbotLeads {
+  current_page: number;
+  data: ChatbotLeadsArray[];
+  total_count: number;
+  total_pages: number;
+}

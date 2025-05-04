@@ -41,12 +41,12 @@ const LeadGenSelection = ({
             "mail_lead_gen",
             "phone_lead_gen",
             "message_lead_gen",
-          ].map((name: string) => {
-            const is_active = `is_${name}`;
-            const required = `required_${name}`;
+          ].map((name: any, index: number) => {
+            const is_active: any = `is_${name}`;
+            const required: any = `required_${name}`;
             return (
               <div
-                key={name}
+                key={index}
                 className="flex w-full flex-wrap justify-between items-center  gap-4"
               >
                 <label className="text-gray-800 rounded-lg flex flex-col text-left text-xs">

@@ -42,7 +42,7 @@ export interface IFormInput {
 export type ImageFieldProps = {
   name: string;
   label: string;
-  value?: string;
+  value?: any;
   description?: string;
   register?: any;
 };
@@ -206,9 +206,9 @@ export const ColorPickerField = ({
                     "#666666",
                     "#333333",
                     "#000000",
-                  ].map((preset) => (
+                  ].map((preset, index) => (
                     <button
-                      key={preset}
+                      key={index}
                       type="button"
                       className="w-6 h-6 rounded-sm border border-gray-200 hover:border-gray-400"
                       style={{ backgroundColor: preset }}

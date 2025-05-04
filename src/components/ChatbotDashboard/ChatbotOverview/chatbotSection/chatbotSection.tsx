@@ -5,11 +5,16 @@ import { useForm, Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { conversationMessage } from "@/store/slices/chats/chatSlice";
+import {
+  conversationMessage,
+  deleteUserChatsMessages,
+} from "@/store/slices/chats/chatSlice";
 import Image from "next/image";
 import { fetchChatbotSettings } from "@/store/slices/chats/appearanceSettings";
 import { pathToImage } from "@/services/utils/helpers";
 import LeadGenForm from "./LeadGenForm";
+import { VscClearAll } from "react-icons/vsc";
+
 const schema = yup.object().shape({
   message: yup.string().required("Message is required"),
   chat_id: yup.number(),
@@ -52,7 +57,9 @@ const ChatbotSection = ({
     (state: RootState) => state.chat.chatMessages
   );
   useEffect(() => {
-    if (botId && !chatbotSetting) dispatch(fetchChatbotSettings(botId));
+    if (botId && !chatbotSetting) {
+      dispatch(fetchChatbotSettings(botId));
+    }
   }, []);
   const onSubmit = (data: TextMessage) => {
     setIsBotTyping(true);
@@ -77,6 +84,10 @@ const ChatbotSection = ({
     }
   }, [chatMessages, chatIdData.bot_id, chatIdData.id]);
 
+  const handleDeleteChats = () => {
+    dispatch(deleteUserChatsMessages({ chat_id: chatIdData.id }));
+  };
+
   return (
     <div
       className="min-w-[320px] h-[500px] rounded-lg shadow-md flex flex-col justify-between "
@@ -100,9 +111,8 @@ const ChatbotSection = ({
         {chatMessages && chatMessages.length
           ? chatMessages.map((item, index) => {
               return (
-                <>
+                <div key={index}>
                   <div
-                    key={index}
                     className={`flex mb-2 ${
                       item.sender === "user" ? "justify-end" : "justify-start"
                     }`}
@@ -142,6 +152,8 @@ const ChatbotSection = ({
                     chatbotSetting?.lead_collection &&
                     index <= 2 && (
                       <LeadGenForm
+                        bot_id={botId}
+                        chat_id={chatIdData?.id}
                         is_name={chatbotSetting?.is_name_lead_gen}
                         is_phone={chatbotSetting?.is_phone_lead_gen}
                         is_mail={chatbotSetting?.is_mail_lead_gen}
@@ -166,7 +178,7 @@ const ChatbotSection = ({
                         }
                       />
                     )}
-                </>
+                </div>
               );
             })
           : chatbotSetting?.welcome_message_is_active && (
@@ -249,18 +261,28 @@ const ChatbotSection = ({
         </div>
 
         <div className="border-t p-2 flex items-center gap-2">
-          <input
-            {...register("message")}
-            type="text"
-            placeholder={
-              chatbotSetting?.placeholder_is_active
-                ? chatbotSetting?.placeholder_value
-                : "Type a message..."
-            }
-            className={`${
-              errors.message ? "border-red-500" : ""
-            } w-full p-2 text-sm rounded-md border text-black border-gray-300 bg-gray-50 focus:outline-none`}
-          />
+          <div className="relative w-full">
+            {chatMessages?.length > 0 ? (
+              <VscClearAll
+                color="gray"
+                size={25}
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                onClick={() => handleDeleteChats()}
+              />
+            ) : null}
+            <input
+              {...register("message")}
+              type="text"
+              placeholder={
+                chatbotSetting?.placeholder_is_active
+                  ? chatbotSetting?.placeholder_value
+                  : "Type a message..."
+              }
+              className={`${errors.message ? "border-red-500" : ""} ${
+                chatMessages?.length ? "pl-12" : ""
+              } w-full p-2 text-sm rounded-md border text-black border-gray-300 bg-gray-50 focus:outline-none`}
+            />
+          </div>
           <button
             className=" p-2 rounded text-white"
             type="submit"
