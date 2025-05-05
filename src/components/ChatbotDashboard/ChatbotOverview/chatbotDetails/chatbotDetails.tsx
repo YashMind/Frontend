@@ -19,7 +19,7 @@ const ChatbotDetails = () => {
           <div className="flex justify-between mb-2">
             <div className="flex items-center space-x-2 justify-between w-full">
               <p className="font-semibold text-base  text-[#000]">
-                Today"s Users and Token Cnsumption
+                Today's Users and Token Cnsumption
               </p>
               <div className="p-2 rounded-full bg-[#161A55]">
                 <LuAlarmClock size={30} />
