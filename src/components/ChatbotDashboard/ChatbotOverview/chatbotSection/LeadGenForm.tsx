@@ -36,22 +36,6 @@ interface LeadGenFormProps {
   submit_button_text_color: string;
 }
 
-const schema = yup.object().shape({
-  bot_id: yup.number(),
-  chat_id: yup.number(),
-  name: yup.string().required("Name is required"),
-  contact: yup
-    .string()
-    .required("Contact is required")
-    .matches(/^\d+$/, "Contact must be a number"),
-  email: yup
-    .string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  type: yup.string().required("Type is required"),
-  message: yup.string().required("Message is required"),
-});
-
 const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
   const {
     register,
@@ -59,7 +43,35 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
     reset,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(
+      yup.object().shape({
+        bot_id: yup.number(),
+        chat_id: yup.number(),
+        name:
+          fields.is_name && fields.required_name
+            ? yup.string().required("Name is required")
+            : yup.string(),
+        contact:
+          fields.is_phone && fields.required_phone
+            ? yup
+                .string()
+                .required("Contact is required")
+                .matches(/^\d+$/, "Contact must be a number")
+            : yup.string(),
+        email:
+          fields.is_mail && fields.required_mail
+            ? yup
+                .string()
+                .email("Invalid email address")
+                .required("Email is required")
+            : yup.string(),
+        type: yup.string().required("Type is required"),
+        message:
+          fields.is_message && fields.required_message
+            ? yup.string().required("Message is required")
+            : yup.string(),
+      })
+    ),
     defaultValues: {
       bot_id: 0,
       chat_id: 0,

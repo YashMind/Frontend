@@ -31,7 +31,11 @@ const CreatebotModal = ({ show, onHide }: EditUserModalProps) => {
 
   const dispatch = useDispatch<AppDispatch>();
   const onSubmit = (data: CreatebotForm) => {
-    dispatch(createChatbot({ payload: data, router }));
+    dispatch(createChatbot({ payload: data, router }))
+      .unwrap()
+      .then(() => {
+        onHide();
+      });
     reset();
   };
 
