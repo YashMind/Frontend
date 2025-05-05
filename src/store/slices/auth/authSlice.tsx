@@ -19,6 +19,7 @@ const UserData = {
   googleId: "",
   picture: "",
   updated_at: "",
+  role: "",
 };
 
 // Async thunk for signup
@@ -157,7 +158,7 @@ export const updateUserProfile = createAsyncThunk<any, { payload: any }>(
 const initialState = {
   loading: false,
   data: [],
-  userData: UserData,
+  userData: UserData as UserProfileData,
   userDetails: {},
 };
 
