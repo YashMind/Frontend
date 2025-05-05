@@ -1,9 +1,9 @@
-interface CreatebotForm {
+export interface CreatebotForm {
   chatbot_name: string;
   public: boolean;
 }
 
-interface UpdateChatbotData {
+export interface UpdateChatbotData {
   id?: number;
   target_link: string;
   train_from?: string;
@@ -11,7 +11,7 @@ interface UpdateChatbotData {
   text_content?: string;
 }
 
-interface ChatbotDocLinksData {
+export interface ChatbotDocLinksData {
   id?: number;
   user_id?: number;
   bot_id?: number;
@@ -22,7 +22,7 @@ interface ChatbotDocLinksData {
   public?: string;
 }
 
-interface ChatbotsData {
+export interface ChatbotsData {
   id: number;
   chatbot_name: string;
   user_id: number;
@@ -40,13 +40,13 @@ interface ChatbotsData {
   every_minutes?: number;
 }
 
-interface TextMessage {
+export interface TextMessage {
   message: string;
   chat_id: number;
   bot_id: number;
 }
 
-interface chatsIdData {
+export interface chatsIdData {
   id: number;
   user_id: number;
   bot_id: number;
@@ -54,7 +54,7 @@ interface chatsIdData {
   created_at: string;
 }
 
-interface ChatbotMessages {
+export interface ChatbotMessages {
   id?: number;
   bot_id?: number;
   chat_id?: number;
@@ -65,7 +65,7 @@ interface ChatbotMessages {
   country?: string;
 }
 
-interface ChatbotHistoryMessages {
+export interface ChatbotHistoryMessages {
   data: ChatbotMessages;
   totalCount: number;
   totalPages: number;
@@ -73,7 +73,7 @@ interface ChatbotHistoryMessages {
   chatBot: ChatbotsData;
 }
 
-interface ChatbotFaqs {
+export interface ChatbotFaqs {
   bot_id?: number;
   questions: {
     question: string;
@@ -81,7 +81,7 @@ interface ChatbotFaqs {
   };
 }
 
-interface ChatbotFaqsQuesAnswer {
+export interface ChatbotFaqsQuesAnswer {
   answer: string;
   bot_id: number;
   created_at: string;
@@ -93,7 +93,7 @@ interface ChatbotFaqsQuesAnswer {
   faqId?: number;
 }
 
-interface ChatbotSettings {
+export interface ChatbotSettings {
   id: number;
   bot_id: number;
   title_value: string;
@@ -132,7 +132,7 @@ interface ChatbotSettings {
   submit_button_color_lead_gen: string;
 }
 
-interface ChatbotDocLinksArray {
+export interface ChatbotDocLinksArray {
   bot_id: number;
   chars?: number;
   chatbot_name: string;
@@ -148,7 +148,7 @@ interface ChatbotDocLinksArray {
   user_id: number;
 }
 
-interface ChatbotDocLinks {
+export interface ChatbotDocLinks {
   current_page: number;
   data: ChatbotDocLinksArray[];
   total_count: number;
@@ -162,12 +162,12 @@ interface ChatbotDocLinks {
   total_chars?: number;
 }
 
-interface ChatbotCustomSettings {
+export interface ChatbotCustomSettings {
   id?: number;
   chatbot_name?: string;
   public?: boolean;
 }
-interface SecurityForm {
+export interface SecurityForm {
   id?: number;
   allow_domains: boolean;
   rate_limit_enabled: boolean;
@@ -176,7 +176,7 @@ interface SecurityForm {
   every_minutes?: number;
 }
 
-interface ChatbotLeadsArray {
+export interface ChatbotLeadsArray {
   id: number;
   user_id: number;
   bot_id: number;
@@ -190,9 +190,22 @@ interface ChatbotLeadsArray {
   updated_at: string;
 }
 
-interface ChatbotLeads {
+export interface ChatbotLeads {
   current_page: number;
   data: ChatbotLeadsArray[];
   total_count: number;
   total_pages: number;
+}
+
+export interface BotTokens {
+  bot_id?: string;
+  tokens?: number;
+  token_today?: number;
+  token_monthly?: number;
+  messages?: number;
+}
+
+export interface ChatMessageTokens {
+  total_tokens?: number;
+  bots?: BotTokens[];
 }

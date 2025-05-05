@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { createChatbot } from "@/store/slices/chats/chatSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
+import { CreatebotForm } from "@/types/chatTypes";
 
 interface EditUserModalProps {
   show: boolean;

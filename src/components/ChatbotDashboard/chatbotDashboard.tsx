@@ -4,7 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { AppDispatch, RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { getChatbots } from "@/store/slices/chats/chatSlice";
+import {
+  fetchChatMessageTokens,
+  getChatbots,
+} from "@/store/slices/chats/chatSlice";
+import { ChatbotsData } from "@/types/chatTypes";
 interface ChatbotDashboardProps {
   showModal: () => void;
 }
@@ -13,8 +17,11 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
   const chatbots: ChatbotsData[] = useSelector(
     (state: RootState) => state.chat.chatbots
   );
+
+  const tokensData = useSelector((state: RootState) => state.chat.tokens);
   useEffect(() => {
     dispatch(getChatbots());
+    dispatch(fetchChatMessageTokens());
   }, [dispatch]);
 
   const handleDateString = (dateString: string) => {
@@ -79,37 +86,27 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
         <h2 className="text-2xl font-bold mt-[36px] mb-4">My Bot List</h2>
         <div className="flex gap-4 w-full">
           {/* first div */}
-          <div className="flex flex-wrap gap-4 w-[786px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px]">
-            <div className="bg-[#fff] p-4 rounded-2xl flex-1 min-w-[300px]">
-              <div className="flex items-center justify-between">
-                <p className="mb-2 text-black font-semibold text-lg">
-                  Messages consumed
-                </p>
-                <p className="text-right font-semibold mt-1 text-[#501794] text-lg">
-                  0/50
-                </p>
-              </div>
-              <div className="w-full bg-gray-600 h-2 rounded-full">
-                <div className="text-[#501794] h-2 rounded-full w-0" />
-              </div>
+          <div className="bg-[#fff] p-4 rounded-2xl flex-1 min-w-[300px]">
+            <div className="flex items-center justify-between">
+              <p className="mb-2 text-black font-semibold text-lg">
+                All Bots token consumption
+              </p>
+              <p className="text-right font-semibold mt-1 text-[#501794] text-lg">
+                {tokensData.total_tokens || 0}/1000
+              </p>
             </div>
-            <div className="bg-[#fff] p-4 rounded-2xl flex-1 min-w-[300px] ">
-              <div className="flex items-center justify-between">
-                <p className="mb-2 text-black font-semibold text-lg">
-                  Messages allocated
-                </p>
-                <p className="text-right font-semibold mt-1 text-[#501794] text-lg">
-                  0/50
-                </p>
-              </div>
-              <div className="w-full bg-gray-600 h-2 rounded-full">
-                <div className="text-[#501794]  h-2 rounded-full w-0" />
-              </div>
+            <div className="w-full bg-gray-600 h-2 rounded-full">
+              <div
+                className="bg-[#501794] h-2 rounded-full "
+                style={{
+                  width: ((tokensData.total_tokens || 0) / 1000) * 100 + "%",
+                }}
+              />
             </div>
           </div>
           {/* second div */}
           <div
-            className="flex items-center justify-center border border-dashed border-gray-400 rounded-2xl flex-1  min-w-[400px] cursor-pointer"
+            className="flex items-center justify-center border border-dashed border-gray-400 rounded-2xl flex-1  min-w-[300px] cursor-pointer"
             onClick={() => showModal()}
           >
             <span className="font-semibold text-lg text-white text-center">

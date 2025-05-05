@@ -6,6 +6,19 @@ import {
 } from "../activity/activitySlice";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import {
+  BotTokens,
+  ChatbotDocLinks,
+  ChatbotFaqs,
+  ChatbotFaqsQuesAnswer,
+  ChatbotHistoryMessages,
+  ChatbotLeads,
+  ChatbotMessages,
+  ChatbotsData,
+  ChatMessageTokens,
+  chatsIdData,
+  TextMessage,
+} from "@/types/chatTypes";
 
 export const getChatbots = createAsyncThunk<any, void>(
   "chat/getChatbots",
@@ -839,8 +852,26 @@ export const getChatbotsLeadMessages = createAsyncThunk<
   }
 );
 
+export const fetchChatMessageTokens = createAsyncThunk<
+  ChatMessageTokens,
+  void,
+  { rejectValue: string }
+>("chatTokens/fetch", async (_, thunkAPI) => {
+  try {
+    const response = await http.get<ChatMessageTokens>("/chatbot/tokens", {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(
+      error?.response?.data?.detail || "Failed to fetch tokens"
+    );
+  }
+});
+
 const initialState = {
   loading: false,
+  error: null as null | string,
   data: [],
   botData: {},
   chatbots: [],
@@ -852,6 +883,7 @@ const initialState = {
   ChatbotDocLinksData: {} as ChatbotDocLinks,
   chatbotLeadsData: {} as ChatbotLeads,
   chatbotLeadMessages: [] as ChatbotMessages[],
+  tokens: [] as ChatMessageTokens,
 };
 
 const chatSlice = createSlice({
@@ -982,6 +1014,18 @@ const chatSlice = createSlice({
       })
       .addCase(getChatbotsLeadMessages.rejected, (state, action) => {
         state.loading = false;
+      })
+      .addCase(fetchChatMessageTokens.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchChatMessageTokens.fulfilled, (state, action) => {
+        state.loading = false;
+        state.tokens = action.payload;
+      })
+      .addCase(fetchChatMessageTokens.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ?? "Unknown error";
       });
   },
 });

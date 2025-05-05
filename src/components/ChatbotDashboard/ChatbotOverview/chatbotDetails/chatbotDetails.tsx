@@ -1,17 +1,34 @@
 import Image from "next/image";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { BiMessageRounded } from "react-icons/bi";
 import { IoPersonSharp } from "react-icons/io5";
 import { VscLightbulbSparkle } from "react-icons/vsc";
 import { LuAlarmClock } from "react-icons/lu";
+import {
+  fetchChatMessageTokens,
+  getChatbotsDocLinks,
+  getChatbotsLeads,
+} from "@/store/slices/chats/chatSlice";
 
-const ChatbotDetails = () => {
-  const chatUserHistory: any = useSelector(
-    (state: RootState) => state.chat.chatbotHistory
+const ChatbotDetails = ({ botId }: { botId?: number }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const tokensData = useSelector((state: RootState) =>
+    state.chat.tokens.bots?.find((bot) => parseInt(bot.bot_id!) == botId)
+  );
+  const trainedChars = useSelector(
+    (state: RootState) => state.chat.ChatbotDocLinksData.total_chars
+  );
+  const chatbotLeads = useSelector(
+    (state: RootState) => state.chat.chatbotLeadsData.total_count
   );
 
+  useEffect(() => {
+    dispatch(fetchChatMessageTokens());
+    dispatch(getChatbotsDocLinks({ bot_id: botId }));
+    dispatch(getChatbotsLeads({ bot_id: botId }));
+  }, [dispatch]);
   return (
     <div className="w-full">
       <div className="flex flex-wrap gap-4 w-[650px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px] ">
@@ -19,7 +36,7 @@ const ChatbotDetails = () => {
           <div className="flex justify-between mb-2">
             <div className="flex items-center space-x-2 justify-between w-full">
               <p className="font-semibold text-base  text-[#000]">
-                Today's Users and Token Cnsumption
+                Today's Users and Token Consumption
               </p>
               <div className="p-2 rounded-full bg-[#161A55]">
                 <LuAlarmClock size={30} />
@@ -31,7 +48,8 @@ const ChatbotDetails = () => {
               <span className="text-[#6B6B6B]">Users:</span> 0
             </h2>
             <h2 className="text-black font-semibold text-lg ">
-              <span className="text-[#6B6B6B]">Tokens consumed:</span> 0
+              <span className="text-[#6B6B6B]">Tokens consumed:</span>{" "}
+              {tokensData?.token_today || 0}
             </h2>
           </div>
         </div>
@@ -48,7 +66,8 @@ const ChatbotDetails = () => {
           </div>
           <div className="flex  items-center mb-[10px] mt-auto gap-10">
             <h2 className="text-black font-semibold text-lg ">
-              <span className="text-[#6B6B6B]">Has sent:</span> 0/0
+              <span className="text-[#6B6B6B]">Tokens consumed:</span>{" "}
+              {tokensData?.token_monthly || 0}
             </h2>
           </div>
         </div>
@@ -67,7 +86,8 @@ const ChatbotDetails = () => {
           </div>
           <div className="flex  items-center mb-[10px] mt-[10px] gap-10">
             <h2 className="text-black font-semibold text-lg ">
-              <span className="text-[#6B6B6B]">Generated:</span> 0
+              <span className="text-[#6B6B6B]">Generated:</span>{" "}
+              {chatbotLeads || 0}
             </h2>
           </div>
         </div>
@@ -82,7 +102,8 @@ const ChatbotDetails = () => {
           </div>
           <div className="flex  items-center mb-[10px] mt-[10px] gap-10">
             <h2 className="text-black font-semibold text-lg ">
-              <span className="text-[#6B6B6B]">Character used:</span> 0
+              <span className="text-[#6B6B6B]">Character used:</span>{" "}
+              {trainedChars || 0}
             </h2>
           </div>
         </div>

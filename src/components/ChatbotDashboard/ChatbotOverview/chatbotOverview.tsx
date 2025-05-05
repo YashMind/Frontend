@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from "@/store/store";
 import ChatbotSection from "./chatbotSection/chatbotSection";
 import ChatbotDetails from "./chatbotDetails/chatbotDetails";
 import { createChatsId } from "@/store/slices/chats/chatSlice";
+import { ChatbotsData } from "@/types/chatTypes";
 const ChatbotOverview = ({
   botPage,
   botId,
@@ -33,7 +34,7 @@ const ChatbotOverview = ({
       ) : null}
       {botPage === "overview" ? (
         <div className="flex gap-10 w-full">
-          <ChatbotDetails />
+          <ChatbotDetails botId={botId} />
           {/* right chatbot */}
           <ChatbotSection botId={botId} chatbotData={chatbotData} />
         </div>
