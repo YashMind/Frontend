@@ -190,12 +190,15 @@ export const deleteSubscriptionsPlan = createAsyncThunk<
       const response: any = await http.delete(
         `/admin/delete-subscription-plan/${plan_id}`
       );
+      console.log("response ", response);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        getAllSubscriptionPlans({
-          page: 1,
-          limit: 10,
-        });
+        dispatch(
+          getAllSubscriptionPlans({
+            page: 1,
+            limit: 10,
+          })
+        );
         toast.success("Plan deleted successfully!");
         return response.data;
       } else {
