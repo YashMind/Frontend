@@ -297,7 +297,7 @@ const ChatbotLinksDocs = ({
               </button>
             ) : null}
             <button
-              className="text-sm text-[#9E9E9E] font-medium"
+              className="text-sm text-[#9E9E9E] font-medium disabled:opacity-50"
               onClick={() => setPage(page + 1)}
               disabled={ChatbotDocLinksData?.total_pages === page}
             >

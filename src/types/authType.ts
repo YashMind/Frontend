@@ -15,17 +15,21 @@ interface SignUpResponse {
 }
 
 interface UserProfileData {
-  id?: number
-  email?: string
-  fullName?: string
-  password?: string
-  isMFA?: boolean
-  isRestricted?: boolean
-  googleId?: string
-  picture?: string
-  provider?: string
-  created_at: string
-  updated_at?: string
+  id?: number;
+  email?: string;
+  fullName?: string;
+  password?: string;
+  isMFA?: boolean;
+  isRestricted?: boolean;
+  googleId?: string;
+  picture?: string;
+  provider?: string;
+  created_at: string;
+  updated_at?: string;
+  role?: string;
+  plan?: string;
+  tokenUsed?: number;
+  status?: string;
 }
 
 interface TrainingText {
