@@ -36,48 +36,68 @@ const LeadGenSelection = ({
 
       {lead_gen && (
         <div className="space-y-2">
-          {[
-            "name_lead_gen",
-            "mail_lead_gen",
-            "phone_lead_gen",
-            "message_lead_gen",
-          ].map((name: any, index: number) => {
-            const is_active: any = `is_${name}`;
-            const required: any = `required_${name}`;
-            return (
-              <div
-                key={index}
-                className="flex w-full flex-wrap justify-between items-center  gap-4"
-              >
-                <label className="text-gray-800 rounded-lg flex flex-col text-left text-xs">
-                  <p className="sr-only">Is Active</p>
-                  <input type="checkbox" {...register(is_active)} />
-                </label>
+          {["name", "mail", "phone", "message"].map(
+            (name: any, index: number) => {
+              const is_active: any = `is_${name}_lead_gen`;
+              const required: any = `required_${name}_lead_gen`;
+              return (
+                <div
+                  key={index}
+                  className="flex flex-col gap-4 p-4 bg-white rounded-lg border border-gray-200 shadow-sm"
+                >
+                  {/* Field activation toggle */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-700">
+                      Enable {name} field
+                    </span>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        {...register(is_active)}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-indigo-600 transition-colors duration-200"></div>
+                      <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-200 peer-checked:translate-x-5"></div>
+                    </label>
+                  </div>
 
-                <label className="flex-1 min-w-max text-gray-800">
-                  {name}:
-                  <input
-                    type="text"
-                    className="w-full text-base p-2 outline-1 outline-gray-300 rounded-lg"
-                    placeholder={`Enter ${name}`}
-                    value={watch(name)}
-                    {...register(name)}
-                  />
-                </label>
+                  {/* Field input */}
+                  {watch(is_active) && (
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700 uppercase">
+                        {name}
+                        {watch(required) && (
+                          <span className="text-red-500 ml-1">*</span>
+                        )}
+                      </label>
+                      <input
+                        type="text"
+                        className="w-full px-3 py-2 border border-gray-300 text-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder={`Enter ${name.toLowerCase()}`}
+                        {...register(`${name}_lead_gen` as any)}
+                      />
 
-                <label className="relative inline-flex items-center cursor-pointer mt-1">
-                  <input
-                    type="checkbox"
-                    {...register(required)}
-                    checked={watch(required)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-12 h-6 bg-[#9592AD] rounded-full peer-checked:bg-[#9592AD] transition-colors duration-300"></div>
-                  <div className="absolute left-1 top-1 bg-black w-4 h-4 rounded-full transition-transform duration-300 peer-checked:translate-x-6"></div>
-                </label>
-              </div>
-            );
-          })}
+                      {/* Required toggle */}
+                      <div className="flex items-center justify-between pt-2">
+                        <span className="text-sm text-gray-600">
+                          Required field
+                        </span>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            {...register(required)}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-indigo-600 transition-colors duration-200"></div>
+                          <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-200 peer-checked:translate-x-5"></div>
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            }
+          )}
           <div>
             <label className="flex-1 min-w-max text-gray-800">
               Submission message heading:

@@ -24,6 +24,10 @@ interface LeadGenFormProps {
   is_phone: boolean;
   is_mail: boolean;
   is_message: boolean;
+  name: string;
+  contact: string;
+  mail: string;
+  message: string;
   required_name: boolean;
   required_phone: boolean;
   required_mail: boolean;
@@ -91,10 +95,16 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
       // TODO: Replace with actual API call using thunk
       data.bot_id = fields.bot_id;
       data.chat_id = fields.chat_id;
-      dispatch(createChatbotLeads({ payload: data })).finally(() => {
-        setIsSubmitted(true);
-        setIsError(false);
-      });
+      dispatch(createChatbotLeads({ payload: data }))
+        .unwrap()
+        .then(() => {
+          setIsSubmitted(true);
+          setIsError(false);
+        })
+        .catch(() => {
+          setIsSubmitted(false);
+          setIsError(true);
+        });
     } catch (error) {
       setIsError(true);
       setIsSubmitted(false);
@@ -102,8 +112,8 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
   };
 
   return (
-    <div className="space-y-2 my-2">
-      {!isSubmitted && (
+    <div className="space-y-2 my-2 max-w-2xl">
+      {!isSubmitted && !isError && (
         <div className="space-y-2 bg-green-50 rounded-lg p-1 text-base text-gray-800 ">
           <h1 className="text-2xl font-semibold">Get in touch</h1>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 p-2">
@@ -113,7 +123,7 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
                   htmlFor="name"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Name{" "}
+                  {fields.name || "Name"}{" "}
                   {fields.required_name && (
                     <span className="text-red-500">*</span>
                   )}
@@ -142,7 +152,7 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
                   htmlFor="contact"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Phone{" "}
+                  {fields.contact || "Phone"}{" "}
                   {fields.required_phone && (
                     <span className="text-red-500">*</span>
                   )}
@@ -171,7 +181,7 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Email{" "}
+                  {fields.mail || "Email"}{" "}
                   {fields.required_mail && (
                     <span className="text-red-500">*</span>
                   )}
@@ -204,7 +214,7 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
                   htmlFor="message"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Message{" "}
+                  {fields.message || "Message"}{" "}
                   {fields.required_message && (
                     <span className="text-red-500">*</span>
                   )}
@@ -252,6 +262,22 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
             {fields.submission_message_heading}
           </h3>
           <p className="text-green-700">{fields.sumbission_message}</p>
+        </div>
+      )}
+      {isError && (
+        <div className="p-6 bg-green-50 rounded-lg">
+          <h3 className="text-xl font-semibold mb-2 text-red-800">
+            Some Error occured
+          </h3>
+          <button
+            onClick={() => {
+              setIsSubmitted(false);
+              setIsError(false);
+            }}
+            className="text-red-700 p-2 bg-red-100 rounded-lg shadow border border-red-200"
+          >
+            Retry
+          </button>
         </div>
       )}
     </div>

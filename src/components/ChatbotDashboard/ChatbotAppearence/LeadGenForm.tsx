@@ -23,6 +23,10 @@ interface LeadGenFormProps {
   required_phone: boolean;
   required_mail: boolean;
   required_message: boolean;
+  name: string;
+  contact: string;
+  mail: string;
+  message: string;
   submit_text_color: string;
   submit_button_color: string;
   submission_message_heading: string;
@@ -85,7 +89,7 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700"
               >
-                Name{" "}
+                {fields.name || "Name"}{" "}
                 {fields.required_name && (
                   <span className="text-red-500">*</span>
                 )}
@@ -114,7 +118,7 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
                 htmlFor="contact"
                 className="block text-sm font-medium text-gray-700"
               >
-                Phone{" "}
+                {fields.contact || "Phone"}{" "}
                 {fields.required_phone && (
                   <span className="text-red-500">*</span>
                 )}
@@ -143,7 +147,7 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
-                Email{" "}
+                {fields.mail || "Email"}{" "}
                 {fields.required_mail && (
                   <span className="text-red-500">*</span>
                 )}
@@ -176,7 +180,7 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
                 htmlFor="message"
                 className="block text-sm font-medium text-gray-700"
               >
-                Message{" "}
+                {fields.message || "Message"}{" "}
                 {fields.required_message && (
                   <span className="text-red-500">*</span>
                 )}

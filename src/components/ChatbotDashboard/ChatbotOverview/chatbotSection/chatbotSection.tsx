@@ -14,6 +14,7 @@ import { fetchChatbotSettings } from "@/store/slices/chats/appearanceSettings";
 import { pathToImage } from "@/services/utils/helpers";
 import LeadGenForm from "./LeadGenForm";
 import { VscClearAll } from "react-icons/vsc";
+import { chatsIdData, TextMessage } from "@/types/chatTypes";
 
 const schema = yup.object().shape({
   message: yup.string().required("Message is required"),
@@ -154,6 +155,10 @@ const ChatbotSection = ({
                       <LeadGenForm
                         bot_id={botId}
                         chat_id={chatIdData?.id}
+                        name={chatbotSetting.name_lead_gen}
+                        contact={chatbotSetting.phone_lead_gen}
+                        mail={chatbotSetting.mail_lead_gen}
+                        message={chatbotSetting.message_lead_gen}
                         is_name={chatbotSetting?.is_name_lead_gen}
                         is_phone={chatbotSetting?.is_phone_lead_gen}
                         is_mail={chatbotSetting?.is_mail_lead_gen}
@@ -248,16 +253,18 @@ const ChatbotSection = ({
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-wrap gap-1 m-1 mx-2">
           {chatbotSetting?.suggestions_is_active &&
-            chatbotSetting?.suggestions_value?.split(",").map((item, index) => {
-              return (
-                <div
-                  key={index + "suggestion"}
-                  className="bg-gray-300 text-gray-600 w-fit  rounded-md text-sm py-0.5 px-1.5"
-                >
-                  <p>{item.trim()}</p>
-                </div>
-              );
-            })}
+            chatbotSetting?.suggestions_value
+              ?.split(",")
+              .map((item: string, index: number) => {
+                return (
+                  <div
+                    key={index + "suggestion"}
+                    className="bg-gray-300 text-gray-600 w-fit  rounded-md text-sm py-0.5 px-1.5"
+                  >
+                    <p>{item.trim()}</p>
+                  </div>
+                );
+              })}
         </div>
 
         <div className="border-t p-2 flex items-center gap-2">

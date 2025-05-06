@@ -118,6 +118,10 @@ const ChatbotDummy = ({
         </div>
         {chatbotSettings?.lead_collection && (
           <LeadGenForm
+            name={chatbotSettings.name_lead_gen}
+            contact={chatbotSettings.phone_lead_gen}
+            mail={chatbotSettings.mail_lead_gen}
+            message={chatbotSettings.message_lead_gen}
             is_name={chatbotSettings.is_name_lead_gen}
             is_phone={chatbotSettings.is_phone_lead_gen}
             is_mail={chatbotSettings.is_mail_lead_gen}
