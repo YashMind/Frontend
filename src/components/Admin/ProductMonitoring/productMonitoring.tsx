@@ -1,6 +1,46 @@
-import React from "react";
-import Image from "next/image";
+"use client";
+import React, { useEffect, useState } from "react";
+import {
+  createUpdateBotProduct,
+  getAllBotProducts,
+  getAllTokenBots,
+  updateBotToken,
+} from "@/store/slices/admin/adminSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import AddEditProduct from "./AddEditProduct/addEditProduct";
 const ProductMonitoring = () => {
+  const [modalShow, setModalShow] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const { tokenBotsData, productMonitoringData } = useSelector(
+    (state: RootState) => state.admin
+  );
+  useEffect(() => {
+    dispatch(
+      getAllTokenBots({
+        page: 1,
+        limit: 10,
+      })
+    );
+
+    dispatch(
+      getAllBotProducts({
+        page: 1,
+        limit: 10,
+      })
+    );
+  }, [dispatch]);
+
+  const handleUpdateBotProduct = (e: any, item: ProductMonitoring) => {
+    const data = { id: item.id, active: e.target.checked };
+    dispatch(createUpdateBotProduct({ payload: data }));
+  };
+
+  const handleUpdateBotToken = (e: any, item: TokenBots) => {
+    const data = { id: item.id, active: e.target.checked };
+    dispatch(updateBotToken({ payload: data }));
+  };
+
   return (
     <div>
       <div className="">
@@ -19,7 +59,10 @@ const ProductMonitoring = () => {
                     <div className="text-base text-gray-300">
                       Featuring Toggles
                     </div>
-                    <button className="bg-green-500 text-sm text-white px-4 py-1 rounded hover:bg-green-600">
+                    <button
+                      className="bg-green-500 text-sm text-white px-4 py-1 rounded hover:bg-green-600"
+                      onClick={() => setModalShow(true)}
+                    >
                       Add New Product
                     </button>
                   </div>
@@ -32,6 +75,7 @@ const ProductMonitoring = () => {
                           type="checkbox"
                           checked
                           className="accent-fuchsia-500 w-4 h-4"
+                          readOnly
                         />
                         <span className="text-xs flex gap-1 items-center justify-start">
                           <svg
@@ -54,57 +98,41 @@ const ProductMonitoring = () => {
                     </div>
 
                     {/* Chatbot Row */}
-                    <div className="flex items-center justify-between px-8 py-5 bg-[#0A1330]">
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked
-                          className="accent-fuchsia-500 w-4 h-4"
-                        />
-                        <span className="text-xs">Chatbot</span>
-                      </div>
+                    {productMonitoringData?.data &&
+                      productMonitoringData?.data?.map((item, index) => {
+                        return (
+                          <div
+                            className="flex items-center justify-between px-8 py-5 bg-[#0A1330]"
+                            key={index}
+                          >
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                checked={item?.active}
+                                className="accent-fuchsia-500 w-4 h-4"
+                                readOnly
+                              />
+                              <span className="text-xs">
+                                {item?.product_name}
+                              </span>
+                            </div>
 
-                      {/* Toggle switch */}
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
-                        <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
-                      </label>
-                    </div>
-
-                    {/* Voice Agent Row */}
-                    <div className="flex items-center justify-between px-8 py-5 ">
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked
-                          className="accent-fuchsia-500 w-4 h-4"
-                        />
-                        <span className="text-xs">Voice Agent</span>
-                      </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
-                        <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
-                      </label>
-                    </div>
-
-                    {/* Chat LLM Row */}
-                    <div className="flex items-center justify-between px-8 py-5 bg-[#0A1330]">
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked
-                          className="accent-fuchsia-500 w-4 h-4"
-                        />
-                        <span className="text-xs">Chat LLM</span>
-                      </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
-                        <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
-                      </label>
-                    </div>
+                            {/* Toggle switch */}
+                            <label className="relative inline-flex items-center cursor-pointer">
+                              <input
+                                type="checkbox"
+                                className="sr-only peer"
+                                checked={item?.active}
+                                onChange={(e) =>
+                                  handleUpdateBotProduct(e, item)
+                                }
+                              />
+                              <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
+                              <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
+                            </label>
+                          </div>
+                        );
+                      })}
                   </div>
                 </div>
               </div>
@@ -132,6 +160,7 @@ const ProductMonitoring = () => {
                           type="checkbox"
                           checked
                           className="accent-fuchsia-500 w-4 h-4"
+                          readOnly
                         />
                         <span className="text-xs flex gap-1 items-center justify-start">
                           <svg
@@ -154,73 +183,37 @@ const ProductMonitoring = () => {
                     </div>
 
                     {/* Chatbot Row */}
-                    <div className="flex items-center justify-between px-8 py-5 bg-[#0A1330]">
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked
-                          className="accent-fuchsia-500 w-4 h-4"
-                        />
-                        <span className="text-xs">Chatbot</span>
-                      </div>
+                    {tokenBotsData?.data &&
+                      tokenBotsData?.data?.map((item, index) => {
+                        return (
+                          <div
+                            className="flex items-center justify-between px-8 py-5 bg-[#0A1330]"
+                            key={index}
+                          >
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                checked={item?.active}
+                                className="accent-fuchsia-500 w-4 h-4"
+                                readOnly
+                              />
+                              <span className="text-xs">{item?.name}</span>
+                            </div>
 
-                      {/* Toggle switch */}
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
-                        <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
-                      </label>
-                    </div>
-
-                    {/* Voice Agent Row */}
-                    <div className="flex items-center justify-between px-8 py-5 ">
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked
-                          className="accent-fuchsia-500 w-4 h-4"
-                        />
-                        <span className="text-xs">Gemini</span>
-                      </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
-                        <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
-                      </label>
-                    </div>
-
-                    {/* Chat LLM Row */}
-                    <div className="flex items-center justify-between px-8 py-5 bg-[#0A1330]">
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked
-                          className="accent-fuchsia-500 w-4 h-4"
-                        />
-                        <span className="text-xs">Microsoft Copilot</span>
-                      </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
-                        <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
-                      </label>
-                    </div>
-                    {/* end */}
-                    <div className="flex items-center justify-between px-8 py-5 ">
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked
-                          className="accent-fuchsia-500 w-4 h-4"
-                        />
-                        <span className="text-xs">Deep Seek</span>
-                      </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
-                        <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
-                      </label>
-                    </div>
+                            {/* Toggle switch */}
+                            <label className="relative inline-flex items-center cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={item?.active}
+                                className="sr-only peer"
+                                onChange={(e) => handleUpdateBotToken(e, item)}
+                              />
+                              <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
+                              <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
+                            </label>
+                          </div>
+                        );
+                      })}
                   </div>
                 </div>
               </div>
@@ -297,6 +290,10 @@ const ProductMonitoring = () => {
                 </div>
               </div>
             </div>
+            <AddEditProduct
+              show={modalShow}
+              onHide={() => setModalShow(false)}
+            />
           </div>
         </div>
       </div>

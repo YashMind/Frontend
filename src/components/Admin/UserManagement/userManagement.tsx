@@ -4,10 +4,7 @@ import Image from "next/image";
 import EditUserModal from "./EditUser/editUser";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import {
-  getAllUsers,
-  updateUserByAdmin,
-} from "@/store/slices/admin/adminSlice";
+import { updateUserByAdmin } from "@/store/slices/admin/adminSlice";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import { MdEdit } from "react-icons/md";
 
@@ -24,17 +21,6 @@ const UserManagement = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const { allUsersData } = useSelector((state: RootState) => state.admin);
-  useEffect(() => {
-    dispatch(
-      getAllUsers({
-        page,
-        limit,
-        search,
-        sortBy,
-        sortOrder,
-      })
-    );
-  }, [dispatch, search, page, limit, sortBy, sortOrder]);
 
   const handleDateString = (dateString: string) => {
     const date = new Date(dateString);
@@ -122,6 +108,7 @@ const UserManagement = () => {
                           <input
                             type="checkbox"
                             className="form-checkbox appearance-none w-4 h-4  rounded-sm bg-[#CB3CFF]"
+                            readOnly
                           />
                         </td>
                         <td className="p-4 flex items-center text-xs gap-2">

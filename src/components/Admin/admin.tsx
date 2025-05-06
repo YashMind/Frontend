@@ -15,15 +15,25 @@ import LogsActivity from "./logs&activity/logs&activity";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { getMeData } from "@/store/slices/auth/authSlice";
+import { getAllUsers } from "@/store/slices/admin/adminSlice";
 const Admin = ({ adminPage }: { adminPage: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const userData: UserProfileData = useSelector(
     (state: RootState) => state.auth.userData
   );
+  const { allUsersData } = useSelector((state: RootState) => state.admin);
 
   useEffect(() => {
     dispatch(getMeData());
-  }, []);
+    if (!allUsersData?.data?.length) {
+      dispatch(
+        getAllUsers({
+          page: 1,
+          limit: 10,
+        })
+      );
+    }
+  }, [allUsersData?.data?.length]);
 
   return (
     <div>
@@ -33,7 +43,7 @@ const Admin = ({ adminPage }: { adminPage: string }) => {
           <AdminSidebar adminPage={adminPage} />
 
           <div className="dashboard-right flex-1 mr-[30px] mb-[60px]">
-            <AdminTopbar />
+            <AdminTopbar allUsersData={allUsersData} />
             {adminPage === "dashboard" ? <AdminMain /> : null}
             {adminPage === "users-management" ? <UserManagement /> : null}
             {adminPage === "subscription-plans" ? <SubscriptionPlans /> : null}

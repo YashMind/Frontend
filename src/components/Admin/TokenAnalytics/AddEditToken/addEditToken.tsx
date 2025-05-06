@@ -1,5 +1,8 @@
 "use client";
-import { createSubscriptionPlan } from "@/store/slices/admin/adminSlice";
+import {
+  createSubscriptionPlan,
+  createTokenBots,
+} from "@/store/slices/admin/adminSlice";
 import { AppDispatch } from "@/store/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
@@ -7,10 +10,10 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
 
-interface AddEditPlanProps {
+interface AddEditTokenProps {
   show: boolean;
   onHide: () => void;
-  planData: SubscriptionPlans;
+  tokenData: TokenBots;
 }
 
 const schema = yup.object().shape({
@@ -24,10 +27,9 @@ const schema = yup.object().shape({
     .number()
     .typeError("Token limit must be a number")
     .required("Token limit is required"),
-  features: yup.string().required("Features is required"),
 });
 
-const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
+const AddEditToken = ({ show, onHide, tokenData }: AddEditTokenProps) => {
   const {
     register,
     handleSubmit,
@@ -38,24 +40,22 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
     resolver: yupResolver(schema),
     defaultValues: {
       name: "",
-      features: "",
     },
   });
 
   const dispatch = useDispatch<AppDispatch>();
-  const onSubmit = (data: SubscriptionPlans) => {
-    dispatch(createSubscriptionPlan({ payload: data }));
+  const onSubmit = (data: TokenBots) => {
+    dispatch(createTokenBots({ payload: data }));
     reset();
     onHide();
   };
 
   useEffect(() => {
-    setValue("name", planData?.name);
-    setValue("pricing", planData?.pricing);
-    setValue("token_limits", planData?.token_limits);
-    setValue("features", planData?.features);
-    setValue("id", planData?.id);
-  }, [reset, planData?.id, show]);
+    setValue("name", tokenData?.name);
+    setValue("pricing", tokenData?.pricing);
+    setValue("token_limits", tokenData?.token_limits);
+    setValue("id", tokenData?.id);
+  }, [reset, tokenData?.id, show]);
   return show ? (
     <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[800px] max-w-full shadow-5xl relative">
@@ -67,13 +67,13 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
         </button>
 
         <h2 className="text-xl font-semibold mb-1">
-          {planData?.id ? "Edit" : "Add"} Token Bot
+          {tokenData?.id ? "Edit" : "Add"} Plan
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block mb-1 text-sm font-medium">Bot Name</label>
+            <label className="block mb-1 text-sm font-medium">Plan Name</label>
             <input
-              placeholder="Enter bot name"
+              placeholder="Enter plan name"
               type="text"
               {...register("name")}
               className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
@@ -117,21 +117,6 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
             )}
           </div>
 
-          <div>
-            <label className="block mb-1 text-sm font-medium">Features</label>
-            <textarea
-              placeholder="Enter features"
-              rows={4}
-              {...register("features")}
-              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
-            ></textarea>
-            {errors.features && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.features.message}
-              </p>
-            )}
-          </div>
-
           <hr className="border-gray-600 my-6" />
           <div className="flex justify-start gap-4 mt-6">
             <button
@@ -154,4 +139,4 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
   ) : null;
 };
 
-export default AddEditPlan;
+export default AddEditToken;

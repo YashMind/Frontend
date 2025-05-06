@@ -1,7 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import EditUserModal from "../UserManagement/EditUser/editUser";
 import AddEditPlan from "./AddEditPlan/addEditPlan";
 import {
   deleteSubscriptionsPlan,
@@ -45,7 +43,6 @@ const SubscriptionPlans = () => {
               Subscription Plans
             </h2>
             {/* new user list start */}
-            {/* user list start */}
             <div className="max-w-full overflow-x-auto mt-5 bg-[#0B1739] p-5 rounded">
               <div className="flex justify-between border-b border-[#1f355c]">
                 <h1 className="text-white text-lg font-semibold mb-4 ">
@@ -53,7 +50,10 @@ const SubscriptionPlans = () => {
                 </h1>
                 <button
                   className="bg-[#18B91F] text-xs font-medium text-white px-[10px] py-[5px] mb-2  rounded hover:bg-green-600"
-                  onClick={() => setModalShow(true)}
+                  onClick={() => {
+                    setPlanData({});
+                    setModalShow(true);
+                  }}
                 >
                   Add Plan
                 </button>
@@ -103,6 +103,7 @@ const SubscriptionPlans = () => {
                             <input
                               type="checkbox"
                               className="form-checkbox appearance-none w-4 h-4  rounded-sm bg-[#CB3CFF]"
+                              readOnly
                             />
                           </td>
                           <td className="p-4 flex items-center text-xs gap-2">
@@ -118,7 +119,7 @@ const SubscriptionPlans = () => {
                             {item?.features}
                           </td>
                           <td className="p-4 text-[#AEB9E1] text-xs">
-                            {item?.users_active}500
+                            {item?.users_active}
                           </td>
                           <td className="p-4 relative">
                             <div className="flex gap-2 items-center">

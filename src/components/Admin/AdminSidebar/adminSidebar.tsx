@@ -14,6 +14,8 @@ import { FaUsers } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import { IoMdPricetags } from "react-icons/io";
 import { IoSettingsSharp } from "react-icons/io5";
+import { SiEnterprisedb } from "react-icons/si";
+import { GiSatelliteCommunication } from "react-icons/gi";
 import { getMeData, logoutUser } from "@/store/slices/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
@@ -110,6 +112,16 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
           <LuActivity size={25} />
           <span>Logs & Activity</span>
         </Link>
+
+        <Link
+          href="/admin/enterprise-clients"
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
+            adminPage === "enterprise-clients" ? "text-[#CB3CFF]" : ""
+          } text-[#767F9C] text-sm`}
+        >
+          <SiEnterprisedb size={25} />
+          <span>Enterprise Clients</span>
+        </Link>
         <Link
           href="/admin/billing-settings"
           className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
@@ -128,6 +140,16 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
         >
           <FaUsers size={25} />
           <span>Admin Users & Roles</span>
+        </Link>
+
+        <Link
+          href="/admin/support-communication"
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
+            adminPage === "support-communication" ? "text-[#CB3CFF]" : ""
+          } text-[#767F9C] text-sm`}
+        >
+          <GiSatelliteCommunication size={25} />
+          <span>Support & Communication</span>
         </Link>
 
         <Link
