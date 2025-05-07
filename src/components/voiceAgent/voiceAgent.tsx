@@ -9,6 +9,7 @@ import HowWorks from "./howWorks/howWorks";
 import AppsSection from "./appsSection/appsSection";
 import Faqs from "./faqs/faqs";
 import SubFooter from "./subFooter/subFooter";
+
 const VoiceAgent = () => {
   return (
     <div className="bg-gradient-to-b from-[#2B255D] to-[#110FB9]">
