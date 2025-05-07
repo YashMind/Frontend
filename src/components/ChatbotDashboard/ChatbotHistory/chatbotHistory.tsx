@@ -13,6 +13,7 @@ import ViewChatModal from "./viewChats/viewChats";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { format } from "date-fns";
+import { ChatbotsData } from "@/types/chatTypes";
 
 const ChatbotHistory = ({ botId }: { botId?: number }) => {
   const [page, setPage] = useState(1);

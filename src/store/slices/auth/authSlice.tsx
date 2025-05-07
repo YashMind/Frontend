@@ -6,6 +6,7 @@ import {
 } from "../activity/activitySlice";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { getAdminUsers } from "../admin/adminSlice";
 
 const UserData = {
   id: 0,
@@ -36,6 +37,32 @@ export const signUpUser = createAsyncThunk<
         dispatch(stopLoadingActivity());
         toast.success("user created successfully!");
         router.push("/signin");
+        return response.data;
+      } else {
+        return rejectWithValue("Signup failed");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during signup");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+// Async thunk for signup
+export const signUpAdmin = createAsyncThunk<any, { payload: AdminSignUpForm }>(
+  "auth/signUpAdmin",
+  async ({ payload }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.post("/auth/signup", payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toast.success(`${payload?.role} created successfully!`);
+        dispatch(getAdminUsers());
         return response.data;
       } else {
         return rejectWithValue("Signup failed");

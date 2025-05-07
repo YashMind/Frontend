@@ -53,53 +53,6 @@ export const getAllUsers = createAsyncThunk<
   }
 );
 
-export const updateUserByAdmin = createAsyncThunk<
-  any,
-  {
-    payload: any;
-    page?: number;
-    limit?: number;
-    search?: string;
-    sortBy?: string;
-    sortOrder?: string;
-  }
->(
-  "admin/updateUserByAdmin",
-  async (
-    { payload, page, limit, search, sortBy, sortOrder },
-    { dispatch, rejectWithValue }
-  ) => {
-    try {
-      dispatch(startLoadingActivity());
-      const response = await http.put("/admin/update-user-admin", payload);
-      if (response.status === 200) {
-        dispatch(stopLoadingActivity());
-        toast.success("user updated successfully!");
-        dispatch(
-          getAllUsers({
-            page,
-            limit,
-            search,
-            sortBy,
-            sortOrder,
-          })
-        );
-        return response.data;
-      } else {
-        return rejectWithValue("failed to create chatbot!");
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
-        return rejectWithValue(error.response.data.message);
-      }
-      return rejectWithValue("An error occurred during chatbot");
-    } finally {
-      dispatch(stopLoadingActivity());
-    }
-  }
-);
-
 export const getAllSubscriptionPlans = createAsyncThunk<
   any,
   {
@@ -348,6 +301,78 @@ export const getTopConsumptionUsers = createAsyncThunk<any, void>(
   }
 );
 
+export const getAdminUsers = createAsyncThunk<any, void>(
+  "admin/getAdminUsers",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.get("/admin/get-admin-users");
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get token bots!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const updateUserByAdmin = createAsyncThunk<
+  any,
+  {
+    payload: any;
+    page?: number;
+    limit?: number;
+    search?: string;
+    sortBy?: string;
+    sortOrder?: string;
+  }
+>(
+  "admin/updateUserByAdmin",
+  async (
+    { payload, page, limit, search, sortBy, sortOrder },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.put("/admin/update-user-admin", payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toast.success("user updated successfully!");
+        dispatch(
+          getAllUsers({
+            page,
+            limit,
+            search,
+            sortBy,
+            sortOrder,
+          })
+        );
+        dispatch(getAdminUsers());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to create chatbot!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during chatbot");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 export const updateBotToken = createAsyncThunk<any, { payload: any }>(
   "admin/updateBotToken",
   async ({ payload }, { dispatch, rejectWithValue }) => {
@@ -460,6 +485,57 @@ export const createUpdateBotProduct = createAsyncThunk<any, { payload: any }>(
   }
 );
 
+export const updateAdminUser = createAsyncThunk<any, { payload: any }>(
+  "auth/updateAdminUser",
+  async ({ payload }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.put("/admin/update-admin-user", payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        dispatch(getAdminUsers());
+        toast.success("User updated successfully!");
+        return response.data;
+      } else {
+        return rejectWithValue("Profile update failed");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during profile update");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const deleteAdminUser = createAsyncThunk<any, { id?: number }>(
+  "admin/deleteAdminUser",
+  async ({ id }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response: any = await http.delete(`/admin/delete-admin-user/${id}`);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        dispatch(getAdminUsers());
+        toast.success("User deleted successfully!");
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get chats!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 const initialState = {
   loading: false,
   data: [],
@@ -468,6 +544,7 @@ const initialState = {
   tokenBotsData: {} as TokenBotsData,
   topTokenUsersData: [] as UserProfileData[],
   productMonitoringData: {} as ProductMonitoringData,
+  adminUsers: [] as AdminUsersData[],
 };
 
 const adminSlice = createSlice({
@@ -528,6 +605,17 @@ const adminSlice = createSlice({
         state.productMonitoringData = action?.payload;
       })
       .addCase(getAllBotProducts.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(getAdminUsers.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAdminUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.adminUsers = action?.payload;
+      })
+      .addCase(getAdminUsers.rejected, (state, action) => {
         state.loading = false;
       });
   },

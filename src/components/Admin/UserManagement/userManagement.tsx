@@ -12,6 +12,7 @@ const UserManagement = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [menuOpenId, setMenuOpenId] = useState<number>();
+  const [userData, setUserData] = useState<any>({});
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -137,7 +138,10 @@ const UserManagement = () => {
                         <td className="p-4 relative">
                           <div className="flex gap-2 items-center">
                             <MdEdit
-                              onClick={() => setModalShow(true)}
+                              onClick={() => {
+                                setUserData(item);
+                                setModalShow(true);
+                              }}
                               size={20}
                             />
                             {/* dropdown start */}
@@ -241,8 +245,11 @@ const UserManagement = () => {
               </tbody>
             </table>
           </div>
-
-          <EditUserModal show={modalShow} onHide={() => setModalShow(false)} />
+          <EditUserModal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            userData={userData}
+          />
           {/* Pagination */}
           <div className="flex justify-center items-center gap-2 px-6 py-4 border-t">
             <button
