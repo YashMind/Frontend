@@ -1,7 +1,8 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 
-const AdminTopbar = () => {
+const AdminTopbar = ({ allUsersData }: { allUsersData: AdminAllUsers }) => {
   return (
     <div>
       <h2 className="text-2xl font-semibold mt-[40px]">Welcome back, John</h2>
@@ -20,10 +21,12 @@ const AdminTopbar = () => {
             <span className="text-white">•••</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="text-2xl font-semibold ">50.8K</div>
+            <div className="text-2xl font-semibold ">
+              {allUsersData?.total_count}
+            </div>
             <div className="text-[#14CA74] text-sm  flex items-center bg-[#05C16833] px-[4] py-[2] border border-[#05C16833] rounded-[2px]">
               {" "}
-              28.4%{" "}
+              {/* 28.4%{" "} */}
               <span>
                 <Image
                   alt="alt"
@@ -51,10 +54,12 @@ const AdminTopbar = () => {
             <span className="text-white">•••</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="text-2xl font-semibold ">23.6K</div>
+            <div className="text-2xl font-semibold ">
+              {allUsersData?.tokens_consumed ?? 0}
+            </div>
             <div className="text-[#FF5A65] text-sm  flex items-center bg-[#FF5A6533] px-[4] py-[2] border border-[#FF5A6533] rounded-[2px]">
               {" "}
-              12.6%{" "}
+              {/* 12.6%{" "} */}
               <span>
                 <Image
                   alt="alt"
@@ -77,10 +82,12 @@ const AdminTopbar = () => {
             <span className="text-white">•••</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="text-2xl font-semibold ">756</div>
+            <div className="text-2xl font-semibold ">
+              {allUsersData?.total_signups}
+            </div>
             <div className="text-[#14CA74] text-sm  flex items-center bg-[#05C16833] px-[4] py-[2] border border-[#05C16833] rounded-[2px]">
               {" "}
-              3.1%{" "}
+              {/* 3.1%{" "} */}
               <span>
                 <Image
                   alt="alt"
@@ -108,10 +115,12 @@ const AdminTopbar = () => {
             <span className="text-white">•••</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="text-2xl font-semibold ">756</div>
+            <div className="text-2xl font-semibold ">
+              {allUsersData?.total_subscriptions ?? 0}
+            </div>
             <div className="text-[#14CA74] text-sm  flex items-center bg-[#05C16833] px-[4] py-[2] border border-[#05C16833] rounded-[2px]">
               {" "}
-              2.3K{" "}
+              {/* 2.3K{" "} */}
               <span>
                 <Image
                   alt="alt"
