@@ -68,3 +68,11 @@ interface AdminUpdateUser {
   role?: string;
   plan?: string;
 }
+
+interface AdminPaymentGateway {
+  id?: number;
+  payment_name: string;
+  status: string;
+  api_key: string;
+  created_at?: string;
+}

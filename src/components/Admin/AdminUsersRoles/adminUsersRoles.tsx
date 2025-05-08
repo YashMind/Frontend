@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import {
   deleteAdminUser,
+  getAdminsLogsActivity,
   getAdminUsers,
   updateUserByAdmin,
 } from "@/store/slices/admin/adminSlice";
@@ -19,13 +20,17 @@ const AdminUsersRoles = () => {
   const [adminUserData, setAdminUserData] = useState<any>({});
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [menuOpenId, setMenuOpenId] = useState<any>({});
+  const [selectedDate, setSelectedDate] = useState<any>(null);
   const dispatch = useDispatch<AppDispatch>();
 
-  const { adminUsers } = useSelector((state: RootState) => state.admin);
+  const { adminUsers, adminsLogsActivityData } = useSelector(
+    (state: RootState) => state.admin
+  );
 
   useEffect(() => {
     dispatch(getAdminUsers());
-  }, [dispatch]);
+    dispatch(getAdminsLogsActivity({ date_filter: selectedDate }));
+  }, [dispatch, selectedDate]);
 
   const handleDeleteAdminUser = (item: AdminSignUpForm) => {
     dispatch(deleteAdminUser({ id: item?.id }));
@@ -40,6 +45,19 @@ const AdminUsersRoles = () => {
       })
     );
     setIsMenuOpen(false);
+  };
+
+  const handleDateString = (dateString: string) => {
+    const date = new Date(dateString);
+    const updatedDate = date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+    return updatedDate;
   };
 
   return (
@@ -117,6 +135,7 @@ const AdminUsersRoles = () => {
                                 type="checkbox"
                                 className="form-checkbox accent-purple-500"
                                 checked={item?.status === "Active"}
+                                readOnly
                               />
                             </td>
                             <td className="p-6 font-medium text-xs">
@@ -135,9 +154,11 @@ const AdminUsersRoles = () => {
                               {timeAgo}
                             </td>
                             <td className="p-6 text-xs">
-                              <span className="bg-[#18B91F] text-white text-xs px-3 py-1 rounded-full">
-                                {item?.status}
-                              </span>
+                              {item?.status ? (
+                                <span className="bg-[#18B91F] text-white text-xs px-3 py-1 rounded-full">
+                                  {item?.status}
+                                </span>
+                              ) : null}
                             </td>
                             <td className="p-6 space-x-2 flex relative">
                               <div className="flex gap-2 items-center">
@@ -169,141 +190,103 @@ const AdminUsersRoles = () => {
                           </tr>
                         );
                       })}
-                    {isMenuOpen && menuOpenId && (
-                      <div className="absolute right-35 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 ">
-                        <div className="py-1">
-                          <button
-                            className="w-full block px-4 py-2 text-xs border-b border-[#CACACA] text-[#FF0000] hover:bg-gray-100 text-left"
-                            onClick={() =>
-                              handleUpdateStatus({
-                                id: menuOpenId?.id,
-                                status: "Suspend",
-                              })
-                            }
-                          >
-                            Suspend
-                          </button>
-                          <button
-                            className="w-full block px-4 py-2 border-b border-[#CACACA] text-xs text-[#0FB100] hover:bg-gray-100 text-left"
-                            onClick={() =>
-                              handleUpdateStatus({
-                                id: menuOpenId?.id,
-                                status: "Active",
-                              })
-                            }
-                          >
-                            Activate
-                          </button>
-                        </div>
-                      </div>
-                    )}
                   </tbody>
                 </table>
               </div>
             </div>
-            {/* roles management */}
-            <div className="p-6">
-              <h2 className="text-2xl font-semibold mb-4">Role Management</h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                {/* Super Admin Card */}
-                <div className="bg-[#0A1330] border border-[#343B4F] rounded-lg p-5">
-                  <div className="flex justify-between items-center bg-[#081028] px-4 py-2 rounded">
-                    <h3 className="font-semibold text-white">Super Admin</h3>
-                    <span className="text-xs text-gray-400">Full Access</span>
-                  </div>
-                  <div className="mt-4">
-                    <p className="font-medium mb-2">Permissions</p>
-                    <ul className="list-disc list-inside text-sm text-gray-200 space-y-1">
-                      <li>Full system access</li>
-                      <li>Manage all admin accounts</li>
-                      <li>Configure roles & permissions</li>
-                      <li>View all activity logs</li>
+            {isMenuOpen && menuOpenId && (
+              <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
+                <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[400px] max-w-full shadow-5xl relative">
+                  <button
+                    onClick={() => setIsMenuOpen(false)}
+                    className="absolute top-4 right-4 text-white text-2xl font-bold"
+                  >
+                    &times;
+                  </button>
+                  <div className="right-0 bg-white text-black rounded shadow-lg group-hover:block z-10">
+                    <ul className="text-sm">
+                      <li
+                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-red-600"
+                        onClick={() =>
+                          handleUpdateStatus({
+                            id: menuOpenId?.id,
+                            status: "Suspend",
+                          })
+                        }
+                      >
+                        Suspend
+                      </li>
+                      <li
+                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-green-600"
+                        onClick={() =>
+                          handleUpdateStatus({
+                            id: menuOpenId?.id,
+                            status: "active",
+                          })
+                        }
+                      >
+                        Activate
+                      </li>
+                      <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                        Reset token quote
+                      </li>
                     </ul>
-                  </div>
-                  <div className="flex justify-between items-center mt-6">
-                    <span className="text-sm text-gray-300">2 admins</span>
-                    <button className="text-sm bg-[#3B0459] text-white px-4 py-1 rounded">
-                      Edit role
-                    </button>
-                  </div>
-                </div>
-
-                {/* Billing Admin Card */}
-                <div className="bg-[#0A1330] border border-[#343B4F] rounded-lg p-5">
-                  <div className="flex justify-between items-center bg-[#081028] px-4 py-2 rounded">
-                    <h3 className="font-semibold text-white">Billing Admin</h3>
-                    <span className="text-xs text-gray-400">
-                      Financial Access
-                    </span>
-                  </div>
-                  <div className="mt-4">
-                    <p className="font-medium mb-2">Permissions</p>
-                    <ul className="list-disc list-inside text-sm text-gray-200 space-y-1">
-                      <li>Manage payment gateways</li>
-                      <li>View and issue invoices</li>
-                      <li>Configure tax settings</li>
-                      <li>Process refunds</li>
-                    </ul>
-                  </div>
-                  <div className="flex justify-between items-center mt-6">
-                    <span className="text-sm text-gray-300">1 admin</span>
-                    <button className="text-sm bg-[#3B0459] text-white px-4 py-1 rounded hover:bg-purple-700">
-                      Edit role
-                    </button>
                   </div>
                 </div>
               </div>
+            )}
+            {/* roles management */}
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-semibold mb-4">Role Management</h2>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                {/* product Admin Card */}
-                <div className="bg-[#0A1330] border border-[#343B4F] rounded-lg p-5">
-                  <div className="flex justify-between items-center bg-[#081028] px-4 py-2 rounded">
-                    <h3 className="font-semibold text-white">Product Admin</h3>
-                    <span className="text-xs text-gray-400">
-                      Technical Access
-                    </span>
-                  </div>
-                  <div className="mt-4">
-                    <p className="font-medium mb-2">Permissions</p>
-                    <ul className="list-disc list-inside text-sm text-gray-200 space-y-1">
-                      <li>Configure API settings</li>
-                      <li>Manage model deployments</li>
-                      <li>View usage analytics</li>
-                      <li>Access developer tools</li>
-                    </ul>
-                  </div>
-                  <div className="flex justify-between items-center mt-6">
-                    <span className="text-sm text-gray-300">1 admins</span>
-                    <button className="text-sm bg-[#3B0459] text-white px-4 py-1 rounded">
-                      Edit role
-                    </button>
-                  </div>
-                </div>
-
-                {/* Support Card */}
-                <div className="bg-[#0A1330] border border-[#343B4F] rounded-lg p-5">
-                  <div className="flex justify-between items-center bg-[#081028] px-4 py-2 rounded">
-                    <h3 className="font-semibold text-white">Support</h3>
-                    <span className="text-xs text-gray-400">
-                      Limited Access
-                    </span>
-                  </div>
-                  <div className="mt-4">
-                    <p className="font-medium mb-2">Permissions</p>
-                    <ul className="list-disc list-inside text-sm text-gray-200 space-y-1">
-                      <li>Access support tickets</li>
-                      <li>View client accounts</li>
-                      <li>Basic troubleshooting</li>
-                      <li> Escalate issues</li>
-                    </ul>
-                  </div>
-                  <div className="flex justify-between items-center mt-6">
-                    <span className="text-sm text-gray-300">1 admin</span>
-                    <button className="text-sm bg-[#3B0459] text-white px-4 py-1 rounded hover:bg-purple-700">
-                      Edit role
-                    </button>
-                  </div>
-                </div>
+                {/* Super Admin Card */}
+                {adminUsers?.map((item, index) => {
+                  return (
+                    <div
+                      className="bg-[#0A1330] border border-[#343B4F] rounded-lg p-5"
+                      key={index}
+                    >
+                      <div className="flex justify-between items-center bg-[#081028] px-4 py-2 rounded">
+                        <h3 className="font-semibold text-white">
+                          {item?.role}
+                        </h3>
+                        <span className="text-xs text-gray-400">
+                          {item?.role === "Super Admin"
+                            ? "Full Access"
+                            : item?.role === "Billing Admin"
+                            ? "Financial Access"
+                            : item?.role === "Product Admin"
+                            ? "Technical Access"
+                            : item?.role === "Support Admin"
+                            ? "Limited Access"
+                            : ""}
+                        </span>
+                      </div>
+                      <div className="mt-4">
+                        <p className="font-medium mb-2">Permissions</p>
+                        <ul className="list-disc list-inside text-sm text-gray-200 space-y-1">
+                          {item?.role_permissions?.map((item, index) => (
+                            <li key={index}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="flex justify-between items-center mt-6">
+                        <span className="text-sm text-gray-300"></span>
+                        <button
+                          className="text-sm bg-[#3B0459] text-white px-4 py-1 rounded"
+                          onClick={() => {
+                            setModalShow(true);
+                            setAdminUserData(item);
+                          }}
+                        >
+                          Edit role
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Activity Log */}
@@ -312,74 +295,115 @@ const AdminUsersRoles = () => {
                 <div className="flex justify-start gap-20 items-center mb-4 p-5 border-b border-[#343B4F]">
                   <label className="text-sm font-medium">All Activities</label>
                   <input
-                    type="text"
+                    type="date"
                     placeholder="dd-mm-yyyy"
-                    className="bg-[#FFFFFF] text-sm text-[#626161] border w-32 border-gray-600 rounded px-5 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="bg-[#FFFFFF] text-sm text-[#626161] border w-55 border-gray-600 rounded px-5 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
 
                 {/* Activity Item 1 */}
-                <div className="px-4 py-3 mb-2">
-                  <span>Today, 10:15 AM</span>
-                </div>
-                <div className="bg-[#0A1330] rounded px-4 py-3 mb-2">
-                  <div className="flex justify-between items-center text-sm text-gray-400 mb-1">
-                    <div className="text-base">
-                      <p className="font-semibold text-sm text-white">
-                        New admin added
-                      </p>
-                      <p className="text-sm text-gray-300">
-                        Created new support admin account for emily@company.com
-                        with Support role
-                      </p>
-                    </div>
-                    <div>
-                      <span>Sarah Johnson</span>
+                {adminsLogsActivityData?.last_added_admin?.created_at ? (
+                  <div className="px-4 py-3 mb-2">
+                    <span>
+                      {handleDateString(
+                        adminsLogsActivityData?.last_added_admin?.created_at
+                      )}
+                    </span>
+                  </div>
+                ) : null}
+                {adminsLogsActivityData?.last_added_admin?.created_at ? (
+                  <div className="bg-[#0A1330] rounded px-4 py-3 mb-2">
+                    <div className="flex justify-between items-center text-sm text-gray-400 mb-1">
+                      <div className="text-base">
+                        <p className="font-semibold text-sm text-white">
+                          New admin added
+                        </p>
+                        <p className="text-sm text-gray-300">
+                          Created new{" "}
+                          {adminsLogsActivityData?.last_added_admin?.role}{" "}
+                          account for{" "}
+                          {adminsLogsActivityData?.last_added_admin?.email} with{" "}
+                          {adminsLogsActivityData?.last_added_admin?.role} role
+                        </p>
+                      </div>
+                      <div>
+                        <span>
+                          {adminsLogsActivityData?.last_added_admin?.fullName}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : null}
 
                 {/* Activity Item 2 */}
-                <div className="px-4 py-3 mb-2">
-                  <span>Yesterday, 03:42 PM</span>
-                </div>
-                <div className="bg-[#0A1330] rounded px-4 py-3 mb-2">
-                  <div className="flex justify-between items-center text-sm text-gray-400 mb-1">
-                    <div className="text-base">
-                      <p className="font-semibold text-sm text-white">
-                        Role modified
-                      </p>
-                      <p className="text-sm text-gray-300">
-                        Updated permissions for Billing Admin role to include
-                        refund processing
-                      </p>
-                    </div>
-                    <div>
-                      <span>Michael Chen</span>
+                {adminsLogsActivityData?.last_role_updated?.created_at ? (
+                  <div className="px-4 py-3 mb-2">
+                    <span>
+                      {handleDateString(
+                        adminsLogsActivityData?.last_role_updated?.created_at
+                      )}
+                    </span>
+                  </div>
+                ) : null}
+                {adminsLogsActivityData?.last_role_updated?.created_at ? (
+                  <div className="bg-[#0A1330] rounded px-4 py-3 mb-2">
+                    <div className="flex justify-between items-center text-sm text-gray-400 mb-1">
+                      <div className="text-base">
+                        <p className="font-semibold text-sm text-white">
+                          Role modified
+                        </p>
+                        <p className="text-sm text-gray-300">
+                          Updated permissions for{" "}
+                          {adminsLogsActivityData?.last_role_updated?.role} role
+                          to include new permissions
+                        </p>
+                      </div>
+                      <div>
+                        <span>
+                          {adminsLogsActivityData?.last_role_updated?.fullName}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : null}
 
                 {/* Activity Item 3 */}
-                <div className="px-4 py-3 mb-2">
-                  <span>Yesterday, 11:20 AM</span>
-                </div>
-                <div className="bg-[#0A1330]  rounded px-4 py-3 mb-8">
-                  <div className="flex justify-between items-center text-sm text-gray-400 mb-1">
-                    <div className="text-base">
-                      <p className="font-semibold text-sm text-white">
-                        Admin deactivated
-                      </p>
-                      <p className="text-sm text-gray-300">
-                        Deactivated admin account for david@company.com due to
-                        departure
-                      </p>
-                    </div>
-                    <div>
-                      <span>Sarah Johnson</span>
+                {adminsLogsActivityData?.last_suspended_admin?.created_at ? (
+                  <div className="px-4 py-3 mb-2">
+                    <span>
+                      {handleDateString(
+                        adminsLogsActivityData?.last_suspended_admin?.created_at
+                      )}
+                    </span>
+                  </div>
+                ) : null}
+                {adminsLogsActivityData?.last_suspended_admin?.created_at ? (
+                  <div className="bg-[#0A1330]  rounded px-4 py-3 mb-8">
+                    <div className="flex justify-between items-center text-sm text-gray-400 mb-1">
+                      <div className="text-base">
+                        <p className="font-semibold text-sm text-white">
+                          Admin deactivated
+                        </p>
+                        <p className="text-sm text-gray-300">
+                          Deactivated{" "}
+                          {adminsLogsActivityData?.last_suspended_admin?.role}{" "}
+                          account for{" "}
+                          {adminsLogsActivityData?.last_suspended_admin?.status}{" "}
+                          due to departure
+                        </p>
+                      </div>
+                      <div>
+                        <span>
+                          {
+                            adminsLogsActivityData?.last_suspended_admin
+                              ?.fullName
+                          }
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : null}
               </div>
             </div>
           </div>

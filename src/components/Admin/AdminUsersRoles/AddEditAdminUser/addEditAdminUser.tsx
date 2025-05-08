@@ -10,6 +10,7 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
+import Select from "react-select";
 
 interface AddEditPlanProps {
   show: boolean;
@@ -47,7 +48,33 @@ const schema = (isEdit: boolean) =>
           ),
     role: yup.string().required("Role is a required field"),
     status: yup.string(),
+    role_permissions: yup.array().notRequired(),
   });
+
+const roleArray = [
+  "Super Admin",
+  "Billing Admin",
+  "Product Admin",
+  "Support Admin",
+];
+const permissionsArray = [
+  "Full system access",
+  "Manage all admin accounts",
+  "Configure roles & permissions",
+  "View all activity logs",
+  "Manage payment gateways",
+  "View and issue invoices",
+  "Configure tax settings",
+  "Process refunds",
+  "Configure API settings",
+  "Manage model deployments",
+  "View usage analytics",
+  "Access developer tools",
+  "Access support tickets",
+  "View client accounts",
+  "Basic troubleshooting",
+  "Escalate issues",
+];
 
 const AddEditAdminUserModal = ({
   show,
@@ -60,6 +87,7 @@ const AddEditAdminUserModal = ({
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema(isEdit)),
@@ -82,12 +110,18 @@ const AddEditAdminUserModal = ({
     onHide();
   };
 
+  const options = permissionsArray.map((item) => ({
+    value: item,
+    label: item,
+  }));
+
   useEffect(() => {
     setValue("fullName", adminUserData?.fullName);
     setValue("email", adminUserData?.email);
     setValue("role", adminUserData?.role);
     setValue("status", adminUserData?.status);
     setValue("id", adminUserData?.id);
+    setValue("role_permissions", adminUserData?.role_permissions || []);
   }, [reset, adminUserData?.id, show]);
 
   return show ? (
@@ -159,8 +193,13 @@ const AddEditAdminUserModal = ({
               <option value="" disabled>
                 Select role
               </option>
-              <option value="Super Admin">Super Admin</option>
-              <option value="Billing Admin">Billing Admin</option>
+              {roleArray?.map((item, index) => {
+                return (
+                  <option value={item} key={index}>
+                    {item}
+                  </option>
+                );
+              })}
             </select>
             {errors.role && (
               <p className="text-red-500 text-sm mt-1">
@@ -168,6 +207,34 @@ const AddEditAdminUserModal = ({
               </p>
             )}
           </div>
+
+          {watch("role") ? (
+            <div>
+              <label className="block mb-1 text-sm font-medium">
+                Permissions
+              </label>
+              <Select
+                isMulti
+                value={options.filter((opt) =>
+                  (watch("role_permissions") || []).includes(opt.value)
+                )}
+                options={options}
+                onChange={(selected) => {
+                  setValue(
+                    "role_permissions",
+                    selected.map((s) => s.value)
+                  );
+                }}
+                className="text-black"
+                classNamePrefix="select"
+              />
+              {errors.role_permissions && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.role_permissions?.message}
+                </p>
+              )}
+            </div>
+          ) : null}
 
           <hr className="border-gray-600 my-6" />
           <div className="flex justify-start gap-4 mt-6">

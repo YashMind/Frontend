@@ -1,6 +1,11 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
+import AddEditPaymentWayModal from "./AddEditPaymentWay/addEditPaymentWay";
 const BillingSettings = () => {
+  const [modalShow, setModalShow] = useState<boolean>(false);
+  const [userData, setUserData] = useState<any>({});
+
   return (
     <div>
       <div className="">
@@ -18,7 +23,12 @@ const BillingSettings = () => {
                     <h3 className="text-white font-medium text-base ">
                       Payment Gateways
                     </h3>
-                    <button className="bg-[#18B91F] text-xs font-medium text-white px-[10px] py-[5px]  rounded hover:bg-green-600">
+                    <button
+                      className="bg-[#18B91F] text-xs font-medium text-white px-[10px] py-[5px]  rounded hover:bg-green-600"
+                      onClick={() => {
+                        setModalShow(true);
+                      }}
+                    >
                       Add Payment Gateway
                     </button>
                   </div>
@@ -500,6 +510,11 @@ const BillingSettings = () => {
                 </div>
               </section>
             </div>
+            <AddEditPaymentWayModal
+              show={modalShow}
+              onHide={() => setModalShow(false)}
+              userData={userData}
+            />
           </div>
         </div>
       </div>
