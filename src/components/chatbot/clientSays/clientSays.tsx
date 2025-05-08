@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
+
 const ClientSays = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
@@ -30,19 +31,38 @@ const ClientSays = () => {
   const slideCount = instanceRef.current?.track.details.slides.length || 0;
 
   const reviewData = [
-    {count:1, review:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean hendrerit scelerisque quam, id imperdiet nunc rhoncus ut. Maecenas vitae finibus odio, non egestas odio. Aliquam et vestibulum ligula, sed eleifend urna. Duis commodo imperdiet neque, bibendum mollis dui ultrices nec. Quisque sollicitudin."},
-
-      {count:2, review:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean hendrerit scelerisque quam, id imperdiet nunc rhoncus ut. Maecenas vitae finibus odio, non egestas odio. Aliquam et vestibulum ligula, sed eleifend urna. Duis commodo imperdiet neque, bibendum mollis dui ultrices nec. Quisque sollicitudin.",
+    {
+      count: 1,
+      review:
+        "Working with this team has been an absolute game-changer for our business. From the initial consultation to the final delivery, they maintained excellent communication and demonstrated a deep understanding of our project goals. What stood out the most was their ability to take feedback constructively and apply it immediately, without compromising the vision.",
     },
-      {count:3, review:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean hendrerit scelerisque quam, id imperdiet nunc rhoncus ut. Maecenas vitae finibus odio, non egestas odio. Aliquam et vestibulum ligula, sed eleifend urna. Duis commodo imperdiet neque, bibendum mollis dui ultrices nec. Quisque sollicitudin.",
+    {
+      count: 2,
+      review:
+        "I was hesitant at first to outsource such a critical part of our platform, but this team quickly earned our trust. Not only did they deliver high-quality code, but they also took the time to explain the decisions made throughout the process. Their proactive approach saved us time and resources. Truly a professional and talented group of individuals who care about the success of your project.",
     },
-      {count:4, review:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean hendrerit scelerisque quam, id imperdiet nunc rhoncus ut. Maecenas vitae finibus odio, non egestas odio. Aliquam et vestibulum ligula, sed eleifend urna. Duis commodo imperdiet neque, bibendum mollis dui ultrices nec. Quisque sollicitudin.",
+    {
+      count: 3,
+      review:
+        "Their attention to detail is unmatched. Every feature was implemented with precision, and the UI/UX design reflects a solid understanding of modern design principles. We had a tight deadline and were prepared for delays, but the team delivered everything ahead of schedule and with zero compromises on quality. I couldn’t have asked for a better development partner.",
     },
-      {count:5, review:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean hendrerit scelerisque quam, id imperdiet nunc rhoncus ut. Maecenas vitae finibus odio, non egestas odio. Aliquam et vestibulum ligula, sed eleifend urna. Duis commodo imperdiet neque, bibendum mollis dui ultrices nec. Quisque sollicitudin.",
+    {
+      count: 4,
+      review:
+        "This is the most seamless collaboration I’ve had with any remote development team. They are responsive, technically proficient, and genuinely invested in helping you succeed. The regular updates and quick iterations made the process stress-free, and the outcome was a polished, professional application that our users love. Highly recommended!",
     },
-      {count:6, review:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean hendrerit scelerisque quam, id imperdiet nunc rhoncus ut. Maecenas vitae finibus odio, non egestas odio. Aliquam et vestibulum ligula, sed eleifend urna. Duis commodo imperdiet neque, bibendum mollis dui ultrices nec. Quisque sollicitudin.",
-    }
-  ]
+    {
+      count: 5,
+      review:
+        "From day one, the experience was top-notch. We had multiple revisions and updates, and the team handled each one gracefully, ensuring that we felt heard and valued throughout the journey. Their expertise goes beyond just writing code—they truly understand the business impact of what they build. If you're looking for reliability and excellence, this is the team to go with.",
+    },
+    {
+      count: 6,
+      review:
+        "It’s rare to find a development team that is both technically skilled and emotionally intelligent. They knew when to push back with better suggestions and when to simply execute. I appreciated their commitment to delivering not just a website, but a complete user experience. The feedback from our users has been overwhelmingly positive. Will definitely work with them again.",
+    },
+  ];
+  
   return (
     <div className="bg-[#2b1e8f]  py-10 px-4 md:px-10" id="reviews">
       <h2 className="text-white text-center text-2xl md:text-3xl font-semibold mb-10">
@@ -76,26 +96,26 @@ const ClientSays = () => {
           className="keen-slider flex overflow-hidden items-center"
         >
           {/* Card 1 */}
-          {reviewData && reviewData?.map((item, index:number)=>{
-          const isSecondSlide =
-            index === (currentSlide + 1) % reviewData.length;
-            return(
-          <div className={`keen-slider__slide bg-white rounded-xl w-72 flex flex-col items-center text-center shadow-[0_0_14px_7px_#00000040]  ${isSecondSlide ? "h-[550px] w-[301px]" : "h-[500px] w-[250px]"}`}
-          key={index}>
-            <img
-              src="/images/testi-1.png"
-              alt="client"
-              className="w-full rounded-t-xl h-100 object-cover"
-            />
-            <div className="p-6">
-              <div className="flex justify-center text-yellow-400 mb-3 text-2xl">
-                ★★★★★
+          {reviewData && reviewData?.map((item, index: number) => {
+            const isSecondSlide =
+              index === (currentSlide + 1) % reviewData.length;
+            return (
+              <div className={`keen-slider__slide bg-white rounded-xl w-72 flex flex-col items-center text-center shadow-[0_0_14px_7px_#00000040]  ${isSecondSlide ? "h-[550px] w-[301px]" : "h-[500px] w-[250px]"}`}
+                key={index}>
+                <img
+                  src="/images/testi-1.png"
+                  alt="client"
+                  className="w-full rounded-t-xl h-100 object-cover"
+                />
+                <div className="p-6">
+                  <div className="flex justify-center text-yellow-400 mb-3 text-2xl">
+                    ★★★★★
+                  </div>
+                  <p className="text-xs text-[#6F6C90]">
+                    {item?.count + " " + item?.review}
+                  </p>
+                </div>
               </div>
-              <p className="text-xs text-[#6F6C90]">
-                {item?.count +" "+ item?.review}
-              </p>
-            </div>
-          </div>
             )
           })}
         </div>

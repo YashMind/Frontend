@@ -10,6 +10,7 @@ import { signUpUser } from "@/store/slices/auth/authSlice";
 import { useRouter } from "next/navigation";
 import LoginWithFacebook from "@/components/auth/LoginWithFacebook/loginWithFacebook";
 import LoginWithGoogle from "@/components/auth/LoginWithGoogle/loginWithGoogle";
+import Link from "next/link";
 // yup schema
 const schema = yup.object().shape({
   fullName: yup
@@ -199,9 +200,9 @@ const SignUp = () => {
 
                 <p className=" text-xs text-[#B6B6B6]  font-medium my-[20px] lg:text-left text-center">
                   By registering you with our{" "}
-                  <a href="#" className="text-[#9D5CE9] text-xs font-medium ">
+                  <Link href="#" className="text-[#9D5CE9] text-xs font-medium ">
                     Terms and Conditions
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>

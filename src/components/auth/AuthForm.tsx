@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signInUser, signUpUser } from "@/store/slices/auth/authSlice";
 import LoginWithGoogle from "@/components/auth/LoginWithGoogle/loginWithGoogle";
+import Link from "next/link";
 
 interface SignInForm {
     email: string;
@@ -154,9 +155,9 @@ const AuthForm = ({ formType }: { formType: "signin" | "signup" }) => {
                             </form>
 
                             <div className="text-right mt-2">
-                                <a href="#" className="text-xs font-semibold text-cyan-400 hover:underline">
+                                <Link href="#" className="text-xs font-semibold text-cyan-400 hover:underline">
                                     Forgot Password?
-                                </a>
+                                </Link>
                             </div>
 
                             <hr className="border border-[#727272] my-[20px]" />
@@ -170,7 +171,7 @@ const AuthForm = ({ formType }: { formType: "signin" | "signup" }) => {
 
                             <p className="text-xs text-[#B6B6B6] font-medium my-[20px] text-center lg:text-left">
                                 By registering you agree to our
-                                <a href="#" className="text-[#9D5CE9] text-xs font-medium ml-1">Terms and Conditions</a>
+                                <Link href="#" className="text-[#9D5CE9] text-xs font-medium ml-1">Terms and Conditions</Link>
                             </p>
                         </div>
                     </div>

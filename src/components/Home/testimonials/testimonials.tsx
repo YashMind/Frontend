@@ -99,7 +99,7 @@ const Testimonials = () => {
               {testimonials &&
                 testimonials?.map((
                   item, index) => {
-                    console.log(item,"==========")
+               
                   const isfirstSlide =
                     index === currentSlide % testimonials.length;
                   const isSecondSlide =

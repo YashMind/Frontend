@@ -114,7 +114,7 @@ export const signInUser = createAsyncThunk<
 
       const response = await http.post("/auth/signin", payload);
       if (response.status === 200) {
-        console.log(response,"====")
+     
         dispatch(stopLoadingActivity());
         dispatch(getMeData());
         toasterSuccess("user logged in successfully!",2000,"id")

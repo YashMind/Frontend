@@ -13,6 +13,14 @@ export default function middleware(request: NextRequest) {
     "/chatbot",
     "/voice-agent",
     "/llm",
+    "/details/privacy-policy",
+    "/details/about-us",
+    "/details/careers",
+    "/details/chatbot",
+    "/details/faq",
+    "/details/llm",
+    "/details/terms&condition",
+    "/details/voice-agent",
   ];
   const knownRoutes = [
     "/profile",

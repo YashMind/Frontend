@@ -1,5 +1,7 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
+
 const HomeFooter = () => {
   return (
     <footer className="text-white px-4 sm:px-6 md:px-12 py-10">
@@ -30,22 +32,22 @@ const HomeFooter = () => {
           </h2>
           <ul className="text-sm space-y-2 [font-family:'Roboto_Flex',sans-serif]">
             <li>
-              <a href="#">Home</a>
+              <Link href="/">Home</Link>
             </li>
             <li>
-              <a href="#">LLM</a>
+              <Link href="/details/llm">LLM</Link>
             </li>
             <li>
-              <a href="#">Chat Bot</a>
+              <Link href="/details/chatbot">Chat Bot</Link>
             </li>
             <li>
-              <a href="#">Voice Agent</a>
+              <Link href="/details/voice-agent">Voice Agent</Link>
             </li>
             <li>
-              <a href="#">Terms & Conditions</a>
+              <Link href="/details/terms&condition">Terms & Conditions</Link>
             </li>
             <li>
-              <a href="#">Privacy Policy</a>
+              <Link href="/details/privacy-policy">Privacy Policy</Link>
             </li>
           </ul>
         </div>
@@ -57,20 +59,18 @@ const HomeFooter = () => {
           </h2>
           <ul className="text-sm space-y-2 [font-family:'Roboto_Flex',sans-serif]">
             <li>
-              <a href="#">About Us</a>
+              <Link href="/details/about-us">About Us</Link>
             </li>
             <li>
-              <a href="#">Careers</a>
+              <Link href="/details/careers">Careers</Link>
             </li>
             <li>
-              <a href="#">FAQs</a>
+              <Link href="/details/faq">FAQs</Link>
             </li>
             <li>
-              <a href="#">Teams</a>
+              <Link href="/details/teams">Teams</Link>
             </li>
-            <li>
-              <a href="#">Contact Us</a>
-            </li>
+          
           </ul>
         </div>
         
@@ -81,18 +81,18 @@ const HomeFooter = () => {
             Follow Us
           </h2>
           <div className="flex space-x-4">
-            <a href="#">
+            <Link href="#">
               <img src="/images/facebook (3).png" alt="Facebook" />
-            </a>
-            <a href="#">
+            </Link>
+            <Link href="#">
               <img src="/images/social.png" alt="Twitter" />
-            </a>
-            <a href="#">
+            </Link>
+            <Link href="#">
               <img src="/images/instra.png" alt="Instagram" />
-            </a>
-            <a href="#">
+            </Link>
+            <Link href="#">
               <img src="/images/transfer.png" alt="LinkedIn" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

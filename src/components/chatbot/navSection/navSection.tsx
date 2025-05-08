@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const NavSection = () => {
@@ -5,24 +6,24 @@ const NavSection = () => {
     <nav className="bg-white">
       <ul className="flex justify-center gap-12 py-4 text-black font-medium">
         <li>
-          <a href="#features" className="hover:text-[#2C1F94] transition">
+          <Link href="#features" className="hover:text-[#2C1F94] transition">
             Feature
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="#pricing" className="hover:text-[#2C1F94] transition">
+          <Link href="#pricing" className="hover:text-[#2C1F94] transition">
             Pricing
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="#reviews" className="hover:text-[#2C1F94] transition">
+          <Link href="#reviews" className="hover:text-[#2C1F94] transition">
             Reviews
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="#faq" className="hover:text-[#2C1F94] transition">
+          <Link href="#faq" className="hover:text-[#2C1F94] transition">
             FAQs
-          </a>
+          </Link>
         </li>
       </ul>
     </nav>
