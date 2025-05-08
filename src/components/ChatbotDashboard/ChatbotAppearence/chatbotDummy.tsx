@@ -10,7 +10,11 @@ const ChatbotDummy = ({
 }) => {
   const messagesEndRef: any = useRef(null);
 
-  const chatbotAvatar = chatbotSettings.image || "/images/face2.webp";
+  const chatbotAvatar =
+    typeof chatbotSettings.image === "string" &&
+    chatbotSettings.image.trim() !== ""
+      ? chatbotSettings.image
+      : "/images/face2.webp";
   return (
     <div
       className="w-[320]  h-full rounded-lg shadow-md flex flex-col justify-between sticky top-40"
