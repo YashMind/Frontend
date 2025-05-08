@@ -46,6 +46,7 @@ const Admin = ({ adminPage }: { adminPage: string }) => {
           <div className="dashboard-right flex-1 mr-[30px] mb-[60px]">
             <AdminTopbar allUsersData={allUsersData} />
             {adminPage === "dashboard" ? <AdminMain /> : null}
+            {adminPage === "overview" ? <AdminMain /> : null}
             {adminPage === "users-management" ? <UserManagement /> : null}
             {adminPage === "subscription-plans" ? <SubscriptionPlans /> : null}
             {adminPage === "token-analytics" ? <TokenAnalytics /> : null}

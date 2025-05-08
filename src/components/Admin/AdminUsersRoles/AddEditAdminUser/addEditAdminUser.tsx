@@ -1,7 +1,7 @@
 "use client";
 import {
+  createSubscriptionPlan,
   updateAdminUser,
-  updateUserByAdmin,
 } from "@/store/slices/admin/adminSlice";
 import { signUpAdmin, signUpUser } from "@/store/slices/auth/authSlice";
 import { AppDispatch } from "@/store/store";
@@ -14,20 +14,47 @@ import * as yup from "yup";
 interface AddEditPlanProps {
   show: boolean;
   onHide: () => void;
-  userData: AdminUsersData;
+  adminUserData: AdminUsersData;
 }
 
-const schema = yup.object().shape({
-  id: yup.number(),
-  fullName: yup
-    .string()
-    .required("Full Name is a required field")
-    .min(3, "Full name must be at least 3 characters"),
-  plan: yup.string(),
-  role: yup.string(),
-});
+const schema = (isEdit: boolean) =>
+  yup.object().shape({
+    id: yup.number(),
+    fullName: yup
+      .string()
+      .required("Full Name is a required field")
+      .min(3, "Full name must be at least 3 characters"),
+    email: yup.string().email().required("Email is a required field"),
 
-const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
+    password: isEdit
+      ? yup.string()
+      : yup
+          .string()
+          .required("Password is a required field")
+          .min(8, "Password must be at least 8 characters long")
+          .matches(
+            /[a-z]/,
+            "Password must contain at least one lowercase letter"
+          )
+          .matches(
+            /[A-Z]/,
+            "Password must contain at least one uppercase letter"
+          )
+          .matches(/\d/, "Password must contain at least one number")
+          .matches(
+            /[@$!%*?&#]/,
+            "Password must contain at least one special character"
+          ),
+    role: yup.string().required("Role is a required field"),
+    status: yup.string(),
+  });
+
+const AddEditAdminUserModal = ({
+  show,
+  onHide,
+  adminUserData,
+}: AddEditPlanProps) => {
+  const isEdit = !!adminUserData?.id;
   const {
     register,
     handleSubmit,
@@ -35,27 +62,33 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema(isEdit)),
     defaultValues: {
       fullName: "",
+      email: "",
+      role: "",
+      status: "Active",
     },
   });
 
   const dispatch = useDispatch<AppDispatch>();
-  const onSubmit = (data: AdminUpdateUser) => {
+  const onSubmit = (data: AdminSignUpForm) => {
     if (data.id) {
-      dispatch(updateUserByAdmin({ payload: data }));
+      dispatch(updateAdminUser({ payload: data }));
+    } else {
+      dispatch(signUpAdmin({ payload: data }));
     }
     reset();
     onHide();
   };
 
   useEffect(() => {
-    setValue("fullName", userData?.fullName);
-    setValue("plan", userData?.plan);
-    setValue("role", userData?.role);
-    setValue("id", userData?.id);
-  }, [reset, userData?.id, show]);
+    setValue("fullName", adminUserData?.fullName);
+    setValue("email", adminUserData?.email);
+    setValue("role", adminUserData?.role);
+    setValue("status", adminUserData?.status);
+    setValue("id", adminUserData?.id);
+  }, [reset, adminUserData?.id, show]);
 
   return show ? (
     <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
@@ -68,7 +101,7 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
         </button>
 
         <h2 className="text-xl font-semibold mb-1">
-          {userData?.id ? "Edit" : "Add"} Admin
+          {adminUserData?.id ? "Edit" : "Add"} Admin
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
@@ -87,16 +120,31 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
           </div>
 
           <div>
-            <label className="block mb-1 text-sm font-medium">Plan</label>
+            <label className="block mb-1 text-sm font-medium">Email</label>
             <input
-              placeholder="Enter plan"
-              type="plan"
-              {...register("plan")}
+              placeholder="Enter email"
+              type="email"
+              {...register("email")}
               className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
             />
-            {errors.plan && (
+            {errors.email && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.plan?.message}
+                {errors.email?.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block mb-1 text-sm font-medium">Password</label>
+            <input
+              placeholder="Enter password"
+              type="password"
+              {...register("password")}
+              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
+            />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password?.message}
               </p>
             )}
           </div>
@@ -113,7 +161,6 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
               </option>
               <option value="Super Admin">Super Admin</option>
               <option value="Billing Admin">Billing Admin</option>
-              <option value="User">User</option>
             </select>
             {errors.role && (
               <p className="text-red-500 text-sm mt-1">
@@ -144,4 +191,4 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
   ) : null;
 };
 
-export default AddEditUserModal;
+export default AddEditAdminUserModal;

@@ -1,24 +1,69 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import AddEditAdminUserModal from "./AddEditAdminUser/addEditAdminUser";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import {
+  deleteAdminUser,
+  getAdminUsers,
+  updateUserByAdmin,
+} from "@/store/slices/admin/adminSlice";
+import { formatDistanceToNow } from "date-fns";
+import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
+import { MdEdit } from "react-icons/md";
+import { MdDeleteForever } from "react-icons/md";
+
 const AdminUsersRoles = () => {
+  const [modalShow, setModalShow] = useState<boolean>(false);
+  const [adminUserData, setAdminUserData] = useState<any>({});
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [menuOpenId, setMenuOpenId] = useState<any>({});
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { adminUsers } = useSelector((state: RootState) => state.admin);
+
+  useEffect(() => {
+    dispatch(getAdminUsers());
+  }, [dispatch]);
+
+  const handleDeleteAdminUser = (item: AdminSignUpForm) => {
+    dispatch(deleteAdminUser({ id: item?.id }));
+  };
+
+  const handleUpdateStatus = (data: any) => {
+    dispatch(
+      updateUserByAdmin({
+        payload: data,
+        page: 1,
+        limit: 10,
+      })
+    );
+    setIsMenuOpen(false);
+  };
+
   return (
     <div>
       <div className="">
         <div className="bg-[#081028] text-white min-h-screen flex gap-[32px]">
-          
-
           <div className="dashboard-right flex-1 mr-[30px]">
             {/* admin users */}
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold">Admin Users & Roles</h2>
-                <button className="bg-[#18B91F] hover:bg-green-600 text-white px-4 py-1 rounded text-xs">
+                <button
+                  className="bg-[#18B91F] hover:bg-green-600 text-white px-4 py-1 rounded text-xs"
+                  onClick={() => {
+                    setAdminUserData({});
+                    setModalShow(true);
+                  }}
+                >
                   Add Admin
                 </button>
               </div>
               <div className="rounded-lg overflow-hidden border border-gray-700">
                 <div className="px-8 py-6  border-b border-gray-700 text-base">
-                  <h5> Admin Users</h5>
+                  <h5>Admin Users</h5>
                 </div>
                 <table className="w-full text-left mx-8 my-4">
                   <thead className="text-xs uppercase text-gray-400 border-b border-[#0B1739]">
@@ -27,6 +72,7 @@ const AdminUsersRoles = () => {
                         <input
                           type="checkbox"
                           className="form-checkbox accent-purple-500"
+                          readOnly
                         />
                       </th>
                       <th className="p-6 flex gap-1 justify-start items-center text-white">
@@ -54,146 +100,103 @@ const AdminUsersRoles = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-b border-[#0B1739] hover:bg-[#1A1F3C] ">
-                      <td className="p-6">
-                        <input
-                          type="checkbox"
-                          className="form-checkbox accent-purple-500"
-                        />
-                      </td>
-                      <td className="p-6 font-medium text-xs">Sarah Johnson</td>
-                      <td className="p-6 text-xs text-gray-300">
-                        sarah@company.com
-                      </td>
-                      <td className="p-6 text-xs">
-                        <span className="bg-[#18B91F] text-white text-xs px-2 py-1 rounded-full">
-                          Super Admin
-                        </span>
-                      </td>
-                      <td className="p-6 text-xs text-gray-400">
-                        Today, 09:42 AM
-                      </td>
-                      <td className="p-6 text-xs">
-                        <span className="bg-[#18B91F] text-white text-xs px-3 py-1 rounded-full">
-                          Active
-                        </span>
-                      </td>
-                      <td className="p-6 space-x-2 flex">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-                          />
-                        </svg>
+                    {adminUsers &&
+                      adminUsers?.map((item, index) => {
+                        const timeAgo = item?.last_active
+                          ? formatDistanceToNow(new Date(item.last_active), {
+                              addSuffix: true,
+                            })
+                          : null;
+                        return (
+                          <tr
+                            className="border-b border-[#0B1739] hover:bg-[#1A1F3C] "
+                            key={index}
+                          >
+                            <td className="p-6">
+                              <input
+                                type="checkbox"
+                                className="form-checkbox accent-purple-500"
+                                checked={item?.status === "Active"}
+                              />
+                            </td>
+                            <td className="p-6 font-medium text-xs">
+                              {item?.fullName}
+                            </td>
+                            <td className="p-6 text-xs text-gray-300">
+                              {item?.email}
+                            </td>
+                            <td className="p-6 text-xs">
+                              <span className="bg-[#18B91F] text-white text-xs px-2 py-1 rounded-full">
+                                {item?.role}
+                              </span>
+                            </td>
 
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                          />
-                        </svg>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                          />
-                        </svg>
-                      </td>
-                    </tr>
-                    <tr className="hover:bg-[#1A1F3C] border-b border-[#0B1739]">
-                      <td className="p-6">
-                        <input
-                          type="checkbox"
-                          className="form-checkbox accent-purple-500"
-                        />
-                      </td>
-                      <td className="p-6 font-medium text-xs">Michael Chen</td>
-                      <td className="p-6 text-xs text-gray-300">
-                        michael@company.com
-                      </td>
-                      <td className="p-6 text-xs">
-                        <span className="bg-[#C38F00] text-white text-xs px-2 py-1 rounded-full">
-                          Billing Admin
-                        </span>
-                      </td>
-                      <td className="p-6 text-xs text-gray-400">
-                        Yesterday, 03:15 PM
-                      </td>
-                      <td className="p-6">
-                        <span className="bg-[#18B91F] text-white text-xs px-3 py-1 rounded-full">
-                          Active
-                        </span>
-                      </td>
-                      <td className="p-6 space-x-2 flex">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-                          />
-                        </svg>
+                            <td className="p-6 text-xs text-gray-400">
+                              {timeAgo}
+                            </td>
+                            <td className="p-6 text-xs">
+                              <span className="bg-[#18B91F] text-white text-xs px-3 py-1 rounded-full">
+                                {item?.status}
+                              </span>
+                            </td>
+                            <td className="p-6 space-x-2 flex relative">
+                              <div className="flex gap-2 items-center">
+                                <MdEdit
+                                  onClick={() => {
+                                    setModalShow(true);
+                                    setAdminUserData(item);
+                                  }}
+                                  size={20}
+                                />
 
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                          />
-                        </svg>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                          />
-                        </svg>
-                      </td>
-                    </tr>
+                                <MdDeleteForever
+                                  size={20}
+                                  onClick={() => {
+                                    handleDeleteAdminUser(item);
+                                  }}
+                                />
+                                {/* dropdown start */}
+                                <PiDotsThreeOutlineVerticalFill
+                                  size={20}
+                                  className="cursor-pointer"
+                                  onClick={() => {
+                                    setIsMenuOpen(!isMenuOpen);
+                                    setMenuOpenId(item);
+                                  }}
+                                />
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    {isMenuOpen && menuOpenId && (
+                      <div className="absolute right-35 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 ">
+                        <div className="py-1">
+                          <button
+                            className="w-full block px-4 py-2 text-xs border-b border-[#CACACA] text-[#FF0000] hover:bg-gray-100 text-left"
+                            onClick={() =>
+                              handleUpdateStatus({
+                                id: menuOpenId?.id,
+                                status: "Suspend",
+                              })
+                            }
+                          >
+                            Suspend
+                          </button>
+                          <button
+                            className="w-full block px-4 py-2 border-b border-[#CACACA] text-xs text-[#0FB100] hover:bg-gray-100 text-left"
+                            onClick={() =>
+                              handleUpdateStatus({
+                                id: menuOpenId?.id,
+                                status: "Active",
+                              })
+                            }
+                          >
+                            Activate
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -380,6 +383,11 @@ const AdminUsersRoles = () => {
               </div>
             </div>
           </div>
+          <AddEditAdminUserModal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            adminUserData={adminUserData}
+          />
         </div>
       </div>
     </div>

@@ -57,3 +57,13 @@ interface ProductMonitoringData {
   total_count: number;
   total_pages: number;
 }
+
+interface AdminUsersData {
+  id?: number;
+  fullName: string;
+  email: string;
+  status?: string;
+  role: string;
+  last_active?: string;
+  plan?: string;
+}

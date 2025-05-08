@@ -14,7 +14,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import toast from "react-hot-toast";
 import { ChatbotDocLinksData, UpdateChatbotData } from "@/types/chatTypes";
+<<<<<<< HEAD
 import { toasterError } from "@/services/utils/toaster";
+=======
+>>>>>>> 0c299f4b38ef0545613d0f5f3043037f53603d1b
 
 const schema = yup.object().shape({
   target_link: yup.string().url("Please enter a valid URL").notRequired(),
@@ -23,7 +26,13 @@ const schema = yup.object().shape({
   text_content: yup.string().optional(),
 });
 
-const AddBotData = ({ botId, handleBack }: { botId?: number, handleBack:()=>void }) => {
+const AddBotData = ({
+  botId,
+  handleBack,
+}: {
+  botId?: number;
+  handleBack: () => void;
+}) => {
   const [activeTrainFrom, setActiveTrainFrom] = useState<string | null>(
     "Full website"
   );
@@ -114,6 +123,7 @@ const AddBotData = ({ botId, handleBack }: { botId?: number, handleBack:()=>void
         dispatch(createChatbotDocLinks({ payload: data }));
         handleBack();
         reset();
+        setUploadedFiles([]);
       }
     };
 
