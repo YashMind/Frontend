@@ -42,7 +42,7 @@ const VoiceAgentBanner = () => {
           </p>
 
           <Link
-            href="/signin"
+            href="/auth/signin"
             className="bg-white text-black text-lg font-semibold rounded-[22px] px-5 py-1"
           >
             Sign In
@@ -71,7 +71,7 @@ const VoiceAgentBanner = () => {
           </p>
 
           <Link
-            href="/signin"
+            href="/auth/signin"
             className="bg-white text-black text-lg font-semibold rounded-[22px] px-5 py-1"
           >
             Sign In
@@ -100,7 +100,7 @@ const VoiceAgentBanner = () => {
           </p>
 
           <Link
-            href="/signin"
+            href="/auth/signin"
             className="bg-white text-black text-lg font-semibold rounded-[22px] px-5 py-1"
           >
             Sign In

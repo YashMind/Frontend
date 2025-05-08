@@ -1,4 +1,3 @@
-import Link from "next/link";
 import React from "react";
 
 const WhyChooseUs = () => {
@@ -19,7 +18,7 @@ const WhyChooseUs = () => {
               more productive.
             </p>
             <a
-              href="/signin"
+              href="/auth/signin"
               className="inline-block bg-[#292362] text-lg font-semibold py-[7px] px-[40px] md:px-[49px] rounded-[22px] text-white"
             >
               Sign In

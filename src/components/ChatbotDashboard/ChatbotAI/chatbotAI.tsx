@@ -11,6 +11,7 @@ import {
   fetchBotPrompts,
 } from "@/store/slices/chats/tuningSlice";
 import toast from "react-hot-toast";
+import { toasterError, toasterSuccess } from "@/services/utils/toaster";
 // yup schema
 const schema = yup.object().shape({
   type: yup.string().required("Prompt type is a required field"),
@@ -106,12 +107,14 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
       dispatch(createPrompt({ prompts: [{ ...data }], bot_id: botId }))
         .unwrap()
         .then(() => {
-          toast.success("Prompt Updated Successfully");
+          toasterSuccess("Prompt Updated Successfully",2000,"id")
+          // toast.success("Prompt Updated Successfully");
           dispatch(fetchBotPrompts(botId));
           setSaved(true);
         })
         .catch((e) => {
-          toast.error(e);
+          toasterError(e,2000,"id")
+          // toast.error(e);
         });
     }
   };
@@ -126,7 +129,8 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
       )
         .unwrap()
         .then(() => {
-          toast.success("Prompt Deleted Successfully");
+          toasterSuccess("Prompt Deleted Successfully",2000,"id")
+          // toast.success("Prompt Deleted Successfully");
           setValue("prompt", "");
           dispatch(fetchBotPrompts(botId));
           setSaved(true);

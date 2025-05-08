@@ -14,23 +14,25 @@ const ChatbotHeader = ({
   fix: boolean;
   addBgColor: boolean;
 }) => {
-  const [bot, setBot] = useState<number>(1);
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef(null);
   const router = useRouter();
-
-  const handleToggle = () => {
-    setIsMenuOpen((prev) => !prev);
-  };
+  const menuRef = useRef(null);
   const dispatch = useDispatch<AppDispatch>();
-  const userData: UserProfileData = useSelector(
-    (state: RootState) => state.auth.userData
-  );
+  const [bot, setBot] = useState<number>(1);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(getMeData());
   }, []);
+
+  const userData: UserProfileData = useSelector(
+    (state: RootState) => state.auth.userData
+  );
+
+  const handleToggle = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
 
   const handleLogOut = () => {
     dispatch(logoutUser({ router }));

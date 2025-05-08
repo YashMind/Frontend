@@ -7,12 +7,12 @@ import OurChatbots from "@/components/chatbot/ourChatbots/ourChatbots";
 import OurPlans from "@/components/chatbot/ourPlans/ourPlans";
 import ChatbotFaqs from "@/components/chatbot/chatbotFaqs/chatbotFaqs";
 import ClientSays from "@/components/chatbot/clientSays/clientSays";
-import Image from "next/image";
 import WhyChooseChatbot from "./whyChoseChatbot/whyChooseChatbot";
 import CustomGpt from "./customGpt/customGpt";
 import AddYourBot from "./addYourBot/addYourBot";
 import TurnConversation from "./turnConversation/turnConversation";
 import NavSection from "./navSection/navSection";
+import CustomGpt1 from "./customGpt/customGpt";
 
 const Chatbot = () => {
   return (

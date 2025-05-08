@@ -13,6 +13,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import toast from "react-hot-toast";
+import { ChatbotDocLinksData, UpdateChatbotData } from "@/types/chatTypes";
+import { toasterError } from "@/services/utils/toaster";
 
 const schema = yup.object().shape({
   target_link: yup.string().url("Please enter a valid URL").notRequired(),
@@ -106,7 +108,8 @@ const AddBotData = ({ botId, handleBack }: { botId?: number, handleBack:()=>void
       data.bot_id = botId;
       data.chatbot_name = chatbotData?.chatbot_name;
       if (formType === "form2" && data.document_link === "") {
-        toast.error("please upload a file!");
+        toasterError("Please upload a File!",2000,"id")
+        // toast.error("please upload a file!");
       } else {
         dispatch(createChatbotDocLinks({ payload: data }));
         handleBack();

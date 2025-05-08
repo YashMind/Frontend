@@ -7,29 +7,30 @@ const FaqSection = () => {
     {
       title: "Do you maintain your apps?",
       paragraph:
-        "AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades from our customers for taking good care of our apps. AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades from our customers for taking good care of our apps. AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades from our customers for taking good care of our apps.",
+        "Yes, we provide ongoing maintenance and updates for all our applications. Our team actively monitors performance, resolves bugs, and rolls out enhancements to ensure optimal functionality and user experience. Customer satisfaction is a top priority, and we take pride in offering reliable long-term support.",
     },
     {
       title: "How does AI Collective get all these AIs?",
       paragraph:
-        "AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades from our customers for taking good care of our apps. AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades from our customers for taking good care of our apps. AI has the best record in software",
+        "AI Collective partners with leading AI providers and platforms to bring together a wide range of AI tools in one place. We continuously research, evaluate, and integrate the most effective solutions to ensure our users have access to powerful and up-to-date AI capabilities.",
     },
     {
       title: "Why is it so affordable?",
       paragraph:
-        "AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades from our customers for taking good care of our apps. AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades",
+        "We've designed our pricing to be accessible while maintaining high-quality standards. By leveraging scalable infrastructure, automation, and strong partnerships, we're able to reduce costs and pass those savings on to our customers without compromising value.",
     },
     {
       title: "Can I get a free trial?",
       paragraph:
-        "AI has the best record in software maintenance and upgrades. Over and over we get praises and accolades from our customers for taking good care of our apps.",
+        "Yes! We offer a free trial so you can explore the platform and experience the features firsthand before making a commitment. It’s the best way to see if our tools are the right fit for your needs.",
     },
     {
       title: "How can I cancel my purchase?",
-      paragraph: "AI has the best record in software maintenance and upgrades.",
+      paragraph:
+        "You can cancel your subscription or purchase at any time through your account settings. If you need assistance, our support team is always available to help with the process and ensure a smooth experience.",
     },
   ];
-
+  
   const handleAccordian = (title: string) => {
     setAccordianItems((prev) =>
       prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title]
@@ -64,7 +65,7 @@ const FaqSection = () => {
           ></div>
 
           {/* Content Section */}
-          <div className="relative z-10 flex flex-col md:flex-row gap-10 justify-center items-center py-[65px] px-4 md:px-0">
+          <div className="relative z-1 flex flex-col md:flex-row gap-10 justify-center items-center py-[65px] px-4 md:px-0">
             <div className="container">
               <div className="faq-flex flex flex-col md:flex-row justify-center gap-10 md:gap-20 items-start">
                 {/* Left Side */}
@@ -98,14 +99,14 @@ const FaqSection = () => {
                       <div className="flex items-center justify-between pl-6 pr-4 py-4">
                         <div className="flex gap-3 items-center">
                           <span className="text-white font-medium text-xl md:text-2xl">
-                            0{index}
+                            0{index + 1}
                           </span>
                           <h3 className="text-white font-normal text-[18px] md:text-[22px]">
                             {item?.title}
                           </h3>
                         </div>
                         <button
-                          className={`text-white ${
+                          className={`text-white cursor-pointer ${
                             accordianItems.includes(item?.title)
                               ? "bg-cyan-400"
                               : "bg-[#152329]"

@@ -15,7 +15,7 @@ const HomeProducts = () => {
           <img
             src="/images/heading.png"
             alt="Heading"
-            className="mx-auto mt-2"
+            className="mx-auto mt-2 "
           />
         </div>
 
@@ -28,7 +28,7 @@ const HomeProducts = () => {
                 <img
                   src="/images/left-arrow.png"
                   alt="Left Arrow"
-                  className="w-[24px] md:w-auto"
+                  className="w-[24px] md:w-auto cursor-pointer"
                 />
               </button>
             </div>
@@ -62,7 +62,7 @@ const HomeProducts = () => {
                 <img
                   src={card.icon}
                   alt={`icon-${idx}`}
-                  className="w-8 sm:w-10"
+                  className="w-8 sm:w-10 cursor-pointer"
                 />
               </div>
 
@@ -77,7 +77,7 @@ const HomeProducts = () => {
               </p>
 
               {/* Button */}
-              <button className="mt-auto bg-gradient-to-r from-purple-700 to-blue-600 text-white px-5 py-2 rounded-full font-medium text-sm sm:text-base transition">
+              <button className="cursor-pointer mt-auto bg-gradient-to-r from-purple-700 to-blue-600 text-white px-5 py-2 rounded-full font-medium text-sm sm:text-base transition">
                 Try Now
               </button>
             </div>

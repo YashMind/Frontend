@@ -2,7 +2,8 @@
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { useRouter } from "next/navigation";
 import http from "@/services/http/baseUrl";
-import toast from "react-hot-toast";
+import { toasterError, toasterSuccess } from "@/services/utils/toaster";
+// import toast from "react-hot-toast";
 
 const LoginWithFacebook = () => {
   const router = useRouter();
@@ -11,13 +12,17 @@ const LoginWithFacebook = () => {
     try {
       const res = await http.post("http://localhost:8000/facebook-login", { token: response.accessToken });
       if (res.status===200) {
-        toast.success("Logged with facebook successfully!")
+        toasterSuccess("Logged with facebook successfully!",2000,"id")
+        // toast.success("Logged with facebook successfully!")
         router.push("/chatbot");
       } else {
-        toast.error("Logged with facebook failed!")
+        toasterError("Logged with facebook failed!",2000,"id")
+        // toast.error("Logged with facebook failed!")
       }
     } catch (err) {
-      toast.error("Something went wrong!")
+      toasterError("Something went wrong!",2000,"id")
+
+      // toast.error("Something went wrong!")
     }
   };
 

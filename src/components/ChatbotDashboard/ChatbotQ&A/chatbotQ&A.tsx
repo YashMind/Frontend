@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { createChatbotFaqs, deleteChatbotsAllFaqs, deleteChatbotsFaqs, getChatbotsFaqs } from "@/store/slices/chats/chatSlice";
+import { ChatbotFaqsQuesAnswer } from "@/types/chatTypes";
 
 const schema = yup.object().shape({
   questions: yup.array().of(

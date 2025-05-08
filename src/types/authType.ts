@@ -1,3 +1,6 @@
+type FormType = "signin" | "signup";
+type AuthFormInput = SignInForm | SignUpForm;
+
 interface SignUpForm {
   fullName: string;
   email: string;

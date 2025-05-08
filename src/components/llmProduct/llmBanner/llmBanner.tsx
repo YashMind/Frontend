@@ -19,7 +19,7 @@ const LlmBanner = () => {
             deliver unparalleled performance.
           </p>
           <Link
-            href="/signin"
+            href="/auth/signin"
             className="bg-white text-[#1503A6] text-sm sm:text-base font-semibold py-[7px] px-[30px] sm:px-[49px] rounded-[22px] inline-block"
           >
             Sign In

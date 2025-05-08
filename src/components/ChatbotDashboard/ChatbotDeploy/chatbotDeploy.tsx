@@ -6,6 +6,8 @@ import { RootState } from "@/store/store";
 import toast from "react-hot-toast";
 import { QRCodeCanvas } from 'qrcode.react';
 import Head from "next/head";
+import { ChatbotsData } from "@/types/chatTypes";
+import { toasterError, toasterSuccess } from "@/services/utils/toaster";
 
 
 const ChatbotDeploy = () => {
@@ -19,10 +21,12 @@ const ChatbotDeploy = () => {
     if (inputRef.current) {
       navigator.clipboard.writeText(inputRef.current.value)
       .then(() => {
-        toast.success("Copied to clipboard!")
+        toasterSuccess("Copied to clipboard!",2000,"id")
+        // toast.success("Copied to clipboard!")
       })
       .catch((err) => {
-        toast.error("Failed to copy!")
+        toasterError("Failed to Copy!",2000,"id")
+        // toast.error("Failed to copy!")
       });
     }
   };

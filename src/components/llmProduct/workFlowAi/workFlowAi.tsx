@@ -19,8 +19,8 @@ const WorkFlowAi = () => {
               analytics and even coding!
             </p>
             <a
-              href="/signin"
-              className="bg-[#140491] text-sm sm:text-base text-white font-semibold py-[7px] px-[30px] sm:px-[49px] rounded-[22px] inline-block"
+              href="/auth/signin"
+              className="cursor-pointer bg-[#140491] text-sm sm:text-base text-white font-semibold py-[7px] px-[30px] sm:px-[49px] rounded-[22px] inline-block"
             >
               Try Now
             </a>

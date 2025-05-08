@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
+
 const ChatbotBanner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
@@ -29,7 +30,7 @@ const ChatbotBanner = () => {
               workflow.
             </p>
             <Link
-              href="/signin"
+              href="/auth/signin"
               className="bg-white text-lg font-semibold py-[7px] px-[49px] rounded-[22px] "
             >
               Sign In
@@ -40,22 +41,21 @@ const ChatbotBanner = () => {
           </div>
         </div>
         <div className="keen-slider__slide flex">
-          <div className="">
+          <div>
             <h1
               className="text-[74px] leading-[100%] py-4 text-white"
               style={{ fontFamily: "'Audiowide', sans-serif" }}
             >
-              Custom AI Chatbots
+              Smart Automation Tools
             </h1>
             <p className="font-bold text-white text-base my-[22px]">
-              Innovative AI solutions designed to simplify and accelerate your
-              workflow.
+            Revolutionize repetitive tasks with intelligent systems that learn and adapt to your business needs.
             </p>
             <Link
-              href="/signin"
+              href="/auth/signin"
               className="bg-white text-lg font-semibold py-[7px] px-[49px] rounded-[22px] "
             >
-              Sign In2
+              Sign In
             </Link>
           </div>
           <div className="">
@@ -69,17 +69,16 @@ const ChatbotBanner = () => {
               className="text-[74px] leading-[100%] py-4 text-white"
               style={{ fontFamily: "'Audiowide', sans-serif" }}
             >
-              Custom AI Chatbots
+              AI-Powered Customer Support
             </h1>
             <p className="font-bold text-white text-base my-[22px]">
-              Innovative AI solutions designed to simplify and accelerate your
-              workflow.
+            Enhance user satisfaction with 24/7 virtual assistants that provide instant, accurate responses.
             </p>
             <Link
-              href="/signin"
+              href="/auth/signin"
               className="bg-white text-lg font-semibold py-[7px] px-[49px] rounded-[22px] "
             >
-              Sign In3
+              Sign In
             </Link>
           </div>
           <div className="">
@@ -93,13 +92,13 @@ const ChatbotBanner = () => {
           className="absolute bottom-20  p-3 "
           onClick={() => instanceRef.current?.prev()}
         >
-          <img src="/images/arrow-lft.png" />
+          <img src="/images/arrow-lft.png" className="cursor-pointer"/>
         </button>
         <button
           className="absolute bottom-20  p-3 text-black right-0"
           onClick={() => instanceRef.current?.next()}
         >
-          <img src="/images/arrow-right.png" />
+          <img src="/images/arrow-right.png" className="cursor-pointer"/>
         </button>
       </div>
       {/* Dots */}
@@ -108,7 +107,7 @@ const ChatbotBanner = () => {
           <button
             key={idx}
             onClick={() => instanceRef.current?.moveToIdx(idx)}
-            className={`w-[16px] h-[16px] rounded-full ${
+            className={`cursor-pointer w-[16px] h-[16px] rounded-full ${
               currentSlide === idx
                 ? "bg-[#01BEED]"
                 : "bg-transparent border  border-[#01BEED]"

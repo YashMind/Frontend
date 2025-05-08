@@ -31,6 +31,20 @@ const ChatbotDashboardHeader = ({
   useEffect(() => {
     dispatch(getMeData());
   }, []);
+  
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !(menuRef.current as HTMLElement).contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  
 
   const handleLogOut = () => {
     dispatch(logoutUser({ router }));
@@ -80,7 +94,7 @@ const ChatbotDashboardHeader = ({
           >
             Return to Home
           </Link>
-          <button className="sidebar text-white">
+          <button className="sidebar text-white cursor-pointer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -99,7 +113,7 @@ const ChatbotDashboardHeader = ({
           <div className="relative inline-block text-left" ref={menuRef}>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="focus:outline-none"
+              className="focus:outline-none cursor-pointer"
             >
               <svg
                 width="21"

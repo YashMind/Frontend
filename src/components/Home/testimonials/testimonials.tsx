@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import "./testimonial.css";
+import Image from "next/image";
 const Testimonials = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
@@ -29,45 +30,52 @@ const Testimonials = () => {
   });
 
   const slideCount = instanceRef.current?.track.details.slides.length || 0;
-  
+
   const testimonials = [
     {
-      name: "Hannah Schmitt1",
-      title: "Lead designer",
+      name: "Hannah Schmitt",
+      title: "Lead Designer at PixelCraft",
+      image: "/images/girl.png",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit Cursus nibh mauris, nec turpis orci lectus maecenas. Suspendisse sed magna eget nibh in turpis. Consequat duis diam lacus arcu. Faucibus venenatis felis id augue sit cursus pellentesque enim",
+        "Using this platform has completely streamlined how we handle creative tasks. The interface is intuitive, and automation features save us hours every week.",
     },
     {
-      name: "Hannah Schmitt2",
-      title: "Lead designer",
+      name: "Liam Chen",
+      title: "UX Specialist at Flowly",
+      image: "/images/girl2.jpg",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit Cursus nibh mauris, nec turpis orci lectus maecenas. Suspendisse sed magna eget nibh in turpis. Consequat duis diam lacus arcu. Faucibus venenatis felis id augue sit cursus pellentesque enim",
+        "I’ve tested many AI tools, but this one stands out for its balance between power and simplicity. It helps bring our ideas to life faster than ever.",
     },
     {
-      name: "Hannah Schmitt3",
-      title: "Lead designer",
+      name: "Sophia Ahmad",
+      title: "Creative Director at Nova Studio",
+      image: "/images/girl.png",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit Cursus nibh mauris, nec turpis orci lectus maecenas. Suspendisse sed magna eget nibh in turpis. Consequat duis diam lacus arcu. Faucibus venenatis felis id augue sit cursus pellentesque enim",
+        "The design team loves how seamless and responsive the platform feels. It’s clear this tool was built with creators in mind.",
     },
     {
-      name: "Hannah Schmitt4",
-      title: "Lead designer",
+      name: "James Walker",
+      title: "Product Manager at Loop Labs",
+      image: "/images/girl.png",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit Cursus nibh mauris, nec turpis orci lectus maecenas. Suspendisse sed magna eget nibh in turpis. Consequat duis diam lacus arcu. Faucibus venenatis felis id augue sit cursus pellentesque enim",
+        "Implementation was effortless and the performance has been consistent. Our team has seen real efficiency gains across the board.",
     },
     {
-      name: "Hannah Schmitt5",
-      title: "Lead designer",
+      name: "Isabella Duarte",
+      title: "Senior Designer at Fuse",
+      image: "/images/girl.png",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit Cursus nibh mauris, nec turpis orci lectus maecenas. Suspendisse sed magna eget nibh in turpis. Consequat duis diam lacus arcu. Faucibus venenatis felis id augue sit cursus pellentesque enim",
+        "This tool brings clarity and speed to our design process. It’s now an essential part of our daily workflow.",
     },
     {
-      name: "Hannah Schmitt6",
-      title: "Lead designer",
+      name: "Arjun Mehra",
+      title: "Head of Design at OrbitIQ",
+      image: "/images/boy.jpg",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit Cursus nibh mauris, nec turpis orci lectus maecenas. Suspendisse sed magna eget nibh in turpis. Consequat duis diam lacus arcu. Faucibus venenatis felis id augue sit cursus pellentesque enim",
+        "From prototyping to delivery, the experience is smooth and reliable. It's become our go-to solution for high-impact design projects.",
     },
   ];
+
   return (
     <div className=" Testimonials mt-[110px]">
       <div className="container">
@@ -89,7 +97,9 @@ const Testimonials = () => {
             >
               {/* Testimonial Card 1 */}
               {testimonials &&
-                testimonials?.map((item, index) => {
+                testimonials?.map((
+                  item, index) => {
+                    console.log(item,"==========")
                   const isfirstSlide =
                     index === currentSlide % testimonials.length;
                   const isSecondSlide =
@@ -104,19 +114,23 @@ const Testimonials = () => {
                         backgroundImage: isfirstSlide
                           ? "url('/images/slide1.png')"
                           : isSecondSlide
-                          ? "url('/images/slide2.png')"
-                          : "url('/images/slider3.png')",
+                            ? "url('/images/slide2.png')"
+                            : "url('/images/slider3.png')",
                         transform: isSecondSlide ? "scale(1.1)" : "",
                         backgroundRepeat: isSecondSlide ? "no-repeat" : "",
                       }}
                     >
                       <div className="flex flex-col items-center justify-center">
                         <div className="space-x-4 flex items-center mb-2">
-                          <img
-                            src="/images/girl.png"
+                          <Image
+                            height={79}
+                            width={79}
+                            src={item.image}
                             alt="User"
-                            className="w-[79px] h-[79px] rounded-full"
+                            quality={10}
+                            className="rounded-full"
                           />
+
                         </div>
                         <div className="text-center">
                           <p className="font-semibold text-white mb-1">
@@ -162,13 +176,13 @@ const Testimonials = () => {
                 className="absolute bottom-20   p-3 text-black "
                 onClick={() => instanceRef.current?.prev()}
               >
-                <img src="/images/arrow-lft.png" />
+                <img src="/images/arrow-lft.png" className="cursor-pointer"/>
               </button>
               <button
                 className="absolute bottom-20 right-0 p-3"
                 onClick={() => instanceRef.current?.next()}
               >
-                <img src="/images/arrow-right.png" />
+                <img src="/images/arrow-right.png" className="cursor-pointer"/>
               </button>
 
               {/* Dots */}
@@ -177,11 +191,10 @@ const Testimonials = () => {
                   <button
                     key={idx}
                     onClick={() => instanceRef.current?.moveToIdx(idx)}
-                    className={`w-[16px] h-[16px] rounded-full ${
-                      currentSlide === idx
-                        ? "bg-[#01BEED]"
-                        : "bg-transparent border  border-[#01BEED]"
-                    }`}
+                    className={`w-[16px] h-[16px] rounded-full cursor-pointer ${currentSlide === idx
+                      ? "bg-[#01BEED]"
+                      : "bg-transparent border  border-[#01BEED]"
+                      }`}
                   />
                 ))}
               </div>

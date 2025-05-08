@@ -6,6 +6,7 @@ import { updateChatbotWithoutRouter } from "@/store/slices/chats/chatSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { useEffect } from "react";
+import { SecurityForm } from "@/types/chatTypes";
 
 const domainRegex = /^(https:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
 

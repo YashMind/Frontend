@@ -1,17 +1,24 @@
 import React from "react";
-
+import Image from "next/image";
 const HomeFooter = () => {
   return (
     <footer className="text-white px-4 sm:px-6 md:px-12 py-10">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
         {/* Logo and Plan */}
         <div>
-          <h1 className="text-3xl md:text-4xl font-semibold mb-4">LOGO</h1>
+          <h1 className="text-3xl md:text-4xl font-semibold mb-4">
+          <Image
+          alt="alt"
+          src="/images/bot-logo.png"
+          className="cursor-pointer"
+          height={150}
+          width={150}
+        />
+          </h1>
           <p className="text-sm md:text-base text-gray-300 font-normal mb-4">
-            Lorem ipsum dolor sit amet consectetur. In augue ipsum tellus at dui
-            habitasse quisque nisl tincidunt.
+          Pick the plan that fits your needs and start unlocking powerful AI features today.
           </p>
-          <button className="w-full bg-gradient-to-r from-[#501794] via-[#5e3aa1] to-[#40659F] font-medium hover:opacity-90 text-white text-sm py-2 px-4 rounded-full transition">
+          <button className="cursor-pointer w-full bg-gradient-to-r from-[#501794] via-[#5e3aa1] to-[#40659F] font-medium hover:opacity-90 text-white text-sm py-2 px-4 rounded-full transition">
             Choose This Plan
           </button>
         </div>
@@ -33,6 +40,12 @@ const HomeFooter = () => {
             </li>
             <li>
               <a href="#">Voice Agent</a>
+            </li>
+            <li>
+              <a href="#">Terms & Conditions</a>
+            </li>
+            <li>
+              <a href="#">Privacy Policy</a>
             </li>
           </ul>
         </div>
@@ -60,6 +73,7 @@ const HomeFooter = () => {
             </li>
           </ul>
         </div>
+        
 
         {/* Follow Us */}
         <div>
@@ -97,9 +111,11 @@ const HomeFooter = () => {
                 <path d="..." stroke="white" />
               </svg>
               <p>
-                Lorem ipsum dolor sit amet
+              Have questions or need assistance?
                 <br />
-                consectetur.20815
+                We're here to help.
+                <br />
+                 Reach out to our team for support or inquiries.
               </p>
             </div>
 
@@ -108,7 +124,7 @@ const HomeFooter = () => {
               <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
                 <path d="..." stroke="white" />
               </svg>
-              <p>lorem@gmail.com</p>
+              <p>yashraa123@gmail.com</p>
             </div>
 
             {/* Phone */}
@@ -121,6 +137,8 @@ const HomeFooter = () => {
           </div>
         </div>
       </div>
+
+      
 
       {/* Bottom Text */}
       <div className="max-w-7xl mx-auto mt-10 text-center border-t border-white pt-6">

@@ -2,14 +2,18 @@
 import React, { useRef, useState } from "react";
 import Image from "next/image";
 import LeadGenForm from "./LeadGenForm";
+import { ChatbotSettings } from "@/types/chatTypes";
 const ChatbotDummy = ({
   chatbotSettings,
 }: {
   chatbotSettings: Partial<Omit<ChatbotSettings, "id">>;
 }) => {
   const messagesEndRef: any = useRef(null);
-
-  const chatbotAvatar = chatbotSettings.image || "/images/face2.webp";
+  const chatbotAvatar =
+  typeof chatbotSettings.image === "string" && chatbotSettings.image.trim() !== ""
+    ? chatbotSettings.image
+    : "/images/face2.webp";
+  // const chatbotAvatar = chatbotSettings.image || "/images/face2.webp";
   return (
     <div
       className="w-[320]  h-full rounded-lg shadow-md flex flex-col justify-between sticky top-40"

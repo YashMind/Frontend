@@ -153,7 +153,7 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
         </Link>
 
         <Link
-          href="/signin"
+          href="/auth/signin"
           className="flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-[#767F9C] text-sm"
           onClick={() => handleLogOut()}
         >

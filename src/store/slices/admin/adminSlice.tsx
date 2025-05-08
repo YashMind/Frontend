@@ -7,6 +7,7 @@ import {
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import SubscriptionPlans from "@/components/Admin/SubscriptionPlans/subscriptionPlans";
+import { toasterError, toasterSuccess } from "@/services/utils/toaster";
 
 export const getAllUsers = createAsyncThunk<
   any,
@@ -43,7 +44,8 @@ export const getAllUsers = createAsyncThunk<
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id")
+        // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -74,7 +76,9 @@ export const updateUserByAdmin = createAsyncThunk<
       const response = await http.put("/admin/update-user-admin", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toast.success("user updated successfully!");
+        toasterSuccess("user updated successfully!", 2000, "id")
+
+        // toast.success("user updated successfully!");
         dispatch(
           getAllUsers({
             page,
@@ -90,7 +94,8 @@ export const updateUserByAdmin = createAsyncThunk<
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
+        // toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id")
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during chatbot");
@@ -135,7 +140,8 @@ export const getAllSubscriptionPlans = createAsyncThunk<
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id")
+        // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -156,7 +162,9 @@ export const createSubscriptionPlan = createAsyncThunk<any, { payload: any }>(
       );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toast.success("Plan created successfully!");
+        toasterSuccess("Plan created successfully!", 2000, "id")
+
+        // toast.success("Plan created successfully!");
         dispatch(
           getAllSubscriptionPlans({
             page: 1,
@@ -169,7 +177,8 @@ export const createSubscriptionPlan = createAsyncThunk<any, { payload: any }>(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id")
+        // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during chatbot");
@@ -198,14 +207,17 @@ export const deleteSubscriptionsPlan = createAsyncThunk<
             limit: 10,
           })
         );
-        toast.success("Plan deleted successfully!");
+        toasterSuccess("Plan deleted successfully!", 2000, "id")
+
+        // toast.success("Plan deleted successfully!");
         return response.data;
       } else {
         return rejectWithValue("failed to get chats!");
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id")
+        // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -250,7 +262,8 @@ export const getAllTokenBots = createAsyncThunk<
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id")
+        // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -268,7 +281,9 @@ export const createTokenBots = createAsyncThunk<any, { payload: any }>(
       const response = await http.post("/admin/create-token-bots", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toast.success("Token created successfully!");
+        toasterSuccess("Token created successfully!", 2000, "id")
+
+        // toast.success("Token created successfully!");
         dispatch(
           getAllTokenBots({
             page: 1,
@@ -281,7 +296,8 @@ export const createTokenBots = createAsyncThunk<any, { payload: any }>(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id")
+        // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during chatbot");
@@ -307,14 +323,17 @@ export const deleteTokenBots = createAsyncThunk<any, { token_bot_id?: number }>(
             limit: 10,
           })
         );
-        toast.success("Token bot deleted successfully!");
+        toasterSuccess("Token bot deleted successfully!", 2000, "id")
+
+        // toast.success("Token bot deleted successfully!");
         return response.data;
       } else {
         return rejectWithValue("failed to get chats!");
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id")
+        // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -338,7 +357,8 @@ export const getTopConsumptionUsers = createAsyncThunk<any, void>(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id")
+        // toast.error(error?.response?.data?.detail); 
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -356,7 +376,9 @@ export const updateBotToken = createAsyncThunk<any, { payload: any }>(
       const response = await http.put("/admin/update-bot-token", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toast.success("chatbot updated successfully!");
+        toasterSuccess("chatbot updated successfully!", 2000, "id")
+
+        // toast.success("chatbot updated successfully!");
         dispatch(
           getAllTokenBots({
             page: 1,
@@ -369,7 +391,8 @@ export const updateBotToken = createAsyncThunk<any, { payload: any }>(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id")
+        // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during chatbot");
@@ -414,7 +437,8 @@ export const getAllBotProducts = createAsyncThunk<
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id")
+        // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -435,9 +459,10 @@ export const createUpdateBotProduct = createAsyncThunk<any, { payload: any }>(
       );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toast.success(
-          `Product ${payload.id ? "updated" : "created"} successfully!`
-        );
+        toasterSuccess(`Product ${payload.id ? "updated" : "created"} successfully!`, 2000, "id")
+        // toast.success(
+        //   `Product ${payload.id ? "updated" : "created"} successfully!`
+        // );
         dispatch(
           getAllBotProducts({
             page: 1,
@@ -450,7 +475,8 @@ export const createUpdateBotProduct = createAsyncThunk<any, { payload: any }>(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id")
+        // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during chatbot");

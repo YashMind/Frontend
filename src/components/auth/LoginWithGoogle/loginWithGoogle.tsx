@@ -4,6 +4,7 @@ import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
 import http from "@/services/http/baseUrl";
 import toast from "react-hot-toast";
+import { toasterError, toasterSuccess } from "@/services/utils/toaster";
 
 const LoginWithGoogle = () => {
   const router = useRouter();
@@ -41,19 +42,24 @@ const LoginWithGoogle = () => {
         const user = await signUpWithGoogle(response.access_token);
         // Optionally: store tokens or user info here
         if (user) {
-          toast.success("Logged with google successfully!");
+          toasterSuccess("Logged with google successfully!", 2000, "id")
+          // toast.success("Logged with google successfully!");
           router.push("/chatbot");
         }
       } catch (err) {
-        toast.error("Login with google failed!");
+        toasterError("Login with google failed!", 2000, "id")
+        // toast.error("Login with google failed!");
       }
     },
-    onError: () => toast.error("Error in Login with google!"),
+    onError: () =>
+      toasterError("Error in Login with google!", 2000, "id"),
+
+    //  toast.error("Error in Login with google!"),
   });
 
   return (
     <button
-      className="flex items-center justify-center gap-2 bg-[#3B2063] text-[15px] font-medium text-white px-4 py-3 rounded-[11px] w-full hover:shadow-lg"
+      className="flex items-center cursor-pointer justify-center gap-2 bg-[#3B2063] text-[15px] font-medium text-white px-4 py-3 rounded-[11px] w-full hover:shadow-lg"
       onClick={() => loginWithGoogle()}
     >
       <img src="/images/google.png" alt="Google icon" />

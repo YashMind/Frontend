@@ -8,8 +8,8 @@ export default function middleware(request: NextRequest) {
 
   const publicRoutes = [
     "/",
-    "/signin",
-    "/signup",
+    "/auth/signin",
+    "/auth/signup",
     "/chatbot",
     "/voice-agent",
     "/llm",
@@ -49,7 +49,7 @@ export default function middleware(request: NextRequest) {
 
   // Protected routes without token
   if (!accessToken) {
-    return NextResponse.redirect(new URL("/signin", request.url));
+    return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 
   const role = request.cookies.get("role")?.value;

@@ -142,7 +142,7 @@ const SidebarProducts = ({productMenu}:{productMenu: string}) => {
           <span>Settings</span>
         </Link>
         <Link
-          href="/signin"
+          href="/auth/signin"
           className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-light text-sm"
           onClick={() => handleLogOut()}
         >

@@ -18,7 +18,7 @@ const AiArea = () => {
               Let our LLM help your customers across multiple social media
               channels at once
             </p>
-            <button className="mt-4 px-6 py-2 bg-white text-[#1503A6] font-semibold rounded-full shadow-md hover:bg-gray-100 transition">
+            <button className="cursor-pointer mt-4 px-6 py-2 bg-white text-[#1503A6] font-semibold rounded-full shadow-md hover:bg-gray-100 transition">
               Try Now
             </button>
             <div className="mt-6 ">

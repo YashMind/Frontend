@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { getMeData } from "@/store/slices/auth/authSlice";
 import { getAllUsers } from "@/store/slices/admin/adminSlice";
+
 const Admin = ({ adminPage }: { adminPage: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const userData: UserProfileData = useSelector(

@@ -1,4 +1,5 @@
 import http from "@/services/http/baseUrl";
+import { ChatbotSettings } from "@/types/chatTypes";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 

@@ -13,6 +13,7 @@ import { uploadDocument } from "@/store/slices/chats/chatSlice";
 import { pathToImage } from "@/services/utils/helpers";
 import { ColorPickerField, Field, IFormInput, ImageField } from "./Fields";
 import LeadGenSelection from "./LeadGenSelection";
+import { toasterSuccess } from "@/services/utils/toaster";
 
 const ChatbotAppearence = ({ botId }: { botId?: number }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -276,7 +277,8 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
     )
       .unwrap()
       .then(() => {
-        toast.success("Chatbot updated successfully");
+        toasterSuccess("Chatbot updated successfully",2000,"id")
+        // toast.success("Chatbot updated successfully");
       })
       .catch((e) => {
         toast.error(e);
