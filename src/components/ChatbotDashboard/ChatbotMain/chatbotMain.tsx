@@ -80,7 +80,9 @@ const ChatbotMain = ({
               <ChatbotAppearence botId={botId} />
             ) : null}
             {botPage === "deploy" ? <ChatbotDeploy /> : null}
-            {botPage === "integration" ? <ChatbotIntegration /> : null}
+            {botPage === "integration" ? (
+              <ChatbotIntegration botId={botId} />
+            ) : null}
             {botPage === "settings" ? <ChatbotSettings botId={botId} /> : null}
             {/* second div */}
           </div>

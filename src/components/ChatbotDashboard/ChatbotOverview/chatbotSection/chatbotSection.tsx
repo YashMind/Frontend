@@ -71,8 +71,11 @@ const ChatbotSection = ({
   };
 
   const chatbotImage =
-    chatbotSetting && chatbotSetting?.image
-      ? pathToImage(chatbotSetting?.image) ?? "/images/face2.webp"
+    chatbotSetting &&
+    chatbotSetting?.image &&
+    typeof chatbotSetting.image === "string" &&
+    chatbotSetting.image.trim() !== ""
+      ? chatbotSetting.image
       : "/images/face2.webp";
 
   const messagesEndRef: any = useRef(null);

@@ -1,6 +1,8 @@
 import React from "react";
 
-const ChatbotIntegration = () => {
+const ChatbotIntegration = ({ botId }: { botId?: number }) => {
+  const slackUrl = process.env.NEXT_PUBLIC_SLACK_URL;
+
   return (
     <div className="w-full">
       <h2 className="text-2xl font-bold my-[30]">Integration</h2>
@@ -73,9 +75,13 @@ const ChatbotIntegration = () => {
           <p className="text-xs py-[9px] font-light">
             Connect your bot with Slack workspaces for a seamless integration.
           </p>
-          <button className="bg-[#EBB02E] text-white px-4 py-1 rounded-full text-[12px] font-bold">
-            Export All
-          </button>
+          <a
+            href={slackUrl + `bot_id=${botId}`}
+            className="bg-[#EBB02E] text-white px-4 py-1 rounded-full text-[12px] font-bold"
+            target="_blank"
+          >
+            Connect
+          </a>
         </div>
 
         {/* Card 6 */}

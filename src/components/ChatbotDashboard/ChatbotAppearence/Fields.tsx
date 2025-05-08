@@ -266,7 +266,7 @@ export const ImageField = ({
   value,
   register,
 }: ImageFieldProps) => {
-  const [preview, setPreview] = useState<string>("/dummy-avatar.png");
+  const [preview, setPreview] = useState<string>("/images/face2.webp");
 
   useEffect(() => {
     if (value && (value instanceof File || value instanceof Blob)) {

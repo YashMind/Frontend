@@ -28,17 +28,23 @@ export default function RootLayout({
 }>) {
   return (
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
-    <html className="scroll-smooth" lang="en" suppressHydrationWarning={true}>
-      <body suppressHydrationWarning={true}
-        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
-      >
-        <StoreProvider>
-        {children}
-        <Toaster position="top-center" reverseOrder={false} />
-        <ScrollToTop />
-        </StoreProvider>
-      </body>
-    </html>
+      <html className="scroll-smooth" lang="en" suppressHydrationWarning={true}>
+        <body
+          suppressHydrationWarning={true}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased `}
+        >
+          <script
+            defer
+            src="http://localhost:3000/embed.js"
+            data-bot-id="3p5017uafbaix5egtnaamuyeu"
+          ></script>
+          <StoreProvider>
+            {children}
+            <Toaster position="top-center" reverseOrder={false} />
+            <ScrollToTop />
+          </StoreProvider>
+        </body>
+      </html>
     </GoogleOAuthProvider>
   );
 }
