@@ -51,3 +51,20 @@ interface HelpSupportForm {
   subject: string;
   message: string;
 }
+
+interface AdminSignUpForm {
+  id?: number;
+  fullName: string;
+  email: string;
+  password?: string;
+  status?: string;
+  role?: string;
+  plan?: string;
+}
+
+interface AdminUpdateUser {
+  id?: number;
+  fullName: string;
+  role?: string;
+  plan?: string;
+}
