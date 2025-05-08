@@ -251,8 +251,8 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
           dots_color: data.dots_color,
           message_bg: data.message_bg,
           live_message_bg: data.live_message_bg,
-          image: data.image,
-          chat_icon: data.chat_icon,
+          image: data.image || null,
+          chat_icon: data.chat_icon || null,
           lead_collection: data.lead_collection,
           name_lead_gen: data.name_lead_gen,
           is_name_lead_gen: data.is_name_lead_gen || true,
@@ -366,7 +366,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
                   <ImageField
                     label="Chatbot avatar"
                     name="image"
-                    value={watch("image")}
+                    value={watch("image") || "/images/face2.webp"}
                     register={register}
                   />
                   <ColorPickerField

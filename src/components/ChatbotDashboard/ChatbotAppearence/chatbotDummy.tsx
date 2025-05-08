@@ -2,6 +2,7 @@
 import React, { useRef, useState } from "react";
 import Image from "next/image";
 import LeadGenForm from "./LeadGenForm";
+import { ChatbotSettings } from "@/types/chatTypes";
 const ChatbotDummy = ({
   chatbotSettings,
 }: {
