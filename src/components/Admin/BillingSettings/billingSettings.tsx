@@ -43,6 +43,7 @@ const BillingSettings = () => {
                       className="bg-[#18B91F] text-xs font-medium text-white px-[10px] py-[5px]  rounded hover:bg-green-600"
                       onClick={() => {
                         setModalShow(true);
+                        setUserData({});
                       }}
                     >
                       Add Payment Gateway
