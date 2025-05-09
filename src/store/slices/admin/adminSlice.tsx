@@ -342,6 +342,30 @@ export const getAdminUsers = createAsyncThunk<any, void>(
   }
 );
 
+export const getClientUsers = createAsyncThunk<any, void>(
+  "admin/getClientUsers",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.get("/admin/get-client-users");
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get token bots!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 export const getAdminsLogsActivity = createAsyncThunk<
   any,
   { date_filter: any }
@@ -370,6 +394,36 @@ export const getAdminsLogsActivity = createAsyncThunk<
     }
   }
 );
+
+export const getClientLogsActivity = createAsyncThunk<
+  any,
+  { date_filter: any }
+>(
+  "admin/getClientLogsActivity",
+  async ({ date_filter }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.get(
+        `/admin/get-client-logs-activity?date_filter=${date_filter ?? ""}`
+      );
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get token bots!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 
 export const updateUserByAdmin = createAsyncThunk<
   any,
@@ -629,6 +683,7 @@ const initialState = {
   topTokenUsersData: [] as UserProfileData[],
   productMonitoringData: {} as ProductMonitoringData,
   adminUsers: [] as AdminUsersData[],
+  clientUsers:[] as ClientUsersData [],
   adminsLogsActivityData: {} as AdminLogsActivity,
 };
 
@@ -696,9 +751,16 @@ const adminSlice = createSlice({
       .addCase(getAdminUsers.pending, (state) => {
         state.loading = true;
       })
+      .addCase(getClientUsers.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(getAdminUsers.fulfilled, (state, action) => {
         state.loading = false;
         state.adminUsers = action?.payload;
+      })
+      .addCase(getClientUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.clientUsers = action?.payload;
       })
       .addCase(getAdminUsers.rejected, (state, action) => {
         state.loading = false;

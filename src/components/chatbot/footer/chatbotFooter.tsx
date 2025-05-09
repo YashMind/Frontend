@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const ChatbotFooter = () => {
@@ -83,11 +84,11 @@ const ChatbotFooter = () => {
         {/* Bottom Links */}
         <div className="border-t border-white/20 mt-12 pt-4 flex flex-col md:flex-row justify-between ">
           <div className="flex flex-wrap gap-x-6 gap-y-2 font-normal text-sm text-white">
-            <span>Privacy Policy</span>
-            <span>Terms of Use</span>
-            <span>Sales and Refunds</span>
-            <span>Legal</span>
-            <span>Site Map</span>
+            <Link href="/details/privacy-policy">Privacy Policy</Link>
+            <Link href="/details/privacy-policy">Terms of Use</Link>
+            <Link href="/details/privacy-policy">Sales and Refunds</Link>
+            <Link href="/details/privacy-policy">Legal</Link>
+            <Link href="/details/privacy-policy">Site Map</Link>
           </div>
           <div className="mt-2 md:mt-0 font-light text-xs">
             © 2021 All Rights Reserved

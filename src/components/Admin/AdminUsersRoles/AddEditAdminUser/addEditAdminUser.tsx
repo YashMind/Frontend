@@ -16,9 +16,10 @@ interface AddEditPlanProps {
   show: boolean;
   onHide: () => void;
   adminUserData: AdminUsersData;
+  roleData:string
 }
 
-const schema = (isEdit: boolean) =>
+const schema = (isEdit: boolean,roleData:string) =>
   yup.object().shape({
     id: yup.number(),
     fullName: yup
@@ -46,7 +47,11 @@ const schema = (isEdit: boolean) =>
             /[@$!%*?&#]/,
             "Password must contain at least one special character"
           ),
-    role: yup.string().required("Role is a required field"),
+          role:
+          roleData === "admin"
+            ? yup.string().required("Role is a required field")
+            : yup.mixed().notRequired(),
+        
     status: yup.string(),
     role_permissions: yup.array().notRequired(),
   });
@@ -80,6 +85,7 @@ const AddEditAdminUserModal = ({
   show,
   onHide,
   adminUserData,
+  roleData
 }: AddEditPlanProps) => {
   const isEdit = !!adminUserData?.id;
   const {
@@ -90,7 +96,7 @@ const AddEditAdminUserModal = ({
     watch,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema(isEdit)),
+    resolver: yupResolver(schema(isEdit,roleData)),
     defaultValues: {
       fullName: "",
       email: "",
@@ -98,7 +104,7 @@ const AddEditAdminUserModal = ({
       status: "Active",
     },
   });
-
+  
   const dispatch = useDispatch<AppDispatch>();
   const onSubmit = (data: AdminSignUpForm) => {
     if (data.id) {
@@ -129,13 +135,13 @@ const AddEditAdminUserModal = ({
       <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[800px] max-w-full shadow-5xl relative">
         <button
           onClick={onHide}
-          className="absolute top-4 right-4 text-white text-2xl font-bold"
+          className="cursor-pointer absolute top-4 right-4 text-white text-2xl font-bold"
         >
           &times;
         </button>
 
         <h2 className="text-xl font-semibold mb-1">
-          {adminUserData?.id ? "Edit" : "Add"} Admin
+          {adminUserData?.id ? "Edit" : "Add"} {roleData =="admin"?"Admin":"Client"}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
@@ -183,6 +189,8 @@ const AddEditAdminUserModal = ({
             )}
           </div>
 
+        {roleData=="admin"?
+        <>
           <div>
             <label className="block mb-1 text-sm font-medium">Role</label>
             <select
@@ -235,19 +243,20 @@ const AddEditAdminUserModal = ({
               )}
             </div>
           ) : null}
-
+          </>
+          :""}
           <hr className="border-gray-600 my-6" />
           <div className="flex justify-start gap-4 mt-6">
             <button
               type="button"
               onClick={onHide}
-              className="border border-white text-white px-6 py-2 rounded hover:bg-white hover:text-black transition"
+              className="cursor-pointer border border-white text-white px-6 py-2 rounded hover:bg-white hover:text-black transition"
             >
               Exit
             </button>
             <button
               type="submit"
-              className="bg-[#18B91F] px-6 py-2 rounded text-white hover:bg-green-600 transition"
+              className="cursor-pointer bg-[#18B91F] px-6 py-2 rounded text-white hover:bg-green-600 transition"
             >
               Save
             </button>

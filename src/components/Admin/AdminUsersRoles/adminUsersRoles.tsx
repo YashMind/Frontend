@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import AddEditAdminUserModal from "./AddEditAdminUser/addEditAdminUser";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
@@ -70,7 +69,7 @@ const AdminUsersRoles = () => {
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold">Admin Users & Roles</h2>
                 <button
-                  className="bg-[#18B91F] hover:bg-green-600 text-white px-4 py-1 rounded text-xs"
+                  className="cursor-pointer bg-[#18B91F] hover:bg-green-600 text-white px-4 py-1 rounded text-xs"
                   onClick={() => {
                     setAdminUserData({});
                     setModalShow(true);
@@ -122,8 +121,8 @@ const AdminUsersRoles = () => {
                       adminUsers?.map((item, index) => {
                         const timeAgo = item?.last_active
                           ? formatDistanceToNow(new Date(item.last_active), {
-                              addSuffix: true,
-                            })
+                            addSuffix: true,
+                          })
                           : null;
                         return (
                           <tr
@@ -256,12 +255,12 @@ const AdminUsersRoles = () => {
                           {item?.role === "Super Admin"
                             ? "Full Access"
                             : item?.role === "Billing Admin"
-                            ? "Financial Access"
-                            : item?.role === "Product Admin"
-                            ? "Technical Access"
-                            : item?.role === "Support Admin"
-                            ? "Limited Access"
-                            : ""}
+                              ? "Financial Access"
+                              : item?.role === "Product Admin"
+                                ? "Technical Access"
+                                : item?.role === "Support Admin"
+                                  ? "Limited Access"
+                                  : ""}
                         </span>
                       </div>
                       <div className="mt-4">
@@ -411,6 +410,7 @@ const AdminUsersRoles = () => {
             show={modalShow}
             onHide={() => setModalShow(false)}
             adminUserData={adminUserData}
+            roleData={"admin"}
           />
         </div>
       </div>

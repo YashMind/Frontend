@@ -1,6 +1,34 @@
-import React from "react";
-import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import AddEditAdminUserModal from "../AdminUsersRoles/AddEditAdminUser/addEditAdminUser";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { deleteAdminUser, getClientLogsActivity, getClientUsers } from "@/store/slices/admin/adminSlice";
+import { formatDistanceToNow } from "date-fns";
+import { MdDeleteForever, MdEdit } from "react-icons/md";
+import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
+
 const EnterpriseClients = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const [ClientData, setClientData] = useState<any>({});
+  const [modalShow, setModalShow] = useState<boolean>(false);
+  const [selectedDate, setSelectedDate] = useState<any>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [menuOpenId, setMenuOpenId] = useState<any>({});
+
+  const { clientUsers, adminsLogsActivityData } = useSelector(
+    (state: RootState) => state.admin
+  );
+  console.log(clientUsers,"clientUser=====")
+  useEffect(() => {
+    dispatch(getClientUsers());
+    dispatch(getClientLogsActivity({ date_filter: selectedDate }));
+  }, [dispatch, selectedDate]);
+
+  const handleDeleteAdminUser = (item: AdminSignUpForm) => {
+    dispatch(deleteAdminUser({ id: item?.id }));
+  };
+
+
   return (
     <div>
       <div className="">
@@ -11,7 +39,12 @@ const EnterpriseClients = () => {
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold">Enterprise Clients</h2>
-                <button className="bg-[#18B91F] hover:bg-green-600 text-white px-4 py-1 rounded text-xs">
+                <button
+                  onClick={() => {
+                    setClientData({});
+                    setModalShow(true);
+                  }}
+                  className="cursor-pointer bg-[#18B91F] hover:bg-green-600 text-white px-4 py-1 rounded text-xs">
                   Add Client
                 </button>
               </div>
@@ -46,200 +79,75 @@ const EnterpriseClients = () => {
                         <span>Name</span>
                       </th>
                       <th className="p-6 text-white">Key Contact</th>
-                      <th className="p-6 text-white">Status</th>
                       <th className="p-6 text-white">Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="bg-[#0A1330] hover:bg-[#1A1F3C] ">
-                      <td className="p-6">
-                        <input
-                          type="checkbox"
-                          className="form-checkbox accent-purple-500"
-                        />
-                      </td>
-                      <td className="p-6 font-medium text-xs">Acme Corp</td>
-                      <td className="p-6 text-xs text-gray-300">
-                        john.doe@acme.com
-                      </td>
+                    {clientUsers &&
+                      clientUsers?.map((item:any, index:any) => {
+                        const timeAgo = item?.last_active
+                          ? formatDistanceToNow(new Date(item.last_active), {
+                            addSuffix: true,
+                          })
+                          : null;
+                        return (
+                          <tr
+                            className="border-b border-[#0B1739] hover:bg-[#1A1F3C] "
+                            key={index}
+                          >
+                            <td className="p-6">
+                              <input
+                                type="checkbox"
+                                className="form-checkbox accent-purple-500"
+                                checked={item?.status === "Active"}
+                                readOnly
+                              />
+                            </td>
+                            <td className="p-6 font-medium text-xs">
+                              {item?.fullName}
+                            </td>
+                            <td className="p-6 text-xs text-gray-300">
+                              {item?.email}
+                            </td>
+                            <td className="p-6 text-xs">
+                              {item?.status ? (
+                                <span className="bg-[#18B91F] text-white text-xs px-3 py-1 rounded-full">
+                                  {item?.status}
+                                </span>
+                              ) : null}
+                            </td>
+                            <td className="p-6 space-x-2 flex relative">
+                              <div className="flex gap-2 items-center">
+                                <MdEdit
+                                  onClick={() => {
+                                    setModalShow(true);
+                                    setClientData(item);
+                                  }}
+                                  className="cursor-pointer"
+                                  size={20}
+                                />
 
-                      <td className="p-6 text-xs">
-                        <span className="bg-[#18B91F] text-white text-xs px-3 py-1 rounded-full">
-                          Active
-                        </span>
-                      </td>
-                      <td className="p-6 space-x-2 flex">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-                          />
-                        </svg>
-
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                          />
-                        </svg>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                          />
-                        </svg>
-                      </td>
-                    </tr>
-                    <tr className="hover:bg-[#1A1F3C] ">
-                      <td className="p-6">
-                        <input
-                          type="checkbox"
-                          className="form-checkbox accent-purple-500"
-                        />
-                      </td>
-                      <td className="p-6 font-medium text-xs">Globex Inc</td>
-                      <td className="p-6 text-xs text-gray-300">
-                        sarah.smith@globex.com
-                      </td>
-
-                      <td className="p-6">
-                        <span className="bg-[#C38F00] text-white text-xs px-3 py-1 rounded-full">
-                          Trail
-                        </span>
-                      </td>
-                      <td className="p-6 space-x-2 flex">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-                          />
-                        </svg>
-
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                          />
-                        </svg>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                          />
-                        </svg>
-                      </td>
-                    </tr>
-                    <tr className="hover:bg-[#1A1F3C] bg-[#0A1330]">
-                      <td className="p-6">
-                        <input
-                          type="checkbox"
-                          className="form-checkbox accent-purple-500"
-                        />
-                      </td>
-                      <td className="p-6 font-medium text-xs">Initech</td>
-                      <td className="p-6 text-xs text-gray-300">
-                        peter.gibbons@initech.com
-                      </td>
-
-                      <td className="p-6">
-                        <span className="bg-[#18B91F] text-white text-xs px-3 py-1 rounded-full">
-                          Active
-                        </span>
-                      </td>
-                      <td className="p-6 space-x-2 flex">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-                          />
-                        </svg>
-
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                          />
-                        </svg>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                          />
-                        </svg>
-                      </td>
-                    </tr>
+                                <MdDeleteForever
+                                  size={20}
+                                  className="cursor-pointer"
+                                  onClick={() => {
+                                    handleDeleteAdminUser(item);
+                                  }}
+                                />
+                                {/* dropdown start */}
+                                <PiDotsThreeOutlineVerticalFill
+                                  size={20}
+                                  className="cursor-pointer"
+                                  onClick={() => {
+                                    setIsMenuOpen(!isMenuOpen);
+                                    setMenuOpenId(item);
+                                  }}
+                                />
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>
@@ -550,6 +458,12 @@ const EnterpriseClients = () => {
           </div>
         </div>
       </div>
+      <AddEditAdminUserModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        adminUserData={ClientData}
+        roleData={"client"}
+      />
     </div>
   );
 };

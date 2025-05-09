@@ -70,6 +70,18 @@ interface AdminUsersData {
   created_at?: string;
 }
 
+interface ClientUsersData {
+  id?: number;
+  fullName: string;
+  email: string;
+  status?: string;
+  role: string;
+  last_active?: string;
+  plan?: string;
+  role_permissions?: [];
+  created_at?: string;
+}
+
 interface AdminLogsActivity {
   last_added_admin: AdminUsersData;
   last_role_updated: AdminUsersData;
