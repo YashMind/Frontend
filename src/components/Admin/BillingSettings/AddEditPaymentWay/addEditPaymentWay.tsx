@@ -1,5 +1,6 @@
 "use client";
 import {
+  AddUpdatePaymentGateway,
   updateAdminUser,
   updateUserByAdmin,
 } from "@/store/slices/admin/adminSlice";
@@ -14,20 +15,24 @@ import * as yup from "yup";
 interface AddEditPlanProps {
   show: boolean;
   onHide: () => void;
-  userData: AdminUsersData;
+  userData: AdminPaymentGateway;
 }
 
 const schema = yup.object().shape({
   id: yup.number(),
-  fullName: yup
+  payment_name: yup
     .string()
     .required("Full Name is a required field")
     .min(3, "Full name must be at least 3 characters"),
-  plan: yup.string(),
-  role: yup.string(),
+  status: yup.string().required("Status is a required field"),
+  api_key: yup.string().required("Api key is a required field"),
 });
 
-const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
+const AddEditPaymentWayModal = ({
+  show,
+  onHide,
+  userData,
+}: AddEditPlanProps) => {
   const {
     register,
     handleSubmit,
@@ -37,23 +42,23 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      fullName: "",
+      payment_name: "",
+      status: "",
+      api_key: "",
     },
   });
 
   const dispatch = useDispatch<AppDispatch>();
-  const onSubmit = (data: AdminUpdateUser) => {
-    if (data.id) {
-      dispatch(updateUserByAdmin({ payload: data }));
-    }
+  const onSubmit = (data: AdminPaymentGateway) => {
+    // dispatch(AddUpdatePaymentGateway({ payload: data }));
     reset();
     onHide();
   };
 
   useEffect(() => {
-    setValue("fullName", userData?.fullName);
-    setValue("plan", userData?.plan);
-    setValue("role", userData?.role);
+    setValue("payment_name", userData?.payment_name);
+    setValue("status", userData?.status);
+    setValue("api_key", userData?.api_key);
     setValue("id", userData?.id);
   }, [reset, userData?.id, show]);
 
@@ -72,52 +77,59 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block mb-1 text-sm font-medium">Full Name</label>
-            <input
-              placeholder="Enter name"
-              type="text"
-              {...register("fullName")}
-              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
-            />
-            {errors.fullName && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.fullName?.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label className="block mb-1 text-sm font-medium">Plan</label>
-            <input
-              placeholder="Enter plan"
-              type="text"
-              {...register("plan")}
-              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
-            />
-            {errors.plan && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.plan?.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label className="block mb-1 text-sm font-medium">Role</label>
+            <label className="block mb-1 text-sm font-medium">
+              Payment Name
+            </label>
             <select
-              {...register("role")}
+              {...register("payment_name")}
               className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
               defaultValue=""
             >
               <option value="" disabled>
-                Select role
+                Select payment
               </option>
-              <option value="Super Admin">Super Admin</option>
-              <option value="Billing Admin">Billing Admin</option>
-              <option value="User">User</option>
+              <option value="Stripe">Stripe</option>
+              <option value="Razorpay">Razorpay</option>
             </select>
-            {errors.role && (
+            {errors.payment_name && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.role?.message}
+                {errors.payment_name?.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block mb-1 text-sm font-medium">Status</label>
+            <select
+              {...register("status")}
+              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Select status
+              </option>
+              <option value="Active">Active</option>
+              <option value="Trail">Trail</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+            {errors.status && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.status?.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block mb-1 text-sm font-medium">Api Key</label>
+            <input
+              placeholder="Enter api key"
+              type="text"
+              {...register("api_key")}
+              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
+            />
+            {errors.api_key && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.api_key?.message}
               </p>
             )}
           </div>
@@ -144,4 +156,4 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
   ) : null;
 };
 
-export default AddEditUserModal;
+export default AddEditPaymentWayModal;

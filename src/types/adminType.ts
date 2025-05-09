@@ -66,4 +66,12 @@ interface AdminUsersData {
   role: string;
   last_active?: string;
   plan?: string;
+  role_permissions?: [];
+  created_at?: string;
+}
+
+interface AdminLogsActivity {
+  last_added_admin: AdminUsersData;
+  last_role_updated: AdminUsersData;
+  last_suspended_admin: AdminUsersData;
 }

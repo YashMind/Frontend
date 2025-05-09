@@ -342,6 +342,35 @@ export const getAdminUsers = createAsyncThunk<any, void>(
   }
 );
 
+export const getAdminsLogsActivity = createAsyncThunk<
+  any,
+  { date_filter: any }
+>(
+  "admin/getAdminsLogsActivity",
+  async ({ date_filter }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.get(
+        `/admin/get-admins-logs-activity?date_filter=${date_filter ?? ""}`
+      );
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get token bots!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 export const updateUserByAdmin = createAsyncThunk<
   any,
   {
@@ -559,6 +588,38 @@ export const deleteAdminUser = createAsyncThunk<any, { id?: number }>(
   }
 );
 
+export const AddUpdatePaymentGateway = createAsyncThunk<
+  any,
+  {
+    payload: any;
+  }
+>(
+  "admin/AddUpdatePaymentGateway",
+  async ({ payload }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.post("/admin/add-update-payment", payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toast.success(
+          `Payment ${payload?.id ? "updated" : "added"} successfully!`
+        );
+        return response.data;
+      } else {
+        return rejectWithValue("failed to create chatbot!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during chatbot");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 const initialState = {
   loading: false,
   data: [],
@@ -568,6 +629,7 @@ const initialState = {
   topTokenUsersData: [] as UserProfileData[],
   productMonitoringData: {} as ProductMonitoringData,
   adminUsers: [] as AdminUsersData[],
+  adminsLogsActivityData: {} as AdminLogsActivity,
 };
 
 const adminSlice = createSlice({
@@ -639,6 +701,17 @@ const adminSlice = createSlice({
         state.adminUsers = action?.payload;
       })
       .addCase(getAdminUsers.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(getAdminsLogsActivity.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAdminsLogsActivity.fulfilled, (state, action) => {
+        state.loading = false;
+        state.adminsLogsActivityData = action?.payload;
+      })
+      .addCase(getAdminsLogsActivity.rejected, (state, action) => {
         state.loading = false;
       });
   },

@@ -11,7 +11,7 @@ import { MdEdit } from "react-icons/md";
 const UserManagement = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [menuOpenId, setMenuOpenId] = useState<number>();
+  const [menuOpenId, setMenuOpenId] = useState<any>({});
   const [userData, setUserData] = useState<any>({});
 
   const [search, setSearch] = useState("");
@@ -150,93 +150,9 @@ const UserManagement = () => {
                               className="cursor-pointer"
                               onClick={() => {
                                 setIsMenuOpen(!isMenuOpen);
-                                setMenuOpenId(item?.id);
+                                setMenuOpenId(item);
                               }}
                             />
-                            {isMenuOpen && menuOpenId === item.id && (
-                              <div className="absolute right-20 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 ">
-                                <div className="py-1">
-                                  {/* <button
-                                    className="w-full block px-4 py-2 text-xs border-b-1 border-[#CACACA] text-[#5C5C5C] hover:bg-gray-100 text-left"
-                                  >
-                                    View Detail
-                                  </button> */}
-                                  <button
-                                    className="w-full block px-4 py-2 text-xs border-b border-[#CACACA] text-[#FF0000] hover:bg-gray-100 text-left"
-                                    onClick={() =>
-                                      handleUpdateStatus({
-                                        id: item?.id,
-                                        status: "Suspend",
-                                      })
-                                    }
-                                  >
-                                    Suspend
-                                  </button>
-                                  <button
-                                    className="w-full block px-4 py-2 border-b border-[#CACACA] text-xs text-[#0FB100] hover:bg-gray-100 text-left"
-                                    onClick={() =>
-                                      handleUpdateStatus({
-                                        id: item?.id,
-                                        status: "Active",
-                                      })
-                                    }
-                                  >
-                                    Activate
-                                  </button>
-                                  <button
-                                    className="w-full block px-4 py-2   text-xs text-[#CD6600] hover:bg-gray-100 text-left"
-                                    onClick={() =>
-                                      handleUpdateStatus({
-                                        id: item?.id,
-                                        tokenUsed: 0,
-                                      })
-                                    }
-                                  >
-                                    Reset token quote
-                                  </button>
-                                </div>
-                              </div>
-                            )}
-                            {/* dropdown end */}
-                            {isMenuOpen && menuOpenId === item.id && (
-                              <div className="relative group">
-                                <button className="text-gray-300 hover:text-white">
-                                  <i className="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div className="absolute right-0 mt-2 w-40 bg-white text-black rounded shadow-lg hidden group-hover:block z-10">
-                                  <ul className="text-sm">
-                                    {/* <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
-                                    View Detail
-                                  </li> */}
-                                    <li
-                                      className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-red-600"
-                                      onClick={() =>
-                                        handleUpdateStatus({
-                                          id: item?.id,
-                                          status: "Suspend",
-                                        })
-                                      }
-                                    >
-                                      Suspend
-                                    </li>
-                                    <li
-                                      className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-green-600"
-                                      onClick={() =>
-                                        handleUpdateStatus({
-                                          id: item?.id,
-                                          status: "active",
-                                        })
-                                      }
-                                    >
-                                      Activate
-                                    </li>
-                                    <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
-                                      Reset token quote
-                                    </li>
-                                  </ul>
-                                </div>
-                              </div>
-                            )}
                           </div>
                         </td>
                       </tr>
@@ -245,6 +161,48 @@ const UserManagement = () => {
               </tbody>
             </table>
           </div>
+          {isMenuOpen && menuOpenId && (
+            <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
+              <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[400px] max-w-full shadow-5xl relative">
+                <button
+                  onClick={() => setIsMenuOpen(false)}
+                  className="absolute top-4 right-4 text-white text-2xl font-bold"
+                >
+                  &times;
+                </button>
+                <div className="right-0 bg-white text-black rounded shadow-lg group-hover:block z-10">
+                  <ul className="text-sm">
+                    <li
+                      className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-red-600"
+                      onClick={() =>
+                        handleUpdateStatus({
+                          id: menuOpenId?.id,
+                          status: "Suspend",
+                        })
+                      }
+                    >
+                      Suspend
+                    </li>
+                    <li
+                      className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-green-600"
+                      onClick={() =>
+                        handleUpdateStatus({
+                          id: menuOpenId?.id,
+                          status: "active",
+                        })
+                      }
+                    >
+                      Activate
+                    </li>
+                    <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                      Reset token quote
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+
           <EditUserModal
             show={modalShow}
             onHide={() => setModalShow(false)}
