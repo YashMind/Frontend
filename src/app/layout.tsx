@@ -33,11 +33,6 @@ export default function RootLayout({
           suppressHydrationWarning={true}
           className={`${geistSans.variable} ${geistMono.variable} antialiased `}
         >
-          <script
-            defer
-            src="http://localhost:3000/embed.js"
-            data-bot-id="3p5017uafbaix5egtnaamuyeu"
-          ></script>
           <StoreProvider>
             {children}
             <Toaster position="top-center" reverseOrder={false} />

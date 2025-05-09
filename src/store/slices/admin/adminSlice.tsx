@@ -575,9 +575,13 @@ export const AddUpdatePaymentGateway = createAsyncThunk<
   async ({ payload }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await http.post("/admin/add-update-payment", payload);
+      const response = await http.post(
+        "/admin/create-update-payment-gateway",
+        payload
+      );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
+        dispatch(getAllPaymentGateway());
         toast.success(
           `Payment ${payload?.id ? "updated" : "added"} successfully!`
         );
@@ -597,6 +601,58 @@ export const AddUpdatePaymentGateway = createAsyncThunk<
   }
 );
 
+export const getAllPaymentGateway = createAsyncThunk<any>(
+  "admin/getAllPaymentGateway",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.get("/admin/get-payments-gateway");
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get token bots!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const deletePaymentsGateway = createAsyncThunk<any, { id?: number }>(
+  "admin/deletePaymentsGateway",
+  async ({ id }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response: any = await http.delete(
+        `/admin/delete-payments-gateway/${id}`
+      );
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        dispatch(getAllPaymentGateway());
+        toast.success("Payment deleted successfully!");
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get chats!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 const initialState = {
   loading: false,
   data: [],
@@ -607,6 +663,7 @@ const initialState = {
   productMonitoringData: {} as ProductMonitoringData,
   adminUsers: [] as AdminUsersData[],
   adminsLogsActivityData: {} as AdminLogsActivity,
+  paymentGatewayData: [] as PaymentsGateway[],
 };
 
 const adminSlice = createSlice({
@@ -689,6 +746,17 @@ const adminSlice = createSlice({
         state.adminsLogsActivityData = action?.payload;
       })
       .addCase(getAdminsLogsActivity.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(getAllPaymentGateway.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllPaymentGateway.fulfilled, (state, action) => {
+        state.loading = false;
+        state.paymentGatewayData = action?.payload;
+      })
+      .addCase(getAllPaymentGateway.rejected, (state, action) => {
         state.loading = false;
       });
   },
