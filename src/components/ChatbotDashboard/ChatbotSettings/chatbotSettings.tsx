@@ -11,6 +11,7 @@ import {
 } from "@/store/slices/chats/chatSlice";
 import { useRouter } from "next/navigation";
 import SecuritySettings from "./securityForm/securityForm";
+import { ChatbotCustomSettings } from "@/types/chatTypes";
 
 const schema = yup.object().shape({
   id: yup.number(),
