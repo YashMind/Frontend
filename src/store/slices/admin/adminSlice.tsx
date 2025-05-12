@@ -473,6 +473,54 @@ export const updateUserByAdmin = createAsyncThunk<
   }
 );
 
+export const updateClientByAdmin = createAsyncThunk<
+  any,
+  {
+    payload: any;
+    page?: number;
+    limit?: number;
+    search?: string;
+    sortBy?: string;
+    sortOrder?: string;
+  }
+>(
+  "admin/updateClientByAdmin",
+  async (
+    { payload, page, limit, search, sortBy, sortOrder },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.put("/admin/update-client-admin", payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toasterSuccess("Client updated successfully!",2000,"id");
+        dispatch(
+          getAllUsers({
+            page,
+            limit,
+            search,
+            sortBy,
+            sortOrder,
+          })
+        );
+        dispatch(getClientUsers());
+        return response.data;
+      } else {
+        return rejectWithValue("failed to create chatbot!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during chatbot");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 export const updateBotToken = createAsyncThunk<any, { payload: any }>(
   "admin/updateBotToken",
   async ({ payload }, { dispatch, rejectWithValue }) => {
@@ -616,6 +664,31 @@ export const updateAdminUser = createAsyncThunk<any, { payload: any }>(
   }
 );
 
+export const updateClientUser = createAsyncThunk<any, { payload: any }>(
+  "auth/updateAdminUser",
+  async ({ payload }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.put("/admin/update-client-user", payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        dispatch(getClientUsers());
+        toast.success("Client updated successfully!");
+        return response.data;
+      } else {
+        return rejectWithValue("Profile update failed");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during profile update");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 export const deleteAdminUser = createAsyncThunk<any, { id?: number }>(
   "admin/deleteAdminUser",
   async ({ id }, { dispatch, rejectWithValue }) => {
@@ -625,6 +698,32 @@ export const deleteAdminUser = createAsyncThunk<any, { id?: number }>(
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         dispatch(getAdminUsers());
+        toast.success("User deleted successfully!");
+        return response.data;
+      } else {
+        return rejectWithValue("failed to get chats!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error?.response?.data?.detail);
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const deleteClientUser = createAsyncThunk<any, { id?: number }>(
+  "admin/deleteClientUser",
+  async ({ id }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response: any = await http.delete(`/admin/delete-client-user/${id}`);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        dispatch(getClientUsers());
         toast.success("User deleted successfully!");
         return response.data;
       } else {
@@ -741,6 +840,7 @@ const initialState = {
   adminUsers: [] as AdminUsersData[],
   clientUsers:[] as ClientUsersData [],
   adminsLogsActivityData: {} as AdminLogsActivity,
+  clientLogsActivityData: {} as ClientLogsActivity,
   paymentGatewayData: [] as PaymentsGateway[],
 };
 
@@ -822,13 +922,23 @@ const adminSlice = createSlice({
       .addCase(getAdminUsers.rejected, (state, action) => {
         state.loading = false;
       })
+         .addCase(getClientUsers.rejected, (state, action) => {
+        state.loading = false;
+      })
 
       .addCase(getAdminsLogsActivity.pending, (state) => {
+        state.loading = true;
+      })
+       .addCase(getClientLogsActivity.pending, (state) => {
         state.loading = true;
       })
       .addCase(getAdminsLogsActivity.fulfilled, (state, action) => {
         state.loading = false;
         state.adminsLogsActivityData = action?.payload;
+      })
+       .addCase(getClientLogsActivity.fulfilled, (state, action) => {
+        state.loading = false;
+        state.clientLogsActivityData = action?.payload;
       })
       .addCase(getAdminsLogsActivity.rejected, (state, action) => {
         state.loading = false;

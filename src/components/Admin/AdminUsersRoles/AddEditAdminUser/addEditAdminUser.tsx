@@ -2,6 +2,7 @@
 import {
   createSubscriptionPlan,
   updateAdminUser,
+  updateClientUser,
 } from "@/store/slices/admin/adminSlice";
 import { signUpAdmin, signUpUser } from "@/store/slices/auth/authSlice";
 import { AppDispatch } from "@/store/store";
@@ -50,7 +51,7 @@ const schema = (isEdit: boolean,roleData:string) =>
           role:
           roleData === "admin"
             ? yup.string().required("Role is a required field")
-            : yup.mixed().notRequired(),
+            : yup.string().notRequired(),
         
     status: yup.string(),
     role_permissions: yup.array().notRequired(),
@@ -104,17 +105,22 @@ const AddEditAdminUserModal = ({
       status: "Active",
     },
   });
-  
+
   const dispatch = useDispatch<AppDispatch>();
-  const onSubmit = (data: AdminSignUpForm) => {
-    if (data.id) {
-      dispatch(updateAdminUser({ payload: data }));
-    } else {
-      dispatch(signUpAdmin({ payload: data }));
-    }
-    reset();
-    onHide();
-  };
+  
+const onSubmit = (data: AdminSignUpForm) => {
+  if (data.id) {
+    roleData === "admin"
+      ? dispatch(updateAdminUser({ payload: data }))
+      : dispatch(updateClientUser({ payload: data }));
+  } else {
+    dispatch(signUpAdmin({ payload: data }));
+  }
+
+  reset();
+  onHide();
+};
+
 
   const options = permissionsArray.map((item) => ({
     value: item,
@@ -125,7 +131,7 @@ const AddEditAdminUserModal = ({
     setValue("fullName", adminUserData?.fullName);
     setValue("email", adminUserData?.email);
     setValue("role", adminUserData?.role);
-    setValue("status", adminUserData?.status);
+    setValue("status", adminUserData?.status || "Active");
     setValue("id", adminUserData?.id);
     setValue("role_permissions", adminUserData?.role_permissions || []);
   }, [reset, adminUserData?.id, show]);

@@ -153,12 +153,11 @@ const AdminUsersRoles = () => {
                               {timeAgo}
                             </td>
                             <td className="p-6 text-xs">
-                              {item?.status ? (
-                                <span className="bg-[#18B91F] text-white text-xs px-3 py-1 rounded-full">
-                                  {item?.status}
-                                </span>
-                              ) : null}
+                              <span className="bg-[#18B91F] text-white text-xs px-3 py-1 rounded-full">
+                                {item?.status || "Active"}
+                              </span>
                             </td>
+
                             <td className="p-6 space-x-2 flex relative">
                               <div className="flex gap-2 items-center">
                                 <MdEdit
@@ -167,6 +166,7 @@ const AdminUsersRoles = () => {
                                     setAdminUserData(item);
                                   }}
                                   size={20}
+                                  className="cursor-pointer"
                                 />
 
                                 <MdDeleteForever
@@ -174,6 +174,8 @@ const AdminUsersRoles = () => {
                                   onClick={() => {
                                     handleDeleteAdminUser(item);
                                   }}
+                                  className="cursor-pointer"
+
                                 />
                                 {/* dropdown start */}
                                 <PiDotsThreeOutlineVerticalFill
@@ -198,7 +200,7 @@ const AdminUsersRoles = () => {
                 <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[400px] max-w-full shadow-5xl relative">
                   <button
                     onClick={() => setIsMenuOpen(false)}
-                    className="absolute top-4 right-4 text-white text-2xl font-bold"
+                    className="cursor-pointer absolute top-4 right-4 text-white text-2xl font-bold"
                   >
                     &times;
                   </button>

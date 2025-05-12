@@ -61,7 +61,7 @@ interface AdminSignUpForm {
   email: string;
   password?: string;
   status?: string;
-  role?: string;
+  role?: string | null;
   plan?: string;
 }
 

@@ -7,7 +7,7 @@ import {
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
-import { getAdminUsers } from "../admin/adminSlice";
+import { getAdminUsers, getClientUsers } from "../admin/adminSlice";
 
 const UserData = {
   id: 0,
@@ -36,7 +36,7 @@ export const signUpUser = createAsyncThunk<
       const response = await http.post("/auth/signup", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("user created successfully!",2000,"id")
+        toasterSuccess("user created successfully!", 2000, "id")
         // toast.success("user created successfully!");
         router.push("/auth/signin");
         return response.data;
@@ -63,8 +63,8 @@ export const signUpAdmin = createAsyncThunk<any, { payload: AdminSignUpForm }>(
       const response = await http.post("/auth/signup", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toast.success(`${payload?.role} created successfully!`);
-        dispatch(getAdminUsers());
+        toast.success(`${payload?.role ?? "Client"} created successfully!`);
+        dispatch(payload.role ? getAdminUsers() : getClientUsers());
         return response.data;
       } else {
         return rejectWithValue("Signup failed");
@@ -114,10 +114,10 @@ export const signInUser = createAsyncThunk<
 
       const response = await http.post("/auth/signin", payload);
       if (response.status === 200) {
-     
+
         dispatch(stopLoadingActivity());
         dispatch(getMeData());
-        toasterSuccess("user logged in successfully!",2000,"id")
+        toasterSuccess("user logged in successfully!", 2000, "id")
         // toast.success("user logged in successfully!");
         router.push("/chatbot");
         return response.data;
@@ -126,7 +126,7 @@ export const signInUser = createAsyncThunk<
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail,2000,"id")
+        toasterError(error?.response?.data?.detail, 2000, "id")
         // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
@@ -147,7 +147,7 @@ export const logoutUser = createAsyncThunk<
     if (response.status === 200) {
       dispatch(stopLoadingActivity());
       // toast.success("user logout successfully!");
-      toasterSuccess("user logout successfully!",2000,"id")
+      toasterSuccess("user logout successfully!", 2000, "id")
       router.push("/auth/signin");
       return response.data;
     } else {
@@ -173,7 +173,7 @@ export const updateUserProfile = createAsyncThunk<any, { payload: any }>(
         dispatch(stopLoadingActivity());
         dispatch(getMeData());
         // toast.success("Profile updated successfully!");
-        toasterSuccess("Profile updated successfully!",2000,"id")
+        toasterSuccess("Profile updated successfully!", 2000, "id")
         return response.data;
       } else {
         return rejectWithValue("Profile update failed");

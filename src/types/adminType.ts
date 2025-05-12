@@ -88,6 +88,12 @@ interface AdminLogsActivity {
   last_suspended_admin: AdminUsersData;
 }
 
+interface ClientLogsActivity {
+  last_added_admin: AdminUsersData;
+  last_role_updated: AdminUsersData;
+  last_suspended_admin: AdminUsersData;
+}
+
 interface PaymentsGateway {
   id?: number;
   payment_name: string;

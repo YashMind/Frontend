@@ -25,12 +25,13 @@ const RightSection = ({showModal}:ShowModalProps) => {
             />
             <hr className="bg-[linear-gradient(90deg,#501794_49.49%,#3E70A1_50.51%)] p-[1px] rounded-md my-6"></hr>
             <Image
-              className="m-auto"
+              className="m-auto cursor-pointer"
               alt="alt"
               src="/images/plus.png"
               height={24}
               width={24}
               onClick={() => showModal()}
+              
             />
           </div>
   )

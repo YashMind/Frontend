@@ -45,7 +45,7 @@ const CreatebotModal = ({ show, onHide }: EditUserModalProps) => {
       <div className="bg-white rounded-2xl shadow-xl w-[600px] p-8 relative">
         <button
           onClick={onHide}
-          className="absolute top-4 right-4 text-black text-2xl font-bold"
+          className="cursor-pointer absolute top-4 right-4 text-black text-2xl font-bold"
         >
           &times;
         </button>
@@ -91,13 +91,13 @@ const CreatebotModal = ({ show, onHide }: EditUserModalProps) => {
 
           <div className="flex justify-start gap-4">
             <button
-              className="bg-[#18B91F] text-white px-6 py-2 rounded-md font-semibold"
+              className="cursor-pointer bg-[#18B91F] text-white px-6 py-2 rounded-md font-semibold"
               type="submit"
             >
               Save
             </button>
             <button
-              className="bg-[#9F9F9F] text-white px-6 py-2 rounded-md font-semibold"
+              className="cursor-pointer bg-[#9F9F9F] text-white px-6 py-2 rounded-md font-semibold"
               onClick={onHide}
             >
               Close

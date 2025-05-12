@@ -129,11 +129,10 @@ const UserManagement = () => {
                           {handleDateString(item?.created_at)}
                         </td>
                         <td className="p-4">
-                          {item?.status ? (
-                            <span className="bg-[#AEB9E133] text-[#AEB9E1] text-xs px-2 py-1 rounded">
-                              {item?.status}
-                            </span>
-                          ) : null}
+                          <span className="bg-[#AEB9E133] text-[#AEB9E1] text-xs px-2 py-1 rounded">
+                            {item?.status || 'Active'}
+                          </span>
+
                         </td>
                         <td className="p-4 relative">
                           <div className="flex gap-2 items-center">
@@ -143,6 +142,7 @@ const UserManagement = () => {
                                 setModalShow(true);
                               }}
                               size={20}
+                              className="cursor-pointer"
                             />
                             {/* dropdown start */}
                             <PiDotsThreeOutlineVerticalFill
@@ -166,7 +166,7 @@ const UserManagement = () => {
               <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[400px] max-w-full shadow-5xl relative">
                 <button
                   onClick={() => setIsMenuOpen(false)}
-                  className="absolute top-4 right-4 text-white text-2xl font-bold"
+                  className="cursor-pointer absolute top-4 right-4 text-white text-2xl font-bold"
                 >
                   &times;
                 </button>
@@ -219,9 +219,8 @@ const UserManagement = () => {
             </button>
             {allUsersData?.total_pages >= 1 ? (
               <button
-                className={`w-6 h-6 ${
-                  page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
-                }   text-black rounded-[7px] text-sm`}
+                className={`w-6 h-6 ${page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
+                  }   text-black rounded-[7px] text-sm`}
               >
                 1
               </button>
@@ -236,11 +235,10 @@ const UserManagement = () => {
             ) : null}
             {allUsersData?.total_pages > 1 ? (
               <button
-                className={`w-6 h-6 ${
-                  allUsersData?.total_pages === page
+                className={`w-6 h-6 ${allUsersData?.total_pages === page
                     ? "bg-[#624DE3]"
                     : "bg-gray-200"
-                } text-black rounded-[7px] text-sm`}
+                  } text-black rounded-[7px] text-sm`}
               >
                 {allUsersData?.total_pages}
               </button>

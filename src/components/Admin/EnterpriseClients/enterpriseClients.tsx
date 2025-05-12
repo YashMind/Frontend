@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AddEditAdminUserModal from "../AdminUsersRoles/AddEditAdminUser/addEditAdminUser";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { deleteAdminUser, getClientLogsActivity, getClientUsers } from "@/store/slices/admin/adminSlice";
+import { deleteClientUser, getClientLogsActivity, getClientUsers, updateClientByAdmin } from "@/store/slices/admin/adminSlice";
 import { formatDistanceToNow } from "date-fns";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
@@ -15,19 +15,28 @@ const EnterpriseClients = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [menuOpenId, setMenuOpenId] = useState<any>({});
 
-  const { clientUsers, adminsLogsActivityData } = useSelector(
+  const { clientUsers, clientLogsActivityData } = useSelector(
     (state: RootState) => state.admin
   );
-  console.log(clientUsers,"clientUser=====")
+
   useEffect(() => {
     dispatch(getClientUsers());
     dispatch(getClientLogsActivity({ date_filter: selectedDate }));
   }, [dispatch, selectedDate]);
 
-  const handleDeleteAdminUser = (item: AdminSignUpForm) => {
-    dispatch(deleteAdminUser({ id: item?.id }));
+  const handleDeleteClientUser = (item: AdminSignUpForm) => {
+    dispatch(deleteClientUser({ id: item?.id }));
   };
-
+  const handleUpdateStatus = (data: any) => {
+    dispatch(
+      updateClientByAdmin({
+        payload: data,
+        page: 1,
+        limit: 10,
+      })
+    );
+    setIsMenuOpen(false);
+  };
 
   return (
     <div>
@@ -79,12 +88,14 @@ const EnterpriseClients = () => {
                         <span>Name</span>
                       </th>
                       <th className="p-6 text-white">Key Contact</th>
+                      <th className="p-6 text-white">status</th>
+
                       <th className="p-6 text-white">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {clientUsers &&
-                      clientUsers?.map((item:any, index:any) => {
+                      clientUsers?.map((item: any, index: any) => {
                         const timeAgo = item?.last_active
                           ? formatDistanceToNow(new Date(item.last_active), {
                             addSuffix: true,
@@ -110,12 +121,11 @@ const EnterpriseClients = () => {
                               {item?.email}
                             </td>
                             <td className="p-6 text-xs">
-                              {item?.status ? (
-                                <span className="bg-[#18B91F] text-white text-xs px-3 py-1 rounded-full">
-                                  {item?.status}
-                                </span>
-                              ) : null}
+                              <span className="bg-[#18B91F] text-white text-xs px-3 py-1 rounded-full">
+                                {item?.status || "Active"}
+                              </span>
                             </td>
+
                             <td className="p-6 space-x-2 flex relative">
                               <div className="flex gap-2 items-center">
                                 <MdEdit
@@ -131,7 +141,7 @@ const EnterpriseClients = () => {
                                   size={20}
                                   className="cursor-pointer"
                                   onClick={() => {
-                                    handleDeleteAdminUser(item);
+                                    handleDeleteClientUser(item);
                                   }}
                                 />
                                 {/* dropdown start */}
@@ -152,6 +162,47 @@ const EnterpriseClients = () => {
                 </table>
               </div>
             </div>
+            {isMenuOpen && menuOpenId && (
+              <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
+                <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[400px] max-w-full shadow-5xl relative">
+                  <button
+                    onClick={() => setIsMenuOpen(false)}
+                    className="cursor-pointer absolute top-4 right-4 text-white text-2xl font-bold"
+                  >
+                    &times;
+                  </button>
+                  <div className="right-0 bg-white text-black rounded shadow-lg group-hover:block z-10">
+                    <ul className="text-sm">
+                      <li
+                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-red-600"
+                        onClick={() =>
+                          handleUpdateStatus({
+                            id: menuOpenId?.id,
+                            status: "Suspend",
+                          })
+                        }
+                      >
+                        Suspend
+                      </li>
+                      <li
+                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-green-600"
+                        onClick={() =>
+                          handleUpdateStatus({
+                            id: menuOpenId?.id,
+                            status: "active",
+                          })
+                        }
+                      >
+                        Activate
+                      </li>
+                      <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                        Reset token quote
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
             {/* token rate */}
             <div className="px-6 ">
               {/* Custom Token Rate Section */}
