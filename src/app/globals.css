@@ -221,3 +221,7 @@ input:-webkit-autofill:active {
     margin-left: 47px;
   }
 }
+.select__option:hover {
+  cursor: pointer  !important;
+  background-color: #f0f0f0 !important; /* optional for hover effect */
+}

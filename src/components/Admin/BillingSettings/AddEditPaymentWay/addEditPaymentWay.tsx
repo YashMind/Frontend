@@ -1,10 +1,5 @@
 "use client";
-import {
-  AddUpdatePaymentGateway,
-  updateAdminUser,
-  updateUserByAdmin,
-} from "@/store/slices/admin/adminSlice";
-import { signUpAdmin, signUpUser } from "@/store/slices/auth/authSlice";
+import {AddUpdatePaymentGateway,} from "@/store/slices/admin/adminSlice";
 import { AppDispatch } from "@/store/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
@@ -63,7 +58,7 @@ const AddEditPaymentWayModal = ({
   }, [reset, userData?.id, show]);
 
   return show ? (
-    <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
+    <div className="cursor-pointer fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[800px] max-w-full shadow-5xl relative">
         <button
           onClick={onHide}
@@ -139,13 +134,13 @@ const AddEditPaymentWayModal = ({
             <button
               type="button"
               onClick={onHide}
-              className="border border-white text-white px-6 py-2 rounded hover:bg-white hover:text-black transition"
+              className="cursor-pointer border border-white text-white px-6 py-2 rounded hover:bg-white hover:text-black transition"
             >
               Exit
             </button>
             <button
               type="submit"
-              className="bg-[#18B91F] px-6 py-2 rounded text-white hover:bg-green-600 transition"
+              className="cursor-pointer bg-[#18B91F] px-6 py-2 rounded text-white hover:bg-green-600 transition"
             >
               Save
             </button>

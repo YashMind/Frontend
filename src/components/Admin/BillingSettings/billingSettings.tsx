@@ -40,7 +40,7 @@ const BillingSettings = () => {
                       Payment Gateways
                     </h3>
                     <button
-                      className="bg-[#18B91F] text-xs font-medium text-white px-[10px] py-[5px]  rounded hover:bg-green-600"
+                      className="cursor-pointer bg-[#18B91F] text-xs font-medium text-white px-[10px] py-[5px]  rounded hover:bg-green-600"
                       onClick={() => {
                         setModalShow(true);
                         setUserData({});
@@ -159,7 +159,7 @@ const BillingSettings = () => {
                     <h3 className="text-white font-medium text-base ">
                       Payment Gateways
                     </h3>
-                    <button className="bg-[#18B91F] text-xs font-medium text-white px-[10px] py-[5px]  rounded hover:bg-green-600">
+                    <button className="cursor-pointer bg-[#18B91F] text-xs font-medium text-white px-[10px] py-[5px]  rounded hover:bg-green-600">
                       Add Payment Gateway
                     </button>
                   </div>

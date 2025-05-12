@@ -6,6 +6,7 @@ import { deleteClientUser, getClientLogsActivity, getClientUsers, updateClientBy
 import { formatDistanceToNow } from "date-fns";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
+import StatusActionModal from "@/components/StatusActionModal";
 
 const EnterpriseClients = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,6 +37,11 @@ const EnterpriseClients = () => {
       })
     );
     setIsMenuOpen(false);
+  };
+
+    const handleOpenMenu = (itemId: any) => {
+    setMenuOpenId(itemId);
+    setIsMenuOpen(true);
   };
 
   return (
@@ -149,8 +155,7 @@ const EnterpriseClients = () => {
                                   size={20}
                                   className="cursor-pointer"
                                   onClick={() => {
-                                    setIsMenuOpen(!isMenuOpen);
-                                    setMenuOpenId(item);
+                                    handleOpenMenu(item?.id)
                                   }}
                                 />
                               </div>
@@ -163,45 +168,51 @@ const EnterpriseClients = () => {
               </div>
             </div>
             {isMenuOpen && menuOpenId && (
-              <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
-                <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[400px] max-w-full shadow-5xl relative">
-                  <button
-                    onClick={() => setIsMenuOpen(false)}
-                    className="cursor-pointer absolute top-4 right-4 text-white text-2xl font-bold"
-                  >
-                    &times;
-                  </button>
-                  <div className="right-0 bg-white text-black rounded shadow-lg group-hover:block z-10">
-                    <ul className="text-sm">
-                      <li
-                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-red-600"
-                        onClick={() =>
-                          handleUpdateStatus({
-                            id: menuOpenId?.id,
-                            status: "Suspend",
-                          })
-                        }
-                      >
-                        Suspend
-                      </li>
-                      <li
-                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-green-600"
-                        onClick={() =>
-                          handleUpdateStatus({
-                            id: menuOpenId?.id,
-                            status: "active",
-                          })
-                        }
-                      >
-                        Activate
-                      </li>
-                      <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
-                        Reset token quote
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+              // <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
+              //   <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[400px] max-w-full shadow-5xl relative">
+              //     <button
+              //       onClick={() => setIsMenuOpen(false)}
+              //       className="cursor-pointer absolute top-4 right-4 text-white text-2xl font-bold"
+              //     >
+              //       &times;
+              //     </button>
+              //     <div className="right-0 bg-white text-black rounded shadow-lg group-hover:block z-10">
+              //       <ul className="text-sm">
+              //         <li
+              //           className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-red-600"
+              //           onClick={() =>
+              //             handleUpdateStatus({
+              //               id: menuOpenId?.id,
+              //               status: "Suspend",
+              //             })
+              //           }
+              //         >
+              //           Suspend
+              //         </li>
+              //         <li
+              //           className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-green-600"
+              //           onClick={() =>
+              //             handleUpdateStatus({
+              //               id: menuOpenId?.id,
+              //               status: "active",
+              //             })
+              //           }
+              //         >
+              //           Activate
+              //         </li>
+              //         <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+              //           Reset token quote
+              //         </li>
+              //       </ul>
+              //     </div>
+              //   </div>
+              // </div>
+               <StatusActionModal
+                isOpen={isMenuOpen}
+                onClose={() => setIsMenuOpen(false)}
+                onUpdateStatus={handleUpdateStatus}
+                itemId={menuOpenId}
+              />
             )}
             {/* token rate */}
             <div className="px-6 ">

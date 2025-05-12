@@ -49,7 +49,7 @@ const SubscriptionPlans = () => {
                   All Plans
                 </h1>
                 <button
-                  className="bg-[#18B91F] text-xs font-medium text-white px-[10px] py-[5px] mb-2  rounded hover:bg-green-600"
+                  className="cursor-pointer bg-[#18B91F] text-xs font-medium text-white px-[10px] py-[5px] mb-2  rounded hover:bg-green-600"
                   onClick={() => {
                     setPlanData({});
                     setModalShow(true);
@@ -124,7 +124,7 @@ const SubscriptionPlans = () => {
                           <td className="p-4 relative">
                             <div className="flex gap-2 items-center">
                               <button
-                                className="text-gray-300 hover:text-white"
+                                className="cursor-pointer text-gray-300 hover:text-white"
                                 onClick={() => {
                                   setModalShow(true);
                                   setPlanData(item);
@@ -146,7 +146,7 @@ const SubscriptionPlans = () => {
                                 </svg>
                               </button>
                               <button
-                                className="text-gray-300 hover:text-white"
+                                className="cursor-pointer text-gray-300 hover:text-white"
                                 onClick={() =>
                                   deleteSubscriptionPlan({ id: item?.id })
                                 }

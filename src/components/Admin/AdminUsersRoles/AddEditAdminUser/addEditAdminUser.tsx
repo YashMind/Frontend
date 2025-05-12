@@ -154,9 +154,12 @@ const onSubmit = (data: AdminSignUpForm) => {
             <label className="block mb-1 text-sm font-medium">Full Name</label>
             <input
               placeholder="Enter name"
+            disabled={!!adminUserData?.id}
               type="text"
               {...register("fullName")}
-              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
+              
+               className={`w-full px-4 py-2 rounded  text-black focus:outline-none ${adminUserData?.id ? "cursor-not-allowed bg-gray-300" : "bg-white"
+                }`}
             />
             {errors.fullName && (
               <p className="text-red-500 text-sm mt-1">
@@ -170,8 +173,10 @@ const onSubmit = (data: AdminSignUpForm) => {
             <input
               placeholder="Enter email"
               type="email"
+               disabled={!!adminUserData?.id}
               {...register("email")}
-              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
+                className={`w-full px-4 py-2 rounded  text-black focus:outline-none ${adminUserData?.id ? "cursor-not-allowed bg-gray-300" : "bg-white"
+                }`}
             />
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">
@@ -201,15 +206,16 @@ const onSubmit = (data: AdminSignUpForm) => {
             <label className="block mb-1 text-sm font-medium">Role</label>
             <select
               {...register("role")}
-              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
+              className="cursor-pointer w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
               defaultValue=""
+              
             >
               <option value="" disabled>
                 Select role
               </option>
               {roleArray?.map((item, index) => {
                 return (
-                  <option value={item} key={index}>
+                  <option value={item} key={index} className="cursor-pointer">
                     {item}
                   </option>
                 );
@@ -239,7 +245,7 @@ const onSubmit = (data: AdminSignUpForm) => {
                     selected.map((s) => s.value)
                   );
                 }}
-                className="text-black"
+                className="text-black cursor-pointer"
                 classNamePrefix="select"
               />
               {errors.role_permissions && (

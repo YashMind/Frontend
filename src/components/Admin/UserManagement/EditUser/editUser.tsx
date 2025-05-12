@@ -1,9 +1,7 @@
 "use client";
 import {
-  updateAdminUser,
   updateUserByAdmin,
 } from "@/store/slices/admin/adminSlice";
-import { signUpAdmin, signUpUser } from "@/store/slices/auth/authSlice";
 import { AppDispatch } from "@/store/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
@@ -62,7 +60,7 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
       <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[800px] max-w-full shadow-5xl relative">
         <button
           onClick={onHide}
-          className="absolute top-4 right-4 text-white text-2xl font-bold"
+          className="cursor-pointer absolute top-4 right-4 text-white text-2xl font-bold"
         >
           &times;
         </button>
@@ -76,8 +74,9 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
             <input
               placeholder="Enter name"
               type="text"
+              disabled
               {...register("fullName")}
-              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
+              className=" cursor-not-allowed w-full px-4 py-2 rounded bg-gray-300  text-black focus:outline-none"
             />
             {errors.fullName && (
               <p className="text-red-500 text-sm mt-1">
@@ -88,24 +87,26 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
 
           <div>
             <label className="block mb-1 text-sm font-medium">Plan</label>
-            <input
-              placeholder="Enter plan"
-              type="text"
+            <select
               {...register("plan")}
-              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
-            />
+              className="cursor-pointer w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
+            >
+              <option value="">Select Plan</option>
+              <option value="basic">Basic</option>
+              <option value="pro">Pro</option>
+              <option value="ent">Enterprise</option>
+            </select>
             {errors.plan && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.plan?.message}
-              </p>
+              <p className="text-red-500 text-sm mt-1">{errors.plan?.message}</p>
             )}
           </div>
+
 
           <div>
             <label className="block mb-1 text-sm font-medium">Role</label>
             <select
               {...register("role")}
-              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
+              className="cursor-pointer w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
               defaultValue=""
             >
               <option value="" disabled>
@@ -127,13 +128,13 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
             <button
               type="button"
               onClick={onHide}
-              className="border border-white text-white px-6 py-2 rounded hover:bg-white hover:text-black transition"
+              className="cursor-pointer border border-white text-white px-6 py-2 rounded hover:bg-white hover:text-black transition"
             >
               Exit
             </button>
             <button
               type="submit"
-              className="bg-[#18B91F] px-6 py-2 rounded text-white hover:bg-green-600 transition"
+              className="cursor-pointer bg-[#18B91F] px-6 py-2 rounded text-white hover:bg-green-600 transition"
             >
               Save
             </button>

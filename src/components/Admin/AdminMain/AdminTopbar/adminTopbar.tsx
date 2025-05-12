@@ -1,11 +1,25 @@
 "use client";
+import { formatName } from "@/services/utils/helpers";
+import { getMeData } from "@/store/slices/auth/authSlice";
+import { RootState } from "@/store/store";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const AdminTopbar = ({ allUsersData }: { allUsersData: AdminAllUsers }) => {
+   const dispatch = useDispatch();
+  const userData: UserProfileData = useSelector(
+    (state: RootState) => state.auth.userData
+  );
+  // useEffect(() => {
+  //   dispatch(getMeData());
+  // }, [dispatch]);
+
+
+
   return (
     <div>
-      <h2 className="text-2xl font-semibold mt-[40px]">Welcome back, John</h2>
+      <h2 className="text-2xl font-semibold mt-[40px]">Welcome back,  {userData?.fullName ? formatName(userData.fullName) : ""}</h2>
       <p className="text-[#AEB9E1]  text-xs font-normal ">
         Measure your advertising ROI and report website traffic.
       </p>
