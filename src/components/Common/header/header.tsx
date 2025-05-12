@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -24,7 +24,7 @@ const HomeHeader = () => {
             <span className="self-center text-4xl font-semibold whitespace-nowrap  text-white">
               <Image
                 alt="alt"
-                src="/images/bot-logo.png"
+                src="/images/yash-removebg-preview.png"
                 height={150}
                 width={150}
               />
@@ -54,30 +54,58 @@ const HomeHeader = () => {
             >
               {isMenuOpen ? (
                 // Cross icon (Close)
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               ) : (
                 // Hamburger icon
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               )}
             </button>
           </div>
           <div
-            className={`${isMenuOpen ? "flex flex-col items-center justify-center" : "hidden"}  w-full md:flex md:flex-row md:w-auto md:order-1`}
+            className={`${
+              isMenuOpen
+                ? "flex flex-col items-center justify-center"
+                : "hidden"
+            }  w-full md:flex md:flex-row md:w-auto md:order-1`}
             id="navbar-sticky"
           >
             <ul className="flex flex-col items-center gap-6 px-4 py-4 md:flex-row md:items-start  rounded-[43px] backdrop-blur-md  text-white bg-[#FFFFFF45]">
               <li>
                 <Link
                   href="/"
-                  className={`${navItem === 1
-                    ? "bg-white text-black rounded-[27px] px-3"
-                    : ""
-                    } text-lg font-normal py-2   cursor-pointer`}
-                  onClick={() => { setNavItem(1); setIsMenuOpen(false); }}
+                  className={`${
+                    navItem === 1
+                      ? "bg-white text-black rounded-[27px] px-3"
+                      : ""
+                  } text-lg font-normal py-2   cursor-pointer`}
+                  onClick={() => {
+                    setNavItem(1);
+                    setIsMenuOpen(false);
+                  }}
                 >
                   Home
                 </Link>
@@ -85,11 +113,15 @@ const HomeHeader = () => {
               <li>
                 <Link
                   href="/chatbot"
-                  className={` ${navItem === 2
-                    ? "bg-white text-black rounded-[27px] px-3"
-                    : ""
-                    } text-lg font-normal py-2 hover:text-gray-300 px-3 cursor-pointer`}
-                  onClick={() => { setNavItem(2); setIsMenuOpen(false); }}
+                  className={` ${
+                    navItem === 2
+                      ? "bg-white text-black rounded-[27px] px-3"
+                      : ""
+                  } text-lg font-normal py-2 hover:text-gray-300 px-3 cursor-pointer`}
+                  onClick={() => {
+                    setNavItem(2);
+                    setIsMenuOpen(false);
+                  }}
                 >
                   Chat Bot
                 </Link>
@@ -97,11 +129,15 @@ const HomeHeader = () => {
               <li>
                 <Link
                   href="/voice-agent"
-                  className={`${navItem === 3
-                    ? "bg-white text-black rounded-[27px] px-3"
-                    : ""
-                    } text-lg font-normal py-2  hover:text-gray-300 px-3 cursor-pointer`}
-                  onClick={() => { setNavItem(3); setIsMenuOpen(false); }}
+                  className={`${
+                    navItem === 3
+                      ? "bg-white text-black rounded-[27px] px-3"
+                      : ""
+                  } text-lg font-normal py-2  hover:text-gray-300 px-3 cursor-pointer`}
+                  onClick={() => {
+                    setNavItem(3);
+                    setIsMenuOpen(false);
+                  }}
                 >
                   Voice Agent
                 </Link>
@@ -109,11 +145,15 @@ const HomeHeader = () => {
               <li>
                 <Link
                   href="/"
-                  className={`${navItem === 4
-                    ? "bg-white text-black rounded-[27px] px-3"
-                    : ""
-                    } text-lg font-normal py-2 px-3 hover:text-gray-300 cursor-pointer`}
-                  onClick={() => { setNavItem(4); setIsMenuOpen(false); }}
+                  className={`${
+                    navItem === 4
+                      ? "bg-white text-black rounded-[27px] px-3"
+                      : ""
+                  } text-lg font-normal py-2 px-3 hover:text-gray-300 cursor-pointer`}
+                  onClick={() => {
+                    setNavItem(4);
+                    setIsMenuOpen(false);
+                  }}
                 >
                   Chat LLM
                 </Link>
