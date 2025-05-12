@@ -50,7 +50,7 @@ const AddEditPaymentWayModal = ({
 
   const dispatch = useDispatch<AppDispatch>();
   const onSubmit = (data: AdminPaymentGateway) => {
-    // dispatch(AddUpdatePaymentGateway({ payload: data }));
+    dispatch(AddUpdatePaymentGateway({ payload: data }));
     reset();
     onHide();
   };

@@ -1,10 +1,26 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import AddEditPaymentWayModal from "./AddEditPaymentWay/addEditPaymentWay";
+import {
+  deletePaymentsGateway,
+  getAllPaymentGateway,
+} from "@/store/slices/admin/adminSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
 const BillingSettings = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
   const [userData, setUserData] = useState<any>({});
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { paymentGatewayData } = useSelector((state: RootState) => state.admin);
+  useEffect(() => {
+    dispatch(getAllPaymentGateway());
+  }, []);
+
+  const deletePaymentGateway = ({ id }: { id?: number }) => {
+    dispatch(deletePaymentsGateway({ id: id }));
+  };
 
   return (
     <div>
@@ -27,6 +43,7 @@ const BillingSettings = () => {
                       className="bg-[#18B91F] text-xs font-medium text-white px-[10px] py-[5px]  rounded hover:bg-green-600"
                       onClick={() => {
                         setModalShow(true);
+                        setUserData({});
                       }}
                     >
                       Add Payment Gateway
@@ -39,6 +56,7 @@ const BillingSettings = () => {
                           <input
                             type="checkbox"
                             className="form-checkbox mr-2 accent-purple-500"
+                            readOnly
                           ></input>
                         </th>
                         <th className="py-[20px] px-[28px]">Name</th>
@@ -68,63 +86,64 @@ const BillingSettings = () => {
                       </tr>
                     </thead>
                     <tbody className="text-white/90 ">
-                      <tr className="border-t border-white/10">
-                        <td className="py-[20px] px-[28px]">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox mr-2 accent-purple-500"
-                          ></input>
-                        </td>
-                        <td className="py-[20px] px-[28px]">Stripe</td>
-                        <td className="py-[20px] px-[28px] text-[#AEB9E1]">
-                          Today 09:42 AM
-                        </td>
-                        <td className="py-[20px] px-[28px]">
-                          <span className="bg-[#18B91F] text-xs font-medium text-[#FBEDED] px-2 py-0.5 rounded-full">
-                            Active
-                          </span>
-                        </td>
-                        <td className="py-[20px] px-[28px] text-[#AEB9E1]">
-                          {" "}
-                          sk_live_******
-                        </td>
-                        <td className="flex gap-2 py-[20px] px-[28px]">
-                          <button className="bg-green-600 text-xs px-2 py-1 rounded">
-                            Configure
-                          </button>
-                          <button className="bg-gray-600 text-xs px-2 py-1 rounded">
-                            Switch
-                          </button>
-                        </td>
-                      </tr>
-                      <tr className="border-t border-white/10">
-                        <td className="py-[20px] px-[28px]">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox mr-2 accent-purple-500 "
-                          ></input>
-                        </td>
-                        <td className="py-[20px] px-[28px] ">Razorpay</td>
-                        <td className="py-[20px] px-[28px] text-[#AEB9E1]">
-                          Yesterday 03:15 PM
-                        </td>
-                        <td className="py-[20px] px-[28px]">
-                          <span className="text-xs font-medium text-[#FBEDED] px-2 py-0.5 rounded-full bg-[#C38F00]">
-                            Trial
-                          </span>
-                        </td>
-                        <td className="py-[20px] px-[28px] text-[#AEB9E1]">
-                          rp_test_******
-                        </td>
-                        <td className="flex gap-2 py-[20px] px-[28px]">
-                          <button className="bg-green-600 text-xs px-2 py-1 rounded">
-                            Configure
-                          </button>
-                          <button className="bg-gray-600 text-xs px-2 py-1 rounded">
-                            Disable
-                          </button>
-                        </td>
-                      </tr>
+                      {paymentGatewayData &&
+                        paymentGatewayData?.map((item, index) => {
+                          return (
+                            <tr
+                              className="border-t border-white/10"
+                              key={index}
+                            >
+                              <td className="py-[20px] px-[28px]">
+                                <input
+                                  type="checkbox"
+                                  className="form-checkbox mr-2 accent-purple-500"
+                                  readOnly
+                                  checked={item?.status === "Active"}
+                                ></input>
+                              </td>
+                              <td className="py-[20px] px-[28px]">
+                                {item?.payment_name}
+                              </td>
+                              <td className="py-[20px] px-[28px] text-[#AEB9E1]">
+                                Today 09:42 AM
+                              </td>
+                              <td className="py-[20px] px-[28px]">
+                                <span
+                                  className={`${
+                                    item?.status === "Active"
+                                      ? "bg-[#18B91F]"
+                                      : "bg-[#C38F00]"
+                                  } text-xs font-medium text-[#FBEDED] px-2 py-0.5 rounded-full`}
+                                >
+                                  {item?.status}
+                                </span>
+                              </td>
+                              <td className="py-[20px] px-[28px] text-[#AEB9E1]">
+                                {" "}
+                                {item?.api_key}
+                              </td>
+                              <td className="flex gap-2 py-[20px] px-[28px]">
+                                <button
+                                  className="bg-green-600 text-xs px-2 py-1 rounded"
+                                  onClick={() => {
+                                    setUserData(item);
+                                    setModalShow(true);
+                                  }}
+                                >
+                                  Update
+                                </button>
+                                <button
+                                  className="bg-gray-600 text-xs px-2 py-1 rounded"
+                                  onClick={() =>
+                                    deletePaymentGateway({ id: item?.id })
+                                  }
+                                >
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                   </table>
                 </div>

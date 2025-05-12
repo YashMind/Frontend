@@ -909,6 +909,22 @@ export const fetchChatMessageTokens = createAsyncThunk<
   }
 });
 
+export const registerWhatsappPhoneNumber = createAsyncThunk(
+  "integration/registerWhatsappPhoneNumber",
+  async (data: { whatsapp_number: string; bot_id: number }, thunkAPI) => {
+    try {
+      const response = await http.post("/whatsapp/register", data, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error?.response?.data?.detail || "Failed to fetch tokens"
+      );
+    }
+  }
+);
+
 const initialState = {
   loading: false,
   error: null as null | string,

@@ -87,3 +87,10 @@ interface AdminLogsActivity {
   last_role_updated: AdminUsersData;
   last_suspended_admin: AdminUsersData;
 }
+
+interface PaymentsGateway {
+  id?: number;
+  payment_name: string;
+  status: string;
+  api_key: string;
+}

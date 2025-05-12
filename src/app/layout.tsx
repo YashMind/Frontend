@@ -6,6 +6,8 @@ import ScrollToTop from "@/services/scroolToTop/scroolToTop";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import "./index.css";
+import "react-phone-input-2/lib/style.css";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -33,11 +35,6 @@ export default function RootLayout({
           suppressHydrationWarning={true}
           className={`${geistSans.variable} ${geistMono.variable} antialiased `}
         >
-          <script
-            defer
-            src="http://localhost:3000/embed.js"
-            data-bot-id="3p5017uafbaix5egtnaamuyeu"
-          ></script>
           <StoreProvider>
             {children}
             <Toaster position="top-center" reverseOrder={false} />

@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import PhoneDialog from "./whatsappDialog";
+import { boolean } from "yup";
 
 const ChatbotIntegration = ({ botId }: { botId?: number }) => {
+  const [openWhatsappDialog, setOpenWhatsappDialog] = useState<boolean>();
+
   const slackUrl = process.env.NEXT_PUBLIC_SLACK_URL;
 
   return (
@@ -32,8 +36,11 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
             Connect your chatbot to a WhatsApp business number for automatic
             24/7 responses.
           </p>
-          <button className="bg-[#60D669] text-white px-4 py-1 rounded-full text-[12px] font-bold">
-            Export All
+          <button
+            onClick={() => setOpenWhatsappDialog(true)}
+            className="bg-[#60D669] text-white px-4 py-1 rounded-full text-[12px] font-bold"
+          >
+            Connect Number
           </button>
         </div>
 
@@ -99,6 +106,11 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
           </button>
         </div>
       </div>
+      <PhoneDialog
+        botId={botId}
+        isOpen={openWhatsappDialog}
+        onClose={() => setOpenWhatsappDialog(false)}
+      />
     </div>
   );
 };
