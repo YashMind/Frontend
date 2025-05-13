@@ -10,9 +10,10 @@ const ChatbotDummy = ({
 }) => {
   const messagesEndRef: any = useRef(null);
   const chatbotAvatar =
-  typeof chatbotSettings.image === "string" && chatbotSettings.image.trim() !== ""
-    ? chatbotSettings.image
-    : "/images/face2.webp";
+    typeof chatbotSettings.image === "string" &&
+    chatbotSettings.image.trim() !== ""
+      ? chatbotSettings.image
+      : "/images/face2.webp";
   // const chatbotAvatar = chatbotSettings.image || "/images/face2.webp";
   return (
     <div
@@ -53,6 +54,10 @@ const ChatbotDummy = ({
                 backgroundColor: chatbotSettings.message_bg
                   ? chatbotSettings.message_bg
                   : "#c2c2c2",
+
+                color: chatbotSettings.message_color
+                  ? chatbotSettings.message_color
+                  : "#000000",
               }}
             >
               {chatbotSettings.welcome_message_value}
@@ -66,6 +71,7 @@ const ChatbotDummy = ({
               backgroundColor: chatbotSettings.user_message_bg
                 ? chatbotSettings.user_message_bg
                 : "135de8",
+              color: chatbotSettings.user_message_color ?? "#000000",
             }}
           >
             What Services Do you provide?
@@ -95,6 +101,7 @@ const ChatbotDummy = ({
               className=" text-black p-1 rounded-xl max-w-xs text-sm animate-pulse"
               style={{
                 backgroundColor: chatbotSettings.message_bg ?? "#135de8",
+                color: chatbotSettings.message_color ?? "#000000",
               }}
             >
               <span className="flex gap-1 text-3xl">
@@ -188,9 +195,6 @@ const ChatbotDummy = ({
             </svg>
           </button>
         </div>
-      </div>
-      <div className="text-[#6B6B6B] text-center text-sm py-5">
-        <h6>powered by fasterbots</h6>
       </div>
     </div>
   );

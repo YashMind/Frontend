@@ -24,7 +24,8 @@ export const toasterError = (
     id: customId?.toString(),
     duration: time,
     position: "top-center",
-    className: "text-sm bg-red-600 text-white px-4 py-2 rounded-md shadow font-bold",
+    className:
+      "text-sm bg-red-600 text-white px-4 py-2 rounded-md shadow font-bold",
   });
 };
 

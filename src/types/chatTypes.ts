@@ -110,10 +110,13 @@ export interface ChatbotSettings {
   chat_icon: string;
   chat_icon_color: string;
   user_message_bg: string;
+  user_message_color: string;
   image: string;
   dots_color: string;
   message_bg: string;
+  message_color: string;
   live_message_bg: string;
+  live_message_color: string;
   name_lead_gen: string;
   is_name_lead_gen: boolean;
   required_name_lead_gen: boolean;

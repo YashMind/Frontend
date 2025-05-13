@@ -15,9 +15,12 @@ export interface IFormInput {
   send_button_color: string;
   chat_icon_color: string;
   user_message_bg: string;
+  user_message_color: string;
   dots_color: string;
   message_bg: string;
+  message_color: string;
   live_message_bg: string;
+  live_message_color: string;
   chat_icon: string;
   image: string;
   lead_collection: boolean;
@@ -245,10 +248,10 @@ export const ColorPickerField = ({
           <input
             type="text"
             {...register(name)}
-            value={color}
+            value={color ? color.slice(1, color.length) : "FFFFFF"}
             onChange={handleTextChange}
-            className="block w-full rounded-md border border-gray-300 py-2 pl-10 pr-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
-            placeholder="#FFFFFF"
+            className="block w-full uppercase text-base rounded-md border border-gray-300 py-2 pl-5 pr-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+            placeholder="FFFFFF"
           />
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <span className="text-gray-500 sm:text-sm">#</span>
@@ -290,7 +293,7 @@ export const ImageField = ({
 
   return (
     <div>
-      <div className="relative w-24 h-24 mx-auto">
+      <div className="relative w-24 h-24 mx-auto  ">
         {/* File input - hidden but clickable */}
         <input
           type="file"

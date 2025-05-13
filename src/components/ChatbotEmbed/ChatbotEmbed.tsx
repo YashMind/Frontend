@@ -322,9 +322,6 @@ const ChatbotEmbedSection = ({
           </button>
         </div>
       </form>
-      <div className="text-[#6B6B6B] text-center text-sm py-5">
-        <h6>powered by fasterbots</h6>
-      </div>
     </div>
   );
 };
