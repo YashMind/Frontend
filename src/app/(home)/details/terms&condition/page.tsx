@@ -36,7 +36,7 @@ export default function TermsConditions() {
 
   return (
     <div
-      className="h-full min-h-screen bg-center bg-cover bg-no-repeat flex justify-center items-center py-12"
+      className="h-full min-h-screen bg-center bg-cover bg-no-repeat flex justify-center items-center py-12 pt-48"
       style={{ backgroundImage: "url('/images/banner.png')" }}
     >
       <div className="bg-white text-gray-800 py-12 px-4 lg:px-24 rounded-lg shadow-xl max-w-4xl mx-auto">
@@ -45,11 +45,10 @@ export default function TermsConditions() {
         </h2>
         <div className="space-y-8">
           {steps.map((step, index) => (
-            <div
-              key={index}
-              className="bg-indigo-50 p-6 rounded-xl shadow-md"
-            >
-              <h3 className="text-xl font-semibold mb-2 text-indigo-700">{step.title}</h3>
+            <div key={index} className="bg-indigo-50 p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-semibold mb-2 text-indigo-700">
+                {step.title}
+              </h3>
               <p className="text-sm text-gray-600">{step.description}</p>
             </div>
           ))}

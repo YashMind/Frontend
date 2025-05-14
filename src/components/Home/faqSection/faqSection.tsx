@@ -1,7 +1,7 @@
+"use client";
 import React, { useState } from "react";
 
 const FaqSection = () => {
-  const [openContent, setOpenContent] = useState(false);
   const [accordianItems, setAccordianItems] = useState<string[]>([]);
   const faqsData = [
     {
@@ -30,7 +30,7 @@ const FaqSection = () => {
         "You can cancel your subscription or purchase at any time through your account settings. If you need assistance, our support team is always available to help with the process and ensure a smooth experience.",
     },
   ];
-  
+
   const handleAccordian = (title: string) => {
     setAccordianItems((prev) =>
       prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title]

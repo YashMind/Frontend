@@ -1,24 +1,18 @@
 import React from "react";
-import ChatbotHeader from "@/components/chatbot/header/chatbotHeader";
-import ChatbotFooter from "@/components/chatbot/footer/chatbotFooter";
+import NavSection from "@/components/chatbot/navSection/navSection";
 import ChatbotBanner from "@/components/chatbot/banner/chatbotBanner";
 import WhyChooseUs from "@/components/chatbot/whyChooseUs/whyChooseUs";
 import OurChatbots from "@/components/chatbot/ourChatbots/ourChatbots";
-import OurPlans from "@/components/chatbot/ourPlans/ourPlans";
-import ChatbotFaqs from "@/components/chatbot/chatbotFaqs/chatbotFaqs";
+import WhyChooseChatbot from "@/components/chatbot/whyChoseChatbot/whyChooseChatbot";
+import CustomGpt from "@/components/chatbot/customGpt/customGpt";
+import AddYourBot from "@/components/chatbot/addYourBot/addYourBot";
+import TurnConversation from "@/components/chatbot/turnConversation/turnConversation";
 import ClientSays from "@/components/chatbot/clientSays/clientSays";
-import WhyChooseChatbot from "./whyChoseChatbot/whyChooseChatbot";
-import CustomGpt from "./customGpt/customGpt";
-import AddYourBot from "./addYourBot/addYourBot";
-import TurnConversation from "./turnConversation/turnConversation";
-import NavSection from "./navSection/navSection";
-import CustomGpt1 from "./customGpt/customGpt";
-
-const Chatbot = () => {
+import ChatbotFaqs from "@/components/chatbot/chatbotFaqs/chatbotFaqs";
+const ChatbotPage = () => {
   return (
-    <div className="bg-white">
+    <div className="">
       {/* header */}
-      <ChatbotHeader fix={false} addBgColor={false} />
       <NavSection />
 
       {/* banner */}
@@ -42,18 +36,15 @@ const Chatbot = () => {
       <TurnConversation />
 
       {/* basic price */}
-      <OurPlans />
+      {/* <OurPlans /> */}
 
       {/* what our client says */}
       <ClientSays />
-      
+
       {/* faq */}
       <ChatbotFaqs />
-
-      {/* footer */}
-      <ChatbotFooter />
     </div>
   );
 };
 
-export default Chatbot;
+export default ChatbotPage;

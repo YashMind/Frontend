@@ -1,24 +1,39 @@
 "use client";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
 const HomeHeader = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [navItem, setNavItem] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (pathname == "/") {
+      setNavItem(1);
+    }
+    if (pathname == "/chatbot") {
+      setNavItem(2);
+    }
+    if (pathname == "/voice-agent") {
+      setNavItem(3);
+    }
+  }, [pathname]);
 
   const handleToggle = () => {
     setIsMenuOpen((prev) => !prev);
   };
 
+  console.log(pathname);
+
   return (
     <nav className="fixed w-full left-0 top-0 z-[9]">
       <div className="container">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pt-[31px]">
-          <a
-            href="https://flowbite.com/"
+          <Link
+            href="/"
             className="flex items-center space-x-3 rtl:space-x-reverse"
           >
             <span className="self-center text-4xl font-semibold whitespace-nowrap  text-white">
@@ -29,7 +44,7 @@ const HomeHeader = () => {
                 width={150}
               />
             </span>
-          </a>
+          </Link>
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             {/* <button
               type="button"
@@ -90,10 +105,10 @@ const HomeHeader = () => {
               isMenuOpen
                 ? "flex flex-col items-center justify-center"
                 : "hidden"
-            }  w-full md:flex md:flex-row md:w-auto md:order-1`}
+            }  w-full md:flex md:flex-row md:w-auto md:order-1 `}
             id="navbar-sticky"
           >
-            <ul className="flex flex-col items-center gap-6 px-4 py-4 md:flex-row md:items-start  rounded-[43px] backdrop-blur-md  text-white bg-[#FFFFFF45]">
+            <ul className="flex flex-col items-center gap-6 px-4 py-4 md:flex-row md:items-start  rounded-[43px] bg-[#bfbaff4f]/90 backdrop-blur-md  text-white ">
               <li>
                 <Link
                   href="/"
@@ -142,7 +157,7 @@ const HomeHeader = () => {
                   Voice Agent
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/"
                   className={`${
@@ -157,7 +172,7 @@ const HomeHeader = () => {
                 >
                   Chat LLM
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

@@ -2,7 +2,7 @@ import React from "react";
 
 const HomeProducts = () => {
   return (
-    <div className="Our Products mt-[60px] text-center md:text-left">
+    <div className="Our Products mt-[60px] text-center md:text-left ">
       <div className="container mx-auto px-4">
         {/* Heading */}
         <div className="inline-block text-center">
