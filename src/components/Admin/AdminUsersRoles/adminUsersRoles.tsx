@@ -32,7 +32,7 @@ const formatAction = (action: string) => {
     delete: "Admin Deleted",
     create_user: "New Person Added",
     active: "Admin Activated",
-    Suspend:"Admin Suspended",
+    Suspend: "Admin Suspended",
     modify_role: "Role Modified",
     role_updated: "Role Updated",
   };
@@ -62,6 +62,7 @@ const AdminUsersRoles = () => {
     },
   ];
 
+  const today = new Date().toISOString().split("T")[0];
 
   const dispatch = useDispatch<AppDispatch>();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -70,7 +71,7 @@ const AdminUsersRoles = () => {
   const [showPermissionModal, setShowPermissionModal] = useState<boolean>(false);
   const [rolesWithPermissions, setRolesWithPermissions] = useState<RoleWithPermissions[]>(permissionsData);
 
-  const [selectedDate, setSelectedDate] = useState<any>(null);
+  const [selectedDate, setSelectedDate] = useState(today)
   const [adminUserData, setAdminUserData] = useState<any>({});
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [menuOpenId, setMenuOpenId] = useState<number | null>(null);
@@ -90,7 +91,7 @@ const AdminUsersRoles = () => {
             const res = await dispatch(getRolePermissions(role.role)).unwrap();
             return { ...role, permissions: res.permissions || [] };
           } catch {
-            return role; 
+            return role;
           }
         })
       );
@@ -338,6 +339,7 @@ const AdminUsersRoles = () => {
                   <input
                     type="date"
                     placeholder="dd-mm-yyyy"
+                    value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
                     className="bg-[#FFFFFF] text-sm text-[#626161] border w-55 border-gray-600 rounded px-5 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
