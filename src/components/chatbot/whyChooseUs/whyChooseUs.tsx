@@ -2,7 +2,7 @@ import React from "react";
 
 const WhyChooseUs = () => {
   return (
-    <div className="py-10 px-4 md:px-10">
+    <div className="py-10 px-4 md:px-10 bg-white">
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row items-center">
           <div className="w-full md:w-1/2 mb-8 md:mb-0">

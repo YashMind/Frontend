@@ -68,11 +68,16 @@ const features = [
   },
 ];
 
-const FeatureCard = ({ icon, iconSize, id, title, description }:any) => (
+const FeatureCard = ({ icon, iconSize, id, title, description }: any) => (
   <div className="w-[235px] mb-[30px]">
     <div className="flex justify-between items-center">
       <div className="">
-        <Image alt={title} src={icon} width={iconSize.width} height={iconSize.height} />
+        <Image
+          alt={title}
+          src={icon}
+          width={iconSize.width}
+          height={iconSize.height}
+        />
       </div>
       <div className="text-sm font-light">{id}</div>
     </div>
@@ -87,7 +92,7 @@ const WhyChooseChatbot = () => {
   return (
     <div
       id="features"
-      className="bg-white mt-[88px] px-4 lg:px-24 bg-no-repeat bg-left-bottom lg:bg-[url('/images/roboot.png')]"
+      className="bg-white pt-[88px] px-4 lg:px-24 bg-no-repeat bg-left-bottom lg:bg-[url('/images/roboot.png')]"
     >
       <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row  gap-10">
         {/* Left Section */}
@@ -117,8 +122,6 @@ const WhyChooseChatbot = () => {
 };
 
 export default WhyChooseChatbot;
-
-
 
 // import Image from "next/image";
 // import React from "react";

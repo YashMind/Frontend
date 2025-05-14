@@ -24,7 +24,13 @@ const features = [
   },
 ];
 
-const FeatureCard = ({ title, description }: { title: string; description: string }) => (
+const FeatureCard = ({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) => (
   <div>
     <div className="mb-2 flex items-start gap-2">
       <Image alt="icon" src="/images/Frame-icon.png" height={29} width={29} />
@@ -39,7 +45,7 @@ const FeatureCard = ({ title, description }: { title: string; description: strin
 
 const TurnConversation = () => {
   return (
-    <div className="bg-[#2C1F94] py-20 lg:px-24 text-white mb-[78px]">
+    <div className="bg-[#2C1F94] py-20 lg:px-24 text-white ">
       <div className="container">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
           {/* Left Features */}
@@ -50,7 +56,12 @@ const TurnConversation = () => {
 
           {/* Center Image */}
           <div className="flex justify-center mb-12 lg:mb-0">
-            <Image alt="Laptop screen" src="/images/laptop-screen.png" height={384} width={483} />
+            <Image
+              alt="Laptop screen"
+              src="/images/laptop-screen.png"
+              height={384}
+              width={483}
+            />
           </div>
 
           {/* Right Features */}
@@ -65,9 +76,6 @@ const TurnConversation = () => {
 };
 
 export default TurnConversation;
-
-
-
 
 // import Image from "next/image";
 // import React from "react";

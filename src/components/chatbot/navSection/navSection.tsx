@@ -3,25 +3,30 @@ import React from "react";
 
 const NavSection = () => {
   return (
-    <nav className="bg-white">
-      <ul className="flex justify-center gap-12 py-4 text-black font-medium">
+    <nav className="text-white bg-gradient-to-b from-[#2B255C] via-[#1300AF] to-[#0083FF] pt-30">
+      <ul className="flex justify-center gap-12 py-4 font-medium">
         <li>
-          <Link href="#features" className="hover:text-[#2C1F94] transition">
+          <Link
+            href="#features"
+            className="hover:text-[#e6e3ff] transition cursor-pointer"
+          >
             Feature
           </Link>
         </li>
+
         <li>
-          <Link href="#pricing" className="hover:text-[#2C1F94] transition">
-            Pricing
-          </Link>
-        </li>
-        <li>
-          <Link href="#reviews" className="hover:text-[#2C1F94] transition">
+          <Link
+            href="#reviews"
+            className="hover:text-[#e6e3ff] transition cursor-pointer"
+          >
             Reviews
           </Link>
         </li>
         <li>
-          <Link href="#faq" className="hover:text-[#2C1F94] transition">
+          <Link
+            href="#faq"
+            className="hover:text-[#e6e3ff] transition cursor-pointer"
+          >
             FAQs
           </Link>
         </li>

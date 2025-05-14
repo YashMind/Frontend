@@ -6,30 +6,30 @@ const Faqs = () => {
   const [accordianItems, setAccordianItems] = useState<string[]>([]);
   const faqsData = [
     {
-      title: "What is Voice agent?",
+      title: "What is VoiceAgent?",
       paragraph:
-        "Voiceagent is an intuitive AI chatbot builder. It allows you to create a chatbot trained on the content of your webpages, documents, and more. This chatbot can then be integrated into your website to function as a question-answer bot, offering 24/7 multilingual support..",
+        "VoiceAgent by Yashraa is an AI-powered conversational assistant that uses natural language to interact with users via voice. It can be trained on your business content—like websites, documents, or FAQs—and deployed to offer 24/7 multilingual support and task automation.",
     },
     {
-      title: "How is this more cost-effective for my organisation?",
+      title: "How is this more cost-effective for my organization?",
       paragraph:
-        "Voiceagent is an intuitive AI chatbot builder. It allows you to create a chatbot trained on the content of your webpages, documents, and more. This chatbot can then be integrated into your website to function as a question-answer bot, offering 24/7 multilingual support..",
+        "Yashraa’s VoiceAgent reduces the need for large support teams by handling repetitive inquiries, booking, and updates autonomously. This improves response time, lowers operational costs, and increases customer satisfaction—all while scaling effortlessly.",
     },
     {
       title: "What is the difference from other AI voice competitors?",
       paragraph:
-        "Voiceagent is an intuitive AI chatbot builder. It allows you to create a chatbot trained on the content of your webpages, documents, and more. This chatbot can then be integrated into your website to function as a question-answer bot, offering 24/7 multilingual support.",
+        "Unlike generic voice tools, Yashraa’s VoiceAgent is tailored to your brand and data. It offers deeper customization, better accuracy, multilingual capabilities, and integrates with your workflows—delivering not just answers, but smart actions.",
     },
     {
       title:
         "I need holistic customization, what types of support does your platform offer?",
       paragraph:
-        "Voiceagent is an intuitive AI chatbot builder. It allows you to create a chatbot trained on the content of your webpages, documents, and more. This chatbot can then be integrated into your website to function as a question-answer bot, offering 24/7 multilingual support..",
+        "Yashraa offers full customization—from voice tone and behavior to integrations with your internal tools (CRM, ticketing, analytics, etc.). Our team also provides onboarding assistance, fine-tuning, and ongoing support to align the AI agent with your business goals.",
     },
     {
       title: "Is it difficult to set up?",
       paragraph:
-        "Voiceagent is an intuitive AI chatbot builder. It allows you to create a chatbot trained on the content of your webpages, documents, and more. This chatbot can then be integrated into your website to function as a question-answer bot, offering 24/7 multilingual support..",
+        "Not at all. Yashraa’s platform is user-friendly with a guided setup process. You can train the VoiceAgent with your content in just a few clicks, and our team is available to help with any technical configurations or integration needs.",
     },
   ];
 
