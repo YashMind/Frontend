@@ -29,8 +29,8 @@ const ChatbotDashboardHeader = ({
   );
 
   useEffect(() => {
-    dispatch(getMeData());
-  }, []);
+    dispatch(getMeData({router}));
+  }, [router]);
   
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -146,7 +146,7 @@ const ChatbotDashboardHeader = ({
                   </Link>
                   <button
                     onClick={() => handleLogOut()}
-                    className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                    className="cursor-pointer w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                   >
                     Logout
                   </button>

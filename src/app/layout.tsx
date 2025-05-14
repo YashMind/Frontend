@@ -35,9 +35,9 @@ export default function RootLayout({
           suppressHydrationWarning={true}
           className={`${geistSans.variable} ${geistMono.variable} antialiased `}
         >
+          <Toaster position="top-center" reverseOrder={false} />
           <StoreProvider>
             {children}
-            <Toaster position="top-center" reverseOrder={false} />
             <ScrollToTop />
           </StoreProvider>
         </body>

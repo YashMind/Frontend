@@ -66,8 +66,13 @@ interface AdminUsersData {
   role: string;
   last_active?: string;
   plan?: string;
-  role_permissions?: [];
+  permissions?: string[];
   created_at?: string;
+}
+
+interface RolePermissions {
+  role: string;
+  permissions: string[];
 }
 
 interface ClientUsersData {

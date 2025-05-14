@@ -14,7 +14,7 @@ const ChatbotFooter = () => {
       }}
     >
       <div className="container [font-family:'Roboto_Flex',sans-serif]">
-        <img src="/images/bot-logo.png" />
+        <img src="/images/yash-removebg-preview.png" />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
           {/* Logo and Product */}
           <div>

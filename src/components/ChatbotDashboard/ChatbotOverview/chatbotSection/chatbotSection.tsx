@@ -137,6 +137,11 @@ const ChatbotSection = ({
                           item.sender === "user"
                             ? chatbotSetting?.user_message_bg ?? "blue"
                             : chatbotSetting?.message_bg ?? "lightslategray",
+
+                        color:
+                          item.sender === "user"
+                            ? chatbotSetting?.user_message_color ?? "black"
+                            : chatbotSetting?.message_color ?? "black",
                       }}
                     >
                       {item.message}
@@ -205,6 +210,9 @@ const ChatbotSection = ({
                       backgroundColor: chatbotSetting?.message_bg
                         ? chatbotSetting?.message_bg
                         : "#c2c2c2",
+                      color: chatbotSetting.message_color
+                        ? chatbotSetting.message_color
+                        : "#000000",
                     }}
                   >
                     {chatbotSetting?.welcome_message_value}
@@ -225,6 +233,7 @@ const ChatbotSection = ({
               className="  p-1 rounded-xl max-w-xs text-sm animate-pulse"
               style={{
                 backgroundColor: chatbotSetting?.message_bg ?? "lightslategray",
+                color: chatbotSetting?.message_color ?? "#000000",
               }}
             >
               <span className="flex gap-1 text-3xl">
@@ -313,9 +322,6 @@ const ChatbotSection = ({
           </button>
         </div>
       </form>
-      <div className="text-[#6B6B6B] text-center text-sm py-5">
-        <h6>powered by fasterbots</h6>
-      </div>
     </div>
   );
 };

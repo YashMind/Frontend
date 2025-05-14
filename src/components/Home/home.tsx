@@ -1,5 +1,5 @@
 "use client";
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import HomeHeader from "@/components/Common/header/header";
 import HomeBanner from "@/components/Home/banner/banner";
 import HomeProducts from "@/components/Home/products/products";
@@ -14,13 +14,16 @@ import "./home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { getMeData } from "@/store/slices/auth/authSlice";
+import { useRouter } from "next/navigation";
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>()
-  const {userData} = useSelector((state:RootState)=> state.auth);
-  useEffect(()=>{
-  dispatch(getMeData());
-  }, []);
+  const router = useRouter()
+
+  useEffect(() => {
+    dispatch(getMeData({ router }));
+  }, [router]);
+  
   return (
     <div>
       {/* header */}

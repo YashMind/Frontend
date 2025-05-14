@@ -9,16 +9,17 @@ const HomeFooter = () => {
         {/* Logo and Plan */}
         <div>
           <h1 className="text-3xl md:text-4xl font-semibold mb-4">
-          <Image
-          alt="alt"
-          src="/images/bot-logo.png"
-          className="cursor-pointer"
-          height={150}
-          width={150}
-        />
+            <Image
+              alt="alt"
+              src="/images/yash-removebg-preview.png"
+              className="cursor-pointer"
+              height={150}
+              width={150}
+            />
           </h1>
           <p className="text-sm md:text-base text-gray-300 font-normal mb-4">
-          Pick the plan that fits your needs and start unlocking powerful AI features today.
+            Pick the plan that fits your needs and start unlocking powerful AI
+            features today.
           </p>
           <button className="cursor-pointer w-full bg-gradient-to-r from-[#501794] via-[#5e3aa1] to-[#40659F] font-medium hover:opacity-90 text-white text-sm py-2 px-4 rounded-full transition">
             Choose This Plan
@@ -70,10 +71,8 @@ const HomeFooter = () => {
             <li>
               <Link href="/details/teams">Teams</Link>
             </li>
-          
           </ul>
         </div>
-        
 
         {/* Follow Us */}
         <div>
@@ -111,11 +110,11 @@ const HomeFooter = () => {
                 <path d="..." stroke="white" />
               </svg>
               <p>
-              Have questions or need assistance?
+                Have questions or need assistance?
                 <br />
                 We're here to help.
                 <br />
-                 Reach out to our team for support or inquiries.
+                Reach out to our team for support or inquiries.
               </p>
             </div>
 
@@ -137,8 +136,6 @@ const HomeFooter = () => {
           </div>
         </div>
       </div>
-
-      
 
       {/* Bottom Text */}
       <div className="max-w-7xl mx-auto mt-10 text-center border-t border-white pt-6">

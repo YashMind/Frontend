@@ -22,8 +22,8 @@ const ChatbotHeader = ({
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    dispatch(getMeData());
-  }, []);
+    dispatch(getMeData({router}));
+  }, [router]);
 
   const userData: UserProfileData = useSelector(
     (state: RootState) => state.auth.userData
@@ -32,7 +32,6 @@ const ChatbotHeader = ({
   const handleToggle = () => {
     setIsMenuOpen((prev) => !prev);
   };
-
 
   const handleLogOut = () => {
     dispatch(logoutUser({ router }));
@@ -55,7 +54,7 @@ const ChatbotHeader = ({
               >
                 <Image
                   alt="alt"
-                  src="/images/bot-logo.png"
+                  src="/images/yash-removebg-preview.png"
                   height={150}
                   width={150}
                 />
@@ -71,32 +70,36 @@ const ChatbotHeader = ({
                 >
                   Return to Home
                 </Link>
-                {userData?.email!=="" ? <Image
-                  alt="alt"
-                  src="/images/user1.png"
-                  height={44}
-                  width={44}
-                /> : null }
+                {userData?.email !== "" ? (
+                  <Image
+                    alt="alt"
+                    src="/images/user1.png"
+                    height={44}
+                    width={44}
+                  />
+                ) : null}
                 {/* Dropdown */}
                 <div className="relative inline-block text-left" ref={menuRef}>
-                  {userData?.email!=="" ? <button
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="focus:outline-none"
-                  >
-                    <svg
-                      width="21"
-                      height="22"
-                      className="mx-[18px]"
-                      viewBox="0 0 21 22"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                  {userData?.email !== "" ? (
+                    <button
+                      onClick={() => setIsOpen(!isOpen)}
+                      className="focus:outline-none"
                     >
-                      <path
-                        d="M10.7917 4.09546C11.691 4.09546 12.5534 4.45267 13.1892 5.08851C13.825 5.72436 14.1823 6.58674 14.1823 7.48596C14.1823 8.38518 13.825 9.24757 13.1892 9.88341C12.5534 10.5193 11.691 10.8765 10.7917 10.8765C9.89253 10.8765 9.03014 10.5193 8.3943 9.88341C7.75846 9.24757 7.40125 8.38518 7.40125 7.48596C7.40125 6.58674 7.75846 5.72436 8.3943 5.08851C9.03014 4.45267 9.89253 4.09546 10.7917 4.09546ZM10.7917 12.5717C14.5383 12.5717 17.5728 14.089 17.5728 15.9622V17.6575H4.01074V15.9622C4.01074 14.089 7.04524 12.5717 10.7917 12.5717Z"
-                        fill="white"
-                      />
-                    </svg>
-                  </button> : null}
+                      <svg
+                        width="21"
+                        height="22"
+                        className="mx-[18px]"
+                        viewBox="0 0 21 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.7917 4.09546C11.691 4.09546 12.5534 4.45267 13.1892 5.08851C13.825 5.72436 14.1823 6.58674 14.1823 7.48596C14.1823 8.38518 13.825 9.24757 13.1892 9.88341C12.5534 10.5193 11.691 10.8765 10.7917 10.8765C9.89253 10.8765 9.03014 10.5193 8.3943 9.88341C7.75846 9.24757 7.40125 8.38518 7.40125 7.48596C7.40125 6.58674 7.75846 5.72436 8.3943 5.08851C9.03014 4.45267 9.89253 4.09546 10.7917 4.09546ZM10.7917 12.5717C14.5383 12.5717 17.5728 14.089 17.5728 15.9622V17.6575H4.01074V15.9622C4.01074 14.089 7.04524 12.5717 10.7917 12.5717Z"
+                          fill="white"
+                        />
+                      </svg>
+                    </button>
+                  ) : null}
                   {isOpen && (
                     <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-10">
                       <div className="py-1">
@@ -114,7 +117,7 @@ const ChatbotHeader = ({
                         </Link>
                         <button
                           onClick={() => handleLogOut()}
-                          className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                          className="cursor-pointer w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                         >
                           Logout
                         </button>

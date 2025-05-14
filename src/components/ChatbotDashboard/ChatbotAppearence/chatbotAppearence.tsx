@@ -40,9 +40,12 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       send_button_color: chatbotSetting?.send_button_color || "",
       chat_icon_color: chatbotSetting?.chat_icon_color || "",
       user_message_bg: chatbotSetting?.user_message_bg || "",
+      user_message_color: chatbotSetting?.user_message_color || "",
       dots_color: chatbotSetting?.dots_color || "",
       message_bg: chatbotSetting?.message_bg || "",
       live_message_bg: chatbotSetting?.live_message_bg,
+      message_color: chatbotSetting?.message_color || "",
+      live_message_color: chatbotSetting?.live_message_color,
       chat_icon: chatbotSetting?.chat_icon,
       image: chatbotSetting?.image,
       // Lead collection
@@ -249,11 +252,15 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
           send_button_color: data.send_button_color,
           chat_icon_color: data.chat_icon_color,
           user_message_bg: data.user_message_bg,
+          user_message_color: data.user_message_color,
           dots_color: data.dots_color,
           message_bg: data.message_bg,
+          message_color: data.message_color,
           live_message_bg: data.live_message_bg,
-          image: data.image || null,
-          chat_icon: data.chat_icon || null,
+          live_message_color: data.live_message_color,
+          image: typeof data.image === "string" ? data.image : undefined,
+          chat_icon:
+            typeof data.chat_icon === "string" ? data.chat_icon : undefined,
           lead_collection: data.lead_collection,
           name_lead_gen: data.name_lead_gen,
           is_name_lead_gen: data.is_name_lead_gen || true,
@@ -277,11 +284,11 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
     )
       .unwrap()
       .then(() => {
-        toasterSuccess("Chatbot updated successfully",2000,"id")
+        toasterSuccess("Chatbot updated successfully", 2000, "id");
         // toast.success("Chatbot updated successfully");
       })
       .catch((e) => {
-        toast.error(e);
+        toast.error(e.message || "something went wrong ");
       });
   };
 
@@ -363,7 +370,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
                   </p>
                 </div>
               </div>
-              <div className="flex m-1 gap-4">
+              <div className="flex m-1 gap-5 h-full">
                 <div className="basis-1/2 space-y-2">
                   <ImageField
                     label="Chatbot avatar"
@@ -371,18 +378,34 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
                     value={watch("image") || "/images/face2.webp"}
                     register={register}
                   />
-                  <ColorPickerField
-                    name="message_bg"
-                    label="Chat message background"
-                    register={register}
-                    defaultValue={watch("message_bg")}
-                  />{" "}
-                  <ColorPickerField
-                    name="user_message_bg"
-                    label="User chat message background"
-                    defaultValue={watch("user_message_bg")}
-                    register={register}
-                  />
+                  <div className="flex gap-2">
+                    <ColorPickerField
+                      name="message_bg"
+                      label="Bot message background"
+                      register={register}
+                      defaultValue={watch("message_bg")}
+                    />{" "}
+                    <ColorPickerField
+                      name="message_color"
+                      label="Bot message text color"
+                      defaultValue={watch("message_color")}
+                      register={register}
+                    />{" "}
+                  </div>
+                  <div className="flex gap-2">
+                    <ColorPickerField
+                      name="user_message_bg"
+                      label="User message background"
+                      defaultValue={watch("user_message_bg")}
+                      register={register}
+                    />
+                    <ColorPickerField
+                      name="user_message_color"
+                      label="User message text color"
+                      defaultValue={watch("user_message_color")}
+                      register={register}
+                    />
+                  </div>
                   <ColorPickerField
                     name="chat_window_bg"
                     label="Chat window background"
@@ -397,12 +420,20 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
                     value={watch("chat_icon")}
                     register={register}
                   />
-                  <ColorPickerField
-                    name="live_message_bg"
-                    label="Live chat message background"
-                    defaultValue={watch("live_message_bg")}
-                    register={register}
-                  />{" "}
+                  <div className="flex gap-2">
+                    <ColorPickerField
+                      name="live_message_bg"
+                      label="Live chat message background"
+                      defaultValue={watch("live_message_bg")}
+                      register={register}
+                    />
+                    <ColorPickerField
+                      name="live_message_color"
+                      label="Live chat message text color"
+                      defaultValue={watch("live_message_color")}
+                      register={register}
+                    />{" "}
+                  </div>
                   <ColorPickerField
                     name="dots_color"
                     label="Loading dots color"

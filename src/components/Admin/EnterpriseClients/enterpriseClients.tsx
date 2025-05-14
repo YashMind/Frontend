@@ -7,6 +7,7 @@ import { formatDistanceToNow } from "date-fns";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import StatusActionModal from "@/components/StatusActionModal";
+import { FaUser } from "react-icons/fa";
 
 const EnterpriseClients = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -76,7 +77,7 @@ const EnterpriseClients = () => {
                           className="form-checkbox accent-purple-500"
                         />
                       </th>
-                      <th className="p-6 flex gap-1 justify-start items-center text-white">
+                      {/* <th className="p-6 flex gap-1 justify-start items-center text-white">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -92,7 +93,11 @@ const EnterpriseClients = () => {
                           />
                         </svg>
                         <span>Name</span>
-                      </th>
+                      </th> */}
+                        <th className="p-6 flex gap-2 justify-start items-center text-white">
+                                              <FaUser className="text-white w-4 h-4" />
+                                              <span>Name</span>
+                                            </th>
                       <th className="p-6 text-white">Key Contact</th>
                       <th className="p-6 text-white">status</th>
 

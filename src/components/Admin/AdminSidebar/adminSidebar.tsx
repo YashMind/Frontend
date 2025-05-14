@@ -32,7 +32,7 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
       <h2 className="text-xl font-semibold text-center my-[40px]">
         <Image
           alt="alt"
-          src="/images/bot-logo.png"
+          src="/images/yash-removebg-preview.png"
           height={150}
           width={150}
           className="ml-10"
@@ -56,8 +56,9 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
       <nav className="flex flex-col gap-2 px-4 mt-[30px] shadow-2xl shadow-[#0105114D] rounded-md">
         <Link
           href="/admin/dashboard"
-          className={`flex items-center text-sm font-medium gap-2 px-3 py-[10px]  ${adminPage === "dashboard" ? "text-[#CB3CFF]" : ""
-            } rounded-[15px]`}
+          className={`flex items-center text-sm font-medium gap-2 px-3 py-[10px]  ${
+            adminPage === "dashboard" ? "text-[#CB3CFF]" : ""
+          } rounded-[15px]`}
         >
           <RiDashboardHorizontalFill size={25} />
 
@@ -65,32 +66,36 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
         </Link>
         <Link
           href="/admin/overview"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-sm ${adminPage === "overview" ? "text-[#CB3CFF]" : ""
-            }  text-[#767F9C]`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-sm ${
+            adminPage === "overview" ? "text-[#CB3CFF]" : ""
+          }  text-[#767F9C]`}
         >
           <GrOverview size={25} />
           <span className="ml-4">Overview</span>
         </Link>
         <Link
           href="/admin/users-management"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-sm  ${adminPage === "users-management" ? "text-[#CB3CFF]" : ""
-            }`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-sm  ${
+            adminPage === "users-management" ? "text-[#CB3CFF]" : ""
+          }`}
         >
           <HiUsers size={25} />
           <span className="ml-4">Users Management</span>
         </Link>
         <Link
           href="/admin/subscription-plans"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "subscription-plans" ? "text-[#CB3CFF]" : ""
-            }  text-sm text-[#767F9C]`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
+            adminPage === "subscription-plans" ? "text-[#CB3CFF]" : ""
+          }  text-sm text-[#767F9C]`}
         >
           <MdOutlineSubscriptions size={25} />
           <span className="ml-4">Subscription Plans</span>
         </Link>
         <Link
           href="/admin/token-analytics"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "token-analytics" ? "text-[#CB3CFF]" : ""
-            } text-[#767F9C] text-sm`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
+            adminPage === "token-analytics" ? "text-[#CB3CFF]" : ""
+          } text-[#767F9C] text-sm`}
         >
           <IoAnalyticsSharp size={25} />
 
@@ -98,8 +103,9 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
         </Link>
         <Link
           href="/admin/product-monitoring"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "product-monitoring" ? "text-[#CB3CFF]" : ""
-            } text-[#767F9C] text-sm`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
+            adminPage === "product-monitoring" ? "text-[#CB3CFF]" : ""
+          } text-[#767F9C] text-sm`}
         >
           <FaWatchmanMonitoring size={25} />
           <span className="ml-4">Product Monitoring</span>
@@ -107,8 +113,9 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
 
         <Link
           href="/admin/logs-activity"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "logs-activity" ? "text-[#CB3CFF]" : ""
-            } text-[#767F9C] text-sm`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
+            adminPage === "logs-activity" ? "text-[#CB3CFF]" : ""
+          } text-[#767F9C] text-sm`}
         >
           <LuActivity size={25} />
           <span className="ml-4">Logs & Activity</span>
@@ -116,16 +123,18 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
 
         <Link
           href="/admin/enterprise-clients"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "enterprise-clients" ? "text-[#CB3CFF]" : ""
-            } text-[#767F9C] text-sm`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
+            adminPage === "enterprise-clients" ? "text-[#CB3CFF]" : ""
+          } text-[#767F9C] text-sm`}
         >
           <SiEnterprisedb size={25} />
           <span className="ml-4">Enterprise Clients</span>
         </Link>
         <Link
           href="/admin/billing-settings"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "billing-settings" ? "text-[#CB3CFF]" : ""
-            } text-[#767F9C] text-sm`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
+            adminPage === "billing-settings" ? "text-[#CB3CFF]" : ""
+          } text-[#767F9C] text-sm`}
         >
           <MdSettingsAccessibility size={25} />
 
@@ -133,8 +142,9 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
         </Link>
         <Link
           href="/admin/users-roles"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "users-roles" ? "text-[#CB3CFF]" : ""
-            } text-[#767F9C] text-sm`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
+            adminPage === "users-roles" ? "text-[#CB3CFF]" : ""
+          } text-[#767F9C] text-sm`}
         >
           <FaUsers size={25} />
           <span className="ml-4">Admin Users & Roles</span>
@@ -142,8 +152,9 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
 
         <Link
           href="/admin/support-communication"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "support-communication" ? "text-[#CB3CFF]" : ""
-            } text-[#767F9C] text-sm`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
+            adminPage === "support-communication" ? "text-[#CB3CFF]" : ""
+          } text-[#767F9C] text-sm`}
         >
           <GiSatelliteCommunication size={25} />
           <span className="ml-4">Support & Communication</span>
@@ -168,8 +179,9 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
         </Link>
         <Link
           href="/admin/pricing"
-          className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "pricing" ? "text-[#CB3CFF]" : ""
-            } text-[#767F9C] text-sm`}
+          className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
+            adminPage === "pricing" ? "text-[#CB3CFF]" : ""
+          } text-[#767F9C] text-sm`}
         >
           <div className="flex gap-3">
             <IoMdPricetags size={25} />
@@ -188,8 +200,9 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
 
       <Link
         href="/admin/settings"
-        className={`flex items-center justify-between gap-2 px-3 ml-4 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "settings" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
+        className={`flex items-center justify-between gap-2 px-3 ml-4 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
+          adminPage === "settings" ? "text-[#CB3CFF]" : ""
+        } text-[#767F9C] text-sm`}
       >
         <div className="flex gap-3">
           <IoSettingsSharp size={25} />
@@ -201,8 +214,9 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
 
       <Link
         href="/admin/account-settings"
-        className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "account-settings" ? "text-[#CB3CFF]" : ""
-          } text-white text-sm`}
+        className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
+          adminPage === "account-settings" ? "text-[#CB3CFF]" : ""
+        } text-white text-sm`}
       >
         <div className="flex gap-3">
           {" "}

@@ -12,7 +12,7 @@ const ChatbotHeader = () => {
           >
             <Image
               alt="alt"
-              src="/images/bot-logo.png"
+              src="/images/yash-removebg-preview.png"
               height={80}
               width={65}
             />

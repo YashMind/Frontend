@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
 import { getAdminUsers, getClientUsers } from "../admin/adminSlice";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const UserData = {
   id: 0,
@@ -80,9 +81,12 @@ export const signUpAdmin = createAsyncThunk<any, { payload: AdminSignUpForm }>(
   }
 );
 
-export const getMeData = createAsyncThunk<any, void>(
+export const getMeData = createAsyncThunk<
+  any,
+  { router: AppRouterInstance }
+>(
   "auth/getMeData",
-  async (_, { dispatch, rejectWithValue }) => {
+  async ({ router }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
       const response = await http.get("/auth/me");
@@ -94,8 +98,10 @@ export const getMeData = createAsyncThunk<any, void>(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
+        router.push("/auth/signin");
         return rejectWithValue(error.response.data.message);
       }
+      router.push("/auth/signin"); 
       return rejectWithValue("An error occurred during auth");
     } finally {
       dispatch(stopLoadingActivity());
@@ -116,7 +122,7 @@ export const signInUser = createAsyncThunk<
       if (response.status === 200) {
 
         dispatch(stopLoadingActivity());
-        dispatch(getMeData());
+        dispatch(getMeData({ router }));
         toasterSuccess("user logged in successfully!", 2000, "id")
         // toast.success("user logged in successfully!");
         router.push("/chatbot");
@@ -163,17 +169,19 @@ export const logoutUser = createAsyncThunk<
   }
 });
 
-export const updateUserProfile = createAsyncThunk<any, { payload: any }>(
+export const updateUserProfile = createAsyncThunk<
+  any,
+  { payload: any; router: AppRouterInstance }
+>(
   "auth/updateUserProfile",
-  async ({ payload }, { dispatch, rejectWithValue }) => {
+  async ({ payload, router }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
       const response = await http.put("/auth/update-profile", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        dispatch(getMeData());
-        // toast.success("Profile updated successfully!");
-        toasterSuccess("Profile updated successfully!", 2000, "id")
+        dispatch(getMeData({ router }));
+        toasterSuccess("Profile updated successfully!", 2000, "id");
         return response.data;
       } else {
         return rejectWithValue("Profile update failed");
@@ -188,6 +196,7 @@ export const updateUserProfile = createAsyncThunk<any, { payload: any }>(
     }
   }
 );
+
 
 const initialState = {
   loading: false,
