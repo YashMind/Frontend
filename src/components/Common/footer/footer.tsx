@@ -4,7 +4,13 @@ import Link from "next/link";
 
 const HomeFooter = () => {
   return (
-    <footer className="text-white px-4 sm:px-6 md:px-12 py-10">
+    <footer
+      className="text-white px-4 sm:px-6 md:px-12 py-10"
+      style={{
+        backgroundImage:
+          "linear-gradient(89.97deg, #002b58 -37.97%, #3b0459 99.97%), linear-gradient(#1f064a33 0%, #0003 100%)",
+      }}
+    >
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
         {/* Logo and Plan */}
         <div>
@@ -35,14 +41,14 @@ const HomeFooter = () => {
             <li>
               <Link href="/">Home</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/details/llm">LLM</Link>
+            </li> */}
+            <li>
+              <Link href="/chatbot">Chat Bot</Link>
             </li>
             <li>
-              <Link href="/details/chatbot">Chat Bot</Link>
-            </li>
-            <li>
-              <Link href="/details/voice-agent">Voice Agent</Link>
+              <Link href="/voice-agent">Voice Agent</Link>
             </li>
             <li>
               <Link href="/details/terms&condition">Terms & Conditions</Link>
@@ -62,15 +68,15 @@ const HomeFooter = () => {
             <li>
               <Link href="/details/about-us">About Us</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/details/careers">Careers</Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/details/faq">FAQs</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/details/teams">Teams</Link>
-            </li>
+            </li> */}
           </ul>
         </div>
 

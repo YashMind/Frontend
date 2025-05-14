@@ -22,8 +22,8 @@ const ChatbotHeader = ({
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    dispatch(getMeData());
-  }, []);
+    dispatch(getMeData({router}));
+  }, [router]);
 
   const userData: UserProfileData = useSelector(
     (state: RootState) => state.auth.userData
@@ -117,7 +117,7 @@ const ChatbotHeader = ({
                         </Link>
                         <button
                           onClick={() => handleLogOut()}
-                          className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                          className="cursor-pointer w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                         >
                           Logout
                         </button>

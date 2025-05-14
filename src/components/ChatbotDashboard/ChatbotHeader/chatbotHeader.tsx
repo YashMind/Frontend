@@ -10,9 +10,11 @@ import Image from "next/image";
 const ChatbotDashboardHeader = ({
   fix,
   addBgColor,
+  role,
 }: {
   fix: boolean;
   addBgColor: boolean;
+  role?: string;
 }) => {
   const [bot, setBot] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -29,22 +31,24 @@ const ChatbotDashboardHeader = ({
   );
 
   useEffect(() => {
-    dispatch(getMeData());
-  }, []);
+    dispatch(getMeData({router}));
+  }, [router]);
   
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !(menuRef.current as HTMLElement).contains(event.target as Node)) {
+      if (
+        menuRef.current &&
+        !(menuRef.current as HTMLElement).contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
-  
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  
 
   const handleLogOut = () => {
     dispatch(logoutUser({ router }));
@@ -87,37 +91,30 @@ const ChatbotDashboardHeader = ({
             </div>
           </Link>
         </div>
-        <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse items-center">
+        <div className="flex gap-2 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse items-center">
+          {role === "admin" && (
+            <Link
+              href={"/admin/dashboard"}
+              className="bg-white p-2 px-4 rounded-full font-semibold"
+            >
+              Admin Dashboard
+            </Link>
+          )}
           <Link
             href="/"
             className="text-white bg-[#05BDFD] text-[15px] rounded-[18px]  font-semibold focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Return to Home
           </Link>
-          <button className="sidebar text-white cursor-pointer">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-          </button>
+
           <div className="relative inline-block text-left" ref={menuRef}>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="focus:outline-none cursor-pointer"
             >
               <svg
-                width="21"
-                height="22"
+                width="40"
+                height="30"
                 className="mx-[18px]"
                 viewBox="0 0 21 22"
                 fill="none"
@@ -146,7 +143,7 @@ const ChatbotDashboardHeader = ({
                   </Link>
                   <button
                     onClick={() => handleLogOut()}
-                    className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                    className="cursor-pointer w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                   >
                     Logout
                   </button>

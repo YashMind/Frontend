@@ -8,6 +8,9 @@ import { RiEditLine } from "react-icons/ri";
 import * as yup from "yup";
 import { useForm, Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
+
+
 const schema = yup.object().shape({
   fullName: yup.string().required("Full Name is required field"),
   email: yup.string().email().required("Email is a required field"),
@@ -26,6 +29,7 @@ const schema = yup.object().shape({
     ),
 });
 const ProfileProducts = () => {
+  const router=useRouter()
   const [edit, setEdit] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const { userData } = useSelector((state: RootState) => state.auth);
@@ -45,7 +49,7 @@ const ProfileProducts = () => {
   });
 
   useEffect(() => {
-    dispatch(getMeData());
+    dispatch(getMeData({router}));
     if (userData) {
       reset({
         fullName: userData.fullName || "",
@@ -55,7 +59,7 @@ const ProfileProducts = () => {
     }
   }, [reset, userData?.fullName]);
   const onSubmit = (data: ProfileForm) => {
-    dispatch(updateUserProfile({payload: data}))
+    dispatch(updateUserProfile({payload: data,router}))
     reset();
   };
   return (

@@ -6,6 +6,8 @@ import { deleteClientUser, getClientLogsActivity, getClientUsers, updateClientBy
 import { formatDistanceToNow } from "date-fns";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
+import StatusActionModal from "@/components/StatusActionModal";
+import { FaUser } from "react-icons/fa";
 
 const EnterpriseClients = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,6 +38,11 @@ const EnterpriseClients = () => {
       })
     );
     setIsMenuOpen(false);
+  };
+
+    const handleOpenMenu = (itemId: any) => {
+    setMenuOpenId(itemId);
+    setIsMenuOpen(true);
   };
 
   return (
@@ -70,7 +77,7 @@ const EnterpriseClients = () => {
                           className="form-checkbox accent-purple-500"
                         />
                       </th>
-                      <th className="p-6 flex gap-1 justify-start items-center text-white">
+                      {/* <th className="p-6 flex gap-1 justify-start items-center text-white">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -86,7 +93,11 @@ const EnterpriseClients = () => {
                           />
                         </svg>
                         <span>Name</span>
-                      </th>
+                      </th> */}
+                        <th className="p-6 flex gap-2 justify-start items-center text-white">
+                                              <FaUser className="text-white w-4 h-4" />
+                                              <span>Name</span>
+                                            </th>
                       <th className="p-6 text-white">Key Contact</th>
                       <th className="p-6 text-white">status</th>
 
@@ -149,8 +160,7 @@ const EnterpriseClients = () => {
                                   size={20}
                                   className="cursor-pointer"
                                   onClick={() => {
-                                    setIsMenuOpen(!isMenuOpen);
-                                    setMenuOpenId(item);
+                                    handleOpenMenu(item?.id)
                                   }}
                                 />
                               </div>
@@ -163,45 +173,51 @@ const EnterpriseClients = () => {
               </div>
             </div>
             {isMenuOpen && menuOpenId && (
-              <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
-                <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[400px] max-w-full shadow-5xl relative">
-                  <button
-                    onClick={() => setIsMenuOpen(false)}
-                    className="cursor-pointer absolute top-4 right-4 text-white text-2xl font-bold"
-                  >
-                    &times;
-                  </button>
-                  <div className="right-0 bg-white text-black rounded shadow-lg group-hover:block z-10">
-                    <ul className="text-sm">
-                      <li
-                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-red-600"
-                        onClick={() =>
-                          handleUpdateStatus({
-                            id: menuOpenId?.id,
-                            status: "Suspend",
-                          })
-                        }
-                      >
-                        Suspend
-                      </li>
-                      <li
-                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-green-600"
-                        onClick={() =>
-                          handleUpdateStatus({
-                            id: menuOpenId?.id,
-                            status: "active",
-                          })
-                        }
-                      >
-                        Activate
-                      </li>
-                      <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
-                        Reset token quote
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+              // <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
+              //   <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[400px] max-w-full shadow-5xl relative">
+              //     <button
+              //       onClick={() => setIsMenuOpen(false)}
+              //       className="cursor-pointer absolute top-4 right-4 text-white text-2xl font-bold"
+              //     >
+              //       &times;
+              //     </button>
+              //     <div className="right-0 bg-white text-black rounded shadow-lg group-hover:block z-10">
+              //       <ul className="text-sm">
+              //         <li
+              //           className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-red-600"
+              //           onClick={() =>
+              //             handleUpdateStatus({
+              //               id: menuOpenId?.id,
+              //               status: "Suspend",
+              //             })
+              //           }
+              //         >
+              //           Suspend
+              //         </li>
+              //         <li
+              //           className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-green-600"
+              //           onClick={() =>
+              //             handleUpdateStatus({
+              //               id: menuOpenId?.id,
+              //               status: "active",
+              //             })
+              //           }
+              //         >
+              //           Activate
+              //         </li>
+              //         <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+              //           Reset token quote
+              //         </li>
+              //       </ul>
+              //     </div>
+              //   </div>
+              // </div>
+               <StatusActionModal
+                isOpen={isMenuOpen}
+                onClose={() => setIsMenuOpen(false)}
+                onUpdateStatus={handleUpdateStatus}
+                itemId={menuOpenId}
+              />
             )}
             {/* token rate */}
             <div className="px-6 ">

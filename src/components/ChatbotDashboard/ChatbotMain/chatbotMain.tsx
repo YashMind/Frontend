@@ -24,9 +24,11 @@ import RightSection from "./RightSection/rightSection";
 const ChatbotMain = ({
   botPage,
   botId,
+  role,
 }: {
   botPage?: string;
   botId?: number;
+  role?: string;
 }) => {
   const [modalShow, setModalShow] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -43,7 +45,7 @@ const ChatbotMain = ({
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
-      <ChatbotDashboardHeader fix={true} addBgColor={true} />
+      <ChatbotDashboardHeader fix={true} addBgColor={true} role={role} />
       <div className="min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 ">
         {/* Real Time Count + Table */}
         <RealTimeCount />

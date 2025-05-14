@@ -7,21 +7,61 @@ import {
   deleteAdminUser,
   getAdminsLogsActivity,
   getAdminUsers,
+  getRolePermissions,
   updateUserByAdmin,
 } from "@/store/slices/admin/adminSlice";
 import { formatDistanceToNow } from "date-fns";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
+import StatusActionModal from "@/components/StatusActionModal";
+import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
+import { FaUser } from "react-icons/fa";
+import EditPermissionModal from "@/components/EditPermissionsModal";
+import { getAllUsers } from "@/store/slices/admin/adminSlice";
+
+interface RoleWithPermissions {
+  id: number;
+  role: string;
+  permissions: string[];
+}
 
 const AdminUsersRoles = () => {
+  const permissionsData = [
+    {
+      id: 1,
+      role: "Super Admin",
+      permissions: [],
+    },
+    {
+      id: 2,
+      role: "Billing Admin",
+      permissions: [],
+    },
+    {
+      id: 3,
+      role: "Product Admin",
+      permissions: [],
+    },
+    {
+      id: 4,
+      role: "Support Admin",
+      permissions: [],
+    },
+  ];
+
+
+  const dispatch = useDispatch<AppDispatch>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [modalShow, setModalShow] = useState<boolean>(false);
+  const [showPermissionModal, setShowPermissionModal] = useState<boolean>(false);
+  const [rolesWithPermissions, setRolesWithPermissions] = useState<RoleWithPermissions[]>(permissionsData);
+
+  const [selectedDate, setSelectedDate] = useState<any>(null);
   const [adminUserData, setAdminUserData] = useState<any>({});
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [menuOpenId, setMenuOpenId] = useState<any>({});
-  const [selectedDate, setSelectedDate] = useState<any>(null);
-  const dispatch = useDispatch<AppDispatch>();
-
+  const [menuOpenId, setMenuOpenId] = useState<number | null>(null);
   const { adminUsers, adminsLogsActivityData } = useSelector(
     (state: RootState) => state.admin
   );
@@ -31,8 +71,40 @@ const AdminUsersRoles = () => {
     dispatch(getAdminsLogsActivity({ date_filter: selectedDate }));
   }, [dispatch, selectedDate]);
 
-  const handleDeleteAdminUser = (item: AdminSignUpForm) => {
-    dispatch(deleteAdminUser({ id: item?.id }));
+  useEffect(() => {
+    async function fetchAllPermissions() {
+      const updatedRoles = await Promise.all(
+        rolesWithPermissions.map(async (role) => {
+          try {
+            const res = await dispatch(getRolePermissions(role.role)).unwrap();
+            return { ...role, permissions: res.permissions || [] };
+          } catch {
+            return role; // fallback to existing role if API fails
+          }
+        })
+      );
+      setRolesWithPermissions(updatedRoles);
+    }
+
+    fetchAllPermissions();
+  }, []);
+
+
+  const handleDeleteClick = (item: any) => {
+    setSelectedUser(item);
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedUser) {
+      dispatch(deleteAdminUser({ id: selectedUser?.id }));
+      dispatch(
+        getAllUsers({
+          page: 1,
+          limit: 10,
+        })
+      );
+    }
   };
 
   const handleUpdateStatus = (data: any) => {
@@ -57,6 +129,11 @@ const AdminUsersRoles = () => {
       second: "2-digit",
     });
     return updatedDate;
+  };
+
+  const handleOpenMenu = (itemId: any) => {
+    setMenuOpenId(itemId);
+    setIsMenuOpen(true);
   };
 
   return (
@@ -88,25 +165,12 @@ const AdminUsersRoles = () => {
                       <th className="p-6">
                         <input
                           type="checkbox"
-                          className="form-checkbox accent-purple-500"
+                          className="cursor-pointer form-checkbox accent-purple-500"
                           readOnly
                         />
                       </th>
-                      <th className="p-6 flex gap-1 justify-start items-center text-white">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                          />
-                        </svg>
+                      <th className="p-6 flex gap-2 justify-start items-center text-white">
+                        <FaUser className="text-white w-4 h-4" />
                         <span>Name</span>
                       </th>
                       <th className="p-6 text-white">email</th>
@@ -117,7 +181,7 @@ const AdminUsersRoles = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {adminUsers &&
+                    {adminUsers && adminUsers.length > 0 ? (
                       adminUsers?.map((item, index) => {
                         const timeAgo = item?.last_active
                           ? formatDistanceToNow(new Date(item.last_active), {
@@ -132,8 +196,9 @@ const AdminUsersRoles = () => {
                             <td className="p-6">
                               <input
                                 type="checkbox"
-                                className="form-checkbox accent-purple-500"
-                                checked={item?.status === "Active"}
+                                className="cursor-pointer form-checkbox accent-purple-500"
+                                // checked={item?.status === "Active"}
+                                checked={false}
                                 readOnly
                               />
                             </td>
@@ -171,9 +236,7 @@ const AdminUsersRoles = () => {
 
                                 <MdDeleteForever
                                   size={20}
-                                  onClick={() => {
-                                    handleDeleteAdminUser(item);
-                                  }}
+                                  onClick={() => handleDeleteClick(item)}
                                   className="cursor-pointer"
 
                                 />
@@ -182,112 +245,86 @@ const AdminUsersRoles = () => {
                                   size={20}
                                   className="cursor-pointer"
                                   onClick={() => {
-                                    setIsMenuOpen(!isMenuOpen);
-                                    setMenuOpenId(item);
+                                    handleOpenMenu(item?.id)
                                   }}
                                 />
                               </div>
                             </td>
                           </tr>
                         );
-                      })}
+                      })) : (
+                      <tr>
+                        <td
+                          colSpan={7}
+                          className="text-center text-sm text-gray-400 py-6"
+                        >
+                          No users found.
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
             </div>
             {isMenuOpen && menuOpenId && (
-              <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
-                <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[400px] max-w-full shadow-5xl relative">
-                  <button
-                    onClick={() => setIsMenuOpen(false)}
-                    className="cursor-pointer absolute top-4 right-4 text-white text-2xl font-bold"
-                  >
-                    &times;
-                  </button>
-                  <div className="right-0 bg-white text-black rounded shadow-lg group-hover:block z-10">
-                    <ul className="text-sm">
-                      <li
-                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-red-600"
-                        onClick={() =>
-                          handleUpdateStatus({
-                            id: menuOpenId?.id,
-                            status: "Suspend",
-                          })
-                        }
-                      >
-                        Suspend
-                      </li>
-                      <li
-                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-green-600"
-                        onClick={() =>
-                          handleUpdateStatus({
-                            id: menuOpenId?.id,
-                            status: "active",
-                          })
-                        }
-                      >
-                        Activate
-                      </li>
-                      <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
-                        Reset token quote
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+              <StatusActionModal
+                isOpen={isMenuOpen}
+                onClose={() => setIsMenuOpen(false)}
+                onUpdateStatus={handleUpdateStatus}
+                itemId={menuOpenId}
+              />
             )}
+
+            <ConfirmDeleteModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              onConfirm={handleConfirmDelete}
+              title="Delete Admin User?"
+              message={`Are you sure you want to delete ?`}
+            />
+
             {/* roles management */}
             <div className="p-6">
+
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold mb-4">Role Management</h2>
               </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                {/* Super Admin Card */}
-                {adminUsers?.map((item, index) => {
-                  return (
-                    <div
-                      className="bg-[#0A1330] border border-[#343B4F] rounded-lg p-5"
-                      key={index}
-                    >
-                      <div className="flex justify-between items-center bg-[#081028] px-4 py-2 rounded">
-                        <h3 className="font-semibold text-white">
-                          {item?.role}
-                        </h3>
-                        <span className="text-xs text-gray-400">
-                          {item?.role === "Super Admin"
-                            ? "Full Access"
-                            : item?.role === "Billing Admin"
-                              ? "Financial Access"
-                              : item?.role === "Product Admin"
-                                ? "Technical Access"
-                                : item?.role === "Support Admin"
-                                  ? "Limited Access"
-                                  : ""}
-                        </span>
-                      </div>
-                      <div className="mt-4">
-                        <p className="font-medium mb-2">Permissions</p>
+                {rolesWithPermissions.map((item, index) => (
+                  <div
+                    className="bg-[#0A1330] border border-[#343B4F] rounded-lg p-5"
+                    key={index}
+                  >
+                    <div className="flex justify-between items-center bg-[#081028] px-4 py-2 rounded">
+                      <h3 className="font-semibold text-white">{item?.role}</h3>
+                      <button
+                        className="cursor-pointer text-sm bg-[#3B0459] text-white px-4 py-1 rounded"
+                        onClick={() => {
+                          setShowPermissionModal(true);
+                          setAdminUserData(item);
+                        }}
+                      >
+                        Edit Permissions
+                      </button>
+                    </div>
+
+                    <div className="mt-4">
+                      <p className="font-medium mb-2 ml-4">Permissions</p>
+                      {item?.permissions && item.permissions.length > 0 ? (
                         <ul className="list-disc list-inside text-sm text-gray-200 space-y-1">
-                          {item?.role_permissions?.map((item, index) => (
-                            <li key={index}>{item}</li>
+                          {item.permissions.map((perm, idx) => (
+                            <li key={idx}>{perm}</li>
                           ))}
                         </ul>
-                      </div>
-                      <div className="flex justify-between items-center mt-6">
-                        <span className="text-sm text-gray-300"></span>
-                        <button
-                          className="text-sm bg-[#3B0459] text-white px-4 py-1 rounded"
-                          onClick={() => {
-                            setModalShow(true);
-                            setAdminUserData(item);
-                          }}
-                        >
-                          Edit role
-                        </button>
-                      </div>
+                      ) : (
+                        <p className="text-sm text-gray-400 ml-4">
+                          This role has no permissions assigned. Please edit the role to add permissions.
+                        </p>
+                      )}
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
 
               {/* Activity Log */}
@@ -414,6 +451,20 @@ const AdminUsersRoles = () => {
             adminUserData={adminUserData}
             roleData={"admin"}
           />
+          <EditPermissionModal
+            show={showPermissionModal}
+            onHide={() => setShowPermissionModal(false)}
+            adminUserData={adminUserData}
+            roleData={adminUserData?.role}
+            onUpdatePermissions={(updatedRole) => {
+              setRolesWithPermissions((prev:any) =>
+                prev.map((r:any) =>
+                  r.id === updatedRole.id ? { ...r, permissions: updatedRole.permissions } : r
+                )
+              );
+            }}
+          />
+
         </div>
       </div>
     </div>

@@ -7,22 +7,22 @@ const ChatbotFaqs = () => {
     {
       title: "How secure is my data when using ChatBot?",
       paragraph:
-        "FastBots is an intuitive AI chatbot builder. It allows you to create a chatbot trained on the content of your webpages, documents, and more. This chatbot can then be integrated into your website to function as a question-answer bot, offering 24/7 multilingual support.",
+        "At Yashraa, data security is a top priority. All information is encrypted in transit and at rest, and we comply with industry-standard practices to ensure your chatbot and user data remain safe and private at all times.",
     },
     {
       title: "What platforms do you integrate with?",
       paragraph:
-        "FastBots is an intuitive AI chatbot builder. It allows you to create a chatbot trained on the content of your webpages, documents, and more. This chatbot can then be integrated into your website to function as a question-answer bot",
+        "Yashraa ChatBots integrate seamlessly with a wide range of platforms including websites (via embedded widgets), Slack, Microsoft Teams, WhatsApp, Facebook Messenger, and more. We also offer custom integrations through APIs.",
     },
     {
-      title: "What LLMs models does ChatBot use?",
+      title: "What LLM models does ChatBot use?",
       paragraph:
-        "FastBots is an intuitive AI chatbot builder. It allows you to create a chatbot trained on the content of your webpages, documents, and more. ",
+        "Yashraa leverages leading large language models such as OpenAI’s GPT, Google’s PaLM, and other state-of-the-art AI models. This ensures accurate, contextual, and human-like responses tailored to your content.",
     },
     {
       title: "How do I contact customer support?",
       paragraph:
-        "FastBots is an intuitive AI chatbot builder. It allows you to create a chatbot trained on the content of your webpages",
+        "You can reach Yashraa’s support team via email, live chat on our website, or through your client dashboard. We offer 24/7 assistance to ensure your chatbot runs smoothly and your questions are promptly answered.",
     },
   ];
 
@@ -53,27 +53,39 @@ const ChatbotFaqs = () => {
 
                 {/* FAQ Collapsed Items */}
                 {faqsData?.map((item, index: number) => (
-                  <div className="border-b border-white/30" key={index}>
+                  <div
+                    className="border-b border-white/30 transition-all duration-300"
+                    key={index}
+                  >
                     <button
-                      className="w-full text-left py-3 flex justify-between items-center font-semibold  text-xl text-[#FAFAFA]"
+                      className="w-full text-left py-3 px-2 flex justify-between items-center font-semibold text-xl text-[#FAFAFA] hover:bg-white/10 transition-colors duration-200 rounded"
                       onClick={() => handleAccordian(item?.title)}
                     >
                       {item?.title}
                       {accordianItems.includes(item?.title) ? (
-                        <span className="text-white text-xl font-normal cursor-pointer">
+                        <span className="text-white text-xl font-normal cursor-pointer transition-transform duration-300 rotate-180">
                           ˄
                         </span>
                       ) : (
-                        <span className="text-white text-xl cursor-pointer">
+                        <span className="text-white text-xl cursor-pointer transition-transform duration-200">
                           ˅
                         </span>
                       )}
                     </button>
-                    {accordianItems.includes(item?.title) ? (
-                      <p className=" pb-4 text-base text-[#FAFAFA]">
-                        {item?.paragraph}
-                      </p>
-                    ) : null}
+
+                    <div
+                      className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                        accordianItems.includes(item?.title)
+                          ? "max-h-96 opacity-100"
+                          : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      {accordianItems.includes(item?.title) && (
+                        <p className="pb-4 text-base text-[#FAFAFA]">
+                          {item?.paragraph}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

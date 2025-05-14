@@ -16,16 +16,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { getMeData } from "@/store/slices/auth/authSlice";
 import { getAllUsers } from "@/store/slices/admin/adminSlice";
+import { useRouter } from "next/navigation";
 
 const Admin = ({ adminPage }: { adminPage: string }) => {
   const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter();
+  
   const userData: UserProfileData = useSelector(
     (state: RootState) => state.auth.userData
   );
   const { allUsersData } = useSelector((state: RootState) => state.admin);
 
   useEffect(() => {
-    dispatch(getMeData());
+    dispatch(getMeData({router}));
     if (!allUsersData?.data?.length) {
       dispatch(
         getAllUsers({
