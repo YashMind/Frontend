@@ -1,5 +1,5 @@
 "use client";
-import {getRolePermissions,updateRoleAdmin} from "@/store/slices/admin/adminSlice";
+import {getAdminsLogsActivity, getRolePermissions,updateRoleAdmin} from "@/store/slices/admin/adminSlice";
 import { AppDispatch } from "@/store/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
@@ -88,6 +88,7 @@ const EditPermissionModal = ({
     if (data.id) {
       await dispatch(updateRoleAdmin({ payload: data }));
       const updated = await dispatch(getRolePermissions(data.role!)).unwrap();
+      dispatch(getAdminsLogsActivity({}))
       onUpdatePermissions({ id: data.id, role: data.role, permissions: updated.permissions });
       reset();
       onHide();

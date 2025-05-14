@@ -87,11 +87,22 @@ interface ClientUsersData {
   created_at?: string;
 }
 
+// interface AdminLogsActivity {
+//   last_added_admin: AdminUsersData;
+//   last_role_updated: AdminUsersData;
+//   last_suspended_admin: AdminUsersData;
+// }
 interface AdminLogsActivity {
-  last_added_admin: AdminUsersData;
-  last_role_updated: AdminUsersData;
-  last_suspended_admin: AdminUsersData;
+  id: number;
+  user_id: number;
+  username: string;
+  role: string;
+  action: string;
+  log_activity: string;
+  created_at: string;
+  updated_at: string;
 }
+
 
 interface ClientLogsActivity {
   last_added_admin: AdminUsersData;
