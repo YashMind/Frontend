@@ -49,7 +49,8 @@ const ChatbotBanner = () => {
               Smart Automation Tools
             </h1>
             <p className="font-bold text-white text-base my-[22px]">
-            Revolutionize repetitive tasks with intelligent systems that learn and adapt to your business needs.
+              Revolutionize repetitive tasks with intelligent systems that learn
+              and adapt to your business needs.
             </p>
             <Link
               href="/auth/signin"
@@ -72,7 +73,8 @@ const ChatbotBanner = () => {
               AI-Powered Customer Support
             </h1>
             <p className="font-bold text-white text-base my-[22px]">
-            Enhance user satisfaction with 24/7 virtual assistants that provide instant, accurate responses.
+              Enhance user satisfaction with 24/7 virtual assistants that
+              provide instant, accurate responses.
             </p>
             <Link
               href="/auth/signin"
@@ -92,13 +94,13 @@ const ChatbotBanner = () => {
           className="absolute bottom-20  p-3 "
           onClick={() => instanceRef.current?.prev()}
         >
-          <img src="/images/arrow-lft.png" className="cursor-pointer"/>
+          <img src="/images/arrow-right.png" className="cursor-pointer" />
         </button>
         <button
           className="absolute bottom-20  p-3 text-black right-0"
           onClick={() => instanceRef.current?.next()}
         >
-          <img src="/images/arrow-right.png" className="cursor-pointer"/>
+          <img src="/images/arrow-lft.png" className="cursor-pointer" />
         </button>
       </div>
       {/* Dots */}

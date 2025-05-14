@@ -3,49 +3,61 @@ import React from "react";
 const cardData = [
   {
     title: "Instagram",
-    description: "Use your chatbot to respond to incoming messages to your Instagram business account.",
+    description:
+      "Use your chatbot to respond to incoming messages to your Instagram business account.",
     img: "/images/icon1.png",
     borderColor: "#DF437E",
     bgColor: "#CC39A2",
   },
   {
     title: "Whatsapp",
-    description: "Connect your chatbot to a WhatsApp business number for automatic 24/7 responses.",
+    description:
+      "Connect your chatbot to a WhatsApp business number for automatic 24/7 responses.",
     img: "/images/logos_whatsapp-icon.png",
     borderColor: "#60D669",
     bgColor: "#60D669",
   },
   {
     title: "Wordpress",
-    description: "Connect your bot with Slack workspaces for a seamless integration.",
+    description:
+      "Connect your bot with Slack workspaces for a seamless integration.",
     img: "/images/wordpress.png",
     borderColor: "#0073AA",
     bgColor: "#0073AA",
   },
   {
     title: "Zapier",
-    description: "Use AI-powered automation with Zapier AI Actions to create more intelligent workflows.",
+    description:
+      "Use AI-powered automation with Zapier AI Actions to create more intelligent workflows.",
     img: "/images/logos_zapier.png",
     borderColor: "#FF4F00",
     bgColor: "#FF4F00",
   },
   {
     title: "Slack",
-    description: "Connect your bot with Slack workspaces for a seamless integration.",
+    description:
+      "Connect your bot with Slack workspaces for a seamless integration.",
     img: "/images/devicon_slack.png",
     borderColor: "#EBB02E",
     bgColor: "#EBB02E",
   },
   {
     title: "Messenger",
-    description: "Use your chatbot to automatically reply to your Facebook pages messages or comments.",
+    description:
+      "Use your chatbot to automatically reply to your Facebook pages messages or comments.",
     img: "/images/facebook-messenger-icon 1.png",
     borderColor: "#466CFF",
     bgColor: "#466CFF",
   },
 ];
 
-const ChatbotCard = ({ title, description, img, borderColor, bgColor }: any) => (
+const ChatbotCard = ({
+  title,
+  description,
+  img,
+  borderColor,
+  bgColor,
+}: any) => (
   <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative my-[22px]">
     <div
       className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center"
@@ -66,7 +78,7 @@ const ChatbotCard = ({ title, description, img, borderColor, bgColor }: any) => 
 
 const OurChatbots = () => {
   return (
-    <div className="bg-[#1D0F8DED]  md:px-20 text-white py-[64px]">
+    <div className="bg-[#1D0F8DED]  md:px-20 text-white pt-[64px]">
       <div className="block lg:flex items-center justify-between gap-12 container">
         {/* Left Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6  w-full lg:w-2/3 text-center">
@@ -103,7 +115,6 @@ const OurChatbots = () => {
 };
 
 export default OurChatbots;
-
 
 // import React from "react";
 

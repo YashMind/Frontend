@@ -13,8 +13,6 @@ import SubFooter from "./subFooter/subFooter";
 const VoiceAgent = () => {
   return (
     <div className="bg-gradient-to-b from-[#2B255D] to-[#110FB9]">
-      {/* header */}
-      <ChatbotHeader fix={false} addBgColor={false} />
       {/* banner sec */}
       <VoiceAgentBanner />
       {/* Voice Companion */}
@@ -32,8 +30,6 @@ const VoiceAgent = () => {
       <Faqs />
       {/* sub-footer */}
       <SubFooter />
-      {/* footer */}
-      <ChatbotFooter />
     </div>
   );
 };
