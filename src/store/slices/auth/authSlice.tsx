@@ -46,6 +46,9 @@ export const signUpUser = createAsyncThunk<
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
+        if (error.response.data.message === "ERR_ALREADY_EXIST") {
+          toasterError("Email Already Exists");
+        } 
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during signup");

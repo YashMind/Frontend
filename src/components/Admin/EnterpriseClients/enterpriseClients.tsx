@@ -40,7 +40,7 @@ const EnterpriseClients = () => {
     setIsMenuOpen(false);
   };
 
-    const handleOpenMenu = (itemId: any) => {
+  const handleOpenMenu = (itemId: any) => {
     setMenuOpenId(itemId);
     setIsMenuOpen(true);
   };
@@ -77,41 +77,18 @@ const EnterpriseClients = () => {
                           className="form-checkbox accent-purple-500"
                         />
                       </th>
-                      {/* <th className="p-6 flex gap-1 justify-start items-center text-white">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                          />
-                        </svg>
+                      <th className="p-6 flex gap-2 justify-start items-center text-white">
+                        <FaUser className="text-white w-4 h-4" />
                         <span>Name</span>
-                      </th> */}
-                        <th className="p-6 flex gap-2 justify-start items-center text-white">
-                                              <FaUser className="text-white w-4 h-4" />
-                                              <span>Name</span>
-                                            </th>
+                      </th>
                       <th className="p-6 text-white">Key Contact</th>
                       <th className="p-6 text-white">status</th>
-
                       <th className="p-6 text-white">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {clientUsers &&
                       clientUsers?.map((item: any, index: any) => {
-                        const timeAgo = item?.last_active
-                          ? formatDistanceToNow(new Date(item.last_active), {
-                            addSuffix: true,
-                          })
-                          : null;
                         return (
                           <tr
                             className="border-b border-[#0B1739] hover:bg-[#1A1F3C] "
@@ -121,7 +98,8 @@ const EnterpriseClients = () => {
                               <input
                                 type="checkbox"
                                 className="form-checkbox accent-purple-500"
-                                checked={item?.status === "Active"}
+                                // checked={item?.status === "Active"}
+                                checked={false}
                                 readOnly
                               />
                             </td>
@@ -212,7 +190,7 @@ const EnterpriseClients = () => {
               //     </div>
               //   </div>
               // </div>
-               <StatusActionModal
+              <StatusActionModal
                 isOpen={isMenuOpen}
                 onClose={() => setIsMenuOpen(false)}
                 onUpdateStatus={handleUpdateStatus}
