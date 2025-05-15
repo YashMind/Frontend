@@ -52,45 +52,26 @@ export const getAllUsers = createAsyncThunk<
   }
 );
 
-export const getAllSubscriptionPlans = createAsyncThunk<
-  any,
-  {
-    page?: number;
-    limit?: number;
-    search?: string;
-    sortBy?: string;
-    sortOrder?: string;
-  }
->(
+export const getAllSubscriptionPlans = createAsyncThunk<any, void>(
   "admin/getAllSubscriptionPlans",
-  async (
-    { page, limit, search, sortBy, sortOrder },
-    { dispatch, rejectWithValue }
-  ) => {
+  async (_, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const params = {
-        search: search,
-        page: page?.toString(),
-        limit: limit?.toString(),
-        sort_by: sortBy,
-        sort_order: sortOrder,
-      };
-      const response = await http.get("/admin/get-all-subscription-plans", {
-        params,
-      });
+
+      const response = await http.get("/admin/subscription-plans");
+
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         return response.data;
       } else {
-        return rejectWithValue("failed to get chats!");
+        return rejectWithValue("Failed to fetch subscription plans!");
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
-      return rejectWithValue("An error occurred during fetching chats");
+      return rejectWithValue("An error occurred while fetching subscription plans.");
     } finally {
       dispatch(stopLoadingActivity());
     }
@@ -110,10 +91,7 @@ export const createSubscriptionPlan = createAsyncThunk<any, { payload: any }>(
         dispatch(stopLoadingActivity());
         toasterSuccess("Plan created successfully!", 2000, "id")
         dispatch(
-          getAllSubscriptionPlans({
-            page: 1,
-            limit: 10,
-          })
+          getAllSubscriptionPlans()
         );
         return response.data;
       } else {
@@ -131,6 +109,29 @@ export const createSubscriptionPlan = createAsyncThunk<any, { payload: any }>(
   }
 );
 
+
+export const toggleSubscriptionPlanStatus = createAsyncThunk<
+  any,
+  { plan_id: number; is_active: boolean }
+>("admin/toggleSubscriptionPlanStatus", async ({ plan_id, is_active }, { dispatch, rejectWithValue }) => {
+  try {
+    const response = await http.post(`/admin/subscription-plans/${plan_id}/status`, {
+      is_active,
+    });
+
+    if (response.status === 200) {
+      toasterSuccess(response.data.message, 2000, "id");
+      dispatch(getAllSubscriptionPlans());
+      return response.data;
+    }
+  } catch (error: any) {
+    toasterError(error?.response?.data?.detail || "Failed to update status", 2000, "id");
+    return rejectWithValue(error.response?.data);
+  }
+});
+
+
+
 export const deleteSubscriptionsPlan = createAsyncThunk<
   any,
   { plan_id?: number }
@@ -145,10 +146,7 @@ export const deleteSubscriptionsPlan = createAsyncThunk<
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         dispatch(
-          getAllSubscriptionPlans({
-            page: 1,
-            limit: 10,
-          })
+          getAllSubscriptionPlans()
         );
         toasterSuccess("Plan deleted successfully!", 2000, "id")
         return response.data;

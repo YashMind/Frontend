@@ -20,10 +20,10 @@ interface SubscriptionPlans {
 }
 
 interface SubscriptionPlansData {
-  current_page: number;
+  current_page?: number;
   data: SubscriptionPlans[];
-  total_count: number;
-  total_pages: number;
+  total_count?: number;
+  total_pages?: number;
 }
 
 interface TokenBots {

@@ -1,39 +1,82 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import AddEditPlan from "./AddEditPlan/addEditPlan";
-import {
-  deleteSubscriptionsPlan,
-  getAllSubscriptionPlans,
-} from "@/store/slices/admin/adminSlice";
+import { deleteSubscriptionsPlan, getAllSubscriptionPlans, toggleSubscriptionPlanStatus } from "@/store/slices/admin/adminSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
+import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
+import { PiDotsThreeOutlineVertical } from "react-icons/pi";
+import Image from "next/image";
+import DropdownActionMenu from "@/components/DropdownActionMenu";
+
+type MenuItem = {
+  label: string;
+  onClick: () => void;
+  color?: "red" | "green" | "default" | "black" | "orange";
+};
+
 const SubscriptionPlans = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [sortBy, setSortBy] = useState("created_at");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<number | null>(null);
+  const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
+
   const [planData, setPlanData] = useState<any>({});
   const dispatch = useDispatch<AppDispatch>();
+
   const { subscriptionPlansData } = useSelector(
     (state: RootState) => state.admin
   );
+
   useEffect(() => {
     dispatch(
-      getAllSubscriptionPlans({
-        page,
-        limit,
-        search,
-        sortBy,
-        sortOrder,
-      })
+      getAllSubscriptionPlans()
     );
-  }, [dispatch, search, page, limit, sortBy, sortOrder]);
+  }, [dispatch]);
 
-  const deleteSubscriptionPlan = ({ id }: { id?: number }) => {
-    dispatch(deleteSubscriptionsPlan({ plan_id: id }));
+  const getMenuItems = (item: any): MenuItem[] => [
+    {
+      label: "View Details",
+      onClick: () => alert("Edit"),
+      color: "black",
+    },
+    {
+      label: "List of Invoices",
+      onClick: () => alert("List of Invoices"),
+      color: "black",
+    },
+    {
+      label: item.is_active ? "Deactivate" : "Activate",
+      onClick: () => {
+        dispatch(
+          toggleSubscriptionPlanStatus({
+            plan_id: item.id,
+            is_active: !item.is_active,
+          })
+        );
+      },
+      color: item.is_active ? "red" : "green",
+    },
+    {
+      label: "Failed Payment Retry",
+      onClick: () => alert("Failed Payment Retry"),
+      color: "orange",
+    },
+  ];
+
+
+
+  const handleDeleteClick = (item: any) => {
+    setSelectedUser(item.id);
+    setIsModalOpen(true);
   };
+
+  const handleConfirmDelete = async () => {
+    if (selectedUser) {
+      await dispatch(deleteSubscriptionsPlan({ plan_id: selectedUser }));
+    }
+  };
+
   return (
     <div>
       <div className="">
@@ -48,15 +91,6 @@ const SubscriptionPlans = () => {
                 <h1 className="text-white text-lg font-semibold mb-4 ">
                   All Plans
                 </h1>
-                <button
-                  className="cursor-pointer bg-[#18B91F] text-xs font-medium text-white px-[10px] py-[5px] mb-2  rounded hover:bg-green-600"
-                  onClick={() => {
-                    setPlanData({});
-                    setModalShow(true);
-                  }}
-                >
-                  Add Plan
-                </button>
               </div>
               <table className="min-w-full overflow-hidden text-sm">
                 <thead>
@@ -68,32 +102,25 @@ const SubscriptionPlans = () => {
                       />
                     </th>
                     <th className="p-4 text-xs font-medium flex items-center gap-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                        />
-                      </svg>
+                      <Image
+                        alt="alt"
+                        src="/images/user.png"
+                        height={10}
+                        width={10}
+                      />{" "}
                       Name
                     </th>
                     <th className="p-4 text-xs font-medium">Pricing</th>
                     <th className="p-4 text-xs font-medium">Token Limits</th>
                     <th className="p-4 text-xs font-medium">Features</th>
                     <th className="p-4 text-xs font-medium">Users Active</th>
+                    <th className="p-4 text-xs font-medium">Status</th>
                     <th className="p-4 text-xs font-medium">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="text-white">
                   {subscriptionPlansData.data &&
-                    subscriptionPlansData?.data?.map((item, index) => {
+                    subscriptionPlansData?.data?.map((item:any, index) => {
                       return (
                         <tr
                           key={index}
@@ -121,6 +148,9 @@ const SubscriptionPlans = () => {
                           <td className="p-4 text-[#AEB9E1] text-xs">
                             {item?.users_active}
                           </td>
+                          <td className="p-4 text-[#AEB9E1] text-xs">
+                            {item?.is_active ? "Active" : "Inactive"}
+                          </td>
                           <td className="p-4 relative">
                             <div className="flex gap-2 items-center">
                               <button
@@ -147,9 +177,7 @@ const SubscriptionPlans = () => {
                               </button>
                               <button
                                 className="cursor-pointer text-gray-300 hover:text-white"
-                                onClick={() =>
-                                  deleteSubscriptionPlan({ id: item?.id })
-                                }
+                                onClick={() => handleDeleteClick(item)}
                               >
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
@@ -166,6 +194,26 @@ const SubscriptionPlans = () => {
                                   />
                                 </svg>
                               </button>
+
+                              <div className="relative inline-block">
+                                <button
+                                  onClick={() =>
+                                    setOpenMenuIndex((prev) => (prev === index ? null : index))
+                                  }
+                                  className="p-1 rounded-md cursor-pointer"
+                                >
+                                  <PiDotsThreeOutlineVertical size={20} />
+                                </button>
+
+                                <DropdownActionMenu
+                                  items={getMenuItems(item)}
+                                  isOpen={openMenuIndex === index}
+                                  onClose={() => setOpenMenuIndex(null)}
+                                />
+
+                              </div>
+
+
                             </div>
                           </td>
                         </tr>
@@ -179,7 +227,15 @@ const SubscriptionPlans = () => {
               onHide={() => setModalShow(false)}
               planData={planData}
             />
+
           </div>
+          <ConfirmDeleteModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onConfirm={handleConfirmDelete}
+            title="Delete Subscription Plan"
+            message={`Are you sure to Delete the Plan ?`}
+          />
         </div>
       </div>
     </div>

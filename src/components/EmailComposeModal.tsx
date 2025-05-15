@@ -66,14 +66,14 @@ const EmailComposeModal = ({
     useEffect(() => {
         if (!show) {
             reset();
-             setSendEmail(false);
-             setExpiresAt(null);
+            setSendEmail(false);
+            setExpiresAt(null);
         }
     }, [show, reset])
 
     useEffect(() => {
         if (show && modalType === "email" && allUsersData && allUsersData?.length > 0) {
-            const defaultRecipients = allUsersData.map((user: any) => user.email); 
+            const defaultRecipients = allUsersData.map((user: any) => user.email);
             reset({ recipients: defaultRecipients });
         }
     }, [show, modalType, allUsersData, reset]);
@@ -164,8 +164,7 @@ const EmailComposeModal = ({
                                         </label>
                                     </div>
                                 )}
-
-                                {(modalType === "notice" || modalType === "email") &&sendEmail && (
+                                {((modalType === "notice" && sendEmail) || modalType === "email") && (
                                     <div>
                                         <label className="block mb-1 text-sm font-medium">Recipients</label>
                                         <Select
