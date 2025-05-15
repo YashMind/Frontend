@@ -19,13 +19,25 @@ import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
 import { FaUser } from "react-icons/fa";
 import EditPermissionModal from "@/components/EditPermissionsModal";
 import { getAllUsers } from "@/store/slices/admin/adminSlice";
+import moment from "moment";
 
 interface RoleWithPermissions {
   id: number;
   role: string;
   permissions: string[];
 }
-
+const formatAction = (action: string) => {
+  const map: Record<string, string> = {
+    update: "Admin Updated",
+    delete: "Admin Deleted",
+    create_user: "New Person Added",
+    active: "Admin Activated",
+    Suspend: "Admin Suspended",
+    modify_role: "Role Modified",
+    role_updated: "Role Updated",
+  };
+  return map[action] || "Activity";
+}
 const AdminUsersRoles = () => {
   const permissionsData = [
     {
@@ -50,22 +62,22 @@ const AdminUsersRoles = () => {
     },
   ];
 
+  const today = new Date().toISOString().split("T")[0];
 
   const dispatch = useDispatch<AppDispatch>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState<number | null>(null);
   const [modalShow, setModalShow] = useState<boolean>(false);
   const [showPermissionModal, setShowPermissionModal] = useState<boolean>(false);
   const [rolesWithPermissions, setRolesWithPermissions] = useState<RoleWithPermissions[]>(permissionsData);
 
-  const [selectedDate, setSelectedDate] = useState<any>(null);
+  const [selectedDate, setSelectedDate] = useState(today)
   const [adminUserData, setAdminUserData] = useState<any>({});
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [menuOpenId, setMenuOpenId] = useState<number | null>(null);
   const { adminUsers, adminsLogsActivityData } = useSelector(
     (state: RootState) => state.admin
   );
-
   useEffect(() => {
     dispatch(getAdminUsers());
     dispatch(getAdminsLogsActivity({ date_filter: selectedDate }));
@@ -79,7 +91,7 @@ const AdminUsersRoles = () => {
             const res = await dispatch(getRolePermissions(role.role)).unwrap();
             return { ...role, permissions: res.permissions || [] };
           } catch {
-            return role; // fallback to existing role if API fails
+            return role;
           }
         })
       );
@@ -91,13 +103,15 @@ const AdminUsersRoles = () => {
 
 
   const handleDeleteClick = (item: any) => {
-    setSelectedUser(item);
+    setSelectedUser(item.id);
     setIsModalOpen(true);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (selectedUser) {
-      dispatch(deleteAdminUser({ id: selectedUser?.id }));
+      await dispatch(deleteAdminUser({ id: selectedUser }));
+      await dispatch(getAdminsLogsActivity({ date_filter: "" }));
+
       dispatch(
         getAllUsers({
           page: 1,
@@ -107,29 +121,19 @@ const AdminUsersRoles = () => {
     }
   };
 
-  const handleUpdateStatus = (data: any) => {
-    dispatch(
+  const handleUpdateStatus = async (data: any) => {
+    await dispatch(
       updateUserByAdmin({
         payload: data,
         page: 1,
         limit: 10,
       })
     );
+    await dispatch(getAdminsLogsActivity({ date_filter: "" }));
+
     setIsMenuOpen(false);
   };
 
-  const handleDateString = (dateString: string) => {
-    const date = new Date(dateString);
-    const updatedDate = date.toLocaleString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-    return updatedDate;
-  };
 
   const handleOpenMenu = (itemId: any) => {
     setMenuOpenId(itemId);
@@ -335,113 +339,44 @@ const AdminUsersRoles = () => {
                   <input
                     type="date"
                     placeholder="dd-mm-yyyy"
+                    value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
                     className="bg-[#FFFFFF] text-sm text-[#626161] border w-55 border-gray-600 rounded px-5 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
 
-                {/* Activity Item 1 */}
-                {adminsLogsActivityData?.last_added_admin?.created_at ? (
-                  <div className="px-4 py-3 mb-2">
-                    <span>
-                      {handleDateString(
-                        adminsLogsActivityData?.last_added_admin?.created_at
-                      )}
-                    </span>
-                  </div>
-                ) : null}
-                {adminsLogsActivityData?.last_added_admin?.created_at ? (
-                  <div className="bg-[#0A1330] rounded px-4 py-3 mb-2">
-                    <div className="flex justify-between items-center text-sm text-gray-400 mb-1">
-                      <div className="text-base">
-                        <p className="font-semibold text-sm text-white">
-                          New admin added
-                        </p>
-                        <p className="text-sm text-gray-300">
-                          Created new{" "}
-                          {adminsLogsActivityData?.last_added_admin?.role}{" "}
-                          account for{" "}
-                          {adminsLogsActivityData?.last_added_admin?.email} with{" "}
-                          {adminsLogsActivityData?.last_added_admin?.role} role
-                        </p>
+                <div className="bg-[#0A0F2C] pb-12 rounded-lg text-white space-y-6 max-w-2xl mx-auto">
+                  {Array.isArray(adminsLogsActivityData) && adminsLogsActivityData.length > 0 ? (
+                    adminsLogsActivityData.map((log: any) => (
+                      <div
+                        key={log.id}
+                        className="bg-[#0F1A3D] border border-[#2A3553] rounded-lg p-2"
+                      >
+                        <div className="text-sm text-gray-400 mb-2">
+                          {moment(log.created_at).calendar(null, {
+                            sameDay: '[Today], h:mm A',
+                            lastDay: '[Yesterday], h:mm A',
+                            lastWeek: 'dddd, h:mm A',
+                            sameElse: 'MMM D, YYYY, h:mm A',
+                          })}
+                        </div>
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h3 className="font-semibold text-white capitalize">
+                              {formatAction(log.action)}
+                            </h3>
+                            <p className="text-sm text-gray-300">{log.log_activity}</p>
+                          </div>
+                          <div className="text-sm text-gray-400 mt-1">{log.username}</div>
+                        </div>
                       </div>
-                      <div>
-                        <span>
-                          {adminsLogsActivityData?.last_added_admin?.fullName}
-                        </span>
-                      </div>
+                    ))
+                  ) : (
+                    <div className="text-gray-400 text-center py-6">
+                      No Activity Yet.
                     </div>
-                  </div>
-                ) : null}
-
-                {/* Activity Item 2 */}
-                {adminsLogsActivityData?.last_role_updated?.created_at ? (
-                  <div className="px-4 py-3 mb-2">
-                    <span>
-                      {handleDateString(
-                        adminsLogsActivityData?.last_role_updated?.created_at
-                      )}
-                    </span>
-                  </div>
-                ) : null}
-                {adminsLogsActivityData?.last_role_updated?.created_at ? (
-                  <div className="bg-[#0A1330] rounded px-4 py-3 mb-2">
-                    <div className="flex justify-between items-center text-sm text-gray-400 mb-1">
-                      <div className="text-base">
-                        <p className="font-semibold text-sm text-white">
-                          Role modified
-                        </p>
-                        <p className="text-sm text-gray-300">
-                          Updated permissions for{" "}
-                          {adminsLogsActivityData?.last_role_updated?.role} role
-                          to include new permissions
-                        </p>
-                      </div>
-                      <div>
-                        <span>
-                          {adminsLogsActivityData?.last_role_updated?.fullName}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
-
-                {/* Activity Item 3 */}
-                {adminsLogsActivityData?.last_suspended_admin?.created_at ? (
-                  <div className="px-4 py-3 mb-2">
-                    <span>
-                      {handleDateString(
-                        adminsLogsActivityData?.last_suspended_admin?.created_at
-                      )}
-                    </span>
-                  </div>
-                ) : null}
-                {adminsLogsActivityData?.last_suspended_admin?.created_at ? (
-                  <div className="bg-[#0A1330]  rounded px-4 py-3 mb-8">
-                    <div className="flex justify-between items-center text-sm text-gray-400 mb-1">
-                      <div className="text-base">
-                        <p className="font-semibold text-sm text-white">
-                          Admin deactivated
-                        </p>
-                        <p className="text-sm text-gray-300">
-                          Deactivated{" "}
-                          {adminsLogsActivityData?.last_suspended_admin?.role}{" "}
-                          account for{" "}
-                          {adminsLogsActivityData?.last_suspended_admin?.status}{" "}
-                          due to departure
-                        </p>
-                      </div>
-                      <div>
-                        <span>
-                          {
-                            adminsLogsActivityData?.last_suspended_admin
-                              ?.fullName
-                          }
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -457,14 +392,13 @@ const AdminUsersRoles = () => {
             adminUserData={adminUserData}
             roleData={adminUserData?.role}
             onUpdatePermissions={(updatedRole) => {
-              setRolesWithPermissions((prev:any) =>
-                prev.map((r:any) =>
+              setRolesWithPermissions((prev: any) =>
+                prev.map((r: any) =>
                   r.id === updatedRole.id ? { ...r, permissions: updatedRole.permissions } : r
                 )
               );
             }}
           />
-
         </div>
       </div>
     </div>

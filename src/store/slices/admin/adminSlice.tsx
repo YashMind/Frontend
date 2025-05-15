@@ -349,15 +349,15 @@ export const getClientUsers = createAsyncThunk<any, void>(
 );
 
 export const getAdminsLogsActivity = createAsyncThunk<
-  any,
-  { date_filter: any }
+  AdminLogsActivity[],
+  { date_filter?: any }
 >(
   "admin/getAdminsLogsActivity",
-  async ({ date_filter }, { dispatch, rejectWithValue }) => {
+  async ({ date_filter="" }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
       const response = await http.get(
-        `/admin/get-admins-logs-activity?date_filter=${date_filter ?? ""}`
+        `/activity/activity-logs?start_date=${date_filter ?? ""}`
       );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
@@ -627,7 +627,7 @@ export const updateRoleAdmin = createAsyncThunk<any, { payload: any }>(
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         // dispatch(getAdminUsers());
-        toast.success("Role updated successfully!");
+        toast.success("Permissions updated successfully!");
         return response.data;
       } else {
         return rejectWithValue("Profile update failed");
@@ -860,7 +860,7 @@ const initialState = {
   productMonitoringData: {} as ProductMonitoringData,
   adminUsers: [] as AdminUsersData[],
   clientUsers:[] as ClientUsersData [],
-  adminsLogsActivityData: {} as AdminLogsActivity,
+  adminsLogsActivityData: {} as AdminLogsActivity[],
   clientLogsActivityData: {} as ClientLogsActivity,
   paymentGatewayData: [] as PaymentsGateway[],
   rolePermissions :[] as RolePermissions[]
