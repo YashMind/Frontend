@@ -9,12 +9,14 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import AddEditProduct from "./AddEditProduct/addEditProduct";
+
 const ProductMonitoring = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const { tokenBotsData, productMonitoringData } = useSelector(
     (state: RootState) => state.admin
   );
+
   useEffect(() => {
     dispatch(
       getAllTokenBots({
@@ -46,9 +48,7 @@ const ProductMonitoring = () => {
       <div className="">
         <div className="bg-[#081028] text-white min-h-screen flex gap-[32px]">
           <div className="dashboard-right flex-1 mr-[30px]">
-            {/* Product Monitoring Start */}
             <div className="  text-white p-6 space-y-10 ">
-              {/* Product Monitoring */}
               <div>
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-2xl font-semibold">Product Monitoring</h2>
@@ -59,39 +59,12 @@ const ProductMonitoring = () => {
                     <div className="text-base text-gray-300">
                       Featuring Toggles
                     </div>
-                    <button
-                      className="bg-green-500 text-sm text-white px-4 py-1 rounded hover:bg-green-600"
-                      onClick={() => setModalShow(true)}
-                    >
-                      Add New Product
-                    </button>
                   </div>
-                  {/* Item Row */}
+
                   <div className="">
-                    {/* Name Row */}
                     <div className="flex items-center justify-between px-8 py-5">
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked
-                          className="accent-fuchsia-500 w-4 h-4"
-                          readOnly
-                        />
+                      <div className="flex items-center gap-2">                     
                         <span className="text-xs flex gap-1 items-center justify-start">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-4"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                            />
-                          </svg>
                           Name
                         </span>
                       </div>
