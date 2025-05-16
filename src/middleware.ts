@@ -21,6 +21,8 @@ export default function middleware(request: NextRequest) {
     "/details/llm",
     "/details/terms&condition",
     "/details/voice-agent",
+    "/details/contact-us",
+    "/details/refund-and-cancellation-policy",
   ];
   const knownRoutes = [
     "/profile",

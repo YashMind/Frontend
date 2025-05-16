@@ -5,7 +5,7 @@ import Link from "next/link";
 const HomeFooter = () => {
   return (
     <footer
-      className="text-white px-4 sm:px-6 md:px-12 py-10"
+      className="text-white px-4 sm:px-6 md:px-12 pt-10"
       style={{
         backgroundImage:
           "linear-gradient(89.97deg, #002b58 -37.97%, #3b0459 99.97%), linear-gradient(#1f064a33 0%, #0003 100%)",
@@ -68,15 +68,15 @@ const HomeFooter = () => {
             <li>
               <Link href="/details/about-us">About Us</Link>
             </li>
-            {/* <li>
-              <Link href="/details/careers">Careers</Link>
-            </li> */}
             <li>
               <Link href="/details/faq">FAQs</Link>
+              <li>
+                <Link href="/details/refund-and-cancellation-policy">Refund and Cancellation policy</Link>
+              </li>
             </li>
-            {/* <li>
-              <Link href="/details/teams">Teams</Link>
-            </li> */}
+            <li>
+              <Link href="/details/contact-us">Contact us</Link>
+            </li>
           </ul>
         </div>
 
@@ -129,7 +129,7 @@ const HomeFooter = () => {
               <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
                 <path d="..." stroke="white" />
               </svg>
-              <p>yashraa123@gmail.com</p>
+              <p>support@yashmind.in</p>
             </div>
 
             {/* Phone */}
@@ -137,7 +137,7 @@ const HomeFooter = () => {
               <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
                 <path d="..." stroke="white" />
               </svg>
-              <p>+1 45676483032</p>
+              <p>+91-8623893563</p>
             </div>
           </div>
         </div>
@@ -145,8 +145,9 @@ const HomeFooter = () => {
 
       {/* Bottom Text */}
       <div className="max-w-7xl mx-auto mt-10 text-center border-t border-white pt-6">
-        <p className="font-light text-xs">© 2025 All Rights Reserved</p>
+        <p className="font-light text-xs left-1/2">Copyright 2025 © YASHRAA TECHNOLOGIES PRIVATE LIMITED. All Rights Reserved.</p>
       </div>
+      <p className="font-light text-xs py-1 pt-10">"YASHRAA" {"\t \t"} is the registered trademark of the YASHRAA TECHNOLOGIES PRIVATE LIMITED.</p >
     </footer>
   );
 };
