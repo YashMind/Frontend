@@ -104,7 +104,7 @@ const ContactUs = () => {
                 <div className="ml-3">
                   <h3 className="text-lg font-medium text-gray-900">Address</h3>
                   <p className="mt-1 text-gray-600">
-                    YASHMIND, GLOBAL TRADE CENTRE,
+                    YASHRAA, GLOBAL TRADE CENTRE,
                     <br />
                     KHAMLA ROAD, DEO NAGAR,
                     <br />
