@@ -8,6 +8,7 @@ import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import StatusActionModal from "@/components/StatusActionModal";
 import { FaUser } from "react-icons/fa";
+import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
 
 const EnterpriseClients = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,6 +17,8 @@ const EnterpriseClients = () => {
   const [selectedDate, setSelectedDate] = useState<any>(null);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [menuOpenId, setMenuOpenId] = useState<any>({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<number | null>(null);
 
   const { clientUsers, clientLogsActivityData } = useSelector(
     (state: RootState) => state.admin
@@ -26,9 +29,20 @@ const EnterpriseClients = () => {
     dispatch(getClientLogsActivity({ date_filter: selectedDate }));
   }, [dispatch, selectedDate]);
 
-  const handleDeleteClientUser = (item: AdminSignUpForm) => {
-    dispatch(deleteClientUser({ id: item?.id }));
+
+
+  const handleDeleteClick = (item: any) => {
+    setSelectedUser(item.id);
+    setIsModalOpen(true);
   };
+
+  const handleConfirmDelete = async () => {
+    if (selectedUser) {
+      await dispatch(deleteClientUser({ id: selectedUser }));
+     
+    }
+  };
+
   const handleUpdateStatus = (data: any) => {
     dispatch(
       updateClientByAdmin({
@@ -128,10 +142,9 @@ const EnterpriseClients = () => {
 
                                 <MdDeleteForever
                                   size={20}
+                                  onClick={() => handleDeleteClick(item)}
                                   className="cursor-pointer"
-                                  onClick={() => {
-                                    handleDeleteClientUser(item);
-                                  }}
+
                                 />
                                 {/* dropdown start */}
                                 <PiDotsThreeOutlineVerticalFill
@@ -150,46 +163,15 @@ const EnterpriseClients = () => {
                 </table>
               </div>
             </div>
+
+            <ConfirmDeleteModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              onConfirm={handleConfirmDelete}
+              title="Delete Client User?"
+              message={`Are you sure you want to delete ?`}
+            />
             {isMenuOpen && menuOpenId && (
-              // <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] bg-opacity-50 flex justify-center items-center z-50">
-              //   <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[400px] max-w-full shadow-5xl relative">
-              //     <button
-              //       onClick={() => setIsMenuOpen(false)}
-              //       className="cursor-pointer absolute top-4 right-4 text-white text-2xl font-bold"
-              //     >
-              //       &times;
-              //     </button>
-              //     <div className="right-0 bg-white text-black rounded shadow-lg group-hover:block z-10">
-              //       <ul className="text-sm">
-              //         <li
-              //           className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-red-600"
-              //           onClick={() =>
-              //             handleUpdateStatus({
-              //               id: menuOpenId?.id,
-              //               status: "Suspend",
-              //             })
-              //           }
-              //         >
-              //           Suspend
-              //         </li>
-              //         <li
-              //           className="px-4 py-2 hover:bg-gray-200 cursor-pointer text-green-600"
-              //           onClick={() =>
-              //             handleUpdateStatus({
-              //               id: menuOpenId?.id,
-              //               status: "active",
-              //             })
-              //           }
-              //         >
-              //           Activate
-              //         </li>
-              //         <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
-              //           Reset token quote
-              //         </li>
-              //       </ul>
-              //     </div>
-              //   </div>
-              // </div>
               <StatusActionModal
                 isOpen={isMenuOpen}
                 onClose={() => setIsMenuOpen(false)}
@@ -197,6 +179,7 @@ const EnterpriseClients = () => {
                 itemId={menuOpenId}
               />
             )}
+
             {/* token rate */}
             <div className="px-6 ">
               {/* Custom Token Rate Section */}
