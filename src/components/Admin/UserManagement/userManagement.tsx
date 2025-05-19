@@ -48,7 +48,7 @@ const UserManagement = () => {
     setIsMenuOpen(false);
   };
 
-    const handleOpenMenu = (itemId: any) => {
+  const handleOpenMenu = (itemId: any) => {
     setMenuOpenId(itemId);
     setIsMenuOpen(true);
   };
@@ -72,19 +72,13 @@ const UserManagement = () => {
             <table className="min-w-full overflow-hidden text-sm">
               <thead>
                 <tr className="text-left text-gray-300 ">
-                  <th className="p-4">
-                    <input
-                      type="checkbox"
-                      className="appearance-none w-4 h-4 bg-[#CB3CFF] form-checkbox rounded-sm focus:outline-none"
-                    />
-                  </th>
                   <th className="p-4 text-xs font-medium flex items-center gap-1">
-                   <Image
-                                                alt="alt"
-                                                src="/images/user.png"
-                                                height={10}
-                                                width={10}
-                                              />{" "}
+                    <Image
+                      alt="alt"
+                      src="/images/user.png"
+                      height={10}
+                      width={10}
+                    />{" "}
                     Name
                   </th>
                   <th className="p-4 text-xs font-medium">Email</th>
@@ -102,14 +96,7 @@ const UserManagement = () => {
                       <tr
                         className="bg-[#0A1330] hover:bg-[#1A2C56] relative"
                         key={index}
-                      >
-                        <td className="p-4">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox appearance-none w-4 h-4  rounded-sm bg-[#CB3CFF]"
-                            readOnly
-                          />
-                        </td>
+                      >                  
                         <td className="p-4 flex items-center text-xs gap-2">
                           <img src="/images/Avatar Circle.png" alt="" />
                           {item?.fullName}
@@ -147,8 +134,8 @@ const UserManagement = () => {
                               size={20}
                               className="cursor-pointer"
                               onClick={() => {
-                                    handleOpenMenu(item?.id)
-                                  }}
+                                handleOpenMenu(item?.id)
+                              }}
                             />
                           </div>
                         </td>
@@ -199,12 +186,12 @@ const UserManagement = () => {
             //   </div>
             // </div>
 
-             <StatusActionModal
-                isOpen={isMenuOpen}
-                onClose={() => setIsMenuOpen(false)}
-                onUpdateStatus={handleUpdateStatus}
-                itemId={menuOpenId}
-              />
+            <StatusActionModal
+              isOpen={isMenuOpen}
+              onClose={() => setIsMenuOpen(false)}
+              onUpdateStatus={handleUpdateStatus}
+              itemId={menuOpenId}
+            />
           )}
 
           <EditUserModal
@@ -240,8 +227,8 @@ const UserManagement = () => {
             {allUsersData?.total_pages > 1 ? (
               <button
                 className={`w-6 h-6 ${allUsersData?.total_pages === page
-                    ? "bg-[#624DE3]"
-                    : "bg-gray-200"
+                  ? "bg-[#624DE3]"
+                  : "bg-gray-200"
                   } text-black rounded-[7px] text-sm`}
               >
                 {allUsersData?.total_pages}

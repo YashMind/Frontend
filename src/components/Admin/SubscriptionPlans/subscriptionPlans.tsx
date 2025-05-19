@@ -95,20 +95,8 @@ const SubscriptionPlans = () => {
               <table className="min-w-full overflow-hidden text-sm">
                 <thead>
                   <tr className="text-left text-gray-300 ">
-                    <th className="p-4">
-                      <input
-                        type="checkbox"
-                        className="appearance-none w-4 h-4 bg-[#CB3CFF] form-checkbox rounded-sm focus:outline-none"
-                      />
-                    </th>
                     <th className="p-4 text-xs font-medium flex items-center gap-1">
-                      <Image
-                        alt="alt"
-                        src="/images/user.png"
-                        height={10}
-                        width={10}
-                      />{" "}
-                      Name
+                       Plan Name
                     </th>
                     <th className="p-4 text-xs font-medium">Pricing</th>
                     <th className="p-4 text-xs font-medium">Token Limits</th>
@@ -125,14 +113,7 @@ const SubscriptionPlans = () => {
                         <tr
                           key={index}
                           className="bg-[#0A1330] hover:bg-[#1A2C56]"
-                        >
-                          <td className="p-4">
-                            <input
-                              type="checkbox"
-                              className="form-checkbox appearance-none w-4 h-4  rounded-sm bg-[#CB3CFF]"
-                              readOnly
-                            />
-                          </td>
+                        >                        
                           <td className="p-4 flex items-center text-xs gap-2">
                             {item?.name}
                           </td>
