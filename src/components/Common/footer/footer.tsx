@@ -71,7 +71,9 @@ const HomeFooter = () => {
             <li>
               <Link href="/details/faq">FAQs</Link>
               <li>
-                <Link href="/details/refund-and-cancellation-policy">Refund and Cancellation policy</Link>
+                <Link href="/details/refund-and-cancellation-policy">
+                  Refund and Cancellation policy
+                </Link>
               </li>
             </li>
             <li>
@@ -137,7 +139,7 @@ const HomeFooter = () => {
               <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
                 <path d="..." stroke="white" />
               </svg>
-              <p>+91-8623893563</p>
+              <p>+91-9529786418</p>
             </div>
           </div>
         </div>
@@ -145,9 +147,15 @@ const HomeFooter = () => {
 
       {/* Bottom Text */}
       <div className="max-w-7xl mx-auto mt-10 text-center border-t border-white pt-6">
-        <p className="font-light text-xs left-1/2">Copyright 2025 © YASHRAA TECHNOLOGIES PRIVATE LIMITED. All Rights Reserved.</p>
+        <p className="font-light text-xs left-1/2">
+          Copyright 2025 © YASHRAA TECHNOLOGIES PRIVATE LIMITED. All Rights
+          Reserved.
+        </p>
       </div>
-      <p className="font-light text-xs py-1 pt-10">"YASHRAA" {"\t \t"} is the registered trademark of the YASHRAA TECHNOLOGIES PRIVATE LIMITED.</p >
+      <p className="font-light text-xs py-1 pt-10">
+        "YASHRAA" {"\t \t"} is the registered trademark of the YASHRAA
+        TECHNOLOGIES PRIVATE LIMITED.
+      </p>
     </footer>
   );
 };
