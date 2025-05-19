@@ -23,6 +23,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
   useEffect(() => {
     if (botId && !chatbotSetting) dispatch(fetchChatbotSettings(botId));
   }, []);
+
   const { register, handleSubmit, setValue, watch } = useForm<IFormInput>({
     defaultValues: {
       title_value: chatbotSetting?.title_value || "",
@@ -454,11 +455,11 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
               <button
                 type="button"
                 onClick={(e: any) => handleResetAppearance(e)}
-                className="bg-[#340555] text-white px-4 py-2 text-base  font-semibold rounded-[10px]"
+                className=" cursor-pointer bg-[#340555] text-white px-4 py-2 text-base  font-semibold rounded-[10px]"
               >
                 Reset Appearence
               </button>
-              <button className="bg-[#01BEED] text-white px-4 py-2 text-base  font-semibold rounded-[10px]">
+              <button className=" cursor-pointer bg-[#01BEED] text-white px-4 py-2 text-base  font-semibold rounded-[10px]">
                 Save Changes
               </button>
             </div>

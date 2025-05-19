@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
 import { GrOverview } from "react-icons/gr";
 import { HiUsers } from "react-icons/hi2";
@@ -16,218 +16,110 @@ import { IoMdPricetags } from "react-icons/io";
 import { IoSettingsSharp } from "react-icons/io5";
 import { SiEnterprisedb } from "react-icons/si";
 import { GiSatelliteCommunication } from "react-icons/gi";
-import { getMeData, logoutUser } from "@/store/slices/auth/authSlice";
+import { logoutUser } from "@/store/slices/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import { useRouter } from "next/navigation";
+import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
+
+
+const menuItems = [
+  { label: "Dashboard", path: "/admin/dashboard", icon: <RiDashboardHorizontalFill size={25} />, key: "dashboard" },
+  { label: "Overview", path: "/admin/overview", icon: <GrOverview size={25} />, key: "overview" },
+  { label: "Users Management", path: "/admin/users-management", icon: <HiUsers size={25} />, key: "users-management" },
+  { label: "Subscription Plans", path: "/admin/subscription-plans", icon: <MdOutlineSubscriptions size={25} />, key: "subscription-plans" },
+  { label: "Token Analytics", path: "/admin/token-analytics", icon: <IoAnalyticsSharp size={25} />, key: "token-analytics" },
+  { label: "Product Monitoring", path: "/admin/product-monitoring", icon: <FaWatchmanMonitoring size={25} />, key: "product-monitoring" },
+  { label: "Logs & Activity", path: "/admin/logs-activity", icon: <LuActivity size={25} />, key: "logs-activity" },
+  { label: "Enterprise Clients", path: "/admin/enterprise-clients", icon: <SiEnterprisedb size={25} />, key: "enterprise-clients" },
+  { label: "Billing Settings", path: "/admin/billing-settings", icon: <MdSettingsAccessibility size={25} />, key: "billing-settings" },
+  { label: "Admin Users & Roles", path: "/admin/users-roles", icon: <FaUsers size={25} />, key: "users-roles" },
+  { label: "Support & Communication", path: "/admin/support-communication", icon: <GiSatelliteCommunication size={25} />, key: "support-communication" },
+  { label: "Pricing", path: "/admin/pricing", icon: <IoMdPricetags size={25} />, key: "pricing", hasArrow: true },
+];
 
 const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const handleLogOut = () => {
-    dispatch(logoutUser({ router }));
+
+
+  const handleConfirmDelete = async () => {
+      await dispatch(logoutUser({ router }));
+
   };
+
+
   return (
-    <aside className="w-[294px] bg-[#081028]   flex flex-col gap-2 rounded-tl-[15px] rounded-bl-[15px]">
-      <h2 className="text-xl font-semibold text-center my-[40px]">
-        <Image
-          alt="alt"
-          src="/images/yash-removebg-preview.png"
-          height={150}
-          width={150}
-          className="ml-10"
-        />
-      </h2>
-      {/* <div className="relative px-4">
-        <Image
-          className="absolute left-8 top-1/2 transform -translate-y-1/2"
-          alt="search icon"
-          src="/images/search2.png"
-          height={16}
-          width={16}
-        />
-        <input
-          type="text"
-          placeholder="Search for..."
-          className="w-full py-[15px] pl-10 pr-3 rounded-[26px] bg-[#0B1739] placeholder-[#AEB9E1] text-sm font-medium focus:outline-none text-[#AEB9E1] border border-[#343B4F] shadow-[0px_2px_4px_0px_#01051133]"
-        />
-      </div> */}
-
+    <aside className="w-[294px] bg-[#081028] flex flex-col gap-2 rounded-tl-[15px] rounded-bl-[15px]">
+      <div className="text-center my-[40px]">
+        <Image alt="Logo" src="/images/yash-removebg-preview.png" height={150} width={150} className="ml-10" />
+      </div>
+      <ConfirmDeleteModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Log out Account?"
+        message={`Are you sure you want to Logout your Account?`}
+      />
       <nav className="flex flex-col gap-2 px-4 mt-[30px] shadow-2xl shadow-[#0105114D] rounded-md">
-        <Link
-          href="/admin/dashboard"
-          className={`flex items-center text-sm font-medium gap-2 px-3 py-[10px]  ${
-            adminPage === "dashboard" ? "text-[#CB3CFF]" : ""
-          } rounded-[15px]`}
-        >
-          <RiDashboardHorizontalFill size={25} />
+        {menuItems.map(({ label, path, icon, key, hasArrow }) => (
+          <Link
+            href={path}
+            key={key}
+            className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-sm ${adminPage === key ? "text-[#CB3CFF]" : "text-[#767F9C]"
+              }`}
+          >
+            <div className="flex items-center gap-3">
+              {icon}
+              <span>{label}</span>
+            </div>
+            {hasArrow && (
+              <Image alt="arrow" src="/images/right-icon.png" height={12} width={12} />
+            )}
+          </Link>
+        ))}
 
-          <span className="ml-4">Dashboard</span>
-        </Link>
-        <Link
-          href="/admin/overview"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-sm ${
-            adminPage === "overview" ? "text-[#CB3CFF]" : ""
-          }  text-[#767F9C]`}
-        >
-          <GrOverview size={25} />
-          <span className="ml-4">Overview</span>
-        </Link>
-        <Link
-          href="/admin/users-management"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-sm  ${
-            adminPage === "users-management" ? "text-[#CB3CFF]" : ""
-          }`}
-        >
-          <HiUsers size={25} />
-          <span className="ml-4">Users Management</span>
-        </Link>
-        <Link
-          href="/admin/subscription-plans"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "subscription-plans" ? "text-[#CB3CFF]" : ""
-          }  text-sm text-[#767F9C]`}
-        >
-          <MdOutlineSubscriptions size={25} />
-          <span className="ml-4">Subscription Plans</span>
-        </Link>
-        <Link
-          href="/admin/token-analytics"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "token-analytics" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <IoAnalyticsSharp size={25} />
-
-          <span className="ml-4">Token Analytics</span>
-        </Link>
-        <Link
-          href="/admin/product-monitoring"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "product-monitoring" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <FaWatchmanMonitoring size={25} />
-          <span className="ml-4">Product Monitoring</span>
-        </Link>
-
-        <Link
-          href="/admin/logs-activity"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "logs-activity" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <LuActivity size={25} />
-          <span className="ml-4">Logs & Activity</span>
-        </Link>
-
-        <Link
-          href="/admin/enterprise-clients"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "enterprise-clients" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <SiEnterprisedb size={25} />
-          <span className="ml-4">Enterprise Clients</span>
-        </Link>
-        <Link
-          href="/admin/billing-settings"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "billing-settings" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <MdSettingsAccessibility size={25} />
-
-          <span className="ml-4">Billing Settings</span>
-        </Link>
-        <Link
-          href="/admin/users-roles"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "users-roles" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <FaUsers size={25} />
-          <span className="ml-4">Admin Users & Roles</span>
-        </Link>
-
-        <Link
-          href="/admin/support-communication"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "support-communication" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <GiSatelliteCommunication size={25} />
-          <span className="ml-4">Support & Communication</span>
-        </Link>
-
-        <Link
-          href="/auth/signin"
+        <button
+          onClick={()=> setIsModalOpen(true)}
           className="flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-[#767F9C] text-sm"
-          onClick={() => handleLogOut()}
         >
-          <div className="flex gap-3">
+          <div className="flex items-center gap-3">
             <LuLogOut size={25} />
-            <span className="ml-4">Logout</span>
+            <span>Logout</span>
           </div>
-
-          <Image
-            alt="alt"
-            src="/images/right-icon.png"
-            height={12}
-            width={12}
-          />
-        </Link>
-        <Link
-          href="/admin/pricing"
-          className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "pricing" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <div className="flex gap-3">
-            <IoMdPricetags size={25} />
-            <span className="ml-4">Pricing</span>
-          </div>
-
-          <Image
-            alt="alt"
-            src="/images/right-icon.png"
-            height={12}
-            width={12}
-          />
-        </Link>
+          <Image alt="arrow" src="/images/right-icon.png" height={12} width={12} />
+        </button>
       </nav>
-      <hr className="border-b border-[#FFFFFF]"></hr>
+
+      <hr className="border-b border-[#FFFFFF]" />
 
       <Link
         href="/admin/settings"
-        className={`flex items-center justify-between gap-2 px-3 ml-4 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-          adminPage === "settings" ? "text-[#CB3CFF]" : ""
-        } text-[#767F9C] text-sm`}
+        className={`flex items-center justify-between gap-2 px-3 ml-4 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-sm ${adminPage === "settings" ? "text-[#CB3CFF]" : "text-[#767F9C]"
+          }`}
       >
-        <div className="flex gap-3">
+        <div className="flex items-center gap-3">
           <IoSettingsSharp size={25} />
-          <span className="ml-4">Settings</span>
+          <span>Settings</span>
         </div>
-
-        <Image alt="alt" src="/images/right-icon.png" height={12} width={12} />
+        <Image alt="arrow" src="/images/right-icon.png" height={12} width={12} />
       </Link>
 
       <Link
         href="/admin/account-settings"
-        className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-          adminPage === "account-settings" ? "text-[#CB3CFF]" : ""
-        } text-white text-sm`}
+        className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-sm ${adminPage === "account-settings" ? "text-[#CB3CFF]" : "text-white"
+          }`}
       >
-        <div className="flex gap-3">
-          {" "}
-          <Image alt="alt" src="/images/men.png" height={32} width={32} />
+        <div className="flex items-center gap-3">
+          <Image alt="User" src="/images/men.png" height={32} width={32} />
           <span>
-            John Carter <br></br>{" "}
-            <span className="text-[#AEB9E1] text-xs ">Account settings</span>
+            John Carter <br />
+            <span className="text-[#AEB9E1] text-xs">Account settings</span>
           </span>
         </div>
-
-        <Image alt="alt" src="/images/right-icon.png" height={12} width={12} />
+        <Image alt="arrow" src="/images/right-icon.png" height={12} width={12} />
       </Link>
     </aside>
   );

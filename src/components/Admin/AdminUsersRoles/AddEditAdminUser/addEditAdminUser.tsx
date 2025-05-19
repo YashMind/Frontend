@@ -136,7 +136,7 @@ const onSubmit = async (data: AdminSignUpForm) => {
     setValue("role", adminUserData?.role);
     setValue("status", adminUserData?.status || "Active");
     setValue("id", adminUserData?.id);
-    setValue("role_permissions", adminUserData?.role_permissions || []);
+    // setValue("role_permissions", adminUserData?.role_permissions || []);
   }, [reset, adminUserData?.id, show]);
 
   return show ? (

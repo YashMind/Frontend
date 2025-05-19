@@ -1,31 +1,30 @@
-import React, { useEffect, useState } from "react";
-import AddEditAdminUserModal from "../AdminUsersRoles/AddEditAdminUser/addEditAdminUser";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/store/store";
-import { deleteClientUser, getClientLogsActivity, getClientUsers, updateClientByAdmin, updateTokenStatus, getAllVolumnDiscounts } from "@/store/slices/admin/adminSlice";
-import { MdDeleteForever, MdEdit } from "react-icons/md";
-import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
-import StatusActionModal from "@/components/StatusActionModal";
 import { FaUser } from "react-icons/fa";
+import { SiTicktick } from "react-icons/si";
+import React, { useEffect, useState } from "react";
+import { AppDispatch, RootState } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { MdDeleteForever, MdEdit } from "react-icons/md";
+import StatusActionModal from "@/components/StatusActionModal";
+import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
+import AddEditAdminUserModal from "../AdminUsersRoles/AddEditAdminUser/addEditAdminUser";
+import { deleteClientUser, getClientLogsActivity, getClientUsers, updateClientByAdmin, updateTokenStatus, getAllVolumnDiscounts } from "@/store/slices/admin/adminSlice";
 
 const EnterpriseClients = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [ClientData, setClientData] = useState<any>({});
-  const [editUserId, setEditUserId] = useState<number | null>(null);
-  const [rates, setRates] = useState<{ [key: number]: string }>({});
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalShow, setModalShow] = useState<boolean>(false);
-  const [selectedDate, setSelectedDate] = useState<any>(null);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [menuOpenId, setMenuOpenId] = useState<any>({});
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [ClientData, setClientData] = useState<any>({});
+  const [rates, setRates] = useState<{ [key: number]: string }>({});
+  const [selectedDate, setSelectedDate] = useState<any>(null);
+  const [editUserId, setEditUserId] = useState<number | null>(null);
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
-  const discounts = useSelector((state: any) => state.admin.data)
 
-  const { clientUsers, clientLogsActivityData } = useSelector(
-    (state: RootState) => state.admin
-  );
+  const discounts = useSelector((state: any) => state.admin.data)
+  const { clientUsers } = useSelector((state: RootState) => state.admin);
+
   useEffect(() => {
     dispatch(getAllVolumnDiscounts());
   }, [dispatch]);
@@ -35,8 +34,6 @@ const EnterpriseClients = () => {
     dispatch(getClientLogsActivity({ date_filter: selectedDate }));
   }, [dispatch, selectedDate]);
 
-
-
   const handleDeleteClick = (item: any) => {
     setSelectedUser(item.id);
     setIsModalOpen(true);
@@ -45,17 +42,12 @@ const EnterpriseClients = () => {
   const handleConfirmDelete = async () => {
     if (selectedUser) {
       await dispatch(deleteClientUser({ id: selectedUser }));
-
     }
   };
 
   const handleUpdateStatus = (data: any) => {
     dispatch(
-      updateClientByAdmin({
-        payload: data,
-        page: 1,
-        limit: 10,
-      })
+      updateClientByAdmin({payload: data,page: 1,limit: 10})
     );
     setIsMenuOpen(false);
   };
@@ -64,6 +56,7 @@ const EnterpriseClients = () => {
     setMenuOpenId(itemId);
     setIsMenuOpen(true);
   };
+
   const handleEdit = (userId: number, currentRate: string) => {
     setEditUserId(userId);
     setRates((prevRates) => ({
@@ -72,15 +65,12 @@ const EnterpriseClients = () => {
     }));
   };
 
-
-
   const handleSave = async (userId: number) => {
     const rateString = rates[userId];
     const rateNumber = Number(rateString) || 0;
-
     try {
       await dispatch(updateTokenStatus({ id: userId, base_rate_per_token: rateNumber })).unwrap();
-      setEditUserId(null); // ✅ Clear correct state
+      setEditUserId(null); 
     } catch (error) {
       console.error(`Failed to save rate for user ${userId}`, error);
     }
@@ -111,7 +101,6 @@ const EnterpriseClients = () => {
     <div>
       <div className="">
         <div className="bg-[#081028] text-white min-h-screen flex gap-[32px]">
-
           <div className="dashboard-right flex-1 mr-[30px]">
             {/* Enterprise Clients */}
             <div className="p-6">
@@ -255,7 +244,7 @@ const EnterpriseClients = () => {
                                 className="cursor-pointer text-blue-400 text-xs underline"
                                 onClick={() => handleSave(item.id)}
                               >
-                                Save
+                                <SiTicktick size={18} />
                               </button>
                             </div>
                           ) : (
@@ -267,16 +256,14 @@ const EnterpriseClients = () => {
                                 className="cursor-pointer text-blue-400 text-xs underline"
                                 onClick={() => handleEdit(item.id, item.base_rate_per_token)}
                               >
-                                Edit
+                                <MdEdit size={18} />
                               </button>
                             </div>
                           )}
                         </div>
                       ))}
-
                   </div>
                 </div>
-
 
                 {/* Right Table */}
                 <div className="w-full md:w-1/2 border border-gray-700 rounded-lg">
@@ -290,7 +277,7 @@ const EnterpriseClients = () => {
                       <span className="text-gray-300">Discount</span>
                     </div>
 
-                    {discounts.map((item:any, index:any) => (
+                    {discounts.map((item: any, index: any) => (
                       <div
                         key={item.id}
                         className={`flex justify-between px-4 py-5 ${index % 2 === 0 ? "bg-[#0A1330]" : ""

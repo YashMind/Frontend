@@ -29,7 +29,7 @@ const StatCard: React.FC<StatCardProps> = ({
   gradientTo = "#2C1E5A",
 }) => (
   <div
-    className={`w-60 rounded-xl p-4 text-white shadow-lg`}
+    className={`w-74 rounded-xl p-4 text-white shadow-lg`}
     style={{ background: `linear-gradient(to bottom, ${gradientFrom}, ${gradientTo})` }}
   >
     <div className="flex items-center justify-center mb-4">
