@@ -177,21 +177,12 @@ export const getAllTokenBots = createAsyncThunk<
 >(
   "admin/getAllTokenBots",
   async (
-    { page, limit, search, sortBy, sortOrder },
+    { },
     { dispatch, rejectWithValue }
   ) => {
     try {
       dispatch(startLoadingActivity());
-      const params = {
-        search: search,
-        page: page?.toString(),
-        limit: limit?.toString(),
-        sort_by: sortBy,
-        sort_order: sortOrder,
-      };
-      const response = await http.get("/admin/get-all-token-bots", {
-        params,
-      });
+      const response = await http.get("/admin/tools", {});
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         return response.data;
@@ -351,7 +342,7 @@ export const getAdminsLogsActivity = createAsyncThunk<
   { date_filter?: any }
 >(
   "admin/getAdminsLogsActivity",
-  async ({ date_filter="" }, { dispatch, rejectWithValue }) => {
+  async ({ date_filter = "" }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
       const response = await http.get(
@@ -474,7 +465,7 @@ export const updateClientByAdmin = createAsyncThunk<
       const response = await http.put("/admin/update-client-admin", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("Client updated successfully!",2000,"id");
+        toasterSuccess("Client updated successfully!", 2000, "id");
         dispatch(
           getAllUsers({
             page,
@@ -501,20 +492,17 @@ export const updateClientByAdmin = createAsyncThunk<
   }
 );
 
-export const updateBotToken = createAsyncThunk<any, { payload: any }>(
+export const updateTools = createAsyncThunk<any, { id: number; status: string }>(
   "admin/updateBotToken",
-  async ({ payload }, { dispatch, rejectWithValue }) => {
+  async ( { id, status }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await http.put("/admin/update-bot-token", payload);
+      const response = await http.put(`/admin/tool/${id}/status`, {status});
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("chatbot updated successfully!", 2000, "id")
+        toasterSuccess("Tools Status updated successfully!", 2000, "id")
         dispatch(
-          getAllTokenBots({
-            page: 1,
-            limit: 10,
-          })
+          getAllTokenBots({})
         );
         return response.data;
       } else {
@@ -532,84 +520,58 @@ export const updateBotToken = createAsyncThunk<any, { payload: any }>(
   }
 );
 
-export const getAllBotProducts = createAsyncThunk<
+
+export const updateBotProductStatus = createAsyncThunk<
   any,
-  {
-    page?: number;
-    limit?: number;
-    search?: string;
-    sortBy?: string;
-    sortOrder?: string;
-  }
+  { id: number; status: string }
 >(
-  "admin/getAllBotProducts",
-  async (
-    { page, limit, search, sortBy, sortOrder },
-    { dispatch, rejectWithValue }
-  ) => {
+  "admin/updateBotProductStatus",
+  async ({ id, status }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const params = {
-        search: search,
-        page: page?.toString(),
-        limit: limit?.toString(),
-        sort_by: sortBy,
-        sort_order: sortOrder,
-      };
-      const response = await http.get("/admin/get-bot-products", {
-        params,
-      });
+      const response = await http.put(`/admin/products/${id}/status`, { status });
+
       if (response.status === 200) {
-        dispatch(stopLoadingActivity());
+        toasterSuccess(`Product status updated successfully!`, 2000, "id");
+        dispatch(
+          getAllBotProducts({})
+        );
         return response.data;
       } else {
-        return rejectWithValue("failed to get chats!");
+        return rejectWithValue("Failed to update product status!");
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id")
-        // toast.error(error?.response?.data?.detail);
+        toasterError(error.response.data.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
-      return rejectWithValue("An error occurred during fetching chats");
+      return rejectWithValue("An error occurred while updating product status");
     } finally {
       dispatch(stopLoadingActivity());
     }
   }
 );
 
-export const createUpdateBotProduct = createAsyncThunk<any, { payload: any }>(
-  "admin/createUpdateBotProduct",
-  async ({ payload }, { dispatch, rejectWithValue }) => {
+export const getAllBotProducts = createAsyncThunk<any, {}>(
+  "admin/getAllBotProducts",
+  async (_, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await http.post(
-        "/admin/create-update-bot-product",
-        payload
-      );
+
+      const response = await http.get("/admin/products");
+
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess(`Product ${payload.id ? "updated" : "created"} successfully!`, 2000, "id")
-        // toast.success(
-        //   `Product ${payload.id ? "updated" : "created"} successfully!`
-        // );
-        dispatch(
-          getAllBotProducts({
-            page: 1,
-            limit: 10,
-          })
-        );
         return response.data;
       } else {
-        return rejectWithValue("failed to create chatbot!");
+        return rejectWithValue("failed to get products!");
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id")
-        // toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
-      return rejectWithValue("An error occurred during chatbot");
+      return rejectWithValue("An error occurred during fetching products");
     } finally {
       dispatch(stopLoadingActivity());
     }
@@ -857,11 +819,11 @@ const initialState = {
   topTokenUsersData: [] as UserProfileData[],
   productMonitoringData: {} as ProductMonitoringData,
   adminUsers: [] as AdminUsersData[],
-  clientUsers:[] as ClientUsersData [],
+  clientUsers: [] as ClientUsersData[],
   adminsLogsActivityData: {} as AdminLogsActivity[],
   clientLogsActivityData: {} as ClientLogsActivity,
   paymentGatewayData: [] as PaymentsGateway[],
-  rolePermissions :[] as RolePermissions[]
+  rolePermissions: [] as RolePermissions[]
 };
 
 const adminSlice = createSlice({
@@ -942,13 +904,13 @@ const adminSlice = createSlice({
       .addCase(getAdminUsers.rejected, (state, action) => {
         state.loading = false;
       })
-         .addCase(getClientUsers.rejected, (state, action) => {
+      .addCase(getClientUsers.rejected, (state, action) => {
         state.loading = false;
       })
-          .addCase(getRolePermissions.rejected, (state, action) => {
+      .addCase(getRolePermissions.rejected, (state, action) => {
         state.loading = false;
       })
-       .addCase(getRolePermissions.fulfilled, (state, action) => {
+      .addCase(getRolePermissions.fulfilled, (state, action) => {
         state.loading = false;
         state.rolePermissions = action?.payload;
       })
@@ -956,14 +918,14 @@ const adminSlice = createSlice({
       .addCase(getAdminsLogsActivity.pending, (state) => {
         state.loading = true;
       })
-       .addCase(getClientLogsActivity.pending, (state) => {
+      .addCase(getClientLogsActivity.pending, (state) => {
         state.loading = true;
       })
       .addCase(getAdminsLogsActivity.fulfilled, (state, action) => {
         state.loading = false;
         state.adminsLogsActivityData = action?.payload;
       })
-       .addCase(getClientLogsActivity.fulfilled, (state, action) => {
+      .addCase(getClientLogsActivity.fulfilled, (state, action) => {
         state.loading = false;
         state.clientLogsActivityData = action?.payload;
       })
