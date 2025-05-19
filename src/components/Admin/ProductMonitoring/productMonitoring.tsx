@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import {
-  createUpdateBotProduct,
+  updateBotProductStatus,
   getAllBotProducts,
   getAllTokenBots,
-  updateBotToken,
+  updateTools,
 } from "@/store/slices/admin/adminSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
@@ -19,29 +19,14 @@ const ProductMonitoring = () => {
 
   useEffect(() => {
     dispatch(
-      getAllTokenBots({
-        page: 1,
-        limit: 10,
-      })
+      getAllTokenBots({})
     );
 
     dispatch(
-      getAllBotProducts({
-        page: 1,
-        limit: 10,
-      })
+      getAllBotProducts({})
     );
   }, [dispatch]);
 
-  const handleUpdateBotProduct = (e: any, item: ProductMonitoring) => {
-    const data = { id: item.id, active: e.target.checked };
-    dispatch(createUpdateBotProduct({ payload: data }));
-  };
-
-  const handleUpdateBotToken = (e: any, item: TokenBots) => {
-    const data = { id: item.id, active: e.target.checked };
-    dispatch(updateBotToken({ payload: data }));
-  };
 
   return (
     <div>
@@ -63,30 +48,23 @@ const ProductMonitoring = () => {
 
                   <div className="">
                     <div className="flex items-center justify-between px-8 py-5">
-                      <div className="flex items-center gap-2">                     
+                      <div className="flex items-center gap-2">
                         <span className="text-xs flex gap-1 items-center justify-start">
                           Name
                         </span>
                       </div>
                     </div>
 
-                    {/* Chatbot Row */}
-                    {productMonitoringData?.data &&
-                      productMonitoringData?.data?.map((item, index) => {
+                    {productMonitoringData &&
+                      productMonitoringData?.data?.map((item: any, index: any) => {
                         return (
                           <div
                             className="flex items-center justify-between px-8 py-5 bg-[#0A1330]"
                             key={index}
                           >
                             <div className="flex items-center gap-2">
-                              <input
-                                type="checkbox"
-                                checked={item?.active}
-                                className="accent-fuchsia-500 w-4 h-4"
-                                readOnly
-                              />
                               <span className="text-xs">
-                                {item?.product_name}
+                                {item?.name}
                               </span>
                             </div>
 
@@ -95,11 +73,13 @@ const ProductMonitoring = () => {
                               <input
                                 type="checkbox"
                                 className="sr-only peer"
-                                checked={item?.active}
-                                onChange={(e) =>
-                                  handleUpdateBotProduct(e, item)
-                                }
+                                checked={item?.status === "active"}
+                                onChange={() => {
+                                  const newStatus = item.status === "active" ? "deactive" : "active";
+                                  dispatch(updateBotProductStatus({ id: item.id, status: newStatus }));
+                                }}
                               />
+
                               <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
                               <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
                             </label>
@@ -115,7 +95,7 @@ const ProductMonitoring = () => {
               {/* Product Monitoring */}
               <div>
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-2xl font-semibold">Bot Status</h2>
+                  <h2 className="text-2xl font-semibold">Tools Used</h2>
                 </div>
 
                 <div className=" border border-gray-700 rounded-lg overflow-hidden pb-8 pt-3">
@@ -129,27 +109,7 @@ const ProductMonitoring = () => {
                     {/* Name Row */}
                     <div className="flex items-center justify-between px-8 py-5">
                       <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked
-                          className="accent-fuchsia-500 w-4 h-4"
-                          readOnly
-                        />
                         <span className="text-xs flex gap-1 items-center justify-start">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-4"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                            />
-                          </svg>
                           Name
                         </span>
                       </div>
@@ -157,29 +117,26 @@ const ProductMonitoring = () => {
 
                     {/* Chatbot Row */}
                     {tokenBotsData?.data &&
-                      tokenBotsData?.data?.map((item, index) => {
+                      tokenBotsData?.data?.map((item:any, index:any) => {
                         return (
                           <div
                             className="flex items-center justify-between px-8 py-5 bg-[#0A1330]"
                             key={index}
                           >
                             <div className="flex items-center gap-2">
-                              <input
-                                type="checkbox"
-                                checked={item?.active}
-                                className="accent-fuchsia-500 w-4 h-4"
-                                readOnly
-                              />
                               <span className="text-xs">{item?.name}</span>
                             </div>
 
                             {/* Toggle switch */}
-                            <label className="relative inline-flex items-center cursor-pointer">
+                             <label className="relative inline-flex items-center cursor-pointer">
                               <input
                                 type="checkbox"
-                                checked={item?.active}
                                 className="sr-only peer"
-                                onChange={(e) => handleUpdateBotToken(e, item)}
+                                checked={item?.status === "active"}
+                                onChange={() => {
+                                  const newStatus = item.status === "active" ? "deactive" : "active";
+                                  dispatch(updateTools({ id: item.id, status: newStatus }));
+                                }}
                               />
                               <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
                               <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>

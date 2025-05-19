@@ -1,7 +1,7 @@
 "use client";
 import {
   createSubscriptionPlan,
-  createUpdateBotProduct,
+  updateBotProductStatus,
 } from "@/store/slices/admin/adminSlice";
 import { AppDispatch } from "@/store/store";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -35,9 +35,8 @@ const AddEditProduct = ({ show, onHide }: AddEditPlanProps) => {
   });
 
   const dispatch = useDispatch<AppDispatch>();
-  const onSubmit = (data: ProductMonitoring) => {
-    dispatch(createUpdateBotProduct({ payload: data }));
-    reset();
+  const onSubmit = (data: any) => {
+ dispatch(updateBotProductStatus({ id: data.id, status: "deactive" }));    reset();
     onHide();
   };
 
