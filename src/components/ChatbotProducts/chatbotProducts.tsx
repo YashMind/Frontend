@@ -1,3 +1,4 @@
+"use client"
 import ChatbotHeader from "@/components/chatbot/header/chatbotHeader";
 import SidebarProducts from "@/components/ChatbotProducts/SidebarProducts/sidebarProducts";
 import ProfileProducts from "@/components/ChatbotProducts/ProfileProducts/profileProducts";
@@ -14,8 +15,7 @@ import { getAllBotProducts } from "@/store/slices/admin/adminSlice";
 const ChatbotProducts = ({ product }: { product: string }) => {
 
   const dispatch = useDispatch<AppDispatch>()
-  const { botProducts } = useSelector((state) => state.
-  );
+  // const { botProducts } = useSelector((state) => state.);
   useEffect(() => {
     dispatch(getAllBotProducts({}))
   }, [])
