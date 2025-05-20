@@ -70,11 +70,12 @@ const HomeFooter = () => {
             </li>
             <li>
               <Link href="/details/faq">FAQs</Link>
+              </li>
               <li>
                 <Link href="/details/refund-and-cancellation-policy">
                   Refund and Cancellation policy
                 </Link>
-              </li>
+              
             </li>
             <li>
               <Link href="/details/contact-us">Contact us</Link>

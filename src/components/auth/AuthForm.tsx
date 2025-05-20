@@ -171,7 +171,7 @@ const AuthForm = ({ formType }: { formType: "signin" | "signup" }) => {
 
                             <p className="text-xs text-[#B6B6B6] font-medium my-[20px] text-center lg:text-left">
                                 By registering you agree to our
-                                <Link href="#" className="text-[#9D5CE9] text-xs font-medium ml-1">Terms and Conditions</Link>
+                                <Link href="/details/terms&condition" className="text-[#9D5CE9] text-xs font-medium ml-1">Terms and Conditions</Link>
                             </p>
                         </div>
                     </div>

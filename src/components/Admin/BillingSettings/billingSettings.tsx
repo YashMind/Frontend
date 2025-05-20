@@ -1,19 +1,18 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import AddEditPaymentWayModal from "./AddEditPaymentWay/addEditPaymentWay";
-import {
-  deletePaymentsGateway,
-  getAllPaymentGateway,
-} from "@/store/slices/admin/adminSlice";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
+import AddEditPaymentWayModal from "./AddEditPaymentWay/addEditPaymentWay";
+import {deletePaymentsGateway,getAllPaymentGateway} from "@/store/slices/admin/adminSlice";
+
 const BillingSettings = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
   const [userData, setUserData] = useState<any>({});
   const dispatch = useDispatch<AppDispatch>();
 
   const { paymentGatewayData } = useSelector((state: RootState) => state.admin);
+  
   useEffect(() => {
     dispatch(getAllPaymentGateway());
   }, []);

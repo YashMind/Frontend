@@ -16,7 +16,6 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
   message,
 }) => {
   if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 bg-[rgba(0,0,0,0.6)] flex justify-center items-center z-50">
       <div className="bg-[#0E1A47] text-white rounded-2xl p-10 w-[400px] max-w-full shadow-2xl relative">
@@ -37,7 +36,7 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
             }}
             className="cursor-pointer px-4 py-2 text-sm font-medium rounded-md bg-red-600 text-white hover:bg-red-700 transition"
           >
-            Delete
+           {title==="Log out Account?" ?"Log out Account":"Delete"} 
           </button>
         </div>
       </div>

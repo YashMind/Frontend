@@ -78,6 +78,32 @@ export const getAllSubscriptionPlans = createAsyncThunk<any, void>(
   }
 );
 
+export const getAllVolumnDiscounts = createAsyncThunk<any, void>(
+  "admin/getAllVoulmnDiscounts",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+
+      const response = await http.get("/admin/get-volumn-discounts");
+
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data
+      } else {
+        return rejectWithValue("Failed to fetch subscription plans!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toasterError(error?.response?.data?.detail, 2000, "id");
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred while fetching subscription plans.");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 export const createSubscriptionPlan = createAsyncThunk<any, { payload: any }>(
   "admin/createSubscriptionPlan",
   async ({ payload }, { dispatch, rejectWithValue }) => {
@@ -521,6 +547,38 @@ export const updateTools = createAsyncThunk<any, { id: number; status: string }>
 );
 
 
+export const updateTokenStatus = createAsyncThunk<
+  any, 
+  { id: number; base_rate_per_token: number }
+>(
+  "admin/updateTokenStatus",
+  async ({ id, base_rate_per_token }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.put(`/admin/users/${id}/base-rate`, { base_rate_per_token });
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toasterSuccess("Token Status updated successfully!", 2000, "id")
+        dispatch(
+          getClientUsers()
+        );
+        return response.data;
+      } else {
+        return rejectWithValue("failed to create chatbot!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toasterError(error?.response?.data?.detail, 2000, "id")
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during chatbot");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+
 export const updateBotProductStatus = createAsyncThunk<
   any,
   { id: number; status: string }
@@ -860,6 +918,17 @@ const adminSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+
+    .addCase(getAllVolumnDiscounts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllVolumnDiscounts.fulfilled, (state, action) => {
+        state.data = action.payload?.data || []; // assuming response = { success, message, data }
+        state.loading = false;
+      })
+      .addCase(getAllVolumnDiscounts.rejected, (state, action) => {
+        state.loading = false;
+      })
       .addCase(getAllUsers.pending, (state) => {
         state.loading = true;
       })

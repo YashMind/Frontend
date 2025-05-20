@@ -1,11 +1,14 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { FaUser } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
+import { HiAdjustmentsHorizontal } from "react-icons/hi2";
+import React, { useEffect, useState, useRef } from "react";
 import { getMeData, logoutUser } from "@/store/slices/auth/authSlice";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
 
 const ChatbotDashboardHeader = ({
   fix,
@@ -16,8 +19,10 @@ const ChatbotDashboardHeader = ({
   addBgColor: boolean;
   role?: string;
 }) => {
+  console.log(role, "====")
   const [bot, setBot] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const router = useRouter();
@@ -31,9 +36,9 @@ const ChatbotDashboardHeader = ({
   );
 
   useEffect(() => {
-    dispatch(getMeData({router}));
+    dispatch(getMeData({ router }));
   }, [router]);
-  
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -50,17 +55,24 @@ const ChatbotDashboardHeader = ({
     };
   }, []);
 
-  const handleLogOut = () => {
-    dispatch(logoutUser({ router }));
+  const handleConfirmDelete = async () => {
+    await dispatch(logoutUser({ router }));
   };
+
 
   return (
     <nav
-      className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${
-        fix ? "fixed" : ""
-      }
+      className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${fix ? "fixed" : ""
+        }
      w-full z-20  rounded-[36px] top-0   my-6`}
     >
+      <ConfirmDeleteModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Log out Account?"
+        message={`Are you sure you want to Logout your Account?`}
+      />
       <div className=" flex  items-center justify-between mx-auto gap-0 px-[41px] py-[12px] md:gap-4 ">
         <div className=" flex justify-center md:justify-start md:w-auto">
           <Link
@@ -74,27 +86,14 @@ const ChatbotDashboardHeader = ({
               width={100}
             />
             <div className="mob-show text-white">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-                ></path>
-              </svg>
+              <HiAdjustmentsHorizontal size={28} />
             </div>
           </Link>
         </div>
-        <div className="flex gap-2 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse items-center">
-          {role === "admin" && (
+        <div className="flex gap-8 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse items-center">
+          {role && ["Super Admin", "Billing Admin", "Product Admin", "Support Admin"].includes(role.replace(/^"(.*)"$/, '$1').trim()) && (
             <Link
-              href={"/admin/dashboard"}
+              href="/admin/overview"
               className="bg-white p-2 px-4 rounded-full font-semibold"
             >
               Admin Dashboard
@@ -112,19 +111,7 @@ const ChatbotDashboardHeader = ({
               onClick={() => setIsOpen(!isOpen)}
               className="focus:outline-none cursor-pointer"
             >
-              <svg
-                width="40"
-                height="30"
-                className="mx-[18px]"
-                viewBox="0 0 21 22"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M10.7917 4.09546C11.691 4.09546 12.5534 4.45267 13.1892 5.08851C13.825 5.72436 14.1823 6.58674 14.1823 7.48596C14.1823 8.38518 13.825 9.24757 13.1892 9.88341C12.5534 10.5193 11.691 10.8765 10.7917 10.8765C9.89253 10.8765 9.03014 10.5193 8.3943 9.88341C7.75846 9.24757 7.40125 8.38518 7.40125 7.48596C7.40125 6.58674 7.75846 5.72436 8.3943 5.08851C9.03014 4.45267 9.89253 4.09546 10.7917 4.09546ZM10.7917 12.5717C14.5383 12.5717 17.5728 14.089 17.5728 15.9622V17.6575H4.01074V15.9622C4.01074 14.089 7.04524 12.5717 10.7917 12.5717Z"
-                  fill="white"
-                />
-              </svg>
+              <FaUser size={18} color="white" />
             </button>
             {isOpen && (
               <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-10">
@@ -142,7 +129,7 @@ const ChatbotDashboardHeader = ({
                     Settings
                   </Link>
                   <button
-                    onClick={() => handleLogOut()}
+                    onClick={() => setIsModalOpen(true)}
                     className="cursor-pointer w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                   >
                     Logout
@@ -164,7 +151,6 @@ const ChatbotDashboardHeader = ({
             onClick={() => handleToggle()}
           >
             {isMenuOpen ? (
-              // Cross icon (Close)
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -197,18 +183,16 @@ const ChatbotDashboardHeader = ({
           </button>
         </div>
         <div
-          className={`${
-            isMenuOpen ? "flex flex-col" : "hidden"
-          } w-full md:flex md:flex-row md:w-auto md:order-1`}
+          className={`${isMenuOpen ? "flex flex-col" : "hidden"
+            } w-full md:flex md:flex-row md:w-auto md:order-1`}
           id="navbar-sticky"
         >
           <ul className="flex flex-col items-center  text-[15px] font-normal p-4 md:p-0 mt-4  [font-family:'Roboto_Flex',sans-serif]  border rounded-lg  md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0   ">
             <li>
               <Link
                 href="/chatbot-dashboard/main"
-                className={`block py-2 px-3 text-white ${
-                  bot === 1 ? "bg-[#434343]" : ""
-                } rounded-[26px]
+                className={`block py-2 px-3 text-white ${bot === 1 ? "bg-[#434343]" : ""
+                  } rounded-[26px]
                     hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
                 aria-current="page"
                 onClick={() => {
@@ -222,13 +206,13 @@ const ChatbotDashboardHeader = ({
             <li>
               <Link
                 href="/voice-agent"
-                className={`block py-2 px-3 text-white ${
-                  bot === 2 ? "bg-[#434343]" : ""
-                } rounded-[26px]  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
+                className={`block py-2 px-3 text-white ${bot === 2 ? "bg-[#434343]" : ""
+                  } rounded-[26px]  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
                 onClick={() => {
                   setBot(2);
                   setIsMenuOpen(false);
                 }}
+
               >
                 Voice Agent
               </Link>
@@ -236,9 +220,8 @@ const ChatbotDashboardHeader = ({
             <li>
               <Link
                 href="/llm"
-                className={`block py-2 px-3 text-white ${
-                  bot === 3 ? "bg-[#434343]" : ""
-                } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
+                className={`block py-2 px-3 text-white ${bot === 3 ? "bg-[#434343]" : ""
+                  } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
                 onClick={() => {
                   setBot(3);
                   setIsMenuOpen(false);

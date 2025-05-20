@@ -15,10 +15,28 @@ import { IoMdPricetags } from "react-icons/io";
 import { IoSettingsSharp } from "react-icons/io5";
 import { SiEnterprisedb } from "react-icons/si";
 import { GiSatelliteCommunication } from "react-icons/gi";
-import { getMeData, logoutUser } from "@/store/slices/auth/authSlice";
+import { logoutUser } from "@/store/slices/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
+import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
+import { formatName } from "@/services/utils/helpers";
+
+
+const menuItems = [
+  { label: "Dashboard", path: "/admin/dashboard", icon: <RiDashboardHorizontalFill size={25} />, key: "dashboard" },
+  { label: "Overview", path: "/admin/overview", icon: <GrOverview size={25} />, key: "overview" },
+  { label: "Users Management", path: "/admin/users-management", icon: <HiUsers size={25} />, key: "users-management" },
+  { label: "Subscription Plans", path: "/admin/subscription-plans", icon: <MdOutlineSubscriptions size={25} />, key: "subscription-plans" },
+  { label: "Token Analytics", path: "/admin/token-analytics", icon: <IoAnalyticsSharp size={25} />, key: "token-analytics" },
+  { label: "Product Monitoring", path: "/admin/product-monitoring", icon: <FaWatchmanMonitoring size={25} />, key: "product-monitoring" },
+  { label: "Logs & Activity", path: "/admin/logs-activity", icon: <LuActivity size={25} />, key: "logs-activity" },
+  { label: "Enterprise Clients", path: "/admin/enterprise-clients", icon: <SiEnterprisedb size={25} />, key: "enterprise-clients" },
+  { label: "Billing Settings", path: "/admin/billing-settings", icon: <MdSettingsAccessibility size={25} />, key: "billing-settings" },
+  { label: "Admin Users & Roles", path: "/admin/users-roles", icon: <FaUsers size={25} />, key: "users-roles" },
+  { label: "Support & Communication", path: "/admin/support-communication", icon: <GiSatelliteCommunication size={25} />, key: "support-communication" },
+  { label: "Pricing", path: "/admin/pricing", icon: <IoMdPricetags size={25} />, key: "pricing", hasArrow: true },
+];
 
 export const accessPoints = [
   {
@@ -77,17 +95,20 @@ export const accessPoints = [
 ]
 
 
-
 const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
-  const handleLogOut = () => {
-    dispatch(logoutUser({ router }));
-  };
-
-
 
   const { myPermissions, permissionsLoading } = useSelector((state: RootState) => state.admin)
+  const userData: UserProfileData = useSelector(
+    (state: RootState) => state.auth.userData
+  );
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleConfirmDelete = async () => {
+    await dispatch(logoutUser({ router }));
+
+  };
 
   return (
     <aside className="w-[294px] bg-[#081028]   flex flex-col gap-2 rounded-tl-[15px] rounded-bl-[15px]">
@@ -100,12 +121,19 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
           className="ml-10"
         />
       </h2>
+      <ConfirmDeleteModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Log Out?"
+        message={`Are you sure you want to Logout your Account?`}
+      />
       <nav className="flex flex-col gap-2 px-4 mt-[30px] shadow-2xl shadow-[#0105114D] rounded-md">
-
 
         {permissionsLoading ? <div className="animate-pulse">Loading ...</div> : myPermissions ? accessPoints.map((item) => {
           if (myPermissions.includes(item.value))
             return <Link
+              key={item.value}
               href={`/admin/${item.value}`}
               className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === item.value ? "text-[#CB3CFF]" : ""
                 } text-[#767F9C] text-sm`}
@@ -118,11 +146,10 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
         <Link
           href="/auth/signin"
           className="flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-[#767F9C] text-sm"
-          onClick={() => handleLogOut()}
         >
-          <div className="flex gap-3">
+          <div className="flex items-center gap-3">
             <LuLogOut size={25} />
-            <span className="ml-4">Logout</span>
+            <span>Logout</span>
           </div>
 
           <Image
@@ -133,36 +160,22 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
           />
         </Link>
       </nav>
-      <hr className="border-b border-[#FFFFFF]"></hr>
+
+      <hr className="border-b border-[#FFFFFF]" />
+
 
       <Link
-        href="/admin/settings"
-        className={`flex items-center justify-between gap-2 px-3 ml-4 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "settings" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-      >
-        <div className="flex gap-3">
-          <IoSettingsSharp size={25} />
-          <span className="ml-4">Settings</span>
-        </div>
-
-        <Image alt="alt" src="/images/right-icon.png" height={12} width={12} />
-      </Link>
-
-      <Link
-        href="/admin/account-settings"
+        href=""
         className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "account-settings" ? "text-[#CB3CFF]" : ""
           } text-white text-sm`}
       >
-        <div className="flex gap-3">
-          {" "}
-          <Image alt="alt" src="/images/men.png" height={32} width={32} />
+        <div className="flex items-center gap-3">
+          <Image alt="User" src="/images/men.png" height={32} width={32} />
           <span>
-            John Carter <br></br>{" "}
-            <span className="text-[#AEB9E1] text-xs ">Account settings</span>
+            {userData?.fullName ? formatName(userData.fullName) : ""} <br />
+            {/* <span className="text-[#AEB9E1] text-xs">Account settings</span> */}
           </span>
         </div>
-
-        <Image alt="alt" src="/images/right-icon.png" height={12} width={12} />
       </Link>
     </aside>
   );

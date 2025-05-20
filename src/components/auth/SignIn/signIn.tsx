@@ -128,7 +128,7 @@ const SignIn = () => {
 
                 <p className=" text-xs text-[#B6B6B6]  font-medium my-[20px] text-center lg:text-left ">
                   By registering you with our{" "}
-                  <Link href="#" className="text-[#9D5CE9] text-xs font-medium ">
+                  <Link href="/details/terms&condition" className="text-[#9D5CE9] text-xs font-medium ">
                     Terms and Conditions
                   </Link>
                 </p>

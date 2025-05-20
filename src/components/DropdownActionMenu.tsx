@@ -34,7 +34,7 @@ const DropdownActionMenu: React.FC<DropdownActionMenuProps> = ({
     return (
         <div
             ref={menuRef}
-            className="absolute bottom-full mb-1 right-6 w-45 bg-white rounded-md shadow-lg border border-gray-200 "
+            className="absolute mb-1 mt-[-20] right-6 w-45 bg-white rounded-md shadow-lg border border-gray-200 "
         >
             <ul className="text-sm rounded min-w-max">
                 {items.map((item, index) => {
