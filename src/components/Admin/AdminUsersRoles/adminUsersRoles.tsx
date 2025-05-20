@@ -20,6 +20,8 @@ import { FaUser } from "react-icons/fa";
 import EditPermissionModal from "@/components/EditPermissionsModal";
 import { getAllUsers } from "@/store/slices/admin/adminSlice";
 import moment from "moment";
+import { accessPoints } from "../AdminSidebar/adminSidebar";
+
 
 interface RoleWithPermissions {
   id: number;
@@ -318,7 +320,7 @@ const AdminUsersRoles = () => {
                       {item?.permissions && item.permissions.length > 0 ? (
                         <ul className="list-disc list-inside text-sm text-gray-200 space-y-1">
                           {item.permissions.map((perm, idx) => (
-                            <li key={idx}>{perm}</li>
+                            <li key={idx}>{accessPoints.find((item) => item.value === perm)?.label}</li>
                           ))}
                         </ul>
                       ) : (

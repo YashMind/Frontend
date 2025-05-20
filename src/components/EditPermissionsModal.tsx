@@ -1,5 +1,5 @@
 "use client";
-import {getAdminsLogsActivity, getRolePermissions,updateRoleAdmin} from "@/store/slices/admin/adminSlice";
+import { getAdminsLogsActivity, getRolePermissions, updateRoleAdmin } from "@/store/slices/admin/adminSlice";
 import { AppDispatch } from "@/store/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import Select from "react-select";
+import { accessPoints } from "./Admin/AdminSidebar/adminSidebar";
 
 interface AddEditPlanProps {
   show: boolean;
@@ -35,24 +36,7 @@ const roleArray = [
   "Product Admin",
   "Support Admin",
 ];
-const permissionsArray = [
-  "Full system access",
-  "Manage all admin accounts",
-  "Configure roles & permissions",
-  "View all activity logs",
-  "Manage payment gateways",
-  "View and issue invoices",
-  "Configure tax settings",
-  "Process refunds",
-  "Configure API settings",
-  "Manage model deployments",
-  "View usage analytics",
-  "Access developer tools",
-  "Access support tickets",
-  "View client accounts",
-  "Basic troubleshooting",
-  "Escalate issues",
-];
+
 
 const EditPermissionModal = ({
   show,
@@ -71,14 +55,14 @@ const EditPermissionModal = ({
   } = useForm({
     resolver: yupResolver(schema()),
   });
-  
+
   const dispatch = useDispatch<AppDispatch>();
-  const options = permissionsArray.map((item) => ({
-    value: item,
-    label: item,
+  const options = accessPoints.map((item) => ({
+    value: item.value,
+    label: item.label,
   }));
 
-    useEffect(() => {
+  useEffect(() => {
     setValue("role", adminUserData?.role);
     setValue("id", adminUserData?.id);
     setValue("permissions", adminUserData?.permissions || []);

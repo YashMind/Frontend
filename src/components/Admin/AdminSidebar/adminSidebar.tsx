@@ -17,9 +17,73 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { SiEnterprisedb } from "react-icons/si";
 import { GiSatelliteCommunication } from "react-icons/gi";
 import { getMeData, logoutUser } from "@/store/slices/auth/authSlice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
+
+export const accessPoints = [
+  // {
+  //   label: "Dashboard",
+  //   icon: <RiDashboardHorizontalFill size={25} />,
+  //   link: '/admin/dashboard',
+  //   value: 'dashboard'
+  // },
+  {
+    label: "Overview",
+    icon: <GrOverview size={25} />,
+    link: '/admin/overview',
+    value: 'overview'
+  },
+  {
+    label: "Users Management",
+    icon: <HiUsers size={25} />,
+    link: '/admin/user-management',
+    value: 'user-management'
+  }, {
+    label: "Subscription plans",
+    icon: <MdOutlineSubscriptions size={25} />,
+    link: '/admin/subscription-plans',
+    value: 'subscription-plans'
+  }, {
+    label: "Token Analytics",
+    icon: <IoAnalyticsSharp size={25} />,
+    link: '/admin/token-analytics',
+    value: 'token-analytics'
+  }, {
+    label: "Product Monitoring",
+    icon: <FaWatchmanMonitoring size={25} />,
+    link: '/admin/product-monitoring',
+    value: 'product-monitoring'
+  }, {
+    label: "Logs & Activity",
+    icon: <LuActivity size={25} />,
+    link: '/admin/logs-activity',
+    value: 'logs-activity'
+  }, {
+    label: "Enterprise Clients",
+    icon: <SiEnterprisedb size={25} />,
+    link: '/admin/enterprise-clients',
+    value: 'enterprise-clients'
+  }, {
+    label: "Billing Settings",
+    icon: <MdSettingsAccessibility size={25} />,
+    link: '/admin/billing-settings',
+    value: 'billing-settings',
+    mandatory_role: ["super admin"]
+  }, {
+    label: "Admin Users & Roles",
+    icon: <FaUsers size={25} />,
+    link: '/admin/users-roles',
+    value: 'users-roles'
+  }, {
+    label: "Support & Communication",
+    icon: <GiSatelliteCommunication size={25} />,
+    link: '/admin/support-communication',
+    value: 'support-communication'
+  }
+]
+
+
 
 const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,6 +91,11 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
   const handleLogOut = () => {
     dispatch(logoutUser({ router }));
   };
+
+
+
+  const { myPermissions, permissionsLoading } = useSelector((state: RootState) => state.admin)
+
   return (
     <aside className="w-[294px] bg-[#081028]   flex flex-col gap-2 rounded-tl-[15px] rounded-bl-[15px]">
       <h2 className="text-xl font-semibold text-center my-[40px]">
@@ -38,127 +107,20 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
           className="ml-10"
         />
       </h2>
-      {/* <div className="relative px-4">
-        <Image
-          className="absolute left-8 top-1/2 transform -translate-y-1/2"
-          alt="search icon"
-          src="/images/search2.png"
-          height={16}
-          width={16}
-        />
-        <input
-          type="text"
-          placeholder="Search for..."
-          className="w-full py-[15px] pl-10 pr-3 rounded-[26px] bg-[#0B1739] placeholder-[#AEB9E1] text-sm font-medium focus:outline-none text-[#AEB9E1] border border-[#343B4F] shadow-[0px_2px_4px_0px_#01051133]"
-        />
-      </div> */}
-
       <nav className="flex flex-col gap-2 px-4 mt-[30px] shadow-2xl shadow-[#0105114D] rounded-md">
-        <Link
-          href="/admin/dashboard"
-          className={`flex items-center text-sm font-medium gap-2 px-3 py-[10px]  ${
-            adminPage === "dashboard" ? "text-[#CB3CFF]" : ""
-          } rounded-[15px]`}
-        >
-          <RiDashboardHorizontalFill size={25} />
 
-          <span className="ml-4">Dashboard</span>
-        </Link>
-        <Link
-          href="/admin/overview"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-sm ${
-            adminPage === "overview" ? "text-[#CB3CFF]" : ""
-          }  text-[#767F9C]`}
-        >
-          <GrOverview size={25} />
-          <span className="ml-4">Overview</span>
-        </Link>
-        <Link
-          href="/admin/users-management"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-sm  ${
-            adminPage === "users-management" ? "text-[#CB3CFF]" : ""
-          }`}
-        >
-          <HiUsers size={25} />
-          <span className="ml-4">Users Management</span>
-        </Link>
-        <Link
-          href="/admin/subscription-plans"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "subscription-plans" ? "text-[#CB3CFF]" : ""
-          }  text-sm text-[#767F9C]`}
-        >
-          <MdOutlineSubscriptions size={25} />
-          <span className="ml-4">Subscription Plans</span>
-        </Link>
-        <Link
-          href="/admin/token-analytics"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "token-analytics" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <IoAnalyticsSharp size={25} />
 
-          <span className="ml-4">Token Analytics</span>
-        </Link>
-        <Link
-          href="/admin/product-monitoring"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "product-monitoring" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <FaWatchmanMonitoring size={25} />
-          <span className="ml-4">Product Monitoring</span>
-        </Link>
-
-        <Link
-          href="/admin/logs-activity"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "logs-activity" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <LuActivity size={25} />
-          <span className="ml-4">Logs & Activity</span>
-        </Link>
-
-        <Link
-          href="/admin/enterprise-clients"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "enterprise-clients" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <SiEnterprisedb size={25} />
-          <span className="ml-4">Enterprise Clients</span>
-        </Link>
-        <Link
-          href="/admin/billing-settings"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "billing-settings" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <MdSettingsAccessibility size={25} />
-
-          <span className="ml-4">Billing Settings</span>
-        </Link>
-        <Link
-          href="/admin/users-roles"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "users-roles" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <FaUsers size={25} />
-          <span className="ml-4">Admin Users & Roles</span>
-        </Link>
-
-        <Link
-          href="/admin/support-communication"
-          className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "support-communication" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
-        >
-          <GiSatelliteCommunication size={25} />
-          <span className="ml-4">Support & Communication</span>
-        </Link>
+        {permissionsLoading ? <div className="animate-pulse">Loading ...</div> : myPermissions ? accessPoints.map((item) => {
+          if (myPermissions.includes(item.value))
+            return <Link
+              href={`/admin/${item.value}`}
+              className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === item.value ? "text-[#CB3CFF]" : ""
+                } text-[#767F9C] text-sm`}
+            >
+              {item.icon}
+              <span className="ml-4">{item.label}</span>
+            </Link>
+        }) : <h2>No Permissions found</h2>}
 
         <Link
           href="/auth/signin"
@@ -179,9 +141,8 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
         </Link>
         <Link
           href="/admin/pricing"
-          className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-            adminPage === "pricing" ? "text-[#CB3CFF]" : ""
-          } text-[#767F9C] text-sm`}
+          className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "pricing" ? "text-[#CB3CFF]" : ""
+            } text-[#767F9C] text-sm`}
         >
           <div className="flex gap-3">
             <IoMdPricetags size={25} />
@@ -200,9 +161,8 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
 
       <Link
         href="/admin/settings"
-        className={`flex items-center justify-between gap-2 px-3 ml-4 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-          adminPage === "settings" ? "text-[#CB3CFF]" : ""
-        } text-[#767F9C] text-sm`}
+        className={`flex items-center justify-between gap-2 px-3 ml-4 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "settings" ? "text-[#CB3CFF]" : ""
+          } text-[#767F9C] text-sm`}
       >
         <div className="flex gap-3">
           <IoSettingsSharp size={25} />
@@ -214,9 +174,8 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
 
       <Link
         href="/admin/account-settings"
-        className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${
-          adminPage === "account-settings" ? "text-[#CB3CFF]" : ""
-        } text-white text-sm`}
+        className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "account-settings" ? "text-[#CB3CFF]" : ""
+          } text-white text-sm`}
       >
         <div className="flex gap-3">
           {" "}
