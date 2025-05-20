@@ -139,23 +139,6 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
             width={12}
           />
         </Link>
-        <Link
-          href="/admin/pricing"
-          className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "pricing" ? "text-[#CB3CFF]" : ""
-            } text-[#767F9C] text-sm`}
-        >
-          <div className="flex gap-3">
-            <IoMdPricetags size={25} />
-            <span className="ml-4">Pricing</span>
-          </div>
-
-          <Image
-            alt="alt"
-            src="/images/right-icon.png"
-            height={12}
-            width={12}
-          />
-        </Link>
       </nav>
       <hr className="border-b border-[#FFFFFF]"></hr>
 
