@@ -1,86 +1,137 @@
 // middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { jwtDecode } from 'jwt-decode'
 
-export default function middleware(request: NextRequest) {
-  const accessToken = request.cookies.get("access_token")?.value;
-  const { pathname } = request.nextUrl;
+const ADMIN_ROLES = new Set(["Super Admin", "Billing Admin", "Product Admin", "Support Admin"]);
+const PUBLIC_ROUTES = new Set([
+"/", "/auth/signin", "/auth/signup", "/chatbot", "/voice-agent", "/llm",
+"/details/privacy-policy", "/details/about-us", "/details/careers",
+"/details/chatbot", "/details/faq", "/details/llm", "/details/terms&condition",
+"/details/voice-agent", "/details/contact-us", "/details/refund-and-cancellation-policy"
+]);
 
-  const publicRoutes = [
-    "/",
-    "/auth/signin",
-    "/auth/signup",
-    "/chatbot",
-    "/voice-agent",
-    "/llm",
-    "/details/privacy-policy",
-    "/details/about-us",
-    "/details/careers",
-    "/details/chatbot",
-    "/details/faq",
-    "/details/llm",
-    "/details/terms&condition",
-    "/details/voice-agent",
-    "/details/contact-us",
-    "/details/refund-and-cancellation-policy",
-  ];
-  const knownRoutes = [
-    "/profile",
-    "/settings",
-    "/voice-agent",
-    "/chatbot-dashboard",
-    "/chatbot-products",
-    "/admin",
-  ];
+const KNOWN_ROUTES = new RegExp(
+'^(/profile|/settings|/voice-agent|/chatbot-dashboard|' +
+'/chatbot-products|/admin)(/.*)?$'
+);
 
-  const isPublic = publicRoutes.includes(pathname);
-  const isKnown = knownRoutes.some(
-    (route) => pathname === route || pathname.startsWith(route + "/")
-  );
+const DYNAMIC_PUBLIC_ROUTE = /^\/embed\/[^/]+$/;
 
-  const isAdminRoute = pathname.startsWith("/admin");
+type PermissionCache = {
+[role: string]: {
+    permissions: string[];
+    timestamp: number;
+}
+}
 
-  // Check if the pathname matches a dynamic public route like "/embed/{botId}"
-  const dynamicPublicRoutePattern = /^\/embed\/[^/]+$/;
-  if (dynamicPublicRoutePattern.test(pathname)) {
-    return;
-  }
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const permissionCache: PermissionCache = {};
 
-  // User is visiting /signin
-
-  if (isPublic) {
-    if (accessToken) {
-      return NextResponse.redirect(
-        new URL("/chatbot-dashboard/main", request.url)
-      );
+// Updated fetchPermissions with caching
+async function fetchPermissions(accessToken: string, role: string): Promise<string[]> {
+try {
+    // Check cache first
+    const cached = permissionCache[role];
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+     return cached.permissions;
     }
-    return NextResponse.next(); // Allow
-  }
 
-  // Protected routes without token
-  if (!accessToken) {
+    // Fetch fresh permissions
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/roles_permissions`, {
+     headers: {
+        'Cookie': `access_token=${accessToken}`,
+        'Content-Type': 'application/json'
+     }
+    });
+
+    if (!response.ok) {
+     const error = await response.json();
+     console.error('Permissions API Error:', error);
+     return cached?.permissions || []; // Fallback to stale cache if available
+    }
+
+    const { permissions } = await response.json();
+    console.log("PERMISSIONS FETCHED")
+
+    // Update cache
+    permissionCache[role] = {
+     permissions: permissions || [],
+     timestamp: Date.now()
+    };
+
+    return permissions || [];
+} catch (error) {
+    console.error("Network error fetching permissions:", error);
+    return permissionCache[role]?.permissions || [];
+}
+}
+
+// Rest of the middleware remains similar with this updated admin check section:
+async function handleAdminRoutes(request: NextRequest, accessToken: string, pathname: string, role: string | null) {
+if (!role || !ADMIN_ROLES.has(role)) {
+    return NextResponse.redirect(new URL('/chatbot-dashboard/main', request.url));
+}
+
+try {
+    const permissions = await fetchPermissions(accessToken, role);
+    const hasAccess = permissions.some(p =>
+     p === '*' || pathname.endsWith(p)
+    );
+
+    if (!hasAccess) {
+     return NextResponse.redirect(new URL('/chatbot-dashboard/main', request.url));
+    }
+} catch (error) {
+    console.error("Permission check failed:", error);
+    return NextResponse.redirect(new URL('/chatbot-dashboard/main', request.url));
+}
+}
+
+export default async function middleware(request: NextRequest) {
+const { pathname } = request.nextUrl;
+const accessToken = request.cookies.get("access_token")?.value;
+
+// Check public routes first
+if (DYNAMIC_PUBLIC_ROUTE.test(pathname)) return NextResponse.next();
+if (PUBLIC_ROUTES.has(pathname)) {
+    return accessToken
+     ? NextResponse.redirect(new URL("/chatbot-dashboard/main", request.url))
+     : NextResponse.next();
+}
+
+// Redirect unauthenticated users
+if (!accessToken) {
     return NextResponse.redirect(new URL("/auth/signin", request.url));
-  }
+}
 
-  const role = request.cookies.get("role")?.value;
+// Validate JWT and extract role
+let role: string | null = null;
+try {
+    const decoded = jwtDecode<{ role?: string; exp?: number }>(accessToken);
+    if (decoded.exp && decoded.exp * 1000 < Date.now()) {
+     throw new Error("Token expired");
+    }
+    role = decoded.role || null;
+} catch (error) {
+    console.error("Invalid JWT:", error);
+    return NextResponse.redirect(new URL("/auth/signin", request.url));
+}
 
-  if (isAdminRoute && role !== "admin") {
-    return NextResponse.redirect(
-      new URL("/chatbot-dashboard/main", request.url)
-    );
-  }
+// Admin route protection
+if (pathname.startsWith("/admin")) {
+    const adminResponse = await handleAdminRoutes(request, accessToken, pathname, role);
+    if (adminResponse) return adminResponse;
+}
 
-  // Authenticated, but unknown route
-  if (!isKnown) {
-    return NextResponse.redirect(
-      new URL("/chatbot-dashboard/main", request.url)
-    );
-  }
+// Validate known routes
+if (!KNOWN_ROUTES.test(pathname)) {
+    return NextResponse.redirect(new URL("/chatbot-dashboard/main", request.url));
+}
 
-  // Authenticated + known route
-  return NextResponse.next();
+return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/((?!_next|favicon.ico|images|api|embed.js).*)"],
+matcher: ["/((?!_next|favicon.ico|images|api|embed.js).*)"],
 };

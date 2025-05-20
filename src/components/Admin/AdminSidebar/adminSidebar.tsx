@@ -17,10 +17,11 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { SiEnterprisedb } from "react-icons/si";
 import { GiSatelliteCommunication } from "react-icons/gi";
 import { logoutUser } from "@/store/slices/auth/authSlice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
+import { formatName } from "@/services/utils/helpers";
 
 
 const menuItems = [
@@ -38,88 +39,145 @@ const menuItems = [
   { label: "Pricing", path: "/admin/pricing", icon: <IoMdPricetags size={25} />, key: "pricing", hasArrow: true },
 ];
 
+export const accessPoints = [
+  {
+    label: "Overview",
+    icon: <GrOverview size={25} />,
+    link: '/admin/overview',
+    value: 'overview'
+  },
+  {
+    label: "Users Management",
+    icon: <HiUsers size={25} />,
+    link: '/admin/user-management',
+    value: 'user-management'
+  }, {
+    label: "Subscription plans",
+    icon: <MdOutlineSubscriptions size={25} />,
+    link: '/admin/subscription-plans',
+    value: 'subscription-plans'
+  }, {
+    label: "Token Analytics",
+    icon: <IoAnalyticsSharp size={25} />,
+    link: '/admin/token-analytics',
+    value: 'token-analytics'
+  }, {
+    label: "Product Monitoring",
+    icon: <FaWatchmanMonitoring size={25} />,
+    link: '/admin/product-monitoring',
+    value: 'product-monitoring'
+  }, {
+    label: "Logs & Activity",
+    icon: <LuActivity size={25} />,
+    link: '/admin/logs-activity',
+    value: 'logs-activity'
+  }, {
+    label: "Enterprise Clients",
+    icon: <SiEnterprisedb size={25} />,
+    link: '/admin/enterprise-clients',
+    value: 'enterprise-clients'
+  }, {
+    label: "Billing Settings",
+    icon: <MdSettingsAccessibility size={25} />,
+    link: '/admin/billing-settings',
+    value: 'billing-settings',
+    mandatory_role: ["super admin"]
+  }, {
+    label: "Admin Users & Roles",
+    icon: <FaUsers size={25} />,
+    link: '/admin/users-roles',
+    value: 'users-roles'
+  }, {
+    label: "Support & Communication",
+    icon: <GiSatelliteCommunication size={25} />,
+    link: '/admin/support-communication',
+    value: 'support-communication'
+  }
+]
+
+
 const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
+
+  const { myPermissions, permissionsLoading } = useSelector((state: RootState) => state.admin)
+  const userData: UserProfileData = useSelector(
+    (state: RootState) => state.auth.userData
+  );
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
-
-
   const handleConfirmDelete = async () => {
-      await dispatch(logoutUser({ router }));
+    await dispatch(logoutUser({ router }));
 
   };
 
-
   return (
-    <aside className="w-[294px] bg-[#081028] flex flex-col gap-2 rounded-tl-[15px] rounded-bl-[15px]">
-      <div className="text-center my-[40px]">
-        <Image alt="Logo" src="/images/yash-removebg-preview.png" height={150} width={150} className="ml-10" />
-      </div>
+    <aside className="w-[294px] bg-[#081028]   flex flex-col gap-2 rounded-tl-[15px] rounded-bl-[15px]">
+      <h2 className="text-xl font-semibold text-center my-[40px]">
+        <Image
+          alt="alt"
+          src="/images/yash-removebg-preview.png"
+          height={150}
+          width={150}
+          className="ml-10"
+        />
+      </h2>
       <ConfirmDeleteModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        title="Log out Account?"
+        title="Log Out?"
         message={`Are you sure you want to Logout your Account?`}
-      />
-      <nav className="flex flex-col gap-2 px-4 mt-[30px] shadow-2xl shadow-[#0105114D] rounded-md">
-        {menuItems.map(({ label, path, icon, key, hasArrow }) => (
-          <Link
-            href={path}
-            key={key}
-            className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-sm ${adminPage === key ? "text-[#CB3CFF]" : "text-[#767F9C]"
-              }`}
-          >
-            <div className="flex items-center gap-3">
-              {icon}
-              <span>{label}</span>
-            </div>
-            {hasArrow && (
-              <Image alt="arrow" src="/images/right-icon.png" height={12} width={12} />
-            )}
-          </Link>
-        ))}
+      />   
+      
+         <nav className="flex flex-col gap-2 px-4 mt-[30px] shadow-2xl shadow-[#0105114D] rounded-md">
 
-        <button
-          onClick={()=> setIsModalOpen(true)}
+        {permissionsLoading ? <div className="animate-pulse">Loading ...</div> : myPermissions ? accessPoints.map((item) => {
+          if (myPermissions.includes(item.value))
+            return <Link
+              key={item.value}
+              href={`/admin/${item.value}`}
+              className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === item.value ? "text-[#CB3CFF]" : ""
+                } text-[#767F9C] text-sm`}
+            >
+              {item.icon}
+              <span className="ml-4">{item.label}</span>
+            </Link>
+        }) : <h2>No Permissions found</h2>}
+
+        <Link
+          href="/auth/signin"
           className="flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-[#767F9C] text-sm"
         >
           <div className="flex items-center gap-3">
             <LuLogOut size={25} />
             <span>Logout</span>
           </div>
-          <Image alt="arrow" src="/images/right-icon.png" height={12} width={12} />
-        </button>
+
+          <Image
+            alt="alt"
+            src="/images/right-icon.png"
+            height={12}
+            width={12}
+          />
+        </Link>
       </nav>
 
       <hr className="border-b border-[#FFFFFF]" />
+      
 
       <Link
-        href="/admin/settings"
-        className={`flex items-center justify-between gap-2 px-3 ml-4 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-sm ${adminPage === "settings" ? "text-[#CB3CFF]" : "text-[#767F9C]"
-          }`}
-      >
-        <div className="flex items-center gap-3">
-          <IoSettingsSharp size={25} />
-          <span>Settings</span>
-        </div>
-        <Image alt="arrow" src="/images/right-icon.png" height={12} width={12} />
-      </Link>
-
-      <Link
-        href="/admin/account-settings"
-        className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-sm ${adminPage === "account-settings" ? "text-[#CB3CFF]" : "text-white"
-          }`}
+        href=""
+        className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "account-settings" ? "text-[#CB3CFF]" : ""
+          } text-white text-sm`}
       >
         <div className="flex items-center gap-3">
           <Image alt="User" src="/images/men.png" height={32} width={32} />
           <span>
-            John Carter <br />
-            <span className="text-[#AEB9E1] text-xs">Account settings</span>
+            {userData?.fullName ? formatName(userData.fullName) : ""} <br />
+            {/* <span className="text-[#AEB9E1] text-xs">Account settings</span> */}
           </span>
         </div>
-        <Image alt="arrow" src="/images/right-icon.png" height={12} width={12} />
       </Link>
     </aside>
   );

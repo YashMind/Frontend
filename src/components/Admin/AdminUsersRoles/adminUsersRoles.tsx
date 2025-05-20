@@ -20,6 +20,8 @@ import { FaUser } from "react-icons/fa";
 import EditPermissionModal from "@/components/EditPermissionsModal";
 import { getAllUsers } from "@/store/slices/admin/adminSlice";
 import moment from "moment";
+import { accessPoints } from "../AdminSidebar/adminSidebar";
+
 
 interface RoleWithPermissions {
   id: number;
@@ -302,15 +304,18 @@ const AdminUsersRoles = () => {
                   >
                     <div className="flex justify-between items-center bg-[#081028] px-4 py-2 rounded">
                       <h3 className="font-semibold text-white">{item?.role}</h3>
-                      <button
-                        className="cursor-pointer text-sm bg-[#3B0459] text-white px-4 py-1 rounded"
-                        onClick={() => {
-                          setShowPermissionModal(true);
-                          setAdminUserData(item);
-                        }}
-                      >
-                        Edit Permissions
-                      </button>
+                      {item.role !== "Super Admin" &&
+                        <button
+                          className="cursor-pointer text-sm bg-[#3B0459] text-white px-4 py-1 rounded"
+                          onClick={() => {
+                            setShowPermissionModal(true);
+                            setAdminUserData(item);
+                          }}
+                        >
+                          Edit Permissions
+                        </button>
+                      }
+
                     </div>
 
                     <div className="mt-4">
@@ -318,7 +323,7 @@ const AdminUsersRoles = () => {
                       {item?.permissions && item.permissions.length > 0 ? (
                         <ul className="list-disc list-inside text-sm text-gray-200 space-y-1">
                           {item.permissions.map((perm, idx) => (
-                            <li key={idx}>{perm}</li>
+                            <li key={idx}>{accessPoints.find((item) => item.value === perm)?.label}</li>
                           ))}
                         </ul>
                       ) : (

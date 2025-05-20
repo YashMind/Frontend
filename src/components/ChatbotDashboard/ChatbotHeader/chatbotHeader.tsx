@@ -19,6 +19,7 @@ const ChatbotDashboardHeader = ({
   addBgColor: boolean;
   role?: string;
 }) => {
+  console.log(role, "====")
   const [bot, setBot] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,6 +59,7 @@ const ChatbotDashboardHeader = ({
     await dispatch(logoutUser({ router }));
   };
 
+
   return (
     <nav
       className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${fix ? "fixed" : ""
@@ -89,9 +91,9 @@ const ChatbotDashboardHeader = ({
           </Link>
         </div>
         <div className="flex gap-8 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse items-center">
-          {role === "admin" && (
+          {role && ["Super Admin", "Billing Admin", "Product Admin", "Support Admin"].includes(role.replace(/^"(.*)"$/, '$1').trim()) && (
             <Link
-              href={"/admin/dashboard"}
+              href="/admin/overview"
               className="bg-white p-2 px-4 rounded-full font-semibold"
             >
               Admin Dashboard
@@ -127,7 +129,7 @@ const ChatbotDashboardHeader = ({
                     Settings
                   </Link>
                   <button
-                  onClick={()=> setIsModalOpen(true)}
+                    onClick={() => setIsModalOpen(true)}
                     className="cursor-pointer w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                   >
                     Logout
@@ -210,7 +212,7 @@ const ChatbotDashboardHeader = ({
                   setBot(2);
                   setIsMenuOpen(false);
                 }}
-                
+
               >
                 Voice Agent
               </Link>

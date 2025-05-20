@@ -30,6 +30,7 @@ const ChatbotMain = ({
   botId?: number;
   role?: string;
 }) => {
+  console.log(role,"====role12")
   const [modalShow, setModalShow] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const showModal = () => {

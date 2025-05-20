@@ -15,20 +15,15 @@ import LogsActivity from "./logs&activity/logs&activity";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { getMeData } from "@/store/slices/auth/authSlice";
-import { getAllUsers } from "@/store/slices/admin/adminSlice";
+import { getAllUsers, getMyPermissions } from "@/store/slices/admin/adminSlice";
 import { useRouter } from "next/navigation";
 
 const Admin = ({ adminPage }: { adminPage: string }) => {
   const dispatch = useDispatch<AppDispatch>();
-    const router = useRouter();
-  
-  const userData: UserProfileData = useSelector(
-    (state: RootState) => state.auth.userData
-  );
+  const router = useRouter();
   const { allUsersData } = useSelector((state: RootState) => state.admin);
 
   useEffect(() => {
-    dispatch(getMeData({router}));
     if (!allUsersData?.data?.length) {
       dispatch(
         getAllUsers({
@@ -38,6 +33,13 @@ const Admin = ({ adminPage }: { adminPage: string }) => {
       );
     }
   }, [allUsersData?.data?.length]);
+
+  useEffect(() => {
+
+    dispatch(getMyPermissions());
+    dispatch(getMeData({ router }));
+
+  }, [])
 
   return (
     <div>
@@ -50,7 +52,7 @@ const Admin = ({ adminPage }: { adminPage: string }) => {
             <AdminTopbar allUsersData={allUsersData} />
             {adminPage === "dashboard" ? <AdminMain /> : null}
             {adminPage === "overview" ? <AdminMain /> : null}
-            {adminPage === "users-management" ? <UserManagement /> : null}
+            {adminPage === "user-management" ? <UserManagement /> : null}
             {adminPage === "subscription-plans" ? <SubscriptionPlans /> : null}
             {adminPage === "token-analytics" ? <TokenAnalytics /> : null}
             {adminPage === "users-roles" ? <AdminUsersRoles /> : null}

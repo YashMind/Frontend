@@ -520,10 +520,10 @@ export const updateClientByAdmin = createAsyncThunk<
 
 export const updateTools = createAsyncThunk<any, { id: number; status: string }>(
   "admin/updateBotToken",
-  async ( { id, status }, { dispatch, rejectWithValue }) => {
+  async ({ id, status }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await http.put(`/admin/tool/${id}/status`, {status});
+      const response = await http.put(`/admin/tool/${id}/status`, { status });
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toasterSuccess("Tools Status updated successfully!", 2000, "id")
@@ -644,7 +644,7 @@ export const updateRoleAdmin = createAsyncThunk<any, { payload: any }>(
       const response = await http.post("/admin/assign", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        // dispatch(getAdminUsers());
+        dispatch(getMyPermissions());
         toast.success("Permissions updated successfully!");
         return response.data;
       } else {
@@ -868,9 +868,37 @@ export const deletePaymentsGateway = createAsyncThunk<any, { id?: number }>(
   }
 );
 
+export const getMyPermissions = createAsyncThunk<any, void>(
+  "admin/rolesPermissions",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+
+      const response = await http.get("/admin/roles_permissions");
+
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("Failed to fetch roles and permissions!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toasterError(error?.response?.data?.detail, 2000, "id");
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred while fetching roles and permissions");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 const initialState = {
   loading: false,
   data: [],
+  myPermissions: [] as string[],
+  permissionsLoading: false,
   allUsersData: {} as AdminAllUsers,
   subscriptionPlansData: {} as SubscriptionPlansData,
   tokenBotsData: {} as TokenBotsData,
@@ -959,23 +987,25 @@ const adminSlice = createSlice({
       .addCase(getAdminUsers.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getClientUsers.pending, (state) => {
-        state.loading = true;
-      })
       .addCase(getAdminUsers.fulfilled, (state, action) => {
         state.loading = false;
         state.adminUsers = action?.payload;
+      })
+      .addCase(getAdminUsers.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(getClientUsers.pending, (state) => {
+        state.loading = true;
       })
       .addCase(getClientUsers.fulfilled, (state, action) => {
         state.loading = false;
         state.clientUsers = action?.payload;
       })
-      .addCase(getAdminUsers.rejected, (state, action) => {
-        state.loading = false;
-      })
       .addCase(getClientUsers.rejected, (state, action) => {
         state.loading = false;
       })
+
       .addCase(getRolePermissions.rejected, (state, action) => {
         state.loading = false;
       })
@@ -1011,6 +1041,16 @@ const adminSlice = createSlice({
       })
       .addCase(getAllPaymentGateway.rejected, (state, action) => {
         state.loading = false;
+      })
+      .addCase(getMyPermissions.pending, (state) => {
+        state.permissionsLoading = true;
+      })
+      .addCase(getMyPermissions.fulfilled, (state, action) => {
+        state.permissionsLoading = false;
+        state.myPermissions = action?.payload.permissions;
+      })
+      .addCase(getMyPermissions.rejected, (state) => {
+        state.permissionsLoading = false;
       });
   },
 });

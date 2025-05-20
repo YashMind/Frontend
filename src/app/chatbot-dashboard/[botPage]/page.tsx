@@ -8,6 +8,7 @@ const ChatbotViewPage = async (props: ChatbotPageProps) => {
   const { botPage } = await props.params;
   const cookieStore = await cookies();
   const role = cookieStore.get("role")?.value;
+
   return <ChatbotMain botPage={botPage} role={role} />;
 };
 
