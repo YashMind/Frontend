@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { RiDashboardHorizontalFill } from "react-icons/ri";
 import { GrOverview } from "react-icons/gr";
 import { HiUsers } from "react-icons/hi2";
 import { MdOutlineSubscriptions } from "react-icons/md";
@@ -22,6 +21,7 @@ import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
 import { formatName } from "@/services/utils/helpers";
+import { RiDashboardHorizontalFill } from "react-icons/ri";
 
 
 const menuItems = [
@@ -49,8 +49,8 @@ export const accessPoints = [
   {
     label: "Users Management",
     icon: <HiUsers size={25} />,
-    link: '/admin/user-management',
-    value: 'user-management'
+    link: '/admin/users-management',
+    value: 'users-management'
   }, {
     label: "Subscription plans",
     icon: <MdOutlineSubscriptions size={25} />,
@@ -128,9 +128,8 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
         onConfirm={handleConfirmDelete}
         title="Log Out?"
         message={`Are you sure you want to Logout your Account?`}
-      />   
-      
-         <nav className="flex flex-col gap-2 px-4 mt-[30px] shadow-2xl shadow-[#0105114D] rounded-md">
+      />
+      <nav className="flex flex-col gap-2 px-4 mt-[30px] shadow-2xl shadow-[#0105114D] rounded-md">
 
         {permissionsLoading ? <div className="animate-pulse">Loading ...</div> : myPermissions ? accessPoints.map((item) => {
           if (myPermissions.includes(item.value))
@@ -164,6 +163,8 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
       </nav>
 
       <hr className="border-b border-[#FFFFFF]" />
+
+
       <Link
         href=""
         className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "account-settings" ? "text-[#CB3CFF]" : ""

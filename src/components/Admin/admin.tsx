@@ -22,6 +22,8 @@ const Admin = ({ adminPage }: { adminPage: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { allUsersData } = useSelector((state: RootState) => state.admin);
+  const permissions = useSelector((state: RootState) => state.admin.myPermissions)
+  const { role } = useSelector((state: RootState) => state.auth.userData)
 
   useEffect(() => {
     if (!allUsersData?.data?.length) {
@@ -35,11 +37,15 @@ const Admin = ({ adminPage }: { adminPage: string }) => {
   }, [allUsersData?.data?.length]);
 
   useEffect(() => {
-
-    dispatch(getMyPermissions());
     dispatch(getMeData({ router }));
-
   }, [])
+
+  useEffect(() => {
+
+    if (role && !permissions.length) {
+      dispatch(getMyPermissions());
+    }
+  }, [role])
 
   return (
     <div>

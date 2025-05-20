@@ -401,7 +401,7 @@ export const getClientLogsActivity = createAsyncThunk<
     try {
       dispatch(startLoadingActivity());
       const response = await http.get(
-        `/admin/get-client-logs-activity?date_filter=${date_filter ?? ""}`
+        `/admin/activity-logs?date_filter=${date_filter ?? ""}`
       );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
