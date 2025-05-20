@@ -45,7 +45,6 @@ const Page = () => {
     }
   }, [userData]);
 
-  // console.log(editedData, userData.picture, editedData.picture);
 
   useEffect(() => {
     dispatch(getMeData({ router }));

@@ -53,8 +53,6 @@ const getValidationSchema = (type: "signin" | "signup") => {
     });
 };
 
-
-
 const AuthForm = ({ formType }: { formType: "signin" | "signup" }) => {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
@@ -159,6 +157,13 @@ const AuthForm = ({ formType }: { formType: "signin" | "signup" }) => {
                                     Forgot Password?
                                 </Link>
                             </div>
+
+                            {formType === "signin" && <div className="text-[15px] my-[20px] font-bold ml-54">
+                                Don't have an account?{" "}
+                                <Link href="/auth/signup" className="text-cyan-400 hover:underline">
+                                    Sign up
+                                </Link>
+                            </div>}
 
                             <hr className="border border-[#727272] my-[20px]" />
                             <div className="my-6 flex items-center">

@@ -164,8 +164,6 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
       </nav>
 
       <hr className="border-b border-[#FFFFFF]" />
-      
-
       <Link
         href=""
         className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "account-settings" ? "text-[#CB3CFF]" : ""

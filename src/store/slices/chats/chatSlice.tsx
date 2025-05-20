@@ -34,8 +34,8 @@ export const getChatbots = createAsyncThunk<any, void>(
         return rejectWithValue("failed to fetch chatbots");
       }
     } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        return rejectWithValue(error.response.data.message);
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data.detail);
       }
       return rejectWithValue("An error occurred during auth");
     } finally {
@@ -965,9 +965,10 @@ const chatSlice = createSlice({
       .addCase(getChatbots.fulfilled, (state, action) => {
         state.loading = false;
         state.chatbots = action?.payload;
+        state.error = null;
       })
       .addCase(getChatbots.rejected, (state, action) => {
-        state.loading = false;
+        state.error = action.payload as string;
       })
 
       .addCase(getSingleChatbot.pending, (state) => {

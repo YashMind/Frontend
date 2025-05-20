@@ -46,7 +46,6 @@ const EmailComposeModal = ({
     modalType,
 }: EmailComposeModalProps) => {
     const allUsersData = useSelector((state: RootState) => state.admin.allUsersData?.data ?? []);
-    console.log(allUsersData)
     const {
         register,
         handleSubmit,

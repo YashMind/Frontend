@@ -52,7 +52,6 @@ try {
     }
 
     const { permissions } = await response.json();
-    console.log("PERMISSIONS FETCHED")
 
     // Update cache
     permissionCache[role] = {

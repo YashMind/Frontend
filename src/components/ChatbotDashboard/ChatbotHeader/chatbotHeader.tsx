@@ -14,12 +14,14 @@ const ChatbotDashboardHeader = ({
   fix,
   addBgColor,
   role,
+  chatbotError,
 }: {
   fix: boolean;
   addBgColor: boolean;
   role?: string;
+  chatbotError?:string;
 }) => {
-  console.log(role, "====")
+
   const [bot, setBot] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -182,6 +184,7 @@ const ChatbotDashboardHeader = ({
             )}
           </button>
         </div>
+        {!chatbotError &&
         <div
           className={`${isMenuOpen ? "flex flex-col" : "hidden"
             } w-full md:flex md:flex-row md:w-auto md:order-1`}
@@ -231,7 +234,9 @@ const ChatbotDashboardHeader = ({
               </Link>
             </li>
           </ul>
-        </div>
+        </div>     
+        }
+   
       </div>
     </nav>
   );

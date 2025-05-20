@@ -26,7 +26,6 @@ const HomeHeader = () => {
     setIsMenuOpen((prev) => !prev);
   };
 
-  console.log(pathname);
 
   return (
     <nav className="fixed w-full left-0 top-0 z-[9]">

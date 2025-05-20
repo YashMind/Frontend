@@ -108,8 +108,7 @@ const AddEditAdminUserModal = ({
   const dispatch = useDispatch<AppDispatch>();
 
 const onSubmit = async (data: AdminSignUpForm) => {
-  console.log(roleData,"==roleData")
-  console.log(data,"==data")
+
   try {
     if (data.id) {
       if (roleData === "admin") {

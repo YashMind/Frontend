@@ -15,9 +15,9 @@ import ChatbotIntegration from "@/components/ChatbotDashboard/ChatbotIntegration
 import ChatbotSettings from "@/components/ChatbotDashboard/ChatbotSettings/chatbotSettings";
 import ChatbotDashboard from "@/components/ChatbotDashboard/chatbotDashboard";
 import CreatebotModal from "./Createbot/createbot";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store/store";
-import { getSingleChatbot } from "@/store/slices/chats/chatSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { fetchChatMessageTokens, getChatbots, getSingleChatbot } from "@/store/slices/chats/chatSlice";
 import ChatbotDashboardHeader from "../ChatbotHeader/chatbotHeader";
 import RightSection from "./RightSection/rightSection";
 
@@ -30,12 +30,7 @@ const ChatbotMain = ({
   botId?: number;
   role?: string;
 }) => {
-  console.log(role,"====role12")
-  const [modalShow, setModalShow] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
-  const showModal = () => {
-    setModalShow(true);
-  };
 
   useEffect(() => {
     if (botId !== undefined) {
@@ -43,56 +38,77 @@ const ChatbotMain = ({
     }
   }, [dispatch, botId]);
 
+  useEffect(() => {
+    dispatch(getChatbots());
+    dispatch(fetchChatMessageTokens());
+  }, [dispatch]);
+
+  const [modalShow, setModalShow] = useState<boolean>(false);
+  const chatbotError :any = useSelector((state: RootState) => state.chat.error);
+
+  const showModal = () => {
+    setModalShow(true);
+  };
+
+
   return (
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
-      <ChatbotDashboardHeader fix={true} addBgColor={true} role={role} />
-      <div className="min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 ">
-        {/* Real Time Count + Table */}
-        <RealTimeCount />
+      <ChatbotDashboardHeader fix={true} addBgColor={true} role={role} chatbotError={chatbotError}/>
+      {!chatbotError ? <>
+        <div className="min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 ">
+          {/* Real Time Count + Table */}
+          <RealTimeCount />
 
-        {/* Owner Section */}
-        <div className="flex gap-6">
-          <div
-            className={`bg-[#2a2561]   rounded-[58px] w-full lg:w-[90%]  flex ${
-              botId ? "" : "gap-[25px]"
-            }`}
-          >
-            {botPage !== "main" ? (
-              <ChatbotSidebar botPage={botPage} botId={botId} />
-            ) : null}
-            {botPage === "main" ? (
-              <ChatbotDashboard showModal={showModal} />
-            ) : null}
-            {botPage === "update" || botPage === "overview" ? (
-              <ChatbotOverview botPage={botPage} botId={botId} />
-            ) : null}
-            {botPage === "chat-history" ? (
-              <ChatbotHistory botId={botId} />
-            ) : null}
-            {botPage === "chat-leads" ? (
-              <ChatbotLeads botPage={botPage} botId={botId} />
-            ) : null}
-            {botPage === "links-docs" ? (
-              <ChatbotLinksDocs botPage={botPage} botId={botId} />
-            ) : null}
-            {botPage === "texts" ? <ChatbotTexts botId={botId} /> : null}
-            {botPage === "faqs" ? <ChatbotQA botId={botId} /> : null}
-            {botPage === "ai" ? <ChatbotAI botId={botId} /> : null}
-            {botPage === "appearence" ? (
-              <ChatbotAppearence botId={botId} />
-            ) : null}
-            {botPage === "deploy" ? <ChatbotDeploy /> : null}
-            {botPage === "integration" ? (
-              <ChatbotIntegration botId={botId} />
-            ) : null}
-            {botPage === "settings" ? <ChatbotSettings botId={botId} /> : null}
-            {/* second div */}
+          {/* Owner Section */}
+          <div className="flex gap-6">
+            <div
+              className={`bg-[#2a2561]   rounded-[58px] w-full lg:w-[90%]  flex ${botId ? "" : "gap-[25px]"
+                }`}
+            >
+              {botPage !== "main" ? (
+                <ChatbotSidebar botPage={botPage} botId={botId} />
+              ) : null}
+              {botPage === "main" ? (
+                <ChatbotDashboard showModal={showModal} />
+              ) : null}
+              {botPage === "update" || botPage === "overview" ? (
+                <ChatbotOverview botPage={botPage} botId={botId} />
+              ) : null}
+              {botPage === "chat-history" ? (
+                <ChatbotHistory botId={botId} />
+              ) : null}
+              {botPage === "chat-leads" ? (
+                <ChatbotLeads botPage={botPage} botId={botId} />
+              ) : null}
+              {botPage === "links-docs" ? (
+                <ChatbotLinksDocs botPage={botPage} botId={botId} />
+              ) : null}
+              {botPage === "texts" ? <ChatbotTexts botId={botId} /> : null}
+              {botPage === "faqs" ? <ChatbotQA botId={botId} /> : null}
+              {botPage === "ai" ? <ChatbotAI botId={botId} /> : null}
+              {botPage === "appearence" ? (
+                <ChatbotAppearence botId={botId} />
+              ) : null}
+              {botPage === "deploy" ? <ChatbotDeploy /> : null}
+              {botPage === "integration" ? (
+                <ChatbotIntegration botId={botId} />
+              ) : null}
+              {botPage === "settings" ? <ChatbotSettings botId={botId} /> : null}
+              {/* second div */}
+            </div>
+            <RightSection showModal={showModal} />
+            <CreatebotModal show={modalShow} onHide={() => setModalShow(false)} />
           </div>
-          <RightSection showModal={showModal} />
-          <CreatebotModal show={modalShow} onHide={() => setModalShow(false)} />
         </div>
-      </div>
+
+      </> : <div className="min-h-screen flex items-center justify-center text-white text-2xl font-bold">
+        <div className="p-8 bg-white text-black">
+         {chatbotError} Yet !!
+
+        </div>
+      </div>}
+
     </div>
   );
 };
