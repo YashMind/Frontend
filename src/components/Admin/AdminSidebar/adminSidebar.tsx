@@ -22,12 +22,6 @@ import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 
 export const accessPoints = [
-  // {
-  //   label: "Dashboard",
-  //   icon: <RiDashboardHorizontalFill size={25} />,
-  //   link: '/admin/dashboard',
-  //   value: 'dashboard'
-  // },
   {
     label: "Overview",
     icon: <GrOverview size={25} />,

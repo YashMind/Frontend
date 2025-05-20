@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtDecode } from 'jwt-decode'
 
-const ADMIN_ROLES = new Set(["super admin", "billing admin", "product admin", "support admin"]);
+const ADMIN_ROLES = new Set(["Super Admin", "Billing Admin", "Product Admin", "Support Admin"]);
 const PUBLIC_ROUTES = new Set([
   "/", "/auth/signin", "/auth/signup", "/chatbot", "/voice-agent", "/llm",
   "/details/privacy-policy", "/details/about-us", "/details/careers",
