@@ -5,7 +5,7 @@ import PreferenceProducts from "@/components/ChatbotProducts/PreferenceProducts/
 import HelpProducts from "@/components/ChatbotProducts/HelpProducts/helpProducts";
 import TeamProducts from "@/components/ChatbotProducts/TeamProducts/teamProducts";
 import SettingProducts from "@/components/ChatbotProducts/SettingProducts/settingProducts";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 import { AppDispatch } from "@/store/store";
@@ -14,12 +14,13 @@ import { getAllBotProducts } from "@/store/slices/admin/adminSlice";
 const ChatbotProducts = ({ product }: { product: string }) => {
 
   const dispatch = useDispatch<AppDispatch>()
-
+  const { botProducts } = useSelector((state) => state.
+  );
   useEffect(() => {
     dispatch(getAllBotProducts({}))
   }, [])
   return (
-    <div className="bg-[#2F0448] h-screen">
+    <div className="bg-[#2F0448] h-screen">+
       {/* header */}
       <ChatbotHeader fix={false} addBgColor={true} />
       {/* sidebar */}

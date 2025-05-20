@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { RiDashboardHorizontalFill } from "react-icons/ri";
 import { GrOverview } from "react-icons/gr";
 import { HiUsers } from "react-icons/hi2";
 import { MdOutlineSubscriptions } from "react-icons/md";
@@ -31,8 +30,8 @@ export const accessPoints = [
   {
     label: "Users Management",
     icon: <HiUsers size={25} />,
-    link: '/admin/user-management',
-    value: 'user-management'
+    link: '/admin/users-management',
+    value: 'users-management'
   }, {
     label: "Subscription plans",
     icon: <MdOutlineSubscriptions size={25} />,
