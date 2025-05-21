@@ -20,6 +20,7 @@ const ChatbotOverview = ({
   );
   const dispatch = useDispatch<AppDispatch>();
   const hasRun = useRef(false);
+  
   useEffect(() => {
     if (hasRun.current) return;
     hasRun.current = true;
@@ -27,8 +28,9 @@ const ChatbotOverview = ({
       dispatch(createChatsId({ bot_id: botId }));
     }
   }, [dispatch, botPage, botId]);
+
   return (
-    <div className="w-full">
+    <div className="w-full m-10">
       {botPage === "overview" ? (
         <h2 className="ml-24 text-2xl font-bold my-4">Owner</h2>
       ) : null}

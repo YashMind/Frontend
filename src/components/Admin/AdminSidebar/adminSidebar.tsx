@@ -118,8 +118,10 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
           src="/images/yash-removebg-preview.png"
           height={150}
           width={150}
+          unoptimized
           className="ml-10"
         />
+
       </h2>
       <ConfirmDeleteModal
         isOpen={isModalOpen}

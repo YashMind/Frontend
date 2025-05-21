@@ -95,7 +95,7 @@ const ChatbotSection = ({
 
   return (
     <div
-      className="min-w-[320px] h-[500px] rounded-lg shadow-md flex flex-col justify-between "
+      className="min-w-[320px] h-[500px] rounded-lg shadow-md flex flex-col justify-between"
       style={{ backgroundColor: chatbotSetting?.chat_window_bg ?? "#ffffff" }}
     >
       <div className="p-4 flex items-center gap-2 border-b">
