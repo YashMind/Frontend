@@ -22,7 +22,7 @@ const ChatbotHeader = ({
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    dispatch(getMeData({router}));
+    dispatch(getMeData({ router }));
   }, [router]);
 
   const userData: UserProfileData = useSelector(
@@ -114,6 +114,12 @@ const ChatbotHeader = ({
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         >
                           Settings
+                        </Link>
+                        <Link
+                          href="/invite-user"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          Invite User
                         </Link>
                         <button
                           onClick={() => handleLogOut()}
