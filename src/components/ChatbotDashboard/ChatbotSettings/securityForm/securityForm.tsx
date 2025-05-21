@@ -134,7 +134,7 @@ const SecuritySettings = ({ botId }: { botId?: number }) => {
 
         <button
           type="submit"
-          className="bg-green-500 hover:bg-green-600 text-white px-6 py-1.5 text-sm font-bold rounded-[10px]"
+          className="cursor-pointer bg-green-500 hover:bg-green-600 text-white px-6 py-1.5 text-sm font-bold rounded-[10px]"
         >
           Save
         </button>

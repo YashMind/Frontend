@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PhoneDialog from "./whatsappDialog";
-import { boolean } from "yup";
 
 const ChatbotIntegration = ({ botId }: { botId?: number }) => {
   const [openWhatsappDialog, setOpenWhatsappDialog] = useState<boolean>();
@@ -8,7 +7,7 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
   const slackUrl = process.env.NEXT_PUBLIC_SLACK_URL;
 
   return (
-    <div className="w-full">
+    <div className="w-full m-10">
       <h2 className="text-2xl font-bold my-[30]">Integration</h2>
       <div className="grid grid-cols-3 md:grid-cols-3 gap-6 w-full  text-center bg-[#9592AE] p-18 rounded-[24px] ">
         {/* Card 1 */}
@@ -21,7 +20,7 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
             Use your chatbot to respond to incoming messages to your Instagram
             business account.
           </p>
-          <button className="bg-[#CC39A2] text-white px-4 py-1 rounded-full text-[12px] font-bold">
+          <button className="cursor-pointer bg-[#CC39A2] text-white px-4 py-1 rounded-full text-[12px] font-bold">
             Export All
           </button>
         </div>
@@ -38,7 +37,7 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
           </p>
           <button
             onClick={() => setOpenWhatsappDialog(true)}
-            className="bg-[#60D669] text-white px-4 py-1 rounded-full text-[12px] font-bold"
+            className="cursor-pointer bg-[#60D669] text-white px-4 py-1 rounded-full text-[12px] font-bold"
           >
             Connect Number
           </button>
@@ -53,7 +52,7 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
           <p className="text-xs py-[9px] font-light">
             Connect your bot with Slack workspaces for a seamless integration.
           </p>
-          <button className="bg-[#0073AA] text-white px-4 py-1 rounded-full text-[12px] font-bold">
+          <button className="cursor-pointer bg-[#0073AA] text-white px-4 py-1 rounded-full text-[12px] font-bold">
             Export All
           </button>
         </div>
@@ -68,7 +67,7 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
             Use AI-powered automation with Zapier AI Actions to create more
             intelligent workflows.
           </p>
-          <button className="bg-[#FF4F00] text-white px-4 py-1 rounded-full text-[12px] font-bold">
+          <button className="cursor-pointer bg-[#FF4F00] text-white px-4 py-1 rounded-full text-[12px] font-bold">
             Export All
           </button>
         </div>
@@ -84,7 +83,7 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
           </p>
           <a
             href={slackUrl + `bot_id=${botId}`}
-            className="bg-[#EBB02E] text-white px-4 py-1 rounded-full text-[12px] font-bold"
+            className="cursor-pointer bg-[#EBB02E] text-white px-4 py-1 rounded-full text-[12px] font-bold"
             target="_blank"
           >
             Connect
@@ -92,7 +91,7 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
         </div>
 
         {/* Card 6 */}
-        <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mt-8git add . ">
+        <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mt-8 ">
           <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#466CFF] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
             <img className="" src="/images/facebook-messenger-icon 1.png" />
           </div>
@@ -101,7 +100,7 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
             Use your chatbot to automatically reply to your Facebook pages
             messages or comments.
           </p>
-          <button className="bg-[#466CFF] text-white px-4 py-1 rounded-full text-[12px] font-bold">
+          <button className="cursor-pointer bg-[#466CFF] text-white px-4 py-1 rounded-full text-[12px] font-bold">
             Export All
           </button>
         </div>

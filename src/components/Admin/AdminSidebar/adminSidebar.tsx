@@ -12,7 +12,6 @@ import { MdSettingsAccessibility } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import { IoMdPricetags } from "react-icons/io";
-import { IoSettingsSharp } from "react-icons/io5";
 import { SiEnterprisedb } from "react-icons/si";
 import { GiSatelliteCommunication } from "react-icons/gi";
 import { logoutUser } from "@/store/slices/auth/authSlice";
@@ -97,13 +96,13 @@ export const accessPoints = [
 
 
 const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
-
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
   const { myPermissions, permissionsLoading } = useSelector((state: RootState) => state.admin)
   const userData: UserProfileData = useSelector(
     (state: RootState) => state.auth.userData
   );
-  const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleConfirmDelete = async () => {
@@ -126,52 +125,61 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        title="Log Out?"
+        title="Log out Account?"
         message={`Are you sure you want to Logout your Account?`}
       />
       <nav className="flex flex-col gap-2 px-4 mt-[30px] shadow-2xl shadow-[#0105114D] rounded-md">
 
-        {permissionsLoading ? <div className="animate-pulse">Loading ...</div> : myPermissions ? accessPoints.map((item) => {
-          if (myPermissions.includes(item.value))
-            return <Link
-              key={item.value}
-              href={`/admin/${item.value}`}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === item.value ? "text-[#CB3CFF]" : ""
-                } text-[#767F9C] text-sm`}
-            >
-              {item.icon}
-              <span className="ml-4">{item.label}</span>
-            </Link>
-        }) : <h2>No Permissions found</h2>}
+        {permissionsLoading ? (
+          <div className="animate-pulse space-y-2">
+            {[...Array(7)].map((_, i) => (
+              <div key={i} className="h-14 bg-[#1c1e2e] rounded w-4/4"></div>
+            ))}
+          </div>
+        ) : myPermissions ? (
+          accessPoints.map((item) => {
+            if (myPermissions.includes(item.value))
+              return (
+                <Link
+                  key={item.value}
+                  href={`/admin/${item.value}`}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === item.value ? "text-[#CB3CFF]" : ""
+                    } text-[#767F9C] text-sm`}
+                >
+                  {item.icon}
+                  <span className="ml-4">{item.label}</span>
+                </Link>
+              );
+          })
+        ) : (
+          <h2>No Permissions found</h2>
+        )}
 
-        <Link
-          href="/auth/signin"
-          className="flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-[#767F9C] text-sm"
+
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="cursor-pointer w-full text-left flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium text-[#767F9C] text-sm"
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-6">
             <LuLogOut size={25} />
             <span>Logout</span>
           </div>
-
           <Image
             alt="alt"
             src="/images/right-icon.png"
             height={12}
             width={12}
           />
-        </Link>
+        </button>
       </nav>
-
       <hr className="border-b border-[#FFFFFF]" />
-      
-
       <Link
         href=""
         className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md hover:bg-[#2B1B55] font-medium ${adminPage === "account-settings" ? "text-[#CB3CFF]" : ""
           } text-white text-sm`}
       >
-        <div className="flex items-center gap-3">
-          <Image alt="User" src="/images/men.png" height={32} width={32} />
+        <div className="flex items-center gap-3 ml-4">
+          <Image alt="User" src="/images/user1.png" height={32} width={32} />
           <span>
             {userData?.fullName ? formatName(userData.fullName) : ""} <br />
             {/* <span className="text-[#AEB9E1] text-xs">Account settings</span> */}

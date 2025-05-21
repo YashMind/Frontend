@@ -80,6 +80,7 @@ const AdminUsersRoles = () => {
   const { adminUsers, adminsLogsActivityData } = useSelector(
     (state: RootState) => state.admin
   );
+
   useEffect(() => {
     dispatch(getAdminUsers());
     dispatch(getAdminsLogsActivity({ date_filter: selectedDate }));

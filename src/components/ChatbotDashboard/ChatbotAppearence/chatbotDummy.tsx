@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import Image from "next/image";
 import LeadGenForm from "./LeadGenForm";
 import { ChatbotSettings } from "@/types/chatTypes";
+import { IoMdSend } from "react-icons/io";
 const ChatbotDummy = ({
   chatbotSettings,
 }: {
@@ -177,7 +178,7 @@ const ChatbotDummy = ({
             className={` w-full p-2 text-sm rounded-md border text-black border-gray-300 bg-gray-50 focus:outline-none`}
           />
           <button
-            className=" p-2 rounded text-white"
+            className="cursor-pointer p-2 rounded text-white"
             style={{
               backgroundColor: chatbotSettings.send_button_color
                 ? chatbotSettings.send_button_color
@@ -185,14 +186,8 @@ const ChatbotDummy = ({
             }}
             type="submit"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z" />
-            </svg>
+                       <IoMdSend/>
+           
           </button>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode'
 
 const ADMIN_ROLES = new Set(["Super Admin", "Billing Admin", "Product Admin", "Support Admin"]);
 const PUBLIC_ROUTES = new Set([
-"/", "/auth/signin", "/auth/signup", "/chatbot", "/voice-agent", "/llm",
+"/", "/auth/signin", "/auth/signup", "/chatbot",  "/llm",
 "/details/privacy-policy", "/details/about-us", "/details/careers",
 "/details/chatbot", "/details/faq", "/details/llm", "/details/terms&condition",
 "/details/voice-agent", "/details/contact-us", "/details/refund-and-cancellation-policy"
@@ -68,6 +68,7 @@ try {
 
 // Rest of the middleware remains similar with this updated admin check section:
 async function handleAdminRoutes(request: NextRequest, accessToken: string, pathname: string, role: string | null) {
+    console.log(role,ADMIN_ROLES,"=========")
 if (!role || !ADMIN_ROLES.has(role)) {
     return NextResponse.redirect(new URL('/chatbot-dashboard/main', request.url));
 }

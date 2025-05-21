@@ -157,6 +157,26 @@ export const toggleSubscriptionPlanStatus = createAsyncThunk<
 });
 
 
+export const saveApiKey = createAsyncThunk<any, { tool: string; apiKey: string }>(
+  "admin/saveApiKey",
+  async ({ tool, apiKey }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await http.post(`/admin/save-key`, {
+        tool,
+        api_key: apiKey,
+      });
+
+      if (response.status === 200) {
+        toasterSuccess(response.data.message, 2000, "id");
+        return response.data;
+      }
+    } catch (error: any) {
+      toasterError(error?.response?.data?.detail || "Failed to save API key", 2000, "id");
+      return rejectWithValue(error.response?.data);
+    }
+  }
+);
+
 
 export const deleteSubscriptionsPlan = createAsyncThunk<
   any,
@@ -364,33 +384,31 @@ export const getClientUsers = createAsyncThunk<any, void>(
 );
 
 export const getAdminsLogsActivity = createAsyncThunk<
-  AdminLogsActivity[],
-  { date_filter?: any }
+  { logs: AdminLogsActivity[]; total: number },
+  { date_filter?: string; page?: number; limit?: number }
 >(
   "admin/getAdminsLogsActivity",
-  async ({ date_filter = "" }, { dispatch, rejectWithValue }) => {
+  async ({ date_filter = "", page = 1, limit = 5 }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
+      const offset = (page - 1) * limit;
       const response = await http.get(
-        `/activity/activity-logs?start_date=${date_filter ?? ""}`
+        `/activity/activity-logs?start_date=${date_filter}&limit=${limit}&offset=${offset}`
       );
       if (response.status === 200) {
-        dispatch(stopLoadingActivity());
         return response.data;
       } else {
-        return rejectWithValue("failed to get token bots!");
+        return rejectWithValue("Failed to fetch activity logs");
       }
     } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
-        return rejectWithValue(error.response.data.message);
-      }
-      return rejectWithValue("An error occurred during fetching chats");
+      return rejectWithValue("An error occurred while fetching activity logs");
     } finally {
       dispatch(stopLoadingActivity());
     }
   }
 );
+
+
 
 export const getClientLogsActivity = createAsyncThunk<
   any,
@@ -548,7 +566,7 @@ export const updateTools = createAsyncThunk<any, { id: number; status: string }>
 
 
 export const updateTokenStatus = createAsyncThunk<
-  any, 
+  any,
   { id: number; base_rate_per_token: number }
 >(
   "admin/updateTokenStatus",
@@ -907,6 +925,7 @@ const initialState = {
   adminUsers: [] as AdminUsersData[],
   clientUsers: [] as ClientUsersData[],
   adminsLogsActivityData: {} as AdminLogsActivity[],
+  adminsLogsActivityTotal: 0,
   clientLogsActivityData: {} as ClientLogsActivity,
   paymentGatewayData: [] as PaymentsGateway[],
   rolePermissions: [] as RolePermissions[]
@@ -919,7 +938,7 @@ const adminSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-    .addCase(getAllVolumnDiscounts.pending, (state) => {
+      .addCase(getAllVolumnDiscounts.pending, (state) => {
         state.loading = true;
       })
       .addCase(getAllVolumnDiscounts.fulfilled, (state, action) => {
@@ -1022,7 +1041,8 @@ const adminSlice = createSlice({
       })
       .addCase(getAdminsLogsActivity.fulfilled, (state, action) => {
         state.loading = false;
-        state.adminsLogsActivityData = action?.payload;
+        state.adminsLogsActivityData = action.payload.logs;
+        state.adminsLogsActivityTotal = action.payload.total;
       })
       .addCase(getClientLogsActivity.fulfilled, (state, action) => {
         state.loading = false;

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FaUser } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
@@ -22,20 +22,33 @@ const ChatbotDashboardHeader = ({
   chatbotError?:string;
 }) => {
 
-  const [bot, setBot] = useState<number>(1);
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef(null);
   const router = useRouter();
+  const menuRef = useRef(null);
+  const dispatch = useDispatch<AppDispatch>();
+
+    const userData: UserProfileData = useSelector(
+    (state: RootState) => state.auth.userData
+  );
+
+const pathname = usePathname();
+const [bot, setBot] = useState<number>(1);
+
+useEffect(() => {
+  if (pathname.includes("/voice-agent")) {
+    setBot(2);
+  } else if (pathname.includes("/llm")) {
+    setBot(3);
+  } else if (pathname.includes("/chatbot-dashboard/main")) {
+    setBot(1);
+  }
+}, [pathname]);  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const handleToggle = () => {
     setIsMenuOpen((prev) => !prev);
   };
-  const dispatch = useDispatch<AppDispatch>();
-  const userData: UserProfileData = useSelector(
-    (state: RootState) => state.auth.userData
-  );
+
 
   useEffect(() => {
     dispatch(getMeData({ router }));
@@ -196,7 +209,7 @@ const ChatbotDashboardHeader = ({
                 href="/chatbot-dashboard/main"
                 className={`block py-2 px-3 text-white ${bot === 1 ? "bg-[#434343]" : ""
                   } rounded-[26px]
-                    hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
+                    hover:bg-gray-100 md:hover:bg-transparent md:hover:text-white-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
                 aria-current="page"
                 onClick={() => {
                   setBot(1);
@@ -208,9 +221,9 @@ const ChatbotDashboardHeader = ({
             </li>
             <li>
               <Link
-                href="/voice-agent"
+                href="/chatbot-dashboard/voice-agent"
                 className={`block py-2 px-3 text-white ${bot === 2 ? "bg-[#434343]" : ""
-                  } rounded-[26px]  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
+                  } rounded-[26px]  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-white-700 md:dark:hover:text-white-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
                 onClick={() => {
                   setBot(2);
                   setIsMenuOpen(false);
@@ -222,9 +235,9 @@ const ChatbotDashboardHeader = ({
             </li>
             <li>
               <Link
-                href="/llm"
+                href="/chatbot-dashboard/llm"
                 className={`block py-2 px-3 text-white ${bot === 3 ? "bg-[#434343]" : ""
-                  } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
+                  } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-white-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
                 onClick={() => {
                   setBot(3);
                   setIsMenuOpen(false);

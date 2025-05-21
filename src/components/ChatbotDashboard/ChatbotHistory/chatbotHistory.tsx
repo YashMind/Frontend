@@ -123,30 +123,28 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full m-10">
       <h2 className="text-2xl font-bold my-4">Chat History</h2>
-      <div className="bg-white rounded-b-xl overflow-hidden text-sm w-[550px] xl:w-full rounded-[40px] mb-8 mr-3">
+      <div className="bg-white rounded-b-xl overflow-hidden text-sm w-full xl:w-full rounded-[40px] mb-8">
         {/* Top Actions */}
         <div className="flex flex-wrap items-center justify-between gap-4 bg-[#9592AE] px-6 py-4 ">
           <div className="flex items-center gap-2">
             <div className="flex gap-4">
               <button
-                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
-                  isDisabled
+                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${isDisabled
                     ? "bg-gray-300 cursor-not-allowed"
                     : "bg-purple-600 hover:bg-purple-700"
-                }`}
+                  }`}
                 disabled={isDisabled}
                 onClick={() => handleExportDownloadPdf()}
               >
                 Export
               </button>
               <button
-                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
-                  isDisabled
+                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${isDisabled
                     ? "bg-gray-300 cursor-not-allowed"
                     : "bg-red-500 hover:bg-red-600"
-                }`}
+                  }`}
                 disabled={isDisabled}
                 onClick={() => handleDeleteChat()}
               >
@@ -312,9 +310,8 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           </button>
           {chatUserHistory?.totalPages >= 1 ? (
             <button
-              className={`w-6 h-6 ${
-                page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
-              }   text-black rounded-[7px] text-sm`}
+              className={`w-6 h-6 ${page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
+                }   text-black rounded-[7px] text-sm`}
             >
               1
             </button>
@@ -329,11 +326,10 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           ) : null}
           {chatUserHistory?.totalPages > 1 ? (
             <button
-              className={`w-6 h-6 ${
-                chatUserHistory?.totalPages === page
+              className={`w-6 h-6 ${chatUserHistory?.totalPages === page
                   ? "bg-[#624DE3]"
                   : "bg-gray-200"
-              } text-black rounded-[7px] text-sm`}
+                } text-black rounded-[7px] text-sm`}
             >
               {chatUserHistory?.totalPages}
             </button>

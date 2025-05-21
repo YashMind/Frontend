@@ -5,13 +5,20 @@ import {
   getAllBotProducts,
   getAllTokenBots,
   updateTools,
+  saveApiKey,
 } from "@/store/slices/admin/adminSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import AddEditProduct from "./AddEditProduct/addEditProduct";
+import { FaRegClock } from "react-icons/fa";
+import AddApiKeys from "@/components/addApikeys";
 
 const ProductMonitoring = () => {
+  const [toolWarning, setToolWarning] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTool, setSelectedTool] = useState("");
   const [modalShow, setModalShow] = useState<boolean>(false);
+
   const dispatch = useDispatch<AppDispatch>();
   const { tokenBotsData, productMonitoringData } = useSelector(
     (state: RootState) => state.admin
@@ -26,6 +33,23 @@ const ProductMonitoring = () => {
       getAllBotProducts({})
     );
   }, [dispatch]);
+
+  const handleOpenModal = (tool: string) => {
+    setSelectedTool(tool);
+    setShowModal(true);
+  };
+
+  const handleSaveKey = (tool: string, apiKey: string) => {
+    const toolKeyMap: Record<string, string> = {
+      chatgpt: "OPENAI_API_KEY",
+      gemini: "GEMINI_API_KEY",
+      deepseek: "DEEPSEEK_API_KEY",
+    };
+
+    const formattedTool = toolKeyMap[tool.toLowerCase()] || tool;
+    dispatch(saveApiKey({ tool: formattedTool, apiKey }));
+    setShowModal(false);
+  };
 
 
   return (
@@ -90,6 +114,12 @@ const ProductMonitoring = () => {
                 </div>
               </div>
             </div>
+            <AddApiKeys
+              isOpen={showModal}
+              onClose={() => setShowModal(false)}
+              onConfirm={handleSaveKey}
+              selectedTool={selectedTool}
+            />
             {/* bot status */}
             <div className="  text-white p-6 space-y-10 ">
               {/* Product Monitoring */}
@@ -112,12 +142,32 @@ const ProductMonitoring = () => {
                         <span className="text-xs flex gap-1 items-center justify-start">
                           Name
                         </span>
+
+                      </div>
+                      <div className="flex items-center justify-between px-8 py-5">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs flex gap-1 items-center justify-start">
+                            Toggles
+                          </span>
+
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between px-8 py-5">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs flex gap-1 items-center justify-start">
+                            API Keys
+                          </span>
+
+                        </div>
                       </div>
                     </div>
 
+                    {toolWarning && (
+                      <div className="text-red-400 text-sm font-bold px-4 py-1">{toolWarning}</div>
+                    )}
                     {/* Chatbot Row */}
                     {tokenBotsData?.data &&
-                      tokenBotsData?.data?.map((item:any, index:any) => {
+                      tokenBotsData?.data?.map((item: any, index: any) => {
                         return (
                           <div
                             className="flex items-center justify-between px-8 py-5 bg-[#0A1330]"
@@ -128,19 +178,34 @@ const ProductMonitoring = () => {
                             </div>
 
                             {/* Toggle switch */}
-                             <label className="relative inline-flex items-center cursor-pointer">
+
+                            <label className="relative inline-flex items-center cursor-pointer">
                               <input
                                 type="checkbox"
                                 className="sr-only peer"
                                 checked={item?.status === "active"}
                                 onChange={() => {
-                                  const newStatus = item.status === "active" ? "deactive" : "active";
+                                  const isCurrentlyActive = item.status === "active";
+                                  const activeCount = tokenBotsData?.data?.filter((bot: any) => bot.status === "active").length;
+
+                                  if (!isCurrentlyActive && activeCount >= 1) {
+                                    setToolWarning("You can activate only one at a time.");
+                                    setTimeout(() => setToolWarning(""), 3000);
+                                    return;
+                                  }
+
+                                  const newStatus = isCurrentlyActive ? "deactive" : "active";
                                   dispatch(updateTools({ id: item.id, status: newStatus }));
                                 }}
+
                               />
+
                               <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
                               <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
                             </label>
+                            <div className="flex items-center gap-2">
+                              <button onClick={() => handleOpenModal(item.name)} className="cursor-pointer p-1.5 bg-[#9d34da] rounded-md text-sm">Add Keys</button>
+                            </div>
                           </div>
                         );
                       })}
@@ -161,20 +226,7 @@ const ProductMonitoring = () => {
                       </h3>
                     </div>
                     <div className="w-10 rounded-full h-10 bg-[#0A1330]  flex justify-center items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="size-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                      </svg>
+                      <FaRegClock size={20} />
                     </div>
                   </div>
                   <div>
@@ -193,20 +245,7 @@ const ProductMonitoring = () => {
                       </h3>
                     </div>
                     <div className="w-10 rounded-full h-10 bg-[#0A1330]  flex justify-center items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="size-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                      </svg>
+                      <FaRegClock size={20} />
                     </div>
                   </div>
                   <div>

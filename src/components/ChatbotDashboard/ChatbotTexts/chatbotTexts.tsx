@@ -24,19 +24,21 @@ const ChatbotTexts = ({ botId }: { botId?: number }) => {
   const onSubmit = (data: TrainingText) => {
     data.id = botId;
     dispatch(updateChatbotWithoutRouter({ payload: data }));
+    reset()
   };
 
   useEffect(() => {
     setValue("text_content", chatbotData?.text_content);
   }, [chatbotData?.text_content]);
+
   return (
-    <div className="w-full">
-      <h2 className="text-2xl font-bold my-4">Texts</h2>
+    <div className="w-full ml-10 ">
+      <h2 className="text-2xl font-bold my-4 ">Texts</h2>
       <p className="text-sm  font-light">
         This is a quick and easy method to quickly train your chatbot on extra
         data. Simple add any text below
       </p>
-      <div className="bg-[#2E265C]flex items-center justify-center p-4">
+      <div className="bg-[#2E265C]flex items-center justify-center mt-10">
         <div className="bg-white rounded-2xl w-full max-w-5xl p-4">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col h-[300px]">
@@ -53,9 +55,9 @@ const ChatbotTexts = ({ botId }: { botId?: number }) => {
               <div className="flex justify-end mt-2">
                 <button
                   type="submit"
-                  className="bg-[#340555] text-white text-sm px-4 py-1 rounded-md"
+                  className="cursor-pointer p-2 bg-[#340555] text-white text-sm rounded-md"
                 >
-                  Send
+                  Send Text
                 </button>
               </div>
             </div>

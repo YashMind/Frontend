@@ -72,7 +72,7 @@ const ChatbotLinksDocs = ({
     setUploadDocs(!uploadDocs);
   };
   return (
-    <div className="w-full">
+    <div className="w-full m-12">
       <h2 className="text-2xl font-bold mt-[30]">Links / Docs</h2>
       {!uploadDocs ? (
         <div className="bg-[#9592AE] justify-evenly rounded-[28px] p-4 flex  items-center w-full my-[30] ">
@@ -179,7 +179,7 @@ const ChatbotLinksDocs = ({
             </div>
             <div className="flex items-center gap-3">
               <button
-                className="bg-[#340555] text-white rounded  text-[11px] font-bold py-[7px] px-[11px]"
+                className="cursor-pointer bg-[#340555] text-white rounded  text-sm font-bold py-[7px] px-[11px]"
                 onClick={() => setUploadDocs(!uploadDocs)}
               >
                 {uploadDocs ? "Remove upload view" : "Add Links or documents"}
