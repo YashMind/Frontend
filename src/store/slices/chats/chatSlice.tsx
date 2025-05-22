@@ -930,7 +930,7 @@ const initialState = {
   error: null as null | string,
   data: [],
   botData: {},
-  chatbots: [],
+  chatbots: [] as ChatbotsData[],
   chatbotData: {} as ChatbotsData,
   chatIdData: {} as chatsIdData,
   chatMessages: [] as ChatbotMessages[],

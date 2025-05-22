@@ -103,7 +103,7 @@ const ChatbotMain = ({
                   {botPage === "settings" ? <ChatbotSettings botId={botId} /> : null}
                   {/* second div */}
                 </div>
-                <RightSection showModal={showModal} />
+                <RightSection showModal={showModal} botId={botId} />
                 <CreatebotModal show={modalShow} onHide={() => setModalShow(false)} />
               </div>
             </div>

@@ -19,7 +19,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
   );
 
   const tokensData = useSelector((state: RootState) => state.chat.tokens);
-   const chatbotError = useSelector((state: RootState) => state.chat.error);
+  const chatbotError = useSelector((state: RootState) => state.chat.error);
   useEffect(() => {
     dispatch(getChatbots());
     dispatch(fetchChatMessageTokens());
