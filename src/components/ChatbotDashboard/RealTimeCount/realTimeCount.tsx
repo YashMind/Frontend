@@ -1,17 +1,17 @@
 import React from "react";
 import {
-  FaComments,        
-  FaMicrophoneAlt,    
-  FaRobot,         
-  FaWallet,           
-  FaBalanceScale      
+  FaComments,
+  FaMicrophoneAlt,
+  FaRobot,
+  FaWallet,
+  FaBalanceScale
 } from "react-icons/fa";
 
 interface StatCardProps {
   icon: React.ReactNode;
   title: string;
   stats: { label: string; value: number | string }[];
-  progressPercent: number;
+  progressPercent?: number;
   buttonText?: string;
   onButtonClick?: () => void;
   gradientFrom?: string;
@@ -29,28 +29,28 @@ const StatCard: React.FC<StatCardProps> = ({
   gradientTo = "#2C1E5A",
 }) => (
   <div
-    className={`w-74 rounded-xl p-4 text-white shadow-lg`}
+    className={`w-64 rounded-xl p-4 text-white shadow-lg`}
     style={{ background: `linear-gradient(to bottom, ${gradientFrom}, ${gradientTo})` }}
   >
-    <div className="flex items-center justify-center mb-4">
+    <div className="flex items-center mb-4 justify-between">
+      <h2 className="text-center font-semibold text-base mb-2">{title}</h2>
       <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-xl">
         {icon}
       </div>
     </div>
-    <h2 className="text-center font-semibold text-base mb-2">{title}</h2>
     {stats.map(({ label, value }) => (
       <div key={label} className="text-sm mb-1 flex justify-between">
         <span>{label}</span>
         <span className="font-bold">{value}</span>
       </div>
     ))}
-    <div className="w-full bg-gray-300 rounded-full h-2.5 mb-3 mt-3">
+    {progressPercent && <><div className="w-full bg-gray-300 rounded-full h-2.5 mb-3 mt-3">
       <div
         className="bg-gradient-to-r from-[#9179F9] to-[#6E50E2] h-2.5 rounded-full"
         style={{ width: `${progressPercent}%` }}
       />
     </div>
-    <div className="text-right text-sm font-semibold">{progressPercent}%</div>
+      <div className="text-right text-sm font-semibold">{progressPercent}%</div></>}
     {buttonText && (
       <button
         onClick={onButtonClick}
@@ -117,7 +117,6 @@ const RealTimeCount = () => {
             { label: "Balance Credits", value: 500 },
             { label: "Used Credits", value: 8 },
           ]}
-          progressPercent={20}
           buttonText="Add Credit"
           onButtonClick={() => alert("Add Credit clicked")}
           gradientFrom="#443973"
