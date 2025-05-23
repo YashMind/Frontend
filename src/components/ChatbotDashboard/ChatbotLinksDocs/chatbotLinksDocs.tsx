@@ -86,11 +86,28 @@ const ChatbotLinksDocs = ({
             </span>
           </div>
 
+          {/* Indexed */}
+          <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
+            <span className="text-xl font-semibold">Trained</span>
+            <span className="text-3xl font-bold self-end mt-auto">
+              {ChatbotDocLinksData?.user_target_links - ChatbotDocLinksData?.user_pending_count}
+            </span>
+          </div>
+
           {/* Chars */}
           <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
             <span className="text-xl font-semibold">Chars</span>
             <span className="text-3xl font-bold self-end mt-auto">
               {ChatbotDocLinksData?.user_total_chars}
+            </span>
+          </div>
+
+
+          {/* Pending */}
+          <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
+            <span className="text-xl font-semibold">Pending</span>
+            <span className="text-3xl font-bold self-end mt-auto">
+              {ChatbotDocLinksData?.user_pending_count}
             </span>
           </div>
 
@@ -102,21 +119,6 @@ const ChatbotLinksDocs = ({
             </span>
           </div>
 
-          {/* Pending */}
-          <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
-            <span className="text-xl font-semibold">Pending</span>
-            <span className="text-3xl font-bold self-end mt-auto">
-              {ChatbotDocLinksData?.user_pending_count}
-            </span>
-          </div>
-
-          {/* Indexed */}
-          <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
-            <span className="text-xl font-semibold">Indexed</span>
-            <span className="text-3xl font-bold self-end mt-auto">
-              {ChatbotDocLinksData?.user_indexed_count}
-            </span>
-          </div>
         </div>
       ) : (
         <AddBotData botId={botId} handleBack={handleBack} />
@@ -198,19 +200,19 @@ const ChatbotLinksDocs = ({
               </span>
             </div>
 
+            {/* Indexed */}
+            <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
+              <span className="text-xl font-semibold">Trained</span>
+              <span className="text-3xl font-bold self-end mt-auto">
+                {ChatbotDocLinksData?.total_target_links - ChatbotDocLinksData?.pending_count}
+              </span>
+            </div>
+
             {/* Chars */}
             <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
               <span className="text-xl font-semibold">Chars</span>
               <span className="text-3xl font-bold self-end mt-auto">
                 {ChatbotDocLinksData?.total_chars}
-              </span>
-            </div>
-
-            {/* Failed */}
-            <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
-              <span className="text-xl font-semibold">Failed</span>
-              <span className="text-3xl font-bold self-end mt-auto">
-                {ChatbotDocLinksData?.failed_count}
               </span>
             </div>
 
@@ -222,13 +224,14 @@ const ChatbotLinksDocs = ({
               </span>
             </div>
 
-            {/* Indexed */}
+            {/* Failed */}
             <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
-              <span className="text-xl font-semibold">Indexed</span>
+              <span className="text-xl font-semibold">Failed</span>
               <span className="text-3xl font-bold self-end mt-auto">
-                {ChatbotDocLinksData?.indexed_count}
+                {ChatbotDocLinksData?.failed_count}
               </span>
             </div>
+
           </div>
 
           {/* Table */}

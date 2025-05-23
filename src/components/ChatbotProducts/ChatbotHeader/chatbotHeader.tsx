@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const ChatbotHeader = () => {
@@ -6,7 +7,7 @@ const ChatbotHeader = () => {
     <nav className="bg-[#2B255C] fixed w-full z-20 rounded-[36px] top-0 my-[10px] px-[40px] mt-[0px] ">
       <div className=" flex flex-wrap items-center justify-between mx-auto gap-0 p-4 md:gap-4">
         <div className="w-full flex justify-center md:justify-start md:w-auto">
-          <a
+          <Link
             className="flex items-center space-x-3 rtl:space-x-reverse"
             href="/"
           >
@@ -16,7 +17,7 @@ const ChatbotHeader = () => {
               height={80}
               width={65}
             />
-          </a>
+          </Link>
         </div>
         <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse items-center">
           <a

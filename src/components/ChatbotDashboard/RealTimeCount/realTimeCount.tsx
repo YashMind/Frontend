@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { BiChevronDown } from "react-icons/bi";
 import {
   FaComments,
   FaMicrophoneAlt,
@@ -63,9 +64,15 @@ const StatCard: React.FC<StatCardProps> = ({
 );
 
 const RealTimeCount = () => {
+
+
+  const [show, setShow] = useState<boolean>(true)
   return (
-    <div className="flex justify-between items-center p-6 gap-8">
-      <div className="flex gap-10 p-4 w-full mt-25 justify-center flex-wrap">
+    <div className="flex justify-between items-center p-6 gap-8 mt-25">
+      <div className="sticky top-36 self-baseline">
+        <button onClick={() => setShow(prev => !prev)} className={`transition duration-150 ${show ? 'rotate-180' : ''}`}><BiChevronDown size={25} /></button>
+      </div>
+      <div className={` gap-10 p-4 w-full  justify-center flex-wrap transition duration-150 ${show ? 'flex scale-100' : 'hidden scale-0'}`}>
         <StatCard
           icon={<FaComments size={20} color="#FFB85C" />}
           title="Chat Bot"

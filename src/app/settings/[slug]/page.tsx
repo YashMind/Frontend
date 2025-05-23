@@ -6,11 +6,13 @@ import { BsQuestionCircleFill } from "react-icons/bs";
 import { FaGear } from 'react-icons/fa6';
 import ProfileSettings from '@/components/settings/profile';
 import HelpAndSupport from '@/components/settings/helpAndSupport';
+import ChatbotDashboardHeader from '@/components/ChatbotDashboard/ChatbotHeader/chatbotHeader';
 
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = await params
-    return (
-        <div className='flex items-stretch p-4 h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61]'>
+    return (<>
+        <ChatbotDashboardHeader addBgColor={true} fix={true} />
+        <div className='flex items-stretch p-4 h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] pt-44'>
             <div className='basis-1/5 rounded-xl bg-white/30 text-white py-4 space-y-3 '>
                 <Link className={`p-2 flex gap-2 mx-4  ${slug === "profile" ? " bg-white rounded-lg text-black shadow-md" : ""}`} href={"/settings/profile"}> <IoPerson size={25} />Profile</Link>
                 <Link className={`p-2 flex gap-2 mx-4  ${slug === "team" ? " bg-white rounded-lg text-black shadow-md" : ""}`} href={"/settings/team"}><IoIosPeople size={25} />Team</Link>
@@ -23,7 +25,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
                 {slug == "help" && <HelpAndSupport />}
 
             </div>
-        </div>
+        </div></>
     )
 }
 
