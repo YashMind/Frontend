@@ -23,8 +23,9 @@ const Admin = ({ adminPage }: { adminPage: string }) => {
   const router = useRouter();
   const { allUsersData } = useSelector((state: RootState) => state.admin);
   const permissions = useSelector((state: RootState) => state.admin.myPermissions)
-  const { role } = useSelector((state: RootState) => state.auth.userData)
+const userData = useSelector((state: RootState) => state.auth.userData);
 
+const role = userData?.role;
   useEffect(() => {
     if (!allUsersData?.data?.length) {
       dispatch(

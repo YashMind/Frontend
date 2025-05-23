@@ -596,6 +596,41 @@ export const updateTokenStatus = createAsyncThunk<
   }
 );
 
+export const updateDiscount = createAsyncThunk<
+  any,
+  { id: number; discount: number }
+>(
+  "admin/updateDiscount",
+  async ({ id, discount }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+
+      const response = await http.put(`/admin/discounts/${id}`, { discount });
+
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toasterSuccess("Discount updated successfully!", 2000, "id");
+        
+        // Optionally refresh discount data
+        dispatch(getAllVolumnDiscounts());
+
+        return response.data;
+      } else {
+        return rejectWithValue("Failed to update discount");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toasterError(error?.response?.data?.detail, 2000, "id");
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred while updating discount");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+
 
 export const updateBotProductStatus = createAsyncThunk<
   any,
