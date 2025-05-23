@@ -37,25 +37,7 @@ const sidebarSections: SidebarSection[] = [
         key: "overview",
       },
     ],
-  },
-  {
-    title: "Activity",
-    links: [
-      {
-        label: "Chat logs",
-        icon: <RiChatHistoryFill size={20} />,
-        path: "chat-history",
-        key: "chat-history",
-      },
-      {
-        label: "Leads",
-        icon: <FaUserClock size={20} />,
-        path: "chat-leads",
-        key: "chat-leads",
-      },
-    ],
-  },
-  {
+  }, {
     title: "Training Data",
     links: [
       {
@@ -77,8 +59,7 @@ const sidebarSections: SidebarSection[] = [
         key: "faqs",
       },
     ],
-  },
-  {
+  }, {
     title: "Behaviour",
     links: [
       {
@@ -89,6 +70,25 @@ const sidebarSections: SidebarSection[] = [
       },
     ],
   },
+  {
+    title: "Activity",
+    links: [
+      {
+        label: "Chat logs",
+        icon: <RiChatHistoryFill size={20} />,
+        path: "chat-history",
+        key: "chat-history",
+      },
+      {
+        label: "Leads",
+        icon: <FaUserClock size={20} />,
+        path: "chat-leads",
+        key: "chat-leads",
+      },
+    ],
+  },
+
+
   {
     title: "Deployment",
     links: [
@@ -139,10 +139,9 @@ const ChatbotSidebar = ({
         key={link.key}
         href={`/chatbot-dashboard/${link.path}/${botId}`}
         className={`flex items-center gap-3 text-sm font-medium py-2 px-3 rounded-lg transition-all
-          ${
-            isActive
-              ? "bg-[#1C1C1C] text-[#01BEED] font-semibold"
-              : "text-gray-300 hover:bg-[#2A2A2A] hover:text-white"
+          ${isActive
+            ? "bg-[#1C1C1C] text-[#01BEED] font-semibold"
+            : "text-gray-300 hover:bg-[#2A2A2A] hover:text-white"
           }`}
       >
         {link.icon}
