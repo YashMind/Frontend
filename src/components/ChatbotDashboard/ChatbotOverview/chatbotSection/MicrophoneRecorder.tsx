@@ -41,10 +41,7 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({ setTranscript }
                 }
 
                 // Append new speech to existing transcript
-                setTranscript(prev => {
-                    const base = prev.endsWith(' ') ? prev : prev + ' ';
-                    return base + (finalTranscript || interimTranscript);
-                });
+                setTranscript(finalTranscript);
             };
 
             recognition.onerror = (event: any) => {
@@ -179,7 +176,7 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({ setTranscript }
         <div className="flex flex-col items-center justify-center space-y-1 bg-white rounded-lg ">
             <div className="relative">
                 <button
-                    className={`flex items-center justify-center w-8 h-8 rounded-full text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2`}
+                    className={`flex items-center justify-center w-8 h-8 rounded-full text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer`}
                     onClick={isRecording ? stopRecording : startRecording}
                     disabled={isProcessing}
                     type='button'
