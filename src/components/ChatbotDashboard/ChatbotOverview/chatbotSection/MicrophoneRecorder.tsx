@@ -41,10 +41,7 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({ setTranscript }
                 }
 
                 // Append new speech to existing transcript
-                setTranscript(prev => {
-                    const base = prev.endsWith(' ') ? prev : prev + ' ';
-                    return base + (finalTranscript || interimTranscript);
-                });
+                setTranscript(finalTranscript);
             };
 
             recognition.onerror = (event: any) => {
