@@ -21,7 +21,10 @@ const ChatbotDashboardHeader = ({
   role?: string;
   chatbotError?: string;
 }) => {
-
+  const [bot, setBot] = useState<number>(1);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const menuRef = useRef(null);
   const dispatch = useDispatch<AppDispatch>();
@@ -31,7 +34,6 @@ const ChatbotDashboardHeader = ({
   );
 
   const pathname = usePathname();
-  const [bot, setBot] = useState<number>(1);
 
   useEffect(() => {
     if (pathname.includes("/voice-agent")) {
@@ -41,14 +43,11 @@ const ChatbotDashboardHeader = ({
     } else if (pathname.includes("/chatbot-dashboard/main")) {
       setBot(1);
     }
-  }, [pathname]); const [isOpen, setIsOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  }, [pathname]);
 
   const handleToggle = () => {
     setIsMenuOpen((prev) => !prev);
   };
-
 
   useEffect(() => {
     dispatch(getMeData({ router }));
@@ -73,7 +72,6 @@ const ChatbotDashboardHeader = ({
   const handleConfirmDelete = async () => {
     await dispatch(logoutUser({ router }));
   };
-
 
   return (
     <nav
@@ -106,14 +104,20 @@ const ChatbotDashboardHeader = ({
           </Link>
         </div>
         <div className="flex gap-8 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse items-center">
-          {role && ["Super Admin", "Billing Admin", "Product Admin", "Support Admin"].includes(role.replace(/^"(.*)"$/, '$1').trim()) && (
-            <Link
-              href="/admin/overview"
-              className="bg-white p-2 px-4 rounded-full font-semibold"
-            >
-              Admin Dashboard
-            </Link>
-          )}
+          {role &&
+            [
+              "Super Admin",
+              "Billing Admin",
+              "Product Admin",
+              "Support Admin",
+            ].includes(role.replace(/^"(.*)"$/, "$1").trim()) && (
+              <Link
+                href="/admin/overview"
+                className="bg-white p-2 px-4 rounded-full font-semibold"
+              >
+                Admin Dashboard
+              </Link>
+            )}
           <Link
             href="/"
             className="text-white bg-[#05BDFD] text-[15px] rounded-[18px]  font-semibold focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -142,6 +146,12 @@ const ChatbotDashboardHeader = ({
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Settings
+                  </Link>
+                  <Link
+                    href="/invite-user"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Invite User
                   </Link>
                   <button
                     onClick={() => setIsModalOpen(true)}
@@ -197,7 +207,7 @@ const ChatbotDashboardHeader = ({
             )}
           </button>
         </div>
-        {!chatbotError &&
+        {!chatbotError && (
           <div
             className={`${isMenuOpen ? "flex flex-col" : "hidden"
               } w-full md:flex md:flex-row md:w-auto md:order-1`}
@@ -209,7 +219,7 @@ const ChatbotDashboardHeader = ({
                   href="/chatbot-dashboard/main"
                   className={`block py-2 px-3 text-white ${bot === 1 ? "bg-[#434343]" : ""
                     } rounded-[26px]
-                    hover:bg-gray-100 md:hover:bg-transparent md:hover:text-white-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
+                    hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
                   aria-current="page"
                   onClick={() => {
                     setBot(1);
@@ -221,23 +231,22 @@ const ChatbotDashboardHeader = ({
               </li>
               <li>
                 <Link
-                  href="/chatbot-dashboard/voice-agent"
+                  href="/voice-agent"
                   className={`block py-2 px-3 text-white ${bot === 2 ? "bg-[#434343]" : ""
-                    } rounded-[26px]  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-white-700 md:dark:hover:text-white-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
+                    } rounded-[26px]  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
                   onClick={() => {
                     setBot(2);
                     setIsMenuOpen(false);
                   }}
-
                 >
                   Voice Agent
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/chatbot-dashboard/llm"
+                  href="/llm"
                   className={`block py-2 px-3 text-white ${bot === 3 ? "bg-[#434343]" : ""
-                    } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-white-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
+                    } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
                   onClick={() => {
                     setBot(3);
                     setIsMenuOpen(false);
@@ -248,8 +257,7 @@ const ChatbotDashboardHeader = ({
               </li>
             </ul>
           </div>
-        }
-
+        )}
       </div>
     </nav>
   );
