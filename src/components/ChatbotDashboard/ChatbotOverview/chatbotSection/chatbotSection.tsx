@@ -15,6 +15,8 @@ import { pathToImage } from "@/services/utils/helpers";
 import LeadGenForm from "./LeadGenForm";
 import { VscClearAll } from "react-icons/vsc";
 import { ChatbotsData, chatsIdData, TextMessage } from "@/types/chatTypes";
+import { IoMdSend } from "react-icons/io";
+import MicrophoneRecorder from "./MicrophoneRecorder";
 
 const schema = yup.object().shape({
   message: yup.string().required("Message is required"),
@@ -72,9 +74,9 @@ const ChatbotSection = ({
 
   const chatbotImage =
     chatbotSetting &&
-    chatbotSetting?.image &&
-    typeof chatbotSetting.image === "string" &&
-    chatbotSetting.image.trim() !== ""
+      chatbotSetting?.image &&
+      typeof chatbotSetting.image === "string" &&
+      chatbotSetting.image.trim() !== ""
       ? chatbotSetting.image
       : "/images/face2.webp";
 
@@ -94,7 +96,7 @@ const ChatbotSection = ({
 
   return (
     <div
-      className="min-w-[320px] h-[500px] rounded-lg shadow-md flex flex-col justify-between "
+      className="min-w-[320px] h-[500px] rounded-lg shadow-md flex flex-col justify-between"
       style={{ backgroundColor: chatbotSetting?.chat_window_bg ?? "#ffffff" }}
     >
       <div className="p-4 flex items-center gap-2 border-b">
@@ -114,112 +116,111 @@ const ChatbotSection = ({
       <div className="flex-1 p-4 overflow-y-auto text-black">
         {chatMessages && chatMessages.length
           ? chatMessages.map((item, index) => {
-              return (
-                <div key={index}>
-                  <div
-                    className={`flex mb-2 ${
-                      item.sender === "user" ? "justify-end" : "justify-start"
+            return (
+              <div key={index}>
+                <div
+                  className={`flex mb-2 ${item.sender === "user" ? "justify-end" : "justify-start"
                     }`}
-                  >
-                    {item.sender === "bot" && (
-                      <Image
-                        src={chatbotImage}
-                        alt="Bot"
-                        className="w-8 h-8 rounded-full mr-2"
-                        width={20}
-                        height={20}
-                      />
-                    )}
-                    <div
-                      className={`p-3 rounded-xl max-w-xs text-sm `}
-                      style={{
-                        backgroundColor:
-                          item.sender === "user"
-                            ? chatbotSetting?.user_message_bg ?? "blue"
-                            : chatbotSetting?.message_bg ?? "lightslategray",
-
-                        color:
-                          item.sender === "user"
-                            ? chatbotSetting?.user_message_color ?? "black"
-                            : chatbotSetting?.message_color ?? "black",
-                      }}
-                    >
-                      {item.message}
-                    </div>
-
-                    {item.sender === "user" && (
-                      <Image
-                        src="/images/userimg.png"
-                        alt="User"
-                        className="w-8 h-8 rounded-full ml-2"
-                        width={20}
-                        height={20}
-                      />
-                    )}
-                  </div>
-                  {item.sender === "bot" &&
-                    chatbotSetting?.lead_collection &&
-                    index <= 2 && (
-                      <LeadGenForm
-                        bot_id={botId}
-                        chat_id={chatIdData?.id}
-                        name={chatbotSetting.name_lead_gen}
-                        contact={chatbotSetting.phone_lead_gen}
-                        mail={chatbotSetting.mail_lead_gen}
-                        message={chatbotSetting.message_lead_gen}
-                        is_name={chatbotSetting?.is_name_lead_gen}
-                        is_phone={chatbotSetting?.is_phone_lead_gen}
-                        is_mail={chatbotSetting?.is_mail_lead_gen}
-                        is_message={chatbotSetting?.is_message_lead_gen}
-                        required_name={chatbotSetting?.required_name_lead_gen}
-                        required_phone={chatbotSetting?.required_phone_lead_gen}
-                        required_mail={chatbotSetting?.required_mail_lead_gen}
-                        required_message={
-                          chatbotSetting?.required_message_lead_gen
-                        }
-                        submit_button_text={
-                          chatbotSetting?.submit_text_lead_gen
-                        }
-                        submit_button_color={
-                          chatbotSetting?.submit_button_color_lead_gen
-                        }
-                        submission_message_heading={
-                          chatbotSetting?.submission_message_heading_lead_gen
-                        }
-                        sumbission_message={
-                          chatbotSetting?.sumbission_message_lead_gen
-                        }
-                      />
-                    )}
-                </div>
-              );
-            })
-          : chatbotSetting?.welcome_message_is_active && (
-              <>
-                <div className="flex justify-start gap-2 mb-2">
-                  <Image
-                    src={chatbotImage}
-                    alt="Bot"
-                    className="w-8 h-8 rounded-full"
-                    width={20}
-                    height={20}
-                  />
+                >
+                  {item.sender === "bot" && (
+                    <Image
+                      src={chatbotImage}
+                      alt="Bot"
+                      className="w-8 h-8 rounded-full mr-2"
+                      width={20}
+                      height={20}
+                    />
+                  )}
                   <div
-                    className="bg-gray-200 p-3 rounded-xl max-w-xs text-sm"
+                    className={`p-3 rounded-xl max-w-xs text-sm `}
                     style={{
-                      backgroundColor: chatbotSetting?.message_bg
-                        ? chatbotSetting?.message_bg
-                        : "#c2c2c2",
-                      color: chatbotSetting.message_color
-                        ? chatbotSetting.message_color
-                        : "#000000",
+                      backgroundColor:
+                        item.sender === "user"
+                          ? chatbotSetting?.user_message_bg ?? "blue"
+                          : chatbotSetting?.message_bg ?? "lightslategray",
+
+                      color:
+                        item.sender === "user"
+                          ? chatbotSetting?.user_message_color ?? "black"
+                          : chatbotSetting?.message_color ?? "black",
                     }}
                   >
-                    {chatbotSetting?.welcome_message_value}
+                    {item.message}
                   </div>
+
+                  {item.sender === "user" && (
+                    <Image
+                      src="/images/userimg.png"
+                      alt="User"
+                      className="w-8 h-8 rounded-full ml-2"
+                      width={20}
+                      height={20}
+                    />
+                  )}
                 </div>
-              </>
-            )}
+                {item.sender === "bot" &&
+                  chatbotSetting?.lead_collection &&
+                  index <= 2 && (
+                    <LeadGenForm
+                      bot_id={botId}
+                      chat_id={chatIdData?.id}
+                      name={chatbotSetting.name_lead_gen}
+                      contact={chatbotSetting.phone_lead_gen}
+                      mail={chatbotSetting.mail_lead_gen}
+                      message={chatbotSetting.message_lead_gen}
+                      is_name={chatbotSetting?.is_name_lead_gen}
+                      is_phone={chatbotSetting?.is_phone_lead_gen}
+                      is_mail={chatbotSetting?.is_mail_lead_gen}
+                      is_message={chatbotSetting?.is_message_lead_gen}
+                      required_name={chatbotSetting?.required_name_lead_gen}
+                      required_phone={chatbotSetting?.required_phone_lead_gen}
+                      required_mail={chatbotSetting?.required_mail_lead_gen}
+                      required_message={
+                        chatbotSetting?.required_message_lead_gen
+                      }
+                      submit_button_text={
+                        chatbotSetting?.submit_text_lead_gen
+                      }
+                      submit_button_color={
+                        chatbotSetting?.submit_button_color_lead_gen
+                      }
+                      submission_message_heading={
+                        chatbotSetting?.submission_message_heading_lead_gen
+                      }
+                      sumbission_message={
+                        chatbotSetting?.sumbission_message_lead_gen
+                      }
+                    />
+                  )}
+              </div>
+            );
+          })
+          : chatbotSetting?.welcome_message_is_active && (
+            <>
+              <div className="flex justify-start gap-2 mb-2">
+                <Image
+                  src={chatbotImage}
+                  alt="Bot"
+                  className="w-8 h-8 rounded-full"
+                  width={20}
+                  height={20}
+                />
+                <div
+                  className="bg-gray-200 p-3 rounded-xl max-w-xs text-sm"
+                  style={{
+                    backgroundColor: chatbotSetting?.message_bg
+                      ? chatbotSetting?.message_bg
+                      : "#c2c2c2",
+                    color: chatbotSetting.message_color
+                      ? chatbotSetting.message_color
+                      : "#000000",
+                  }}
+                >
+                  {chatbotSetting?.welcome_message_value}
+                </div>
+              </div>
+            </>
+          )}
         {isBotTyping && (
           <div className="flex justify-start items-center gap-2 mb-2">
             <Image
@@ -279,7 +280,7 @@ const ChatbotSection = ({
               })}
         </div>
 
-        <div className="border-t p-2 flex items-center gap-2">
+        <div className="border-t p-2 flex items-center gap-1">
           <div className="relative w-full">
             {chatMessages?.length > 0 ? (
               <VscClearAll
@@ -297,13 +298,13 @@ const ChatbotSection = ({
                   ? chatbotSetting?.placeholder_value
                   : "Type a message..."
               }
-              className={`${errors.message ? "border-red-500" : ""} ${
-                chatMessages?.length ? "pl-12" : ""
-              } w-full p-2 text-sm rounded-md border text-black border-gray-300 bg-gray-50 focus:outline-none`}
+              className={`${errors.message ? "border-red-500" : ""} ${chatMessages?.length ? "pl-12" : ""
+                } w-full p-2 text-sm rounded-md border text-black border-gray-300 bg-gray-50 focus:outline-none`}
             />
           </div>
+          <MicrophoneRecorder setTranscript={(text: string) => setValue('message', text)} />
           <button
-            className=" p-2 rounded text-white"
+            className="cursor-pointer p-2 rounded text-white"
             type="submit"
             style={{
               backgroundColor: chatbotSetting?.send_button_color
@@ -311,14 +312,7 @@ const ChatbotSection = ({
                 : "#05BDFD",
             }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z" />
-            </svg>
+            <IoMdSend />
           </button>
         </div>
       </form>

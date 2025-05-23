@@ -163,6 +163,11 @@ export interface ChatbotDocLinks {
   failed_count?: number;
   indexed_count?: number;
   total_chars?: number;
+  user_target_links: number;
+  user_pending_count: number;
+  user_failed_count: number;
+  user_indexed_count: number;
+  user_total_chars: number;
 }
 
 export interface ChatbotCustomSettings {

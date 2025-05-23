@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FaUser } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
@@ -25,16 +25,29 @@ const ChatbotDashboardHeader = ({
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef(null);
   const router = useRouter();
+  const menuRef = useRef(null);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const userData: UserProfileData = useSelector(
+    (state: RootState) => state.auth.userData
+  );
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname.includes("/voice-agent")) {
+      setBot(2);
+    } else if (pathname.includes("/llm")) {
+      setBot(3);
+    } else if (pathname.includes("/chatbot-dashboard/main")) {
+      setBot(1);
+    }
+  }, [pathname]);
 
   const handleToggle = () => {
     setIsMenuOpen((prev) => !prev);
   };
-  const dispatch = useDispatch<AppDispatch>();
-  const userData: UserProfileData = useSelector(
-    (state: RootState) => state.auth.userData
-  );
 
   useEffect(() => {
     dispatch(getMeData({ router }));

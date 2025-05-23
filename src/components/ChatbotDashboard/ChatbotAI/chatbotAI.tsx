@@ -150,7 +150,7 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full m-10">
       <h2 className="text-2xl font-bold my-4">AI</h2>
       <div className="min-h-screen ">
         {/* AI Creativity Section */}
@@ -238,7 +238,7 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
                 Delete
               </button>
               <button
-                className="bg-[#340555] text-white text-sm px-4 py-2 rounded-md "
+                className="cursor-pointer bg-[#340555] text-white text-sm px-4 py-2 rounded-md "
                 type="submit"
                 form="dynamicQAForm"
               >
@@ -276,7 +276,7 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
                 reset();
                 setSaved(false);
               }}
-              className="bg-[#625A67] px-4 py-1 rounded-md text-sm"
+              className="cursor-pointer bg-[#625A67] px-4 py-1 rounded-md text-sm"
             >
               Reset
             </button>

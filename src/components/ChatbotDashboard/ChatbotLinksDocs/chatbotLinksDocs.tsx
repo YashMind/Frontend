@@ -25,11 +25,13 @@ const ChatbotLinksDocs = ({
   const [sortBy, setSortBy] = useState("created_at");
   const [sortOrder, setSortOrder] = useState("desc");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
     const allRowIds = ChatbotDocLinksData?.data.map((item) => Number(item?.id));
     setSelectedIds(isChecked ? allRowIds : []);
   };
+
   const handleSelectRow = (id: number, checked: boolean) => {
     setSelectedIds((prev) =>
       checked ? [...prev, id] : prev.filter((item) => item !== id)
@@ -72,47 +74,47 @@ const ChatbotLinksDocs = ({
     setUploadDocs(!uploadDocs);
   };
   return (
-    <div className="w-full">
-      <h2 className="text-2xl font-bold mt-[30]">Links / Docs</h2>
+    <div className="w-full m-12">
+      <h2 className="text-2xl font-bold">Links / Docs</h2>
       {!uploadDocs ? (
-        <div className="bg-[#9592AE] justify-evenly rounded-[28px] p-4 flex  items-center w-full my-[30] ">
+        <div className="bg-[#9592AE] justify-evenly rounded-[28px] p-4 flex gap-4  items-center w-full my-[30] ">
           {/* Crawled Links */}
-          <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#18B91F] text-white text-center">
-            <span className="text-sm font-semibold">Crawled Links</span>
-            <span className="text-lg font-bold mt-1">
-              {ChatbotDocLinksData?.total_target_links}
+          <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
+            <span className="text-xl font-semibold">Crawled Links</span>
+            <span className="text-3xl font-bold self-end mt-auto">
+              {ChatbotDocLinksData?.user_target_links}
             </span>
           </div>
 
           {/* Chars */}
-          <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-white text-black text-center">
-            <span className="text-sm font-semibold">Chars</span>
-            <span className="text-lg font-bold text-purple-900 mt-1">
-              {ChatbotDocLinksData?.total_chars}
+          <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
+            <span className="text-xl font-semibold">Chars</span>
+            <span className="text-3xl font-bold self-end mt-auto">
+              {ChatbotDocLinksData?.user_total_chars}
             </span>
           </div>
 
           {/* Failed */}
-          <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#FF0000] text-white text-center">
-            <span className="text-sm font-semibold">Failed</span>
-            <span className="text-lg font-bold mt-1">
-              {ChatbotDocLinksData?.failed_count}
+          <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
+            <span className="text-xl font-semibold">Failed</span>
+            <span className="text-3xl font-bold self-end mt-auto">
+              {ChatbotDocLinksData?.user_failed_count}
             </span>
           </div>
 
           {/* Pending */}
-          <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#FFC107] text-black text-center">
-            <span className="text-sm font-semibold">Pending</span>
-            <span className="text-lg font-bold mt-1">
-              {ChatbotDocLinksData?.pending_count}
+          <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
+            <span className="text-xl font-semibold">Pending</span>
+            <span className="text-3xl font-bold self-end mt-auto">
+              {ChatbotDocLinksData?.user_pending_count}
             </span>
           </div>
 
           {/* Indexed */}
-          <div className="flex flex-col items-center justify-center w-[143px] h-[147px] rounded-full bg-[#808080] text-white text-center">
-            <span className="text-sm font-semibold">Indexed</span>
-            <span className="text-lg font-bold mt-1">
-              {ChatbotDocLinksData?.indexed_count}
+          <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
+            <span className="text-xl font-semibold">Indexed</span>
+            <span className="text-3xl font-bold self-end mt-auto">
+              {ChatbotDocLinksData?.user_indexed_count}
             </span>
           </div>
         </div>
@@ -120,9 +122,9 @@ const ChatbotLinksDocs = ({
         <AddBotData botId={botId} handleBack={handleBack} />
       )}
       {!uploadDocs ? (
-        <div className="bg-white rounded-b-xl overflow-hidden  text-sm w-full rounded-[40px] mb-8 mr-3 ">
+        <div className=" overflow-hidden  text-sm w-full   ">
           {/* Top Actions */}
-          <div className="flex flex-wrap items-center justify-between gap-4 bg-[#9592AE] px-6 py-4 ">
+          <div className="flex flex-wrap items-center justify-between gap-4 bg-[#9592AE] px-6 py-4 rounded-4xl">
             <div className="flex items-center gap-2">
               <label htmlFor="entries" className="text-gray-700 font-medium">
                 Show
@@ -143,11 +145,10 @@ const ChatbotLinksDocs = ({
               <span className="text-gray-700 font-medium">entries</span>
 
               <button
-                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
-                  isDisabled
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-red-500 hover:bg-red-600"
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${isDisabled
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-red-500 hover:bg-red-600"
+                  }`}
                 disabled={isDisabled}
                 onClick={() => handleDeleteDocLinks()}
               >
@@ -179,7 +180,7 @@ const ChatbotLinksDocs = ({
             </div>
             <div className="flex items-center gap-3">
               <button
-                className="bg-[#340555] text-white rounded  text-[11px] font-bold py-[7px] px-[11px]"
+                className="cursor-pointer bg-[#340555] text-white rounded  text-sm font-bold py-[7px] px-[11px]"
                 onClick={() => setUploadDocs(!uploadDocs)}
               >
                 {uploadDocs ? "Remove upload view" : "Add Links or documents"}
@@ -187,8 +188,51 @@ const ChatbotLinksDocs = ({
             </div>
           </div>
 
+
+          <div className="justify-evenly rounded-[28px] p-4 flex gap-4  items-center w-full my-[30] ">
+            {/* Crawled Links */}
+            <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
+              <span className="text-xl font-semibold">Crawled Links</span>
+              <span className="text-3xl font-bold self-end mt-auto">
+                {ChatbotDocLinksData?.total_target_links}
+              </span>
+            </div>
+
+            {/* Chars */}
+            <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
+              <span className="text-xl font-semibold">Chars</span>
+              <span className="text-3xl font-bold self-end mt-auto">
+                {ChatbotDocLinksData?.total_chars}
+              </span>
+            </div>
+
+            {/* Failed */}
+            <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
+              <span className="text-xl font-semibold">Failed</span>
+              <span className="text-3xl font-bold self-end mt-auto">
+                {ChatbotDocLinksData?.failed_count}
+              </span>
+            </div>
+
+            {/* Pending */}
+            <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
+              <span className="text-xl font-semibold">Pending</span>
+              <span className="text-3xl font-bold self-end mt-auto">
+                {ChatbotDocLinksData?.pending_count}
+              </span>
+            </div>
+
+            {/* Indexed */}
+            <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
+              <span className="text-xl font-semibold">Indexed</span>
+              <span className="text-3xl font-bold self-end mt-auto">
+                {ChatbotDocLinksData?.indexed_count}
+              </span>
+            </div>
+          </div>
+
           {/* Table */}
-          <table className="w-full text-left text-gray-800">
+          <table className="w-full text-left text-gray-800 rounded-xl">
             <thead className="bg-white text-gray-600 border-y border-gray-300">
               <tr>
                 <th className="p-4">
@@ -270,9 +314,8 @@ const ChatbotLinksDocs = ({
             </button>
             {ChatbotDocLinksData?.total_pages >= 1 ? (
               <button
-                className={`w-6 h-6 ${
-                  page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
-                }   text-black rounded-[7px] text-sm`}
+                className={`w-6 h-6 ${page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
+                  }   text-black rounded-[7px] text-sm`}
               >
                 1
               </button>
@@ -287,11 +330,10 @@ const ChatbotLinksDocs = ({
             ) : null}
             {ChatbotDocLinksData?.total_pages > 1 ? (
               <button
-                className={`w-6 h-6 ${
-                  ChatbotDocLinksData?.total_pages === page
-                    ? "bg-[#624DE3]"
-                    : "bg-gray-200"
-                } text-black rounded-[7px] text-sm`}
+                className={`w-6 h-6 ${ChatbotDocLinksData?.total_pages === page
+                  ? "bg-[#624DE3]"
+                  : "bg-gray-200"
+                  } text-black rounded-[7px] text-sm`}
               >
                 {ChatbotDocLinksData?.total_pages}
               </button>

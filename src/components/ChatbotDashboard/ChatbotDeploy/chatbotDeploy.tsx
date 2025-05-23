@@ -51,7 +51,7 @@ const ChatbotDeploy = () => {
   const embedScript = `<script defer src="${process.env.NEXT_PUBLIC_UI_URL}/embed.js" data-bot-id="${chatbotData?.token}"></script>`;
 
   return (
-    <div className="w-full">
+    <div className="w-full m-10">
       <h2 className="text-2xl font-bold my-[30]">Deploy</h2>
       <div className="bg-[#312d63] min-h-screen flex items-center justify-center p-4 rounded-[28px]">
         <div className="w-full max-w-6xl space-y-6">
@@ -100,7 +100,7 @@ const ChatbotDeploy = () => {
             {/* Right (QR) */}
             <div className="flex flex-col items-center justify-center gap-4">
               <QRCodeCanvas value={chatbotUrl} size={304} />
-              <button onClick={() => downloadQRCode()} className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-6 py-1.5 rounded">
+              <button onClick={() => downloadQRCode()} className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-6 py-1.5 rounded">
                 Download QR
               </button>
             </div>

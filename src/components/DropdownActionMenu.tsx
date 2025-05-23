@@ -34,9 +34,9 @@ const DropdownActionMenu: React.FC<DropdownActionMenuProps> = ({
     return (
         <div
             ref={menuRef}
-            className="absolute mb-1 mt-[-20] right-6 w-45 bg-white rounded-md shadow-lg border border-gray-200 "
+            className="z-50 absolute mb-1 mt-[-20] right-6 w-45 bg-white rounded-md shadow-lg border border-gray-200 "
         >
-            <ul className="text-sm rounded min-w-max">
+            <ul className="z-1 text-sm rounded min-w-max">
                 {items.map((item, index) => {
                     let colorClass = "text-gray-800 hover:bg-gray-100";
                     if (item.color === "red") colorClass = "text-red-600 hover:bg-red-50";
@@ -47,7 +47,7 @@ const DropdownActionMenu: React.FC<DropdownActionMenuProps> = ({
                         <li
                             key={index}
                             onClick={item.onClick}
-                            className={`px-4 py-2 text-sm cursor-pointer hover:bg-gray-200 
+                            className={`z-99 px-4 py-2 text-sm cursor-pointer hover:bg-gray-200 
     ${item.color === "red" ? "text-red-600" : ""} 
     ${item.color === "green" ? "text-green-600" : ""} 
     ${item.color === "black" ? "text-black" : ""} 

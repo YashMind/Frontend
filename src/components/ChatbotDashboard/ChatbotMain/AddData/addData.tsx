@@ -130,10 +130,10 @@ const AddBotData = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#241E4E] text-white p-10">
+    <div className="rounded-xl min-h-screen bg-[#241E4E] text-white p-10 ">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
         {/* Left: Add Data Section */}
-        <div>
+        <div >
           <h2 className="text-2xl font-bold mb-15">Add Data</h2>
 
           <h3 className="text-xl font-semibold mb-4">Train from link</h3>
@@ -143,14 +143,14 @@ const AddBotData = ({
             starting from it and list them for you to choose from
           </p>
           <form onSubmit={handleSubmit(onSubmit("form1"))}>
-            <div className="flex flex-wrap gap-2 mb-9">
+            <div className=" flex flex-wrap gap-2 mb-9">
               {["Full website", "Webpage", "Pdf", "WordDoc"].map(
                 (label: string) => (
                   <button
                     key={label}
                     type="button"
                     onClick={() => handleTrainFromClick(label)}
-                    className={`px-4 py-1 rounded-md text-sm font-semibold ${
+                    className={`cursor-pointer px-4 py-1 rounded-md text-sm font-semibold ${
                       activeTrainFrom === label
                         ? "bg-cyan-500 text-white"
                         : "bg-gray-400 text-white"
@@ -171,7 +171,7 @@ const AddBotData = ({
               />
               <button
                 type="submit"
-                className="bg-[#340555] text-white px-4 py-2  rounded-md font-semibold"
+                className="cursor-pointer bg-[#340555] text-white px-4 py-2  rounded-md font-semibold"
               >
                 Start
               </button>
@@ -190,14 +190,14 @@ const AddBotData = ({
           <form onSubmit={handleSubmit(onSubmit("form2"))}>
             <label htmlFor="doc-upload">
               <div
-                className="bg-[#9f96c1] bg-opacity-50 rounded-2xl p-10 text-center text-white border-2 border-dashed border-white mb-6"
+                className="cursor-pointer bg-[#9f96c1] bg-opacity-50 rounded-2xl p-10 text-center text-white border-2 border-dashed border-white mb-6"
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
                 onClick={handleClick}
               >
-                <div className="text-3xl mb-2 flex justify-center">
+                <div className=" text-3xl mb-2 flex justify-center">
                   <img src="/images/cloud.png" alt="" />
                 </div>
                 <p className="text-lg font-semibold mb-2">
@@ -232,7 +232,7 @@ const AddBotData = ({
             <div className="text-right">
               <button
                 type="submit"
-                className="bg-[#18B91F] text-white px-10 py-2 rounded-md font-semibold text-right"
+                className="cursor-pointer bg-[#18B91F] text-white px-10 py-2 rounded-md font-semibold text-right"
               >
                 Save
               </button>

@@ -74,14 +74,14 @@ const ChatbotQA = ({botId}:{botId?: number}) => {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full m-5">
       <h2 className="text-2xl font-bold my-4">Q & A</h2>
       <div className="bg-[#2E265C] ">
         {/* Header */}
         <div className="bg-[#FFFFFF80] rounded-t-xl flex items-center justify-between px-5 py-2">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-8">
             <button
-              className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-3xl  font-bold text-[#2E265C]"
+              className="cursor-pointer w-8 h-8 bg-white rounded-full flex items-center justify-center text-3xl  font-bold text-[#2E265C]"
               onClick={() => append({ question: "", answer: "" })}
             >
               +
@@ -103,12 +103,12 @@ const ChatbotQA = ({botId}:{botId?: number}) => {
               />
             </div>
           </div>
-          <div className="flex gap-2">
-            <button className="bg-[#340555] text-white text-sm px-3 py-1 font-bold rounded-md cursor-pointer">
+          <div className="flex gap-4">
+            <button className="bg-[#340555] text-white text-sm p-2 font-bold rounded-md cursor-pointer">
               Export All
             </button>
             <button
-              className="bg-[#4B4351] text-white text-sm px-3 py-1 font-bold rounded-md cursor-pointer"
+              className=" bg-[#4B4351] text-white text-sm p-2 font-bold rounded-md cursor-pointer"
               type="button"
               onClick={() => {
                 handleDeleteAllFaqs();
@@ -117,7 +117,7 @@ const ChatbotQA = ({botId}:{botId?: number}) => {
               Delete
             </button>
             <button
-              className="bg-[#18B91F]  text-white text-sm px-3 py-1 font-bold rounded-md cursor-pointer"
+              className="bg-[#18B91F]  text-white text-sm p-2 font-bold rounded-md cursor-pointer"
               type="submit"
               form="dynamicQAForm"
             >
@@ -139,7 +139,7 @@ const ChatbotQA = ({botId}:{botId?: number}) => {
                   <div className="flex justify-between items-center mb-2">
                     <h2 className="text-xl font-bold text-black">Question</h2>
                     <button
-                      className="bg-[#FF0004] text-white px-3 py-1 text-sm rounded-md font-bold"
+                      className="cursor-pointer bg-[#FF0004] text-white px-3 py-1 text-sm rounded-md font-bold"
                       type="button"
                       onClick={() => handleDeleteFaq(item, index)}
                     >

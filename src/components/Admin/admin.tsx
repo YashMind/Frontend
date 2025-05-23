@@ -58,7 +58,7 @@ const Admin = ({ adminPage }: { adminPage: string }) => {
             <AdminTopbar allUsersData={allUsersData} />
             {adminPage === "dashboard" ? <AdminMain /> : null}
             {adminPage === "overview" ? <AdminMain /> : null}
-            {adminPage === "user-management" ? <UserManagement /> : null}
+            {adminPage === "users-management" ? <UserManagement /> : null}
             {adminPage === "subscription-plans" ? <SubscriptionPlans /> : null}
             {adminPage === "token-analytics" ? <TokenAnalytics /> : null}
             {adminPage === "users-roles" ? <AdminUsersRoles /> : null}

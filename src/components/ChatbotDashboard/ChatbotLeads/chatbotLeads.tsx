@@ -65,20 +65,22 @@ const ChatbotLeads = ({
     );
     setSelectedIds([]);
   };
+
   const handleViewChats = (chat_id: number) => {
     dispatch(getChatbotsLeadMessages({ chat_id: chat_id })).finally(() => {
       setModalShow(true);
     });
   };
+
   return (
-    <div className="w-full">
+    <div className="w-full m-10">
       <h2 className="text-2xl font-bold my-4">Leads</h2>
-      {/* <table></table> */}
+
       <div className="bg-white rounded-b-xl overflow-hidden  text-sm w-full rounded-[40px] mb-8 mr-3 ">
         {/* Top Actions */}
         <div className="flex flex-wrap items-center justify-between gap-4 bg-[#9592AE] px-6 py-4 ">
           <div className="flex items-center gap-2">
-            <label htmlFor="entries" className="text-gray-700 font-medium">
+            <label htmlFor="entries" className="text-black font-medium">
               Show
             </label>
             <select
@@ -94,11 +96,11 @@ const ChatbotLeads = ({
               <option value={25}>25</option>
               <option value={50}>50</option>
             </select>
-            <span className="text-gray-700 font-medium">entries</span>
+            <span className="text-black font-medium">Entries</span>
             <button
               className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
                 isDisabled
-                  ? "bg-gray-300 cursor-not-allowed"
+                  ? "bg-red-300 cursor-not-allowed"
                   : "bg-red-500 hover:bg-red-600"
               }`}
               disabled={isDisabled}
@@ -108,17 +110,7 @@ const ChatbotLeads = ({
             </button>
             <div className="relative w-full max-w-xs">
               <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg
-                  className="w-4 h-4 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12.9 14.32a8 8 0 111.414-1.414l4.387 4.387a1 1 0 01-1.414 1.414l-4.387-4.387zM8 14a6 6 0 100-12 6 6 0 000 12z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                
               </span>
               <input
                 type="text"
@@ -128,27 +120,9 @@ const ChatbotLeads = ({
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-
-            {/* <div className="flex items-center gap-2 px-4 py-2 rounded-md  border border-white text-white bg-[#928eb0] focus:outline-none focus:ring-2 focus:ring-purple-500 ">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M8 7V3m8 4V3m-9 8h10m-12 8h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-              <span>Feb/2/2025</span> */}
-            {/* </div> */}
           </div>
           <div className="flex items-center gap-3">
-            <button className="bg-[#340555] text-white rounded  text-[11px] font-bold py-[7px] px-[11px]">
+            <button className="cursor-pointer bg-[#340555] text-white rounded text-sm font-bold py-[7px] px-[11px]">
               Configure mails
             </button>
           </div>

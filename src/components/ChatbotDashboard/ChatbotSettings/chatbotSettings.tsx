@@ -45,7 +45,7 @@ const ChatbotSettings = ({ botId }: { botId?: number }) => {
     dispatch(deleteChatbot({ bot_id: botId, router }));
   };
   return (
-    <div className="w-full">
+    <div className="w-full m-10">
       <h2 className="text-2xl font-bold my-[24] ">Settings</h2>
 
       <div className="bg-[#312d63] min-h-screen p-4 w-[675px] rounded-[38px] mb-5">
@@ -81,7 +81,7 @@ const ChatbotSettings = ({ botId }: { botId?: number }) => {
                 <div>
                   <button
                     type="submit"
-                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-1.5 text-sm font-bold rounded-[10px]"
+                    className="cursor-pointer bg-green-500 hover:bg-green-600 text-white px-6 py-1.5 text-sm font-bold rounded-[10px]"
                   >
                     Save
                   </button>
@@ -109,7 +109,7 @@ const ChatbotSettings = ({ botId }: { botId?: number }) => {
                 checked={deleteChecked}
                 onChange={(e: any) => setDeleteChecked(e.target.checked)}
                 placeholder="Jhon Doe"
-                className="px-4 py-2 rounded-full bg-[#D9D9D9] text-sm focus:outline-none text-[#727272] placeholder-[#727272]"
+                className="cursor-pointer px-4 py-2 rounded-full bg-[#D9D9D9] text-sm focus:outline-none text-[#727272] placeholder-[#727272]"
               />
               <span className="ml-2 text-sm text-gray-600">
                 Yes, I want to delete this bot and all its data permanently.
@@ -117,7 +117,7 @@ const ChatbotSettings = ({ botId }: { botId?: number }) => {
               <div>
                 <button
                   type="button"
-                  className="bg-red-500 hover:bg-red-800 text-white px-6 py-1.5 text-sm font-bold rounded-[10px] disabled:bg-red-300 disabled:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                  className="cursor-pointer bg-red-500 hover:bg-red-800 text-white px-6 py-1.5 text-sm font-bold rounded-[10px] disabled:bg-red-300 disabled:text-white disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={!deleteChecked}
                   onClick={() => handleDeleteChatbot()}
                 >

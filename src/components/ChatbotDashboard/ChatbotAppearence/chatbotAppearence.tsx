@@ -300,7 +300,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full m-10">
       {" "}
       <h2 className="text-2xl font-bold mt-[30]">Appearence</h2>
       <p className="text-sm font-light my-[22px]">

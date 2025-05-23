@@ -924,13 +924,30 @@ export const registerWhatsappPhoneNumber = createAsyncThunk(
     }
   }
 );
+export const transcribeAudio = createAsyncThunk(
+  "chat/transcribeAudio",
+  async (file: File, thunkAPI) => {
+    try {
+      const formData = new FormData()
+      formData.append("file", file)
+      const response = await http.post("/speech/speech_to_text", formData, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error?.response?.data?.detail || "Failed to transcribe speech"
+      );
+    }
+  }
+);
 
 const initialState = {
   loading: false,
   error: null as null | string,
   data: [],
   botData: {},
-  chatbots: [],
+  chatbots: [] as ChatbotsData[],
   chatbotData: {} as ChatbotsData,
   chatIdData: {} as chatsIdData,
   chatMessages: [] as ChatbotMessages[],

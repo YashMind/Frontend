@@ -19,7 +19,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
   );
 
   const tokensData = useSelector((state: RootState) => state.chat.tokens);
-   const chatbotError = useSelector((state: RootState) => state.chat.error);
+  const chatbotError = useSelector((state: RootState) => state.chat.error);
   useEffect(() => {
     dispatch(getChatbots());
     dispatch(fetchChatMessageTokens());
@@ -38,7 +38,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
   };
 
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-6 ">
       <div className="bg-[#2a2561]  py-4 rounded-[58px] w-[90%] px-10">
         <h2 className="text-2xl font-bold mb-4">Owner</h2>
         <div className="flex flex-wrap gap-4 w-[786px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px] ">

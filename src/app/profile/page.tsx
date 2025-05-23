@@ -148,7 +148,7 @@ const Page = () => {
               </button>
               <button
                 onClick={() => setIsEditing(false)}
-                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                className="cursor-pointer px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
               >
                 Cancel
               </button>
@@ -156,7 +156,7 @@ const Page = () => {
           ) : (
             <button
               onClick={() => setIsEditing(true)}
-              className="px-4 py-2 bg-white  text-[#2a0e61] rounded hover:bg-blue-700"
+              className="cursor-pointer px-4 py-2 bg-white  text-[#2a0e61] rounded hover:bg-blue-700"
             >
               Edit Profile
             </button>
