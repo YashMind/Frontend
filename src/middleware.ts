@@ -29,7 +29,7 @@ const PUBLIC_ROUTES = new Set([
 ]);
 
 const KNOWN_ROUTES = new RegExp(
-  "^(/profile|/settings|/invite-user|/voice-agent|/chatbot-dashboard|" +
+  "^(/profile|/settings|/invite-user|/accept-invite|/voice-agent|/chatbot-dashboard|" +
     "/chatbot-products|/admin)(/.*)?$"
 );
 

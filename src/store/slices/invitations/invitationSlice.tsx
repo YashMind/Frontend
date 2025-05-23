@@ -19,6 +19,17 @@ interface InvitationState {
   error: string | null;
   success: boolean;
   users: any[];
+  invitedUsers: any[];
+  pagination: {
+    current_page: number;
+    page_size: number;
+    total_items: number;
+    total_pages: number;
+    has_next: boolean;
+    has_prev: boolean;
+  } | null;
+  revokeLoading: boolean;
+  revokeSuccess: boolean;
 }
 
 // Async thunk for sending invitations
@@ -45,7 +56,6 @@ export const sendInvitations = createAsyncThunk<
 
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("Invitations sent successfully!", 2000, "id");
         return response.data;
       } else {
         return rejectWithValue("Failed to send invitations");
@@ -98,6 +108,52 @@ export const getAvailableUsers = createAsyncThunk<any, void>(
   }
 );
 
+// Async thunk for getting uninvited users for a specific chatbot
+export const getUninvitedUsers = createAsyncThunk<any, number>(
+  "invitations/getUninvitedUsers",
+  async (botId, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      console.log(`Fetching uninvited users for chatbot ID: ${botId}...`);
+
+      // Call the new endpoint to get uninvited users for the specific chatbot
+      console.log(
+        `Making API call to: /admin/get-uninvited-users?bot_id=${botId}`
+      );
+
+      // Use the admin endpoint with query parameters
+      const url = `/admin/get-uninvited-users?bot_id=${botId}`;
+
+      const response = await http.get(url);
+      console.log("Uninvited users response:", response.data);
+
+      dispatch(stopLoadingActivity());
+      return response.data;
+    } catch (error: any) {
+      console.error("Error fetching uninvited users:", error);
+
+      if (error.response) {
+        const status = error.response.status;
+        const errorMessage =
+          error.response.data?.detail ||
+          `Error ${status}: ${error.response.statusText}`;
+
+        toasterError(errorMessage, 3000, "id");
+
+        return rejectWithValue(errorMessage);
+      }
+
+      return rejectWithValue(
+        `Network error: ${
+          error.message || "An error occurred while fetching uninvited users"
+        }`
+      );
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 // Async thunk for accepting an invitation
 export const acceptInvitation = createAsyncThunk<any, string>(
   "invitations/acceptInvitation",
@@ -144,11 +200,105 @@ export const acceptInvitation = createAsyncThunk<any, string>(
   }
 );
 
+// Async thunk for getting invited users with pagination
+export const getInvitedUsers = createAsyncThunk<
+  any,
+  {
+    botId?: number;
+    page?: number;
+    pageSize?: number;
+    search?: string;
+    status?: string;
+  }
+>(
+  "invitations/getInvitedUsers",
+  async (
+    { botId, page = 1, pageSize = 10, search, status },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      dispatch(startLoadingActivity());
+
+      // Build query parameters
+      const params = new URLSearchParams();
+      if (botId) params.append("bot_id", botId.toString());
+      params.append("page", page.toString());
+      params.append("page_size", pageSize.toString());
+      if (search) params.append("search", search);
+      if (status && status !== "all") params.append("status", status);
+
+      const url = `/admin/get-invited-users?${params.toString()}`;
+      console.log("Fetching invited users with URL:", url);
+
+      const response = await http.get(url);
+
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        console.log("API Response:", response.data);
+        return response.data;
+      } else {
+        console.error("API Error - Status:", response.status);
+        return rejectWithValue("Failed to fetch invited users");
+      }
+    } catch (error: any) {
+      console.error("Error fetching invited users:", error);
+      console.error("Error details:", {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+      });
+
+      const errorMessage =
+        error.response?.data?.detail || "Failed to fetch invited users";
+      toasterError(errorMessage, 3000, "id");
+
+      return rejectWithValue(errorMessage);
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+// Async thunk for revoking access
+export const revokeAccess = createAsyncThunk<any, number>(
+  "invitations/revokeAccess",
+  async (sharingId, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+
+      const url = `/admin/revoke-access/${sharingId}`;
+      const response = await http.delete(url);
+
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toasterSuccess("Access revoked successfully!", 3000, "revoke-access");
+        return response.data;
+      } else {
+        return rejectWithValue("Failed to revoke access");
+      }
+    } catch (error: any) {
+      console.error("Error revoking access:", error);
+
+      const errorMessage =
+        error.response?.data?.detail || "Failed to revoke access";
+      toasterError(errorMessage, 3000, "id");
+
+      return rejectWithValue(errorMessage);
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 const initialState: InvitationState = {
   loading: false,
   error: null,
   success: false,
   users: [],
+  invitedUsers: [],
+  pagination: null,
+  revokeLoading: false,
+  revokeSuccess: false,
 };
 
 const invitationSlice = createSlice({
@@ -158,6 +308,16 @@ const invitationSlice = createSlice({
     resetInvitationState: (state) => {
       state.success = false;
       state.error = null;
+    },
+    clearUsersList: (state) => {
+      state.users = [];
+    },
+    clearInvitedUsersList: (state) => {
+      state.invitedUsers = [];
+    },
+    resetRevokeState: (state) => {
+      state.revokeSuccess = false;
+      state.revokeLoading = false;
     },
   },
   extraReducers: (builder) => {
@@ -194,6 +354,23 @@ const invitationSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+      .addCase(getUninvitedUsers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUninvitedUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        // Update the users list with uninvited users
+        if (Array.isArray(action.payload)) {
+          state.users = action.payload;
+        } else {
+          state.users = [];
+        }
+      })
+      .addCase(getUninvitedUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
       .addCase(acceptInvitation.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -206,9 +383,52 @@ const invitationSlice = createSlice({
       .addCase(acceptInvitation.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(getInvitedUsers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getInvitedUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        // Handle the new API response structure with pagination
+        if (action.payload && action.payload.data) {
+          state.invitedUsers = action.payload.data;
+          state.pagination = action.payload.pagination;
+        } else {
+          // Fallback for old API structure
+          state.invitedUsers = action.payload || [];
+          state.pagination = null;
+        }
+      })
+      .addCase(getInvitedUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(revokeAccess.pending, (state) => {
+        state.revokeLoading = true;
+        state.error = null;
+        state.revokeSuccess = false;
+      })
+      .addCase(revokeAccess.fulfilled, (state, action) => {
+        state.revokeLoading = false;
+        state.revokeSuccess = true;
+        // Remove the revoked user from the invited users list
+        const sharingId = action.payload.sharing_id;
+        state.invitedUsers = state.invitedUsers.filter(
+          (user: any) => user.sharing_id !== sharingId
+        );
+      })
+      .addCase(revokeAccess.rejected, (state, action) => {
+        state.revokeLoading = false;
+        state.error = action.payload as string;
       });
   },
 });
 
-export const { resetInvitationState } = invitationSlice.actions;
+export const {
+  resetInvitationState,
+  clearUsersList,
+  clearInvitedUsersList,
+  resetRevokeState,
+} = invitationSlice.actions;
 export default invitationSlice.reducer;

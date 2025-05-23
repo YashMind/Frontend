@@ -19,6 +19,8 @@ interface SelectComponentsProps {
   onChatbotChange: (option: ChatbotOption | null) => void;
   onUsersChange: (options: UserOption[]) => void;
   isDisabled: boolean;
+  selectedChatbot: ChatbotOption | null;
+  selectedUsers: UserOption[];
 }
 
 export default function SelectComponents({
@@ -27,11 +29,11 @@ export default function SelectComponents({
   onChatbotChange,
   onUsersChange,
   isDisabled,
+  selectedChatbot,
+  selectedUsers,
 }: SelectComponentsProps) {
   // Use local state to avoid hydration issues
   const [mounted, setMounted] = useState(false);
-  const [selectedChatbot, setSelectedChatbot] = useState<ChatbotOption | null>(null);
-  const [selectedUsers, setSelectedUsers] = useState<UserOption[]>([]);
 
   // Only render after component has mounted on the client
   useEffect(() => {
@@ -40,13 +42,11 @@ export default function SelectComponents({
 
   // Handle chatbot selection
   const handleChatbotChange = (newValue: any) => {
-    setSelectedChatbot(newValue as ChatbotOption);
     onChatbotChange(newValue as ChatbotOption);
   };
 
   // Handle users selection
   const handleUsersChange = (newValue: any) => {
-    setSelectedUsers(newValue as UserOption[]);
     onUsersChange(newValue as UserOption[]);
   };
 
