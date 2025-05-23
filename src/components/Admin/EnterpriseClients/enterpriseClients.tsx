@@ -8,19 +8,22 @@ import StatusActionModal from "@/components/StatusActionModal";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
 import AddEditAdminUserModal from "../AdminUsersRoles/AddEditAdminUser/addEditAdminUser";
-import { deleteClientUser, getClientLogsActivity, getClientUsers, updateClientByAdmin, updateTokenStatus, getAllVolumnDiscounts } from "@/store/slices/admin/adminSlice";
+import { deleteClientUser, getClientLogsActivity, getClientUsers, updateClientByAdmin, updateTokenStatus, getAllVolumnDiscounts, updateDiscount } from "@/store/slices/admin/adminSlice";
+import { toasterError } from "@/services/utils/toaster";
 
 const EnterpriseClients = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [ClientData, setClientData] = useState<any>({});
+  const [menuOpenId, setMenuOpenId] = useState<any>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalShow, setModalShow] = useState<boolean>(false);
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [menuOpenId, setMenuOpenId] = useState<any>({});
-  const [ClientData, setClientData] = useState<any>({});
-  const [rates, setRates] = useState<{ [key: number]: string }>({});
   const [selectedDate, setSelectedDate] = useState<any>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [rates, setRates] = useState<{ [key: number]: string }>({});
   const [editUserId, setEditUserId] = useState<number | null>(null);
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
+  const [editDiscountId, setEditDiscountId] = useState<number | null>(null);
+  const [editedDiscounts, setEditedDiscounts] = useState<{ [key: number]: string }>({});
 
   const discounts = useSelector((state: any) => state.admin.data)
   const { clientUsers } = useSelector((state: RootState) => state.admin);
@@ -33,48 +36,6 @@ const EnterpriseClients = () => {
     dispatch(getClientUsers());
     dispatch(getClientLogsActivity({ date_filter: selectedDate }));
   }, [dispatch, selectedDate]);
-
-  const handleDeleteClick = (item: any) => {
-    setSelectedUser(item.id);
-    setIsModalOpen(true);
-  };
-
-  const handleConfirmDelete = async () => {
-    if (selectedUser) {
-      await dispatch(deleteClientUser({ id: selectedUser }));
-    }
-  };
-
-  const handleUpdateStatus = (data: any) => {
-    dispatch(
-      updateClientByAdmin({payload: data,page: 1,limit: 10})
-    );
-    setIsMenuOpen(false);
-  };
-
-  const handleOpenMenu = (itemId: any) => {
-    setMenuOpenId(itemId);
-    setIsMenuOpen(true);
-  };
-
-  const handleEdit = (userId: number, currentRate: string) => {
-    setEditUserId(userId);
-    setRates((prevRates) => ({
-      ...prevRates,
-      [userId]: currentRate || "0000",
-    }));
-  };
-
-  const handleSave = async (userId: number) => {
-    const rateString = rates[userId];
-    const rateNumber = Number(rateString) || 0;
-    try {
-      await dispatch(updateTokenStatus({ id: userId, base_rate_per_token: rateNumber })).unwrap();
-      setEditUserId(null); 
-    } catch (error) {
-      console.error(`Failed to save rate for user ${userId}`, error);
-    }
-  };
 
   function formatTokenRange(item: any, index: number, all: any) {
     const curr = item.token;
@@ -95,6 +56,64 @@ const EnterpriseClients = () => {
     }
     return `${tokens}`;
   }
+
+
+  const handleDeleteClick = (item: any) => {
+    setSelectedUser(item.id);
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (selectedUser) {
+      await dispatch(deleteClientUser({ id: selectedUser }));
+    }
+  };
+
+  const handleUpdateStatus = (data: any) => {
+    dispatch(
+      updateClientByAdmin({ payload: data, page: 1, limit: 10 })
+    );
+    setIsMenuOpen(false);
+  };
+
+  const handleOpenMenu = (itemId: any) => {
+    setMenuOpenId(itemId);
+    setIsMenuOpen(true);
+  };
+
+  const handleEdit = (userId: number, currentRate: string) => {
+    setEditUserId(userId);
+    setRates((prevRates) => ({
+      ...prevRates,
+      [userId]: currentRate || "0000",
+    }));
+  };
+
+  const handleEditDiscount = (id: number, discount: number) => {
+    setEditDiscountId(id);
+    setEditedDiscounts((prev) => ({ ...prev, [id]: discount.toString() }));
+  };
+
+  const handleSave = async (userId: number) => {
+    const rateString = rates[userId];
+    const rateNumber = Number(rateString) || 0;
+    try {
+      await dispatch(updateTokenStatus({ id: userId, base_rate_per_token: rateNumber })).unwrap();
+      setEditUserId(null);
+    } catch (error) {
+      console.error(`Failed to save rate for user ${userId}`, error);
+    }
+  };
+
+const handleSaveDiscount = (id: number) => {
+  const val = parseFloat(editedDiscounts[id]);
+  if (isNaN(val) || val < 0 || val > 100) {
+    toasterError("Discount must be between 0 and 100 %", 2000, "id");
+    return;
+  }
+  dispatch(updateDiscount({ id, discount: val }));
+  setEditDiscountId(null);
+};
 
 
   return (
@@ -284,9 +303,40 @@ const EnterpriseClients = () => {
                           } ${index === discounts.length - 1 ? "mb-5" : ""}`}
                       >
                         <span>{formatTokenRange(item, index, discounts)}</span>
-                        <span>{item.discount}%</span>
+
+                        <div className="flex items-center gap-2">
+                          {editDiscountId === item.id ? (
+                            <>
+                              <input
+                                type="number"
+                                min={0}
+                                max={100}
+                                step={0.1}                /* optional: allow decimals */
+                                value={editedDiscounts[item.id] ?? ""}
+                                onChange={(e) => {
+                                  const val = parseFloat(e.target.value);
+                                  if (val <= 100) {
+                                    setEditedDiscounts({ ...editedDiscounts, [item.id]: e.target.value });
+                                  }
+                                }}
+                                className="bg-transparent border border-gray-600 px-2 py-1 rounded text-white w-20 text-right"
+                              />
+                              <button onClick={() => handleSaveDiscount(item.id)}>
+                                <SiTicktick size={18} className="text-blue-400 cursor-pointer" />
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <span>{item.discount}%</span>
+                              <button onClick={() => handleEditDiscount(item.id, item.discount)}>
+                                <MdEdit size={18} className="text-blue-400 cursor-pointer" />
+                              </button>
+                            </>
+                          )}
+                        </div>
                       </div>
                     ))}
+
                   </div>
                 </div>
               </div>

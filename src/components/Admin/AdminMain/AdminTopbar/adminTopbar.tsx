@@ -1,109 +1,203 @@
 "use client";
 import { formatName } from "@/services/utils/helpers";
-import { RootState } from "@/store/store";
-import Image from "next/image";
-import React from "react";
-import { useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { FaUser, FaPlusCircle, FaStar } from "react-icons/fa";
+import { TiEye } from "react-icons/ti";
+import { GoArrowUpRight } from "react-icons/go";
+import { HiArrowDownRight } from "react-icons/hi2";
+import MetricDetailsModal from "@/components/DetailsModal";
+import { getRecentSignups } from "@/store/slices/auth/authSlice";
+import { useRouter } from "next/navigation";
 
 interface AdminTopbarProps {
   allUsersData: AdminAllUsers;
 }
 
+interface MetricCardProps {
+  label: string;
+  icon: React.ReactNode;
+  value: number;
+  changeIcon: React.ReactNode;
+  changeColor: string;
+  bgColor: string;
+  borderColor: string;
+  index: number;
+  openDropdownIndex: number | null;
+  toggleDropdown: (index: number) => void;
+  onMoreDetails: () => void;
+}
+
+const MetricCard = ({
+  label,
+  icon,
+  value,
+  changeIcon,
+  changeColor,
+  bgColor,
+  borderColor,
+  index,
+  openDropdownIndex,
+  toggleDropdown,
+  onMoreDetails,
+}: MetricCardProps) => (
+  <div className="relative bg-[#0B1739] p-4 rounded-lg shadow-md border border-[#343B4F]">
+    <div className="flex items-center justify-between text-sm text-gray-400 mb-2 font-medium">
+      <span className="flex items-center gap-2">
+        {icon}
+        {label}
+      </span>
+      <span
+        className="text-white cursor-pointer"
+        onClick={() => toggleDropdown(index)}
+      >
+        •••
+      </span>
+    </div>
+
+    {openDropdownIndex === index && (
+      <div className="absolute right-4 top-10 bg-white text-black rounded-md shadow-lg px-3 py-2 z-50 text-sm">
+        <p
+          className="cursor-pointer hover:underline"
+          onClick={onMoreDetails}
+        >
+          More Details
+        </p>
+      </div>
+    )}
+
+    <div className="flex items-center gap-2">
+      <div className="text-2xl font-semibold">{value}</div>
+      <div
+        className="text-sm flex items-center px-[4px] py-[2px] rounded-[2px]"
+        style={{
+          color: changeColor,
+          backgroundColor: bgColor,
+          border: `1px solid ${borderColor}`,
+        }}
+      >
+        {changeIcon}
+      </div>
+    </div>
+  </div>
+);
+
 const AdminTopbar = ({ allUsersData }: AdminTopbarProps) => {
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const recentSignupsCount = useSelector((state: RootState) => state.auth.recentSignups?.count ?? 0);
+  const recentSignups = useSelector((state: RootState) => state.auth.recentSignups?.data ?? []);
+
   const userData: UserProfileData = useSelector(
-    (state: RootState) => state.auth.userData
+    (state: RootState) => state.auth.userData!
   );
+  const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
+  const [selectedMetric, setSelectedMetric] = useState<{
+    label: string;
+    value: number;
+  } | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(getRecentSignups());
+  }, []);
+
+  const toggleDropdown = (index: number) => {
+    setOpenDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
 
   const metrics = [
     {
       label: "Total users",
-      icon: "/images/user.png",
-      value: allUsersData?.total_count,
-      changeIcon: "/images/top-arrow.png",
+      icon: <FaUser />,
+      value: allUsersData?.total_count ?? 0,
+      changeIcon: <GoArrowUpRight />,
       changeColor: "#14CA74",
       bgColor: "#05C16833",
       borderColor: "#05C16833",
     },
     {
       label: "Tokens Consumed This Month",
-      icon: "/images/Views-icon.png",
+      icon: <TiEye size={20} />,
       value: allUsersData?.tokens_consumed ?? 0,
-      changeIcon: "/images/arrow-down.png",
+      changeIcon: <HiArrowDownRight />,
       changeColor: "#FF5A65",
       bgColor: "#FF5A6533",
       borderColor: "#FF5A6533",
     },
     {
       label: "New sign ups",
-      icon: "/images/add.png",
-      value: allUsersData?.total_signups,
-      changeIcon: "/images/top-arrow.png",
+      icon: <FaPlusCircle />,
+      value: recentSignupsCount ?? 0,
+      changeIcon: <GoArrowUpRight />,
       changeColor: "#14CA74",
       bgColor: "#05C16833",
       borderColor: "#05C16833",
     },
     {
       label: "Subscriptions",
-      icon: "/images/Features-Icon.png",
+      icon: <FaStar />,
       value: allUsersData?.total_subscriptions ?? 0,
-      changeIcon: "/images/top-arrow.png",
+      changeIcon: <GoArrowUpRight />,
       changeColor: "#14CA74",
       bgColor: "#05C16833",
       borderColor: "#05C16833",
     },
   ];
 
-  const MetricCard = ({
-    label,
-    icon,
-    value,
-    changeIcon,
-    changeColor,
-    bgColor,
-    borderColor,
-  }: (typeof metrics)[0]) => (
-    <div className="bg-[#0B1739] p-[18] rounded-lg shadow-md border border-[#343B4F]">
-      <div className="flex items-center justify-between text-sm text-gray-400 mb-2 font-medium ">
-        <span className="flex items-center gap-2">
-          <Image alt="icon" src={icon} height={12} width={12} />
-          {label}
-        </span>
-        <span className="text-white">•••</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <div className="text-2xl font-semibold">{value}</div>
-        <div
-          className="text-sm flex items-center px-[4] py-[2] rounded-[2px]"
-          style={{
-            color: changeColor,
-            backgroundColor: bgColor,
-            border: `1px solid ${borderColor}`,
-          }}
-        >
-          <span>
-            <Image alt="change" src={changeIcon} height={8} width={8} />
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div>
-      <h2 className="ml-10 text-2xl font-semibold mt-[40px]">
-        Welcome back,{" "}
-        {userData?.fullName ? formatName(userData.fullName) : ""}
-      </h2>
+
+      <div className="flex items-center justify-between mt-[40px] px-10">
+        <h2 className="text-2xl font-semibold">
+          Welcome back, {userData?.fullName ? formatName(userData.fullName) : ""}
+        </h2>
+        <button onClick={() => router.push("/chatbot-dashboard/main")} className="cursor-pointer bg-[#18B91F] hover:bg-green-600 text-white px-4 py-1 rounded text-xs">
+          Back
+        </button>
+      </div>
       <p className="ml-10 text-[#AEB9E1] text-xs font-normal">
         Measure your advertising ROI and report website traffic.
       </p>
 
-      {/* cards */}
       <div className="ml-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full mt-[30px]">
         {metrics.map((metric, index) => (
-          <MetricCard key={index} {...metric} />
+          <MetricCard
+            key={index}
+            {...metric}
+            index={index}
+            openDropdownIndex={openDropdownIndex}
+            toggleDropdown={toggleDropdown}
+            onMoreDetails={() => {
+              if (metric.label === "New sign ups") {
+                setSelectedMetric({ label: metric.label, value: metric.value });
+                setIsOpen(true);
+              }
+              setOpenDropdownIndex(null);
+            }}
+          />
         ))}
       </div>
+
+      <MetricDetailsModal
+        isOpen={isOpen}
+        metricLabel={selectedMetric?.label ?? ""}
+        metricValue={selectedMetric?.value ?? 0}
+        count={recentSignupsCount}
+        onClose={() => setIsOpen(false)}
+      >
+        {recentSignups.map((user, idx) => (
+          <tr key={idx} className="hover:bg-[#1C2B5E]">
+            <td className="border border-gray-700 px-4 py-2">{user.fullName}</td>
+            <td className="border border-gray-700 px-4 py-2">{user.email}</td>
+            <td className="border border-gray-700 px-4 py-2">
+              {new Date(user.created_at).toLocaleDateString()}
+            </td>
+          </tr>
+        ))}
+      </MetricDetailsModal>
     </div>
   );
 };

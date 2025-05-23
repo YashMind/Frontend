@@ -29,7 +29,7 @@ interface UserProfileData {
   provider?: string;
   created_at: string;
   updated_at?: string;
-  role?: string;
+  role?: any ;
   plan?: string;
   tokenUsed?: number;
   status?: string;

@@ -109,6 +109,32 @@ export const getMeData = createAsyncThunk<any, { router: AppRouterInstance }>(
   }
 );
 
+
+export const getRecentSignups = createAsyncThunk<any, void>(
+  "admin/getRecentSignups",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+
+      const response = await http.get("/auth/recent-signups");
+
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("Failed to fetch recent signups!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toasterError(error?.response?.data?.detail, 2000, "id");
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred while fetching recent signups.");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
 export const signInUser = createAsyncThunk<
   any,
   { payload: any; router: ReturnType<typeof useRouter> }
@@ -195,6 +221,16 @@ export const updateUserProfile = createAsyncThunk<
     }
   }
 );
+interface AuthState {
+  loading: boolean;
+  data: any[]; // if used somewhere else, else remove it
+  userData: UserProfileData | null; // currently used for logged-in user profile
+  userDetails: any;
+  recentSignups: {
+    count: number;
+    data: UserProfileData[];
+  } | null;  // <-- Add this
+}
 
 export const changePassword = createAsyncThunk<
   any,
@@ -225,11 +261,12 @@ export const changePassword = createAsyncThunk<
   )
 
 
-const initialState = {
+const initialState: AuthState = {
   loading: false,
   data: [],
   userData: UserData as UserProfileData,
   userDetails: {},
+  recentSignups: null,
 };
 
 const authSlice = createSlice({
@@ -259,6 +296,18 @@ const authSlice = createSlice({
       .addCase(signInUser.rejected, (state, action) => {
         state.loading = false;
       })
+
+      .addCase(getRecentSignups.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getRecentSignups.fulfilled, (state, action) => {
+        state.loading = false;
+        state.recentSignups = action.payload;
+      })
+      .addCase(getRecentSignups.rejected, (state) => {
+        state.loading = false;
+      })
+
 
       .addCase(getMeData.pending, (state) => {
         state.loading = true;
