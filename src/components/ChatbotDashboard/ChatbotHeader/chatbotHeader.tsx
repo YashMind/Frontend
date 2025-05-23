@@ -136,7 +136,7 @@ const ChatbotDashboardHeader = ({
               <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-10">
                 <div className="py-1">
                   <Link
-                    href="/profile"
+                    href="/settings/profile"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Profile
@@ -148,7 +148,7 @@ const ChatbotDashboardHeader = ({
                     Settings
                   </Link>
                   <Link
-                    href="/invite-user"
+                    href="/settings/teams"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Invite User
@@ -244,7 +244,7 @@ const ChatbotDashboardHeader = ({
               </li>
               <li>
                 <Link
-                  href="/llm"
+                  href="chatbot/llm"
                   className={`block py-2 px-3 text-white ${bot === 3 ? "bg-[#434343]" : ""
                     } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
                   onClick={() => {

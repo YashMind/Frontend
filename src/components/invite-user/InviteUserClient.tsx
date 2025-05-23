@@ -36,7 +36,6 @@ const InviteUserClient = () => {
 
   return (
     <div className="p-4 min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61]">
-      <HistoryBackButton />
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mt-4 mb-6">
           <h1 className="text-4xl font-bold text-white">Invited Users</h1>

@@ -602,6 +602,35 @@ export const deleteChats = createAsyncThunk<
   }
 );
 
+
+export const deleteAllBotsChats = createAsyncThunk<
+  any
+>(
+  "chat/deleteChats",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.delete(`/chatbot/chats/delete-all`);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toasterSuccess("Chats deleted Successfully!", 2000, "id")
+        return response.data;
+      } else {
+        return rejectWithValue("failed to delete chats!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        // toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id")
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during delete chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 export const getChatbotsDocLinks = createAsyncThunk<
   any,
   {
