@@ -1,13 +1,16 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, Dispatch, SetStateAction } from 'react';
 import toast from 'react-hot-toast';
 import { FaMicrophone, FaRegStopCircle, FaSpinner } from 'react-icons/fa';
 
 interface MicrophoneRecorderProps {
     setTranscript: (text: string) => void;
+    transcript: string;
+    isRecording: boolean;
+    setIsRecording: Dispatch<SetStateAction<boolean>>;
 }
 
-const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({ setTranscript }) => {
-    const [isRecording, setIsRecording] = useState(false);
+const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({ transcript, setTranscript, isRecording, setIsRecording }) => {
+
     const [blobURL, setBlobURL] = useState<string | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
     const [volume, setVolume] = useState(0);
@@ -41,7 +44,7 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({ setTranscript }
                 }
 
                 // Append new speech to existing transcript
-                setTranscript(finalTranscript);
+                setTranscript(transcript + " " + finalTranscript);
             };
 
             recognition.onerror = (event: any) => {

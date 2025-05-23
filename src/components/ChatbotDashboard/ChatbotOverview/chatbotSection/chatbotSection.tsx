@@ -31,6 +31,7 @@ const ChatbotSection = ({
   botId?: number;
 }) => {
   const [isBotTyping, setIsBotTyping] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
 
   const chatbotSetting = useSelector(
     (state: RootState) => state.appearance.settings
@@ -41,7 +42,7 @@ const ChatbotSection = ({
     handleSubmit,
     reset,
     setValue,
-    getValues,
+    watch,
     formState: { errors },
   } = useForm<TextMessage>({
     resolver: yupResolver(schema) as Resolver<TextMessage>,
@@ -302,7 +303,7 @@ const ChatbotSection = ({
                 } w-full p-2 text-sm rounded-md border text-black border-gray-300 bg-gray-50 focus:outline-none`}
             />
           </div>
-          <MicrophoneRecorder setTranscript={(text: string) => setValue('message', text)} />
+          <MicrophoneRecorder setTranscript={(text: string) => setValue('message', text)} transcript={watch('message')} isRecording={isRecording} setIsRecording={setIsRecording} />
           <button
             className="cursor-pointer p-2 rounded text-white"
             type="submit"

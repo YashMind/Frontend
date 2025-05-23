@@ -48,7 +48,7 @@ export const signUpUser = createAsyncThunk<
       if (error.response && error.response.status === 400) {
         if (error.response.data.detail === "ERR_ALREADY_EXIST") {
           toasterError("Email Already Exists");
-        } 
+        }
         return rejectWithValue(error.response.data.detail);
       }
       return rejectWithValue("An error occurred during signup");
@@ -195,6 +195,35 @@ export const updateUserProfile = createAsyncThunk<
     }
   }
 );
+
+export const changePassword = createAsyncThunk<
+  any,
+  { data: { old_password: string, new_password: string } }>(
+    "auth/changePassword",
+    async ({ data }, { dispatch, rejectWithValue }) => {
+      try {
+        dispatch(startLoadingActivity());
+        const response = await http.post("/auth/change-password", data, { withCredentials: true });
+        if (response.status === 200) {
+          dispatch(stopLoadingActivity());
+          toasterSuccess("Password changed successfully!", 2000, "id");
+          return response.data;
+        } else {
+          return rejectWithValue("Password change failed");
+        }
+      } catch (error: any) {
+        if (error.response && error.response.status === 400) {
+          return rejectWithValue(error.response.data.message);
+        }
+        return rejectWithValue("An error occurred during password change");
+      } finally {
+        dispatch(stopLoadingActivity());
+      }
+    }
+
+
+  )
+
 
 const initialState = {
   loading: false,

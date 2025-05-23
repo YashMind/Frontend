@@ -1,6 +1,6 @@
 "use client";
 import HistoryBackButton from "@/components/utils/historyBackButton";
-import { getMeData, updateUserProfile } from "@/store/slices/auth/authSlice";
+import { changePassword, getMeData, updateUserProfile } from "@/store/slices/auth/authSlice";
 import {
   fetchChatMessageTokens,
   getChatbots,
@@ -11,8 +11,9 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import ChangePasswordModal from "./changePasswordModel";
 
-const Page = () => {
+const ProfileSettings = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const userData: UserProfileData = useSelector(
@@ -25,6 +26,8 @@ const Page = () => {
     ...userData,
   });
 
+  const [showChangePassword, setShowChangePassword] = useState(false);
+
   useEffect(() => {
     setEditedData({ ...userData });
     if (userData.picture) {
@@ -32,8 +35,8 @@ const Page = () => {
         ? userData.picture.startsWith("http")
           ? userData.picture
           : userData.picture.startsWith("/uploads")
-          ? process.env.NEXT_PUBLIC_BACKEND_URL + userData.picture
-          : null
+            ? process.env.NEXT_PUBLIC_BACKEND_URL + userData.picture
+            : null
         : null;
 
       setEditedData((prev: any) => {
@@ -114,7 +117,7 @@ const Page = () => {
 
       await dispatch(updateUserProfile({ payload } as any))
         .unwrap()
-        .then(() => {});
+        .then(() => { });
 
       // Optional: Show success feedback
       toast.success("Profile updated successfully");
@@ -132,9 +135,21 @@ const Page = () => {
     return date.toLocaleDateString() + " " + date.toLocaleTimeString();
   };
 
+
+  const handlePasswordChange = (currentPass: string, newPass: string) => {
+    console.log(currentPass, newPass)
+
+    dispatch(changePassword({ data: { old_password: currentPass, new_password: newPass } })).unwrap().then((res) => {
+      console.log(res)
+      setShowChangePassword(false)
+    }).catch((e) => {
+      console.log(e)
+      toast.error("Failed to change password");
+    })
+  }
+
   return (
-    <div className="p-4 min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61]">
-      <HistoryBackButton />
+    <div className="p-4 min-h-screen">
       <div className="max-w-4xl mx-auto ">
         <div className="flex justify-between items-center mt-4 mb-6 ">
           <h1 className="text-4xl font-bold text-white">User Profile</h1>
@@ -244,7 +259,7 @@ const Page = () => {
                 )}
               </div>
 
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-500">
                   Account Created
                 </label>
@@ -256,7 +271,7 @@ const Page = () => {
                   Last Updated
                 </label>
                 <p className="mt-1">{formatDate(userData.updated_at || "")}</p>
-              </div>
+              </div> */}
             </div>
 
             <div className="space-y-4">
@@ -273,45 +288,19 @@ const Page = () => {
                   Tokens Used
                 </label>
                 <p className="mt-1">
-                  {userData.tokenUsed?.toLocaleString() || "0"}
+                  {tokensData.total_tokens?.toLocaleString() || "0"}
                 </p>
               </div>
 
-              <div className="flex items-center">
-                {isEditing ? (
-                  <>
-                    <input
-                      type="checkbox"
-                      name="isMFA"
-                      checked={editedData.isMFA || false}
-                      onChange={handleInputChange}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                    />
-                    <label className="ml-2 block text-sm text-gray-700">
-                      Two-Factor Authentication
-                    </label>
-                  </>
-                ) : (
-                  <>
-                    <span
-                      className={`h-3 w-3 rounded-full ${
-                        userData.isMFA ? "bg-green-500" : "bg-gray-300"
-                      }`}
-                    ></span>
-                    <label className="ml-2 block text-sm text-gray-700">
-                      Two-Factor Authentication:{" "}
-                      {userData.isMFA ? "Enabled" : "Disabled"}
-                    </label>
-                  </>
-                )}
-              </div>
 
               {isEditing && !userData.provider && (
                 <div className="pt-4 border-t border-gray-200">
                   <h3 className="text-sm font-medium text-gray-500 mb-2">
                     Security
                   </h3>
-                  <button className="text-sm text-blue-600 hover:text-blue-800">
+                  <button onClick={() => {
+                    setShowChangePassword(true);
+                  }} className="text-sm text-blue-600 hover:text-blue-800">
                     Change Password
                   </button>
                 </div>
@@ -374,8 +363,13 @@ const Page = () => {
           </div>
         </div>
       </div>
+      <ChangePasswordModal
+        isOpen={showChangePassword}
+        onClose={() => setShowChangePassword(false)}
+        onSubmit={handlePasswordChange}
+      />
     </div>
   );
 };
 
-export default Page;
+export default ProfileSettings;

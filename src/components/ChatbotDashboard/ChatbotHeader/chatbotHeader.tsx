@@ -19,29 +19,29 @@ const ChatbotDashboardHeader = ({
   fix: boolean;
   addBgColor: boolean;
   role?: string;
-  chatbotError?:string;
+  chatbotError?: string;
 }) => {
 
   const router = useRouter();
   const menuRef = useRef(null);
   const dispatch = useDispatch<AppDispatch>();
 
-    const userData: UserProfileData = useSelector(
+  const userData: UserProfileData = useSelector(
     (state: RootState) => state.auth.userData
   );
 
-const pathname = usePathname();
-const [bot, setBot] = useState<number>(1);
+  const pathname = usePathname();
+  const [bot, setBot] = useState<number>(1);
 
-useEffect(() => {
-  if (pathname.includes("/voice-agent")) {
-    setBot(2);
-  } else if (pathname.includes("/llm")) {
-    setBot(3);
-  } else if (pathname.includes("/chatbot-dashboard/main")) {
-    setBot(1);
-  }
-}, [pathname]);  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    if (pathname.includes("/voice-agent")) {
+      setBot(2);
+    } else if (pathname.includes("/llm")) {
+      setBot(3);
+    } else if (pathname.includes("/chatbot-dashboard/main")) {
+      setBot(1);
+    }
+  }, [pathname]); const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
@@ -138,7 +138,7 @@ useEffect(() => {
                     Profile
                   </Link>
                   <Link
-                    href="/settings"
+                    href="/settings/profile"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Settings
@@ -198,58 +198,58 @@ useEffect(() => {
           </button>
         </div>
         {!chatbotError &&
-        <div
-          className={`${isMenuOpen ? "flex flex-col" : "hidden"
-            } w-full md:flex md:flex-row md:w-auto md:order-1`}
-          id="navbar-sticky"
-        >
-          <ul className="flex flex-col items-center  text-[15px] font-normal p-4 md:p-0 mt-4  [font-family:'Roboto_Flex',sans-serif]  border rounded-lg  md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0   ">
-            <li>
-              <Link
-                href="/chatbot-dashboard/main"
-                className={`block py-2 px-3 text-white ${bot === 1 ? "bg-[#434343]" : ""
-                  } rounded-[26px]
+          <div
+            className={`${isMenuOpen ? "flex flex-col" : "hidden"
+              } w-full md:flex md:flex-row md:w-auto md:order-1`}
+            id="navbar-sticky"
+          >
+            <ul className="flex flex-col items-center  text-[15px] font-normal p-4 md:p-0 mt-4  [font-family:'Roboto_Flex',sans-serif]  border rounded-lg  md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0   ">
+              <li>
+                <Link
+                  href="/chatbot-dashboard/main"
+                  className={`block py-2 px-3 text-white ${bot === 1 ? "bg-[#434343]" : ""
+                    } rounded-[26px]
                     hover:bg-gray-100 md:hover:bg-transparent md:hover:text-white-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
-                aria-current="page"
-                onClick={() => {
-                  setBot(1);
-                  setIsMenuOpen(false);
-                }}
-              >
-                Chat Bot
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/chatbot-dashboard/voice-agent"
-                className={`block py-2 px-3 text-white ${bot === 2 ? "bg-[#434343]" : ""
-                  } rounded-[26px]  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-white-700 md:dark:hover:text-white-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
-                onClick={() => {
-                  setBot(2);
-                  setIsMenuOpen(false);
-                }}
+                  aria-current="page"
+                  onClick={() => {
+                    setBot(1);
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  Chat Bot
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/chatbot-dashboard/voice-agent"
+                  className={`block py-2 px-3 text-white ${bot === 2 ? "bg-[#434343]" : ""
+                    } rounded-[26px]  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-white-700 md:dark:hover:text-white-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
+                  onClick={() => {
+                    setBot(2);
+                    setIsMenuOpen(false);
+                  }}
 
-              >
-                Voice Agent
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/chatbot-dashboard/llm"
-                className={`block py-2 px-3 text-white ${bot === 3 ? "bg-[#434343]" : ""
-                  } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-white-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
-                onClick={() => {
-                  setBot(3);
-                  setIsMenuOpen(false);
-                }}
-              >
-                Chat LLM
-              </Link>
-            </li>
-          </ul>
-        </div>     
+                >
+                  Voice Agent
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/chatbot-dashboard/llm"
+                  className={`block py-2 px-3 text-white ${bot === 3 ? "bg-[#434343]" : ""
+                    } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-white-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
+                  onClick={() => {
+                    setBot(3);
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  Chat LLM
+                </Link>
+              </li>
+            </ul>
+          </div>
         }
-   
+
       </div>
     </nav>
   );
