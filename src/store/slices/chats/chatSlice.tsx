@@ -7,6 +7,7 @@ import {
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import {
+  ArchivedHistoryMessages,
   BotTokens,
   ChatbotDocLinks,
   ChatbotFaqs,
@@ -52,10 +53,12 @@ export const createChatbot = createAsyncThunk<
   async ({ payload, router }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await http.post("/chatbot/create-bot", { data: payload });
+      const response = await http.post("/chatbot/create-bot", {
+        data: payload,
+      });
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("chatbot created successfully!", 2000, "id")
+        toasterSuccess("chatbot created successfully!", 2000, "id");
         // toast.success("chatbot created successfully!");
         dispatch(getChatbots());
         router.push(`/chatbot-dashboard/overview/${response?.data?.id}`);
@@ -65,7 +68,7 @@ export const createChatbot = createAsyncThunk<
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
@@ -87,7 +90,7 @@ export const updateChatbot = createAsyncThunk<
       const response = await http.put("/chatbot/update-bot", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("chatbot updated successfully!", 2000, "id")
+        toasterSuccess("chatbot updated successfully!", 2000, "id");
         toast.success("chatbot updated successfully!");
         dispatch(getChatbots());
         router.push(`/chatbot-dashboard/overview/${payload.id}`);
@@ -97,7 +100,7 @@ export const updateChatbot = createAsyncThunk<
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
@@ -119,7 +122,7 @@ export const createChatbotDocLinks = createAsyncThunk<any, { payload: any }>(
       );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("chatbot updated successfully!", 2000, "id")
+        toasterSuccess("chatbot updated successfully!", 2000, "id");
 
         // toast.success("chatbot updated successfully!");
         dispatch(
@@ -134,7 +137,7 @@ export const createChatbotDocLinks = createAsyncThunk<any, { payload: any }>(
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during chatbot");
@@ -155,7 +158,7 @@ export const updateChatbotWithoutRouter = createAsyncThunk<
       const response = await http.put("/chatbot/update-bot", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("chatbot updated successfully!", 2000, "id")
+        toasterSuccess("chatbot updated successfully!", 2000, "id");
         // toast.success("chatbot updated successfully!");
         dispatch(getChatbots());
         dispatch(getSingleChatbot({ botId: payload?.id }));
@@ -166,7 +169,7 @@ export const updateChatbotWithoutRouter = createAsyncThunk<
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during chatbot");
@@ -191,7 +194,7 @@ export const getChatbotsFaqs = createAsyncThunk<any, { bot_id?: number }>(
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -215,7 +218,7 @@ export const deleteChatbotsFaqs = createAsyncThunk<
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         getChatbotsFaqs({ bot_id: bot_id });
-        toasterSuccess("Faq deleted successfully!", 2000, "id")
+        toasterSuccess("Faq deleted successfully!", 2000, "id");
         // toast.success("Faq deleted successfully!");
         return response.data;
       } else {
@@ -224,7 +227,7 @@ export const deleteChatbotsFaqs = createAsyncThunk<
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -243,7 +246,7 @@ export const deleteChatbotsAllFaqs = createAsyncThunk<any, { bot_id?: number }>(
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         getChatbotsFaqs({ bot_id: bot_id });
-        toasterSuccess("Deleted all faqs successfully!", 2000, "id")
+        toasterSuccess("Deleted all faqs successfully!", 2000, "id");
         // toast.success("Deleted all faqs successfully!");
         return response.data;
       } else {
@@ -251,7 +254,7 @@ export const deleteChatbotsAllFaqs = createAsyncThunk<any, { bot_id?: number }>(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         // toast.error(error?.response?.data?.detail)
         return rejectWithValue(error.response.data.message);
       }
@@ -273,7 +276,7 @@ export const createChatbotFaqs = createAsyncThunk<
       const response = await http.post("/chatbot/create-bot-faqs", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("chatbot faqs created successfully!", 2000, "id")
+        toasterSuccess("chatbot faqs created successfully!", 2000, "id");
         // toast.success("chatbot faqs created successfully!");
         dispatch(getChatbotsFaqs({ bot_id: payload?.bot_id }));
         return response.data;
@@ -283,7 +286,7 @@ export const createChatbotFaqs = createAsyncThunk<
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during chatbot");
@@ -305,7 +308,7 @@ export const uploadDocument = createAsyncThunk<any, { payload: FormData }>(
       });
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("Document uploaded successfully!", 2000, "id")
+        toasterSuccess("Document uploaded successfully!", 2000, "id");
         // toast.success("Document uploaded successfully!");
         dispatch(getChatbots());
         return response.data;
@@ -315,7 +318,7 @@ export const uploadDocument = createAsyncThunk<any, { payload: FormData }>(
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during chatbot");
@@ -342,7 +345,7 @@ export const getSingleChatbot = createAsyncThunk<any, { botId: number }>(
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during chatbot");
@@ -367,7 +370,7 @@ export const getChatbotsMessages = createAsyncThunk<any, { chat_id?: number }>(
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -393,7 +396,7 @@ export const createChatsId = createAsyncThunk<any, { bot_id?: number }>(
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during creating chatbot id");
@@ -419,7 +422,7 @@ export const createChatsIdToken = createAsyncThunk<any, { token?: string }>(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
@@ -450,7 +453,7 @@ export const deleteChatsMessagesToken = createAsyncThunk<
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
@@ -475,7 +478,7 @@ export const deleteUserChatsMessages = createAsyncThunk<
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         dispatch(getChatbotsMessages({ chat_id: chat_id }));
-        toasterSuccess("Chat messages deleted successfully!", 2000, "id")
+        toasterSuccess("Chat messages deleted successfully!", 2000, "id");
         // toast.success("Chat messages deleted successfully!");
         return response.data;
       } else {
@@ -484,10 +487,36 @@ export const deleteUserChatsMessages = createAsyncThunk<
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during creating chatbot id");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+export const archiveUserChatsMessages = createAsyncThunk<any>(
+  "chat/deleteUserChatsMessages",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.put(`/chatbot/chats/archive`);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toasterSuccess("Chat messages archived successfully!", 2000, "id");
+        // toast.success("Chat messages deleted successfully!");
+        return response.data;
+      } else {
+        return rejectWithValue("failed to archive chat messages!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        // toast.error(error?.response?.data?.detail);
+        toasterError(error?.response?.data?.detail, 2000, "id");
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during archiving chats");
     } finally {
       dispatch(stopLoadingActivity());
     }
@@ -521,7 +550,7 @@ export const conversationMessage = createAsyncThunk<
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during chatbot");
@@ -559,7 +588,7 @@ export const getChatbotsUserHistory = createAsyncThunk<
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -582,7 +611,7 @@ export const deleteChats = createAsyncThunk<
       });
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("Chats deleted Successfully!", 2000, "id")
+        toasterSuccess("Chats deleted Successfully!", 2000, "id");
         // toast.success("Chats deleted Successfully!");
         dispatch(getChatbotsUserHistory({ bot_id: bot_id }));
         return response.data;
@@ -592,7 +621,7 @@ export const deleteChats = createAsyncThunk<
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during delete chats");
@@ -602,10 +631,7 @@ export const deleteChats = createAsyncThunk<
   }
 );
 
-
-export const deleteAllBotsChats = createAsyncThunk<
-  any
->(
+export const deleteAllBotsChats = createAsyncThunk<any>(
   "chat/deleteChats",
   async (_, { dispatch, rejectWithValue }) => {
     try {
@@ -613,7 +639,7 @@ export const deleteAllBotsChats = createAsyncThunk<
       const response = await http.delete(`/chatbot/chats/delete-all`);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("Chats deleted Successfully!", 2000, "id")
+        toasterSuccess("Chats deleted Successfully!", 2000, "id");
         return response.data;
       } else {
         return rejectWithValue("failed to delete chats!");
@@ -621,7 +647,7 @@ export const deleteAllBotsChats = createAsyncThunk<
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during delete chats");
@@ -667,7 +693,7 @@ export const getChatbotsDocLinks = createAsyncThunk<
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
@@ -705,7 +731,7 @@ export const deleteDocLinks = createAsyncThunk<
       );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("Chats deleted Successfully!", 2000, "id")
+        toasterSuccess("Chats deleted Successfully!", 2000, "id");
         // toast.success("Chats deleted Successfully!");
         dispatch(
           getChatbotsDocLinks({
@@ -724,7 +750,7 @@ export const deleteDocLinks = createAsyncThunk<
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during delete chats");
@@ -752,7 +778,7 @@ export const deleteChatbot = createAsyncThunk<
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
@@ -771,7 +797,7 @@ export const createChatbotLeads = createAsyncThunk<any, { payload: any }>(
       const response = await http.post("/chatbot/create-bot-leads", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("chatbot lead created successfully!", 2000, "id")
+        toasterSuccess("chatbot lead created successfully!", 2000, "id");
         // toast.success("chatbot lead created successfully!");
         return response.data;
       } else {
@@ -779,7 +805,7 @@ export const createChatbotLeads = createAsyncThunk<any, { payload: any }>(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
@@ -827,7 +853,7 @@ export const getChatbotsLeads = createAsyncThunk<
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -864,7 +890,7 @@ export const deleteChatbotLeads = createAsyncThunk<
       );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("chatbot lead deleted successfully!", 2000, "id")
+        toasterSuccess("chatbot lead deleted successfully!", 2000, "id");
         // toast.success("Chatbot leads deleted Successfully!");
         dispatch(
           getChatbotsLeads({
@@ -883,7 +909,7 @@ export const deleteChatbotLeads = createAsyncThunk<
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during delete chats");
@@ -911,7 +937,7 @@ export const getChatbotsLeadMessages = createAsyncThunk<
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         // toast.error(error?.response?.data?.detail);
-        toasterError(error?.response?.data?.detail, 2000, "id")
+        toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -953,19 +979,22 @@ export const registerWhatsappPhoneNumber = createAsyncThunk(
     }
   }
 );
-export const transcribeAudio = createAsyncThunk(
-  "chat/transcribeAudio",
-  async (file: File, thunkAPI) => {
+
+export const fetchArchivedUserMessages = createAsyncThunk(
+  "messages/fetchArchivedUserMessages",
+  async (
+    { page, limit, search }: { page: number; limit: number; search?: string },
+    thunkAPI
+  ) => {
     try {
-      const formData = new FormData()
-      formData.append("file", file)
-      const response = await http.post("/speech/speech_to_text", formData, {
+      const response = await http.get("/chatbot/chats-history/archived", {
+        params: { page, limit, search },
         withCredentials: true,
       });
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
-        error?.response?.data?.detail || "Failed to transcribe speech"
+        error?.response?.data?.detail || "Failed to fetch archived messages"
       );
     }
   }
@@ -985,6 +1014,7 @@ const initialState = {
   ChatbotDocLinksData: {} as ChatbotDocLinks,
   chatbotLeadsData: {} as ChatbotLeads,
   chatbotLeadMessages: [] as ChatbotMessages[],
+  archivedUserMessages: {} as ArchivedHistoryMessages,
   tokens: [] as ChatMessageTokens,
 };
 
@@ -1127,6 +1157,18 @@ const chatSlice = createSlice({
         state.tokens = action.payload;
       })
       .addCase(fetchChatMessageTokens.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ?? "Unknown error";
+      })
+      .addCase(fetchArchivedUserMessages.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchArchivedUserMessages.fulfilled, (state, action) => {
+        state.loading = false;
+        state.archivedUserMessages = action.payload;
+      })
+      .addCase(fetchArchivedUserMessages.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload ?? "Unknown error";
       });

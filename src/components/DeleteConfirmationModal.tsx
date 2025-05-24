@@ -5,6 +5,7 @@ interface ConfirmDeleteModalProps {
   onClose: () => void;
   onConfirm: () => void;
   title?: string;
+  actionTitle?: string;
   message?: string;
 }
 
@@ -13,6 +14,7 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
   onClose,
   onConfirm,
   title,
+  actionTitle,
   message,
 }) => {
   if (!isOpen) return null;
@@ -36,7 +38,8 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
             }}
             className="cursor-pointer px-4 py-2 text-sm font-medium rounded-md bg-red-600 text-white hover:bg-red-700 transition"
           >
-           {title==="Log out Account?" ?"Log out Account":"Delete"} 
+            {actionTitle ??
+              (title === "Log out Account?" ? "Log out Account" : "Delete")}
           </button>
         </div>
       </div>

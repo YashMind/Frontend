@@ -73,6 +73,21 @@ export interface ChatbotHistoryMessages {
   chatBot: ChatbotsData;
 }
 
+export interface ArchivedHistoryMessages {
+  data: {
+    totalCount: number;
+    totalPages: number;
+    currentPage: number;
+    chatBotId: ChatbotsData;
+    chatBotName: string;
+    sessions: {
+      [key: number]: ChatbotMessages[];
+    };
+  }[];
+  globalTotal: number;
+  globalPages: number;
+}
+
 export interface ChatbotFaqs {
   bot_id?: number;
   questions: {
