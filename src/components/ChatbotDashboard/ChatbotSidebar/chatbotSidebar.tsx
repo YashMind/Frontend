@@ -154,7 +154,7 @@ const ChatbotSidebar = ({
   };
 
   return (
-    <div className="w-[260px] bg-black text-white p-5 flex flex-col gap-8 rounded-tl-[58px] rounded-bl-[58px]">
+    <div className="w-[260px] bg-black text-white p-5 flex flex-col gap-8 ">
       {sidebarSections.map(({ title, links }, idx) => (
         <div key={idx} className="flex flex-col gap-4">
           {title && (

@@ -56,7 +56,7 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({
             finalTranscript += result[0].transcript + " ";
           }
         }
-
+        finalTranscript = finalTranscript.trim();
         // Use ref instead of state directly to get latest value
         setTranscript(transcriptRef.current + " " + finalTranscript);
       };
