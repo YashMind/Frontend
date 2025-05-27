@@ -1,17 +1,20 @@
 "use client";
 import EmailComposeModal from "@/components/EmailComposeModal";
+import Link from "next/link";
 import React, { useState } from "react";
 
 const SupportCard = ({
   title,
   description,
   buttonText,
+  href,
   onClick,
 }: {
   title: string;
   description: string;
   buttonText: string;
-  onClick: () => void;
+  href?: string;
+  onClick?: () => void;
 }) => (
   <div className="bg-[#0B1739] py-[23px] px-[11px] rounded-[5px] flex justify-between items-start text-white mb-[27px]">
     <div>
@@ -20,12 +23,19 @@ const SupportCard = ({
         {description}
       </p>
     </div>
-    <button
+    {!!onClick && <button
       onClick={onClick}
       className="cursor-pointer bg-[#18B91F] hover:bg-green-600 text-white text-xs font-medium px-3 py-1 rounded-md mt-1 md:mt-0"
     >
       {buttonText}
-    </button>
+    </button>}
+
+    {href && <Link
+      href={href}
+      className="cursor-pointer bg-[#18B91F] hover:bg-green-600 text-white text-xs font-medium px-3 py-1 rounded-md mt-1 md:mt-0"
+    >
+      {buttonText}
+    </Link>}
   </div>
 );
 
@@ -57,7 +67,7 @@ const SupportCommunications = () => {
                 title="View & Respond to Support Tickets"
                 description="Manage all customer support requests, respond to queries, and track resolution status."
                 buttonText="Open Ticket Center"
-                onClick={() => handleOpenModal("Ticket Center", "ticket")}
+                href="/support/tickets"
               />
 
               <SupportCard

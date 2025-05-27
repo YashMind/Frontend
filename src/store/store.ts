@@ -6,6 +6,7 @@ import promptsSlice from "@/store/slices/chats/tuningSlice";
 import appearanceSlice from "@/store/slices/chats/appearanceSettings";
 import adminSlice from "@/store/slices/admin/adminSlice";
 import invitationSlice from "@/store/slices/invitations/invitationSlice";
+import ticketSlice from "@/store/slices/supportTicket/slice";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     appearance: appearanceSlice,
     admin: adminSlice,
     invitations: invitationSlice,
+    tickets: ticketSlice,
   },
 });
 
