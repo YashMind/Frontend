@@ -69,7 +69,7 @@ const ChatbotMain = ({
               {/* Owner Section */}
               <div className="flex gap-6">
                 <div
-                  className={`bg-[#2a2561]   rounded-[58px] w-full lg:w-[90%]  flex ${botId ? "" : "gap-[25px]"
+                  className={`bg-[#2a2561] rounded-4xl w-full lg:w-[90%] flex ${botId ? "" : "gap-[25px]"
                     }`}
                 >
                   {botPage !== "main" ? (

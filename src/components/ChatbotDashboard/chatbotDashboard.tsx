@@ -39,16 +39,16 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
 
   return (
     <div className="flex gap-6 ">
-      <div className="bg-[#2a2561]  py-4 rounded-[58px] w-[90%] px-10">
-        <h2 className="text-2xl font-bold mb-4">Owner</h2>
-        <div className="flex flex-wrap gap-4 w-[786px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px] ">
+      <div className="bg-[#2a2561]  py-2 rounded-[58px] w-[90%] px-10">
+        <h2 className="text-2xl font-semibold mb-2">Owner</h2>
+        <div className="flex flex-wrap gap-4 bg-[#FFFFFF80] p-4 rounded-3xl m-4">
           {chatbots &&
             chatbots?.map((item, index: number) => {
               return (
                 <Link
                   key={index}
                   href={`/chatbot-dashboard/update/${item?.id}`}
-                  className="bg-white rounded-2xl p-4 w-full sm:w-[48%] "
+                  className="bg-white rounded-2xl p-4 w-full sm:w-[45%] "
                 >
                   <div className="flex justify-between mb-2">
                     <div className="flex items-center space-x-2">
@@ -85,10 +85,10 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
             })}
         </div>
 
-        <h2 className="text-2xl font-bold mt-[36px] mb-4">My Bot List</h2>
-        <div className="flex gap-4 w-full">
+        <h2 className="text-2xl font-semibold mt-4 mb-4">My Bot List</h2>
+        <div className="flex gap-4 w-full m-4">
           {/* first div */}
-          <div className="bg-[#fff] p-4 rounded-2xl flex-1 min-w-[300px]">
+          <div className="bg-[#fff] p-4 rounded-2xl flex-1 ">
             <div className="flex items-center justify-between">
               <p className="mb-2 text-black font-semibold text-lg">
                 All Bots token consumption
