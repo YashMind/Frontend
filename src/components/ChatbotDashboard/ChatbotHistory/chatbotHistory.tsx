@@ -132,8 +132,8 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
             <div className="flex gap-4">
               <button
                 className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${isDisabled
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-purple-600 hover:bg-purple-700"
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-purple-600 hover:bg-purple-700"
                   }`}
                 disabled={isDisabled}
                 onClick={() => handleExportDownloadPdf()}
@@ -142,8 +142,8 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
               </button>
               <button
                 className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${isDisabled
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-red-500 hover:bg-red-600"
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-red-500 hover:bg-red-600"
                   }`}
                 disabled={isDisabled}
                 onClick={() => handleDeleteChat()}
@@ -327,8 +327,8 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           {chatUserHistory?.totalPages > 1 ? (
             <button
               className={`w-6 h-6 ${chatUserHistory?.totalPages === page
-                  ? "bg-[#624DE3]"
-                  : "bg-gray-200"
+                ? "bg-[#624DE3]"
+                : "bg-gray-200"
                 } text-black rounded-[7px] text-sm`}
             >
               {chatUserHistory?.totalPages}
@@ -344,6 +344,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
         </div>
       </div>
       <ViewChatModal
+        botId={botId}
         show={modalShow}
         onHide={() => setModalShow(false)}
         currentMesssages={currentMessages}

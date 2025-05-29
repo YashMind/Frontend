@@ -24,27 +24,46 @@ const ChatbotTexts = ({ botId }: { botId?: number }) => {
   const onSubmit = (data: TrainingText) => {
     data.id = botId;
     dispatch(updateChatbotWithoutRouter({ payload: data }));
-    reset()
+    reset();
   };
 
   useEffect(() => {
-    setValue("text_content", chatbotData?.text_content);
+    setValue("text_content", chatbotData?.text_content || `Company Name: [Enter company name]
+Brand Name: [Enter brand name]
+Support Page Link: [Enter URL]
+Support Email: [Enter email address]
+Contact Info: [Phone number, email, etc.]
+Company Address: [Full address]
+
+Tone Guidelines: [e.g., Friendly, Professional, Casual]
+Formatting Rules: [e.g., Use bullet points, bold keywords]
+Custom Phrasing: [e.g., Call users "guests", say "Let's go!" instead of "Start"]
+Key Policies: [e.g., Return policy, terms of service]
+
+Company Genre/Industry: [e.g., Education, Health, Tech]
+Location: [City, Country]
+Website: [Enter website]
+Social Media: [Links or handles]
+Company Description: [Short summary]
+Services Offered: [List of services]`);
   }, [chatbotData?.text_content]);
 
   return (
     <div className="w-full ml-10 ">
-      <h2 className="text-2xl font-bold my-4 ">Texts</h2>
-      <p className="text-sm  font-light">
-        This is a quick and easy method to quickly train your chatbot on extra
-        data. Simple add any text below
+      <h2 className="text-2xl font-bold my-4 ">
+        Bot Usage Guidelines and Brand Instructions
+      </h2>
+      <p className="text-sm font-light">
+        Includes owner details, tone and phrasing rules, formatting styles, and
+        mandatory workflow or policy instructions.
       </p>
-      <div className="bg-[#2E265C]flex items-center justify-center mt-10">
+      <div className="bg-[#2E265C]flex items-center justify-center mt-4">
         <div className="bg-white rounded-2xl w-full max-w-5xl p-4">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col h-[300px]">
+            <div className="flex flex-col max-h-[600px] min-h-[400px]">
               <textarea
                 placeholder="Enter your content training here"
-                className="flex-grow bg-[#DADADA] rounded-xl p-4 placeholder-[#727272] text-black resize-none outline-none text-sm font-bold"
+                className="flex-grow bg-[#DADADA] rounded-xl p-4 placeholder-[#727272] text-black resize-none outline-none text-sm font-bold h-full"
                 {...register("text_content")}
               />
               {errors.text_content && (
@@ -57,7 +76,7 @@ const ChatbotTexts = ({ botId }: { botId?: number }) => {
                   type="submit"
                   className="cursor-pointer p-2 bg-[#340555] text-white text-sm rounded-md"
                 >
-                  Send Text
+                  Save
                 </button>
               </div>
             </div>

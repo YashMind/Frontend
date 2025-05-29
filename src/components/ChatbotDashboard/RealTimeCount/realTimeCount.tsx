@@ -15,7 +15,7 @@ const RealTimeCount = () => {
     <div className={`mt-28 flex gap-2 p-2 w-full justify-center items-stretch transition flex-nowrap duration-150`}>
       <StatCard
         icon={<FaComments size={20} color="#FFB85C" />}
-        title="Chat Bot Stats"
+        title="Chat Bot Usage"
         stats={[
           { label: "Consumed", value: 200 },
           { label: "Used Credits", value: 8 },
@@ -26,7 +26,7 @@ const RealTimeCount = () => {
       />
       <StatCard
         icon={<FaMicrophoneAlt size={20} color="#6AC0E7" />}
-        title="Voice Agent Stats"
+        title="Voice Agent Usage"
         stats={[
           { label: "Consumed", value: 200 },
           { label: "Used Credits", value: 8 },
@@ -37,7 +37,7 @@ const RealTimeCount = () => {
       />
       <StatCard
         icon={<FaRobot size={20} color="#417ED8" />}
-        title="Chat LLM Stats"
+        title="Chat LLM Usage"
         stats={[
           { label: "Consumed", value: 200 },
           { label: "Used Credits", value: 8 },
@@ -48,7 +48,7 @@ const RealTimeCount = () => {
       />
       <StatCard
         icon={<FaWallet size={20} color="#417ED8" />}
-        title="Wallet Status"
+        title="Wallet Usage"
         stats={[
           { label: "Wallet Credits", value: 500 },
           { label: "Used Credits", value: 200 },

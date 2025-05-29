@@ -17,6 +17,7 @@ import { VscClearAll } from "react-icons/vsc";
 import { ChatbotsData, chatsIdData, TextMessage } from "@/types/chatTypes";
 import { IoMdSend } from "react-icons/io";
 import MicrophoneRecorder from "./MicrophoneRecorder";
+import ChatMessages from "@/components/utils/MessageRenderer";
 
 const schema = yup.object().shape({
   message: yup.string().required("Message is required"),
@@ -124,39 +125,47 @@ const ChatbotSection = ({
                     }`}
                 >
                   {item.sender === "bot" && (
-                    <Image
-                      src={chatbotImage}
-                      alt="Bot"
-                      className="w-8 h-8 rounded-full mr-2"
-                      width={20}
-                      height={20}
-                    />
-                  )}
-                  <div
-                    className={`p-3 rounded-xl max-w-xs text-sm `}
-                    style={{
-                      backgroundColor:
-                        item.sender === "user"
-                          ? chatbotSetting?.user_message_bg ?? "blue"
-                          : chatbotSetting?.message_bg ?? "lightslategray",
-
-                      color:
-                        item.sender === "user"
-                          ? chatbotSetting?.user_message_color ?? "black"
-                          : chatbotSetting?.message_color ?? "black",
-                    }}
-                  >
-                    {item.message}
-                  </div>
+                    <>
+                      <Image
+                        src={chatbotImage}
+                        alt="Bot"
+                        className="w-8 h-8 rounded-full mr-2"
+                        width={20}
+                        height={20}
+                      />
+                      <ChatMessages message={item.message} chatbotSetting={chatbotSetting} handleGeneratedButtonClick={(query) => setValue('message', query)} />
+                      {/* <div
+                        className={`p-3 rounded-xl max-w-xs text-sm `}
+                        style={{
+                          backgroundColor: chatbotSetting?.message_bg ?? "lightslategray",
+                          color: chatbotSetting?.message_color ?? "black",
+                        }}
+                      >
+                        {item.message}
+                      </div> */}
+                    </>)}
 
                   {item.sender === "user" && (
-                    <Image
-                      src="/images/userimg.png"
-                      alt="User"
-                      className="w-8 h-8 rounded-full ml-2"
-                      width={20}
-                      height={20}
-                    />
+                    <>
+                      <div
+                        className={`p-3 rounded-xl max-w-xs text-sm `}
+                        style={{
+                          backgroundColor: chatbotSetting?.user_message_bg ?? "blue",
+                          color: chatbotSetting?.user_message_color ?? "black"
+                        }}
+                      >
+                        {item.message}
+                      </div>
+
+
+                      <Image
+                        src="/images/userimg.png"
+                        alt="User"
+                        className="w-8 h-8 rounded-full ml-2"
+                        width={20}
+                        height={20}
+                      />
+                    </>
                   )}
                 </div>
                 {item.sender === "bot" &&
