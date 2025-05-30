@@ -6,11 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import ChatbotSection from "./chatbotSection/chatbotSection";
 import ChatbotDetails from "./chatbotDetails/chatbotDetails";
-import { createChatsId, getSingleChatbot } from "@/store/slices/chats/chatSlice";
+import { createChatsId } from "@/store/slices/chats/chatSlice";
 import { ChatbotsData } from "@/types/chatTypes";
 const ChatbotOverview = ({
+  botPage,
   botId,
 }: {
+  botPage?: string;
   botId?: number;
 }) => {
   const chatbotData: ChatbotsData = useSelector(
@@ -18,25 +20,30 @@ const ChatbotOverview = ({
   );
   const dispatch = useDispatch<AppDispatch>();
   const hasRun = useRef(false);
-
+  
   useEffect(() => {
     if (hasRun.current) return;
     hasRun.current = true;
-    if (botId !== undefined) {
-      dispatch(getSingleChatbot({ botId: botId }))
+    if (botPage === "overview" && botId !== undefined) {
       dispatch(createChatsId({ bot_id: botId }));
     }
-  }, [dispatch, botId]);
+  }, [dispatch, botPage, botId]);
 
   return (
-    <div className="w-full m-4">
-      <h2 className="text-2xl my-4 font-bold">Owner</h2>
-      <div className="flex gap-4 w-full">
-        <ChatbotDetails botId={botId} />
-        {/* right chatbot */}
-        <ChatbotSection botId={botId} chatbotData={chatbotData} />
-      </div>
-
+    <div className="w-full m-10">
+      {botPage === "overview" ? (
+        <h2 className="ml-24 text-2xl font-bold my-4">Owner</h2>
+      ) : null}
+      {botPage === "overview" ? (
+        <div className="flex gap-10 w-full">
+          <ChatbotDetails botId={botId} />
+          {/* right chatbot */}
+          <ChatbotSection botId={botId} chatbotData={chatbotData} />
+        </div>
+      ) : null}
+      {botPage === "update" && botId ? (
+        <AddBotData botId={botId} handleBack={() => null} />
+      ) : null}
     </div>
   );
 };

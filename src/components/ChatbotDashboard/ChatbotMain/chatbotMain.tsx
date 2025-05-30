@@ -20,7 +20,6 @@ import ChatbotLinksDocs from "@/components/ChatbotDashboard/ChatbotLinksDocs/cha
 import ChatbotAppearence from "@/components/ChatbotDashboard/ChatbotAppearence/chatbotAppearence";
 import ChatbotIntegration from "@/components/ChatbotDashboard/ChatbotIntegration/chatbotIntegration";
 import { fetchChatMessageTokens, getChatbots, getSingleChatbot } from "@/store/slices/chats/chatSlice";
-import AddBotData from "./AddData/addData";
 
 const ChatbotMain = ({
   botPage,
@@ -70,7 +69,7 @@ const ChatbotMain = ({
               {/* Owner Section */}
               <div className="flex gap-6">
                 <div
-                  className={`bg-[#2a2561] rounded-4xl overflow-hidden w-full lg:w-[90%] flex ${botId ? "" : "gap-4"
+                  className={`bg-[#2a2561] rounded-4xl w-full lg:w-[90%] flex ${botId ? "" : "gap-[25px]"
                     }`}
                 >
                   {botPage !== "main" ? (
@@ -79,11 +78,8 @@ const ChatbotMain = ({
                   {botPage === "main" ? (
                     <ChatbotDashboard showModal={showModal} />
                   ) : null}
-                  {botPage === "overview" ? (
-                    <ChatbotOverview botId={botId} />
-                  ) : null}
-                  {botPage === "update" && botId ? (
-                    <AddBotData botId={botId} handleBack={() => null} />
+                  {botPage === "update" || botPage === "overview" ? (
+                    <ChatbotOverview botPage={botPage} botId={botId} />
                   ) : null}
                   {botPage === "chat-history" ? (
                     <ChatbotHistory botId={botId} />

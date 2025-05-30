@@ -11,6 +11,7 @@ const ADMIN_ROLES = new Set([
 ]);
 const PUBLIC_ROUTES = new Set([
   "/",
+  "/payment",
   "/auth/signin",
   "/auth/signup",
   "/chatbot",
@@ -26,10 +27,11 @@ const PUBLIC_ROUTES = new Set([
   "/details/voice-agent",
   "/details/contact-us",
   "/details/refund-and-cancellation-policy",
+  "/types/payment",
 ]);
 
 const KNOWN_ROUTES = new RegExp(
-  "^(/profile|/settings|/invite-user|/accept-invite|/voice-agent|/chatbot-dashboard|" +
+  "^(/profile|/settings|/invite-user|/accept-invite|/voice-agent|/chatbot-dashboard|/types/payment" +
   "/chatbot-products|/admin|/support)(/.*)?$"
 );
 

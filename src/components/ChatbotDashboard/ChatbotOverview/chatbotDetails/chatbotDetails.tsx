@@ -31,7 +31,7 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
   }, [dispatch]);
 
   return (
-    <div className="w-full">
+    <div className="w-full ml-20">
       <div className="flex flex-wrap gap-4 w-[650px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px] ">
         <div className="bg-white rounded-2xl p-4 w-full sm:w-[48%] ">
           <div className="flex justify-between mb-2">

@@ -157,21 +157,19 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
         <div className="bg-white rounded-xl p-6 mb-6">
           <h2 className="text-lg font-bold text-black mb-1">AI Temperature</h2>
           <p className="text-sm text-gray-700 mb-4">
-            Change the slider to increase or reduce temperature of the bot <br />
+            Change the slider to increase or reduce creativity of the bot <br />
+            (also known as ‘temperature’ parameter)
           </p>
           {/* Progress bar */}
           <div className="w-full rounded-full">
-            <div className="relative  h-2 rounded-full">
-              {/* <div className="absolute top-1 left-0 w-full h-2 bg-gray-200 rounded-full"></div> */}
-              {/* <div className="h-4 w-4 rounded-full bg-blue-400 absolute top-0 z-20 peer" style={{ left: creativity - 1 + "%" }}></div> */}
-
+            <div className="relative">
               <input
                 type="range"
                 id="percentage-slider"
                 min="0"
                 max="100"
                 value={creativity}
-                className="w-full h-2 bg-gray-400/50 rounded-lg appearance-none cursor-pointer z-20"
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 onChange={(e) => {
                   setCreativity(parseInt(e.target.value));
                 }}
@@ -179,7 +177,6 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
                   handleCreativityChange(e);
                 }}
               />
-              <div className="h-2 bg-blue-500 top-2 absolute rounded-l-full z-10" style={{ width: creativity + "%" }}></div>
 
               <div className="flex mt-2 px-1">
                 <span className="text-sm text-gray-500 absolute top-2.5 left-0">{creativity}%</span>
@@ -286,7 +283,7 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
