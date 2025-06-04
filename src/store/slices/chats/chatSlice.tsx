@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import {
   ArchivedHistoryMessages,
-  BotTokens,
   ChatbotDocLinks,
   ChatbotFaqs,
   ChatbotFaqsQuesAnswer,
@@ -17,6 +16,7 @@ import {
   ChatbotMessages,
   ChatbotsData,
   ChatMessageTokens,
+  ChatMessageTokensToday,
   chatsIdData,
   TextMessage,
 } from "@/types/chatTypes";
@@ -964,6 +964,27 @@ export const fetchChatMessageTokens = createAsyncThunk<
   }
 });
 
+export const fetchChatMessageTokensToday = createAsyncThunk(
+  "chatTokens/fetchToday",
+  async ({ bot_id }: { bot_id: number }, thunkAPI) => {
+    try {
+      const response = await http.get<ChatMessageTokensToday>(
+        `/chatbot/tokens/${bot_id}/today`,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.detail ||
+          error.message ||
+          "Failed to fetch today's tokens"
+      );
+    }
+  }
+);
+
 export const registerWhatsappPhoneNumber = createAsyncThunk(
   "integration/registerWhatsappPhoneNumber",
   async (data: { whatsapp_number: string; bot_id: number }, thunkAPI) => {
@@ -1015,7 +1036,7 @@ const initialState = {
   chatbotLeadsData: {} as ChatbotLeads,
   chatbotLeadMessages: [] as ChatbotMessages[],
   archivedUserMessages: {} as ArchivedHistoryMessages,
-  tokens: [] as ChatMessageTokens,
+  tokens: {} as ChatMessageTokens,
 };
 
 const chatSlice = createSlice({

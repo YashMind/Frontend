@@ -220,15 +220,49 @@ export interface ChatbotLeads {
   total_pages: number;
 }
 
-export interface BotTokens {
-  bot_id?: string;
-  tokens?: number;
-  token_today?: number;
-  token_monthly?: number;
-  messages?: number;
+interface TokenUsage {
+  id: number;
+  bot_id: number;
+  user_id: number;
+  user_credit_id: number;
+  token_limit: number;
+  combined_token_consumption: number;
+  open_ai_request_token: number;
+  open_ai_response_token: number;
+  user_request_token: number;
+  user_response_token: number;
+  whatsapp_request_tokens: number;
+  whatsapp_response_tokens: number;
+  slack_request_tokens: number;
+  slack_response_tokens: number;
+  wordpress_request_tokens: number;
+  wordpress_response_tokens: number;
+  zapier_request_tokens: number;
+  zapier_response_tokens: number;
+}
+
+export interface UserCredits {
+  id: number;
+  user_id: number;
+  trans_id: number;
+  plan_id: number;
+  start_date: string; // ISO date string
+  expiry_date: string; // ISO date string
+  credits_purchased: number;
+  credits_consumed: number;
+  credit_balance: number;
+  token_per_unit: number;
+  chatbots_allowed: number;
 }
 
 export interface ChatMessageTokens {
-  total_tokens?: number;
-  bots?: BotTokens[];
+  credits: UserCredits;
+  token_usage: TokenUsage[];
+  total_token_consumption: number;
+}
+
+export interface ChatMessageTokensToday {
+  request_tokens: number;
+  response_tokens: number;
+  users: number;
 }

@@ -21,7 +21,6 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
   const tokensData = useSelector((state: RootState) => state.chat.tokens);
   const chatbotError = useSelector((state: RootState) => state.chat.error);
   useEffect(() => {
-    dispatch(getChatbots());
     dispatch(fetchChatMessageTokens());
   }, [dispatch]);
 
@@ -88,24 +87,34 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
         <h2 className="text-2xl font-semibold mt-4 mb-4">My Bot List</h2>
         <div className="flex gap-4 w-full m-4">
           {/* first div */}
-          <div className="bg-[#fff] p-4 rounded-2xl flex-1 ">
-            <div className="flex items-center justify-between">
-              <p className="mb-2 text-black font-semibold text-lg">
-                All Bots token consumption
-              </p>
-              <p className="text-right font-semibold mt-1 text-[#501794] text-lg">
-                {tokensData.total_tokens || 0}/1000
-              </p>
-            </div>
-            <div className="w-full bg-gray-600 h-2 rounded-full">
-              <div
-                className="bg-[#501794] h-2 rounded-full "
-                style={{
-                  width: ((tokensData.total_tokens || 0) / 1000) * 100 + "%",
-                }}
-              />
-            </div>
-          </div>
+          {tokensData &&
+            tokensData.token_usage &&
+            tokensData.token_usage.length > 0 && (
+              <div className="bg-[#fff] p-4 rounded-2xl flex-1 ">
+                <div className="flex items-center justify-between">
+                  <p className="mb-2 text-black font-semibold text-lg">
+                    All Bots token consumption
+                  </p>
+                  <p className="text-right font-semibold mt-1 text-[#501794] text-lg">
+                    {tokensData.token_usage[0].combined_token_consumption || 0}/
+                    {tokensData.token_usage[0].token_limit || 1}
+                  </p>
+                </div>
+                <div className="w-full bg-gray-600 h-2 rounded-full">
+                  <div
+                    className="bg-[#501794] h-2 rounded-full "
+                    style={{
+                      width:
+                        ((tokensData.token_usage[0]
+                          .combined_token_consumption || 0) /
+                          tokensData.token_usage[0].token_limit || 1) *
+                          100 +
+                        "%",
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           {/* second div */}
           <div
             className="flex items-center justify-center border border-dashed border-gray-400 rounded-2xl flex-1  min-w-[300px] cursor-pointer"
