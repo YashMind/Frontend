@@ -32,7 +32,7 @@ const PUBLIC_ROUTES = new Set([
 
 const KNOWN_ROUTES = new RegExp(
   "^(/profile|/settings|/invite-user|/accept-invite|/voice-agent|/chatbot-dashboard|/types/payment" +
-  "/chatbot-products|/admin|/support)(/.*)?$"
+  "/chatbot-products|/admin|/support|/gateways)(/.*)?$"
 );
 
 const DYNAMIC_PUBLIC_ROUTE = /^\/embed\/[^/]+$/;
@@ -129,11 +129,12 @@ export default async function middleware(request: NextRequest) {
 
   // Check public routes first
   if (DYNAMIC_PUBLIC_ROUTE.test(pathname)) return NextResponse.next();
-  if (PUBLIC_ROUTES.has(pathname)) {
-    return accessToken
-      ? NextResponse.redirect(new URL("/chatbot-dashboard/main", request.url))
-      : NextResponse.next();
-  }
+  if (PUBLIC_ROUTES.has(pathname)) return NextResponse.next();
+  //   {
+  //   return accessToken
+  //     ? NextResponse.redirect(new URL("/chatbot-dashboard/main", request.url))
+  //     : NextResponse.next();
+  // }
 
   // Redirect unauthenticated users
   if (!accessToken) {

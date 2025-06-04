@@ -1,11 +1,13 @@
 "use client"
 import { getAllSubscriptionPlans } from "@/store/slices/admin/adminSlice";
 import { AppDispatch, RootState } from "@/store/store";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const PriceSection = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter()
 
   const { subscriptionPlansData } = useSelector(
     (state: RootState) => state.admin
@@ -30,7 +32,7 @@ const PriceSection = () => {
 
         <div className="pt-12">
           <div className="mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {subscriptionPlansData?.data?.map((item:any, index) => {
+            {subscriptionPlansData?.data?.map((item: any, index) => {
               const isPro = item.name === "Pro";
               const isEnterprise = item.name === "Enterprise";
               const isBasic = !isPro && !isEnterprise;
@@ -70,7 +72,7 @@ const PriceSection = () => {
 
                       {item.is_active ? (
                         (isPro || isEnterprise) && (
-                          <button className="w-full rounded-full bg-gradient-to-r from-[#501794] to-[#40659F] py-2 mb-6 text-white font-medium text-[17px]">
+                          <button onClick={() => router.push('/gateways/' + item.id)} className="w-full rounded-full bg-gradient-to-r from-[#501794] to-[#40659F] py-2 mb-6 text-white font-medium text-[17px]">
                             Choose This Plan
                           </button>
                         )
@@ -80,7 +82,7 @@ const PriceSection = () => {
 
                       <ul className="space-y-2 text-sm">
                         {item.features &&
-                          item.features.split(",").map((feature:any, idx:any) => (
+                          item.features.split(",").map((feature: any, idx: any) => (
                             <li className="flex gap-2" key={idx}>
                               <img src="/images/star.png" /> {feature.trim()}
                             </li>
