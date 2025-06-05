@@ -99,9 +99,11 @@ const SubscriptionPlans = () => {
                       Plan Name
                     </th>
                     <th className="p-4 text-xs font-medium">Pricing</th>
-                    <th className="p-4 text-xs font-medium">Token Limits</th>
+                    <th className="p-4 text-xs font-medium">Token Per unit</th>
+                    <th className="p-4 text-xs font-medium">Chatbots</th>
+                    <th className="p-4 text-xs font-medium">Duration</th>
                     <th className="p-4 text-xs font-medium">Features</th>
-                    <th className="p-4 text-xs font-medium">Users Active</th>
+                    {/* <th className="p-4 text-xs font-medium">Users Active</th> */}
                     <th className="p-4 text-xs font-medium">Status</th>
                     <th className="p-4 text-xs font-medium">Actions</th>
                   </tr>
@@ -121,14 +123,19 @@ const SubscriptionPlans = () => {
                             $ {item?.pricing}
                           </td>
                           <td className="p-4 text-[#AEB9E1] text-xs">
-                            {item?.token_limits}
+                            {item?.token_per_unit}
+                          </td><td className="p-4 text-[#AEB9E1] text-xs">
+                            {item?.chatbots_allowed}
+                          </td><td className="p-4 text-[#AEB9E1] text-xs">
+                            {item?.duration_days}
                           </td>
+
                           <td className="p-4 text-[#AEB9E1] text-xs">
                             {item?.features}
                           </td>
-                          <td className="p-4 text-[#AEB9E1] text-xs">
+                          {/* <td className="p-4 text-[#AEB9E1] text-xs">
                             {item?.users_active}
-                          </td>
+                          </td> */}
                           <td className="p-4 text-[#AEB9E1] text-xs">
                             {item?.is_active ? "Active" : "Inactive"}
                           </td>

@@ -1,5 +1,5 @@
 "use client";
-import {AddUpdatePaymentGateway,} from "@/store/slices/admin/adminSlice";
+import { AddUpdatePaymentGateway, } from "@/store/slices/admin/adminSlice";
 import { AppDispatch } from "@/store/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
@@ -83,8 +83,8 @@ const AddEditPaymentWayModal = ({
               <option value="" disabled>
                 Select payment
               </option>
-              <option value="Stripe">Stripe</option>
-              <option value="Razorpay">Razorpay</option>
+              <option value="Cashfree">Cashfree</option>
+              <option value="PayPal">PayPal</option>
             </select>
             {errors.payment_name && (
               <p className="text-red-500 text-sm mt-1">
@@ -103,9 +103,8 @@ const AddEditPaymentWayModal = ({
               <option value="" disabled>
                 Select status
               </option>
-              <option value="Active">Active</option>
-              <option value="Trail">Trail</option>
-              <option value="Inactive">Inactive</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
             </select>
             {errors.status && (
               <p className="text-red-500 text-sm mt-1">
@@ -114,7 +113,7 @@ const AddEditPaymentWayModal = ({
             )}
           </div>
 
-          <div>
+          {/* <div>
             <label className="block mb-1 text-sm font-medium">Api Key</label>
             <input
               placeholder="Enter api key"
@@ -127,7 +126,7 @@ const AddEditPaymentWayModal = ({
                 {errors.api_key?.message}
               </p>
             )}
-          </div>
+          </div> */}
 
           <hr className="border-gray-600 my-6" />
           <div className="flex justify-start gap-4 mt-6">

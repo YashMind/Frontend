@@ -215,9 +215,8 @@ const ProductMonitoring = () => {
             </div>
             {/*  */}
             {/* Voice Start */}
-            <div className=" bg-[#0B1739] rounded-3xl p-6 m-6 text-white mb-10">
+            {/* <div className=" bg-[#0B1739] rounded-3xl p-6 m-6 text-white mb-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Voice Agent Stats Card */}
                 <div className="bg-[#081028] rounded-2xl p-8  shadow-md">
                   <div className="flex  gap-10 items-center mb-5">
                     <div>
@@ -236,7 +235,6 @@ const ProductMonitoring = () => {
                     <p className="text-sm text-white/90">Success rate: 98%</p>
                   </div>
                 </div>
-                {/* Chat LLM Logs Card */}
                 <div className="bg-[#081028] rounded-2xl p-8  shadow-md">
                   <div className="flex gap-10 items-center mb-5">
                     <div>
@@ -258,7 +256,7 @@ const ProductMonitoring = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             <AddEditProduct
               show={modalShow}
               onHide={() => setModalShow(false)}

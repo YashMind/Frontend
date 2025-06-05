@@ -92,9 +92,9 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
               className="cursor-pointer w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
             >
               <option value="">Select Plan</option>
-              <option value="basic">Basic</option>
-              <option value="pro">Pro</option>
-              <option value="ent">Enterprise</option>
+              <option value="1">Basic</option>
+              <option value="2">Pro</option>
+              <option value="3">Enterprise</option>
             </select>
             {errors.plan && (
               <p className="text-red-500 text-sm mt-1">{errors.plan?.message}</p>

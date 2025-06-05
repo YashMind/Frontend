@@ -6,6 +6,7 @@ import {
 } from "../activity/activitySlice";
 import toast from "react-hot-toast";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
+import { AdminAllUsers, AdminLogsActivity, AdminUsersData, ClientLogsActivity, ClientUsersData, PaymentsGateway, ProductMonitoringData, RolePermissions, SubscriptionPlansData, TokenBotsData } from "@/types/adminType";
 
 export const getAllUsers = createAsyncThunk<
   any,
@@ -610,7 +611,7 @@ export const updateDiscount = createAsyncThunk<
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toasterSuccess("Discount updated successfully!", 2000, "id");
-        
+
         // Optionally refresh discount data
         dispatch(getAllVolumnDiscounts());
 

@@ -29,8 +29,8 @@ interface UserProfileData {
   provider?: string;
   created_at: string;
   updated_at?: string;
-  role?: any ;
-  plan?: string;
+  role?: any;
+  plan?: string | any;
   tokenUsed?: number;
   status?: string;
 }

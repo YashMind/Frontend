@@ -96,7 +96,7 @@ const UserManagement = () => {
                       <tr
                         className="bg-[#0A1330] hover:bg-[#1A2C56] relative"
                         key={index}
-                      >                  
+                      >
                         <td className="p-4 flex items-center text-xs gap-2">
                           <img src="/images/Avatar Circle.png" alt="" />
                           {item?.fullName}
@@ -105,7 +105,10 @@ const UserManagement = () => {
                           {item?.email}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
-                          {item?.plan}
+                          {item?.plan == 1 && "Basic"}
+                          {item?.plan == 2 && "Pro"}
+                          {item?.plan == 3 && "Enterprise"}
+
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
                           {item?.tokenUsed}

@@ -1,4 +1,5 @@
 'use client'
+import { getAllPaymentGateway } from '@/store/slices/admin/adminSlice';
 import { getMeData } from '@/store/slices/auth/authSlice';
 import { createPaymentOrder } from '@/store/slices/payments/slice';
 import { AppDispatch, RootState } from '@/store/store';
@@ -37,8 +38,11 @@ const Gateways = ({ plan_id }: { plan_id: string }) => {
         (state: RootState) => state.auth.userData
     );
 
+    const { loading, paymentGatewayData } = useSelector((state: RootState) => state.admin);
+
     useEffect(() => {
         dispatch(getMeData({ router }));
+        dispatch(getAllPaymentGateway());
         // dispatch(getChatbots());
         // dispatch(fetchChatMessageTokens());
     }, []);
@@ -195,7 +199,7 @@ const Gateways = ({ plan_id }: { plan_id: string }) => {
 
                     <div className="space-y-4">
                         {/* Cashfree Option */}
-                        <div
+                        {paymentGatewayData && paymentGatewayData.find(item => item.payment_name === 'Cashfree' && item.status == 'active') && <div
                             onClick={() => handleGatewaySelect("cashfree")}
                             className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${selectedGateway === "cashfree"
                                 ? "border-indigo-500 bg-indigo-50"
@@ -215,10 +219,10 @@ const Gateways = ({ plan_id }: { plan_id: string }) => {
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
 
                         {/* PayPal Option */}
-                        <div
+                        {paymentGatewayData && paymentGatewayData.find(item => item.payment_name === 'PayPal' && item.status == 'active') && <div
                             onClick={() => handleGatewaySelect("paypal")}
                             className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${selectedGateway === "paypal"
                                 ? "border-indigo-500 bg-indigo-50"
@@ -234,10 +238,10 @@ const Gateways = ({ plan_id }: { plan_id: string }) => {
                                     <p className="text-gray-600">Pay with your PayPal account</p>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                     </div>
 
-                    <div className="mt-8">
+                    {!loading ? paymentGatewayData && paymentGatewayData.find(item => item.status == 'active') ? <div className="mt-8">
                         <button
                             onClick={handleContinue}
                             disabled={!selectedGateway || isProcessing}
@@ -255,7 +259,7 @@ const Gateways = ({ plan_id }: { plan_id: string }) => {
                                 </>
                             )}
                         </button>
-                    </div>
+                    </div> : <h2 className='mx-auto text-center text-xl font-semibold text-red-500'>No Payment Method is active</h2> : <h2 className='mx-auto text-center text-xl font-semibold text-gray-500'>Loading ...</h2>}
                 </div>
             </div>
         </div>

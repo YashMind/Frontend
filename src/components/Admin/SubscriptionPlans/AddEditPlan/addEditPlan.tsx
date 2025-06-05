@@ -1,6 +1,7 @@
 "use client";
 import { createSubscriptionPlan } from "@/store/slices/admin/adminSlice";
 import { AppDispatch } from "@/store/store";
+import { SubscriptionPlans } from "@/types/adminType";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -20,10 +21,18 @@ const schema = yup.object().shape({
     .number()
     .typeError("Pricing must be a number")
     .required("Pricing is required "),
-  token_limits: yup
+  token_per_unit: yup
     .number()
     .typeError("Token limit must be a number")
     .required("Token limit is required"),
+  chatbots_allowed: yup
+    .number()
+    .typeError("Chatbots allowed must be a number")
+    .required("Chatbots is required"),
+  duration_days: yup
+    .number()
+    .typeError("Duration must be a number")
+    .required("Duration is required"),
   features: yup.string().required("Features is required"),
 });
 
@@ -52,7 +61,9 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
   useEffect(() => {
     setValue("name", planData?.name);
     setValue("pricing", planData?.pricing);
-    setValue("token_limits", planData?.token_limits);
+    setValue("token_per_unit", planData?.token_per_unit);
+    setValue("chatbots_allowed", planData?.chatbots_allowed);
+    setValue("duration_days", planData?.duration_days);
     setValue("features", planData?.features);
     setValue("id", planData?.id);
   }, [reset, planData?.id, show]);
@@ -110,12 +121,52 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
             <input
               placeholder="Enter token limits"
               type="number"
-              {...register("token_limits", { valueAsNumber: true })}
+              {...register("token_per_unit", { valueAsNumber: true })}
               className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
             />
-            {errors.token_limits && (
+            {errors.token_per_unit && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.token_limits.message}
+                {errors.token_per_unit.message}
+              </p>
+            )}
+          </div><div>
+            <label className="block mb-1 text-sm font-medium">
+              Chatbots allowed
+            </label>
+            <input
+              placeholder="Enter allowed chatbots limit"
+              type="number"
+              {...register("chatbots_allowed", { valueAsNumber: true })}
+              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
+            />
+            {errors.chatbots_allowed && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.chatbots_allowed.message}
+              </p>
+            )}
+          </div><div>
+            <label className="block mb-1 text-sm font-medium">
+              Duration
+            </label>
+            <select
+              {...register("duration_days", { valueAsNumber: true })}
+              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
+            >
+              <option defaultChecked disabled >Select Duration</option>
+              {[
+                { duration: 30, label: "Monthy" },
+                { duration: 90, label: "Quaterly" },
+                { duration: 180, label: "Bi yearly" },
+                { duration: 180, label: "Yearly" },
+              ].map((item) =>
+                <option value={item.duration}>{item.label} / {item.duration} days</option>
+              )}
+
+
+            </select>
+            {errors.duration_days && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.duration_days.message}
               </p>
             )}
           </div>

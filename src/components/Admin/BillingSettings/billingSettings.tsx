@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import AddEditPaymentWayModal from "./AddEditPaymentWay/addEditPaymentWay";
-import {deletePaymentsGateway,getAllPaymentGateway} from "@/store/slices/admin/adminSlice";
+import { AddUpdatePaymentGateway, deletePaymentsGateway, getAllPaymentGateway } from "@/store/slices/admin/adminSlice";
+import { fetchAdminTransactions } from "@/store/slices/admin/tokenAnalytic";
 
 const BillingSettings = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
@@ -12,13 +13,38 @@ const BillingSettings = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { paymentGatewayData } = useSelector((state: RootState) => state.admin);
-  
+
+  const { data: transactions, loading: transactionsLoading, error: transactionsError } = useSelector(
+    (state: RootState) => state.tokens.transactions
+  );
+
   useEffect(() => {
     dispatch(getAllPaymentGateway());
+    dispatch(fetchAdminTransactions({}))
   }, []);
 
   const deletePaymentGateway = ({ id }: { id?: number }) => {
     dispatch(deletePaymentsGateway({ id: id }));
+  };
+
+
+  function downloadTransaction(transactionData: any, order_id: string) {
+
+    const jsonStr = JSON.stringify(transactionData, null, 2);
+    const blob = new Blob([jsonStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = order_id + ".json";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  const toggleGatewayStatus = (item: any) => {
+    dispatch(AddUpdatePaymentGateway({ payload: { ...item, status: item.status == 'active' ? "inactive" : 'active' } }));
   };
 
   return (
@@ -38,7 +64,7 @@ const BillingSettings = () => {
                     <h3 className="text-white font-medium text-base ">
                       Payment Gateways
                     </h3>
-                    <button
+                    {/* <button
                       className="cursor-pointer bg-[#18B91F] text-xs font-medium text-white px-[10px] py-[5px]  rounded hover:bg-green-600"
                       onClick={() => {
                         setModalShow(true);
@@ -46,20 +72,12 @@ const BillingSettings = () => {
                       }}
                     >
                       Add Payment Gateway
-                    </button>
+                    </button> */}
                   </div>
                   <table className="w-full text-left text-sm">
                     <thead className="text-white/70">
                       <tr>
-                        <th className="py-[20px] px-[28px]">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox mr-2 accent-purple-500"
-                            readOnly
-                          ></input>
-                        </th>
                         <th className="py-[20px] px-[28px]">Name</th>
-
                         <th className="py-[20px] px-[28px] flex justify-start items-center">
                           <span>
                             <svg
@@ -80,7 +98,6 @@ const BillingSettings = () => {
                           <span>Last sync</span>
                         </th>
                         <th className="py-[20px] px-[28px]">Status</th>
-                        <th className="py-[20px] px-[28px]">API Key:</th>
                         <th className="py-[20px] px-[28px]">Action</th>
                       </tr>
                     </thead>
@@ -92,14 +109,7 @@ const BillingSettings = () => {
                               className="border-t border-white/10"
                               key={index}
                             >
-                              <td className="py-[20px] px-[28px]">
-                                <input
-                                  type="checkbox"
-                                  className="form-checkbox mr-2 accent-purple-500"
-                                  readOnly
-                                  checked={item?.status === "Active"}
-                                ></input>
-                              </td>
+
                               <td className="py-[20px] px-[28px]">
                                 {item?.payment_name}
                               </td>
@@ -108,37 +118,35 @@ const BillingSettings = () => {
                               </td>
                               <td className="py-[20px] px-[28px]">
                                 <span
-                                  className={`${
-                                    item?.status === "Active"
-                                      ? "bg-[#18B91F]"
-                                      : "bg-[#C38F00]"
-                                  } text-xs font-medium text-[#FBEDED] px-2 py-0.5 rounded-full`}
+                                  className={`${item?.status === "Active"
+                                    ? "bg-[#18B91F]"
+                                    : "bg-[#C38F00]"
+                                    } text-xs font-medium text-[#FBEDED] px-2 py-0.5 rounded-full`}
                                 >
                                   {item?.status}
                                 </span>
                               </td>
-                              <td className="py-[20px] px-[28px] text-[#AEB9E1]">
+                              {/* <td className="py-[20px] px-[28px] text-[#AEB9E1]">
                                 {" "}
                                 {item?.api_key}
-                              </td>
+                              </td> */}
                               <td className="flex gap-2 py-[20px] px-[28px]">
                                 <button
-                                  className="bg-green-600 text-xs px-2 py-1 rounded"
+                                  className="bg-green-600 text-xs px-2 py-1 rounded cursor-pointer"
                                   onClick={() => {
-                                    setUserData(item);
-                                    setModalShow(true);
+                                    toggleGatewayStatus(item)
                                   }}
                                 >
-                                  Update
+                                  Toggle status
                                 </button>
-                                <button
+                                {/* <button
                                   className="bg-gray-600 text-xs px-2 py-1 rounded"
                                   onClick={() =>
                                     deletePaymentGateway({ id: item?.id })
                                   }
                                 >
                                   Delete
-                                </button>
+                                </button> */}
                               </td>
                             </tr>
                           );
@@ -156,11 +164,9 @@ const BillingSettings = () => {
                 <div className="border border-[#343B4F] rounded-xl shadow-md overflow-x-auto">
                   <div className="flex border-b border-[#343B4F] justify-between items-center p-[28]">
                     <h3 className="text-white font-medium text-base ">
-                      Payment Gateways
+                      Transaction
                     </h3>
-                    <button className="cursor-pointer bg-[#18B91F] text-xs font-medium text-white px-[10px] py-[5px]  rounded hover:bg-green-600">
-                      Add Payment Gateway
-                    </button>
+
                   </div>
                   <table className="w-full text-left text-sm">
                     <thead className="text-white/70 ">
@@ -174,7 +180,19 @@ const BillingSettings = () => {
                               height={10}
                               width={10}
                             />{" "}
-                            Invoice #
+                            Order ID #
+                          </div>
+                        </th>
+                        <th className=" py-[20px] px-[28px]">
+                          <div className="flex gap-1 items-center">
+                            {" "}
+                            <Image
+                              alt="alt"
+                              src="/images/user.png"
+                              height={10}
+                              width={10}
+                            />{" "}
+                            Payment ID #
                           </div>
                         </th>
                         <th className=" py-[20px] px-[28px]">
@@ -252,92 +270,71 @@ const BillingSettings = () => {
                       </tr>
                     </thead>
                     <tbody className="text-white/90">
-                      <tr className="border-t border-white/10">
-                        <td className="py-[20px] px-[28px] ">INV-2023-056</td>
+                      {transactions && transactions.transactions.map((transaction) => <tr className="border-t border-white/10">
+                        <td className="py-[20px] px-[28px] ">{transaction.order_id}</td>
+                        <td className="py-[20px] px-[28px] ">{transaction.payment_id}</td>
                         <td className=" py-[20px] px-[28px] text-[#AEB9E1]">
-                          Acme Corp
+                          {transaction.user?.name}
                         </td>
                         <td className=" py-[20px] px-[28px] text-[#AEB9E1]">
-                          May 15, 20..
+                          {(transaction.created_at)}
                         </td>
                         <td className="py-[20px] px-[28px] text-[#AEB9E1] ">
-                          $12,500.00
+                          {transaction.amount} {transaction.currency}
                         </td>
                         <td className="  py-[20px] px-[28px] text-[#AEB9E1]">
-                          Enterprise
+                          {transaction.plan?.name}
                         </td>
                         <td className=" py-[20px] px-[28px] text-[#AEB9E1]">
-                          <span className="bg-[#18B91F] text-xs text-white px-2 py-0.5 rounded-full">
-                            Paid
+                          <span
+                            className={`
+                              text-xs px-2 py-0.5 rounded-full
+                              ${transaction.status === 'created' ? 'bg-blue-100 text-blue-800' : ''}
+                              ${transaction.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ''}
+                              ${transaction.status === 'success' ? 'bg-green-500 text-white' : ''}
+                              ${transaction.status === 'failed' ? 'bg-red-100 text-red-800' : ''}
+                              ${transaction.status === 'refunded' ? 'bg-purple-100 text-purple-800' : ''}
+                              ${transaction.status === 'cancelled' ? 'bg-gray-200 text-gray-700' : ''}
+                            `}
+                          >
+                            {transaction.status}
                           </span>
                         </td>
                         <td>
                           <div className="flex gap-2 py-[20px] px-[28px]">
-                            <Image
-                              alt="alt"
-                              src="/images/download.png"
-                              height={16}
-                              width={16}
-                            />
 
-                            <Image
+                            {transaction.transaction_data && <button onClick={() => downloadTransaction(transaction.transaction_data, transaction.order_id)}>
+                              <Image
+                                alt="alt"
+                                src="/images/download.png"
+                                height={16}
+                                width={16}
+                              />
+                            </button>}
+
+
+                            {/* <Image
                               alt="alt"
                               src="/images/tabler_send.png"
                               height={16}
                               width={16}
-                            />
+                            /> */}
                           </div>
                         </td>
-                      </tr>
-                      <tr className="border-t border-white/10 ">
-                        <td className=" py-[20px] px-[28px]">INV-2023-042</td>
-                        <td className="py-[20px] px-[28px] text-[#AEB9E1]">
-                          Globex Inc
-                        </td>
-                        <td className="py-[20px] px-[28px] text-[#AEB9E1]">
-                          Apr 28, 20..
-                        </td>
-                        <td className="py-[20px] px-[28px] text-[#AEB9E1]">
-                          $8,200.00
-                        </td>
-                        <td className="py-[20px] px-[28px] text-[#AEB9E1]">
-                          Pro
-                        </td>
-                        <td className="py-[20px] px-[28px] text-[#AEB9E1]">
-                          <span className="bg-yellow-500 text-xs text-white px-2 py-0.5 rounded-full">
-                            Overdue
-                          </span>
-                        </td>
-                        <td>
-                          <div className="flex gap-2 py-[20px] px-[28px]">
-                            <Image
-                              alt="alt"
-                              src="/images/download.png"
-                              height={16}
-                              width={16}
-                            />
-
-                            <Image
-                              alt="alt"
-                              src="/images/tabler_send.png"
-                              height={16}
-                              width={16}
-                            />
-                          </div>
-                        </td>
-                      </tr>
+                      </tr>)}
+                      {transactionsLoading && <h2 className="mx-auto">Loading ...</h2>}
+                      {transactionsError && <h2 className="mx-auto">{transactionsError}</h2>}
                     </tbody>
                   </table>
                 </div>
               </section>
 
-              {/* Tax Configuration */}
+              {/* Tax Configuration
               <section>
                 <h2 className="text-2xl  font-semibold mb-[28]">
                   Tax Configuration
                 </h2>
                 <div className=" text-white rounded-[12px] grid grid-cols-1 md:grid-cols-2 gap-6 border-[#343B4F] border py-[35px] px-[22px] shadow-[1px_1px_1px_0px_rgba(16,25,52,0.4)]">
-                  {/* Tax Section */}
                   <div className="px-[13px] py-[34px] border border-[#343B4F] rounded-[12px] bg-[#0A1330] shadow-[1px_1px_1px_0px_rgba(16,25,52,0.4)]">
                     <div>
                       <label className="block text-base font-medium text-white mb-[10px]">
@@ -390,7 +387,6 @@ const BillingSettings = () => {
                     </div>
                   </div>
 
-                  {/* Invoice Preview */}
                   <div className="px-[13px] py-[34px] border border-[#343B4F] rounded-[12px] bg-[#0A1330] shadow-[1px_1px_1px_0px_rgba(16,25,52,0.4)]">
                     <h3 className="text-base font-medium ">Invoice Preview</h3>
                     <div className="flex justify-between font-normal text-sm my-[16px]">
@@ -411,7 +407,7 @@ const BillingSettings = () => {
                     </div>
                   </div>
                 </div>
-              </section>
+              </section> */}
 
               {/* billing-alerts */}
               <section>
@@ -455,7 +451,7 @@ const BillingSettings = () => {
                     </div>
                   </div>
 
-                  {/* Card Expiry Alerts */}
+                  {/* Card Expiry Alerts
                   <div className="px-[13px] py-[34px] border border-[#343B4F] rounded-[12px] bg-[#0A1330] shadow-[1px_1px_1px_0px_rgba(16,25,52,0.4)]">
                     <div className="flex items-center justify-between">
                       <h3 className="font-semibold text-base ">
@@ -480,7 +476,7 @@ const BillingSettings = () => {
                         Notify: 7, 15, and 3 days before expiry
                       </p>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Usage Threshold Alerts */}
                   <div className="px-[13px] py-[34px] border border-[#343B4F] rounded-[12px] bg-[#0A1330] shadow-[1px_1px_1px_0px_rgba(16,25,52,0.4)]">

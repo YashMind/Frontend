@@ -9,6 +9,66 @@ import {
   getTopConsumptionUsers,
 } from "@/store/slices/admin/adminSlice";
 import Image from "next/image";
+import { fetchAdminTokenCreditReport } from "@/store/slices/admin/tokenAnalytic";
+
+
+interface TokenUsage {
+  token_limit: number;
+  bot_id: number;
+  user_id: number;
+  open_ai_request_token: number;
+  user_request_token: number;
+  whatsapp_request_tokens: number;
+  slack_request_tokens: number;
+  wordpress_request_tokens: number;
+  zapier_request_tokens: number;
+  user_credit_id: number;
+  id: number;
+  combined_token_consumption: number;
+  open_ai_response_token: number;
+  user_response_token: number;
+  whatsapp_response_tokens: number;
+  slack_response_tokens: number;
+  wordpress_response_tokens: number;
+  zapier_response_tokens: number;
+}
+
+interface User {
+  id: number;
+  email: string;
+  name: string;
+}
+
+interface Credit {
+  plan_id: number;
+  id: number;
+  expiry_date: string;
+  credits_consumed: number;
+  token_per_unit: number;
+  user_id: number;
+  trans_id: number;
+  start_date: string;
+  credits_purchased: number;
+  credit_balance: number;
+  chatbots_allowed: number;
+  user: User;
+  token_usage: TokenUsage[];
+}
+
+interface Pagination {
+  page: number;
+  per_page: number;
+  total_credits: number;
+  total_history: number;
+  total_pages_credits: number;
+  total_pages_history: number;
+}
+
+interface TokenCreditReportResponse {
+  credits: Credit[];
+  history_credits: any[]; // You might want to define a proper type for history credits
+  pagination: Pagination;
+}
 
 const TokenAnalytics = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
@@ -22,6 +82,10 @@ const TokenAnalytics = () => {
   const { tokenBotsData, topTokenUsersData } = useSelector(
     (state: RootState) => state.admin
   );
+
+  const { data: tokensCredits, loading: tokensCreditsLoading, error: tokensCreditsError } = useSelector(
+    (state: RootState) => state.tokens.admin
+  );
   useEffect(() => {
     dispatch(
       getAllTokenBots({
@@ -33,6 +97,7 @@ const TokenAnalytics = () => {
       })
     );
     dispatch(getTopConsumptionUsers());
+    dispatch(fetchAdminTokenCreditReport({}))
   }, [dispatch, search, page, limit, sortBy, sortOrder]);
 
   const deleteTokenBot = ({ id }: { id?: number }) => {
@@ -199,6 +264,7 @@ const TokenAnalytics = () => {
               </div>
             </div>
             {/* token price start */}
+            {/* products wise division */}
             <div className="mt-6 p-8 rounded-md text-white border border-[#343B4F] shadow-2xl">
               <div className="flex justify-between border-b border-[#1f355c]">
                 <h2 className="text-lg font-semibold mb-4">Breakdown By Product</h2>
@@ -207,52 +273,53 @@ const TokenAnalytics = () => {
                 <table className="min-w-full text-sm text-left">
                   <thead>
                     <tr className=" text-gray-400 uppercase text-xs">
-                      <th className="px-6 py-4 font-medium">Bot</th>
-                      <th className="px-6 py-4 font-medium">Pricing</th>
+                      <th className="px-6 py-4 font-medium">Product</th>
+                      <th className="px-6 py-4 font-medium">Revenue</th>
                       <th className="px-6 py-4 font-medium">Tokens</th>
-                      <th className="px-6 py-4 font-medium">Action</th>
+                      {/* <th className="px-6 py-4 font-medium">Action</th> */}
                     </tr>
                   </thead>
                   <tbody>
                     {/* Row 1 */}
 
-                          <tr
-                            className=" hover:bg-[#111827] bg-[#0A1330] transition"
-                            // key={index}
-                          >
-                            <td className="px-6 py-4 flex items-center gap-2">
-                              <div className="w-2.5 h-2.5 rounded-full bg-[#a855f7]"></div>
-                              {/* {item?.name} */}Chatbot
-                            </td>
-                            <td className="px-6 py-4">
-2121
-                            </td>
-                            <td className="px-6 py-4">
-2121
-                            </td>
-                            <td className="px-6 py-4 space-x-2">
-                              <button
-                                className="text-[#AEB9E1]"
-                                onClick={() => {
-                                  setModalShow(true);
-                                  // setTokenData(item);
-                                }}
-                              >
-                                <MdEdit size={20} className="cursor-pointer"/>
-                              </button>
-                              <button
-                                className="text-[#AEB9E1]"
-                                // onClick={() => deleteTokenBot({ id: item?.id })}
-                              >
-                                <MdDeleteForever size={20} className="cursor-pointer"/>
-                              </button>
-                            </td>
-                          </tr>
-                      
+                    <tr
+                      className=" hover:bg-[#111827] bg-[#0A1330] transition"
+                    // key={index}
+                    >
+                      <td className="px-6 py-4 flex items-center gap-2">
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#a855f7]"></div>
+                        {/* {item?.name} */}Chatbot
+                      </td>
+                      <td className="px-6 py-4">
+                        {tokensCredits?.chatbot_revenue}
+                      </td>
+                      <td className="px-6 py-4">
+                        {tokensCredits?.chatbot_tokens}
+                      </td>
+                      {/* <td className="px-6 py-4 space-x-2">
+                        <button
+                          className="text-[#AEB9E1]"
+                          onClick={() => {
+                            setModalShow(true);
+                            // setTokenData(item);
+                          }}
+                        >
+                          <MdEdit size={20} className="cursor-pointer" />
+                        </button>
+                        <button
+                          className="text-[#AEB9E1]"
+                        // onClick={() => deleteTokenBot({ id: item?.id })}
+                        >
+                          <MdDeleteForever size={20} className="cursor-pointer" />
+                        </button>
+                      </td> */}
+                    </tr>
+
                   </tbody>
                 </table>
               </div>
             </div>
+
             {/* user list start */}
             {/* user list start */}
             <div className="max-w-full overflow-x-auto mt-5 bg-[#0B1739] p-5">
@@ -273,16 +340,16 @@ const TokenAnalytics = () => {
                     </th>
                     <th className="p-4 text-xs font-medium flex items-center gap-1">
                       <Image
-                                                   alt="alt"
-                                                   src="/images/user.png"
-                                                   height={10}
-                                                   width={10}
-                                                 />{" "}
+                        alt="alt"
+                        src="/images/user.png"
+                        height={10}
+                        width={10}
+                      />{" "}
                       Name
                     </th>
                     <th className="p-4 text-xs font-medium">Email</th>
                     <th className="p-4 text-xs font-medium">Plan</th>
-                    <th className="p-4 text-xs font-medium">Token Limits</th>
+                    <th className="p-4 text-xs font-medium">Token Consumed</th>
                     <th className="p-4 text-xs font-medium">Status</th>
                   </tr>
                 </thead>
@@ -307,7 +374,7 @@ const TokenAnalytics = () => {
                           {item?.email}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
-                          {item?.plan}
+                          {item?.plan.name}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
                           {item?.tokenUsed}
