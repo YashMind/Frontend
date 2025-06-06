@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { BiChevronDown } from "react-icons/bi";
 import {
   FaComments,
   FaMicrophoneAlt,
@@ -11,17 +10,22 @@ import StatCard from "./StatCard";
 import { AppDispatch, RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchChatMessageTokens } from "@/store/slices/chats/chatSlice";
+import { useRouter } from "next/navigation";
+import AddCreditModal from "./addCreditModal";
 
-const RealTimeCount = () => {
+export default function RealTimeCount() {
+  const [showCreditModal, setShowCreditModal] = useState<boolean>(false)
   const dispatch = useDispatch<AppDispatch>();
-
   const tokensData = useSelector((state: RootState) => state.chat.tokens);
   useEffect(() => {
-    // dispatch(getChatbots());
     dispatch(fetchChatMessageTokens());
   }, [dispatch]);
+
+
+
+
   return (
-    <div className={`mt-28 flex gap-2 p-2 w-full justify-center items-stretch transition flex-nowrap duration-150`}>
+    <div className={`mt-28 flex gap-2 p-2 w-full justify-center items-stretch transition flex-nowrap duration-150 `}>
       <StatCard
         icon={<FaComments size={20} color="#FFB85C" />}
         title="Chat Bot Usage"
@@ -74,12 +78,12 @@ const RealTimeCount = () => {
           { label: "Used Credits", value: tokensData.credits?.credits_consumed || 0 },
         ]}
         buttonText="Add Credit"
-        onButtonClick={() => alert("Add Credit clicked")}
+        onButtonClick={() => setShowCreditModal(true)}
         gradientFrom="#443973"
         gradientTo="#2C1E5A"
       />
+      {showCreditModal && <AddCreditModal onClose={() => setShowCreditModal(false)} />}
     </div>
   );
 };
 
-export default RealTimeCount;

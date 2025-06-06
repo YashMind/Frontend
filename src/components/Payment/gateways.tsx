@@ -22,7 +22,7 @@ interface CashfreeOrderResponse {
 }
 
 
-const Gateways = ({ plan_id }: { plan_id: string }) => {
+const Gateways = ({ plan_id, credit }: { plan_id?: string, credit?: string }) => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const [selectedGateway, setSelectedGateway] = useState<string | null>(null);

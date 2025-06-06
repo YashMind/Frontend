@@ -32,7 +32,7 @@ const PUBLIC_ROUTES = new Set([
 
 const KNOWN_ROUTES = new RegExp(
   "^(/profile|/settings|/invite-user|/accept-invite|/voice-agent|/chatbot-dashboard|/types/payment" +
-  "/chatbot-products|/admin|/support|/gateways)(/.*)?$"
+  "/chatbot-products|/admin|/support|/gateways|/topup)(/.*)?$"
 );
 
 const DYNAMIC_PUBLIC_ROUTE = /^\/embed\/[^/]+$/;
