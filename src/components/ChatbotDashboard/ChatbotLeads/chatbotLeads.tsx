@@ -98,11 +98,10 @@ const ChatbotLeads = ({
             </select>
             <span className="text-black font-medium">Entries</span>
             <button
-              className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
-                isDisabled
+              className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${isDisabled
                   ? "bg-red-300 cursor-not-allowed"
                   : "bg-red-500 hover:bg-red-600"
-              }`}
+                }`}
               disabled={isDisabled}
               onClick={() => handleDeleteChatbotLeads()}
             >
@@ -110,7 +109,7 @@ const ChatbotLeads = ({
             </button>
             <div className="relative w-full max-w-xs">
               <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                
+
               </span>
               <input
                 type="text"
@@ -233,9 +232,8 @@ const ChatbotLeads = ({
           </button>
           {chatbotLeadsData?.total_pages >= 1 ? (
             <button
-              className={`w-6 h-6 ${
-                page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
-              }   text-black rounded-[7px] text-sm`}
+              className={`w-6 h-6 ${page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
+                }   text-black rounded-[7px] text-sm`}
             >
               1
             </button>
@@ -250,11 +248,10 @@ const ChatbotLeads = ({
           ) : null}
           {chatbotLeadsData?.total_pages > 1 ? (
             <button
-              className={`w-6 h-6 ${
-                chatbotLeadsData?.total_pages === page
+              className={`w-6 h-6 ${chatbotLeadsData?.total_pages === page
                   ? "bg-[#624DE3]"
                   : "bg-gray-200"
-              } text-black rounded-[7px] text-sm`}
+                } text-black rounded-[7px] text-sm`}
             >
               {chatbotLeadsData?.total_pages}
             </button>
@@ -270,7 +267,7 @@ const ChatbotLeads = ({
       </div>
 
       {/* table */}
-      <ViewLeadChatModal show={modalShow} onHide={() => setModalShow(false)} />
+      <ViewLeadChatModal botId={botId} show={modalShow} onHide={() => setModalShow(false)} />
     </div>
   );
 };

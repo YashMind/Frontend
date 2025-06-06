@@ -17,6 +17,8 @@ import LeadGenForm from "../ChatbotDashboard/ChatbotOverview/chatbotSection/Lead
 import { fetchChatbotSettings } from "@/store/slices/chats/appearanceSettings";
 import { chatsIdData, TextMessage } from "@/types/chatTypes";
 import { pathToImage } from "@/services/utils/helpers";
+import ChatMessages from "../utils/MessageRenderer";
+import MicrophoneRecorder from "../ChatbotDashboard/ChatbotOverview/chatbotSection/MicrophoneRecorder";
 
 const schema = yup.object().shape({
   message: yup.string().required("Message is required"),
@@ -31,12 +33,14 @@ const ChatbotEmbedSection = ({
   domainUrl?: string;
 }) => {
   const [isBotTyping, setIsBotTyping] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
   const {
     register,
     handleSubmit,
     reset,
     setValue,
     getValues,
+    watch,
     formState: { errors },
   } = useForm<TextMessage>({
     resolver: yupResolver(schema) as Resolver<TextMessage>,
@@ -58,9 +62,11 @@ const ChatbotEmbedSection = ({
   const chatbotData = useSelector((state: RootState) => state.chat.chatbotData);
   const onSubmit = (data: TextMessage) => {
     setIsBotTyping(true);
-    dispatch(conversationMessage({ payload: data })).finally(() => {
+    setIsRecording(false)
+    const temp = { ...data }
+    reset()
+    dispatch(conversationMessage({ payload: temp })).unwrap().then(() => reset()).finally(() => {
       setIsBotTyping(false);
-      reset();
     });
   };
 
@@ -126,36 +132,34 @@ const ChatbotEmbedSection = ({
       <div className="flex-1 p-4 overflow-y-auto text-black">
         {chatMessages && chatMessages.length
           ? chatMessages.map((item, index) => {
-              return (
-                <div key={index}>
-                  <div
-                    className={`flex mb-2 ${
-                      item.sender === "user" ? "justify-end" : "justify-start"
+            return (
+              <div key={index}>
+                <div
+                  className={`flex mb-2 ${item.sender === "user" ? "justify-end" : "justify-start"
                     }`}
-                  >
-                    {item.sender === "bot" && (
-                      <Image
-                        src={chatbotImage}
-                        alt="Bot"
-                        className="w-8 h-8 rounded-full mr-2"
-                        width={20}
-                        height={20}
-                      />
-                    )}
-                    <div
-                      className={`p-3 rounded-xl max-w-xs text-sm ${
-                        item.sender === "user" ? "text-white" : "text-black"
-                      }`}
-                      style={{
-                        backgroundColor:
-                          item.sender === "user"
-                            ? chatbotSetting?.user_message_bg ?? "blue"
-                            : chatbotSetting?.message_bg ?? "lightslategray",
-                      }}
-                    >
-                      {item.message}
-                    </div>
-                    {item.sender === "user" && (
+                >
+                  {item.sender === "bot" && (<>
+                    <Image
+                      src={chatbotImage}
+                      alt="Bot"
+                      className="w-8 h-8 rounded-full mr-2"
+                      width={20}
+                      height={20}
+                    />
+                    <ChatMessages message={item.message} chatbotSetting={chatbotSetting} handleGeneratedButtonClick={(query) => setValue('message', query)} /></>
+                  )}{" "}
+                  {item.sender === "user" && (
+                    <>
+                      <div
+                        className={`p-3 rounded-xl max-w-xs text-sm ${item.sender === "user" ? "text-white" : "text-black"
+                          }`}
+                        style={{
+                          backgroundColor: chatbotSetting?.user_message_bg ?? "blue"
+                        }}
+                      >
+                        {item.message}
+                      </div>
+
                       <Image
                         src="/images/userimg.png"
                         alt="User"
@@ -163,65 +167,66 @@ const ChatbotEmbedSection = ({
                         width={20}
                         height={20}
                       />
-                    )}
-                  </div>
+                    </>
+                  )}
+                </div>
 
-                  {item.sender === "bot" &&
-                    chatbotSetting?.lead_collection &&
-                    index <= 2 && (
-                      <LeadGenForm
-                        bot_id={chatIdData?.bot_id}
-                        chat_id={chatIdData?.id}
-                        is_name={chatbotSetting?.is_name_lead_gen}
-                        is_phone={chatbotSetting?.is_phone_lead_gen}
-                        is_mail={chatbotSetting?.is_mail_lead_gen}
-                        is_message={chatbotSetting?.is_message_lead_gen}
-                        required_name={chatbotSetting?.required_name_lead_gen}
-                        required_phone={chatbotSetting?.required_phone_lead_gen}
-                        required_mail={chatbotSetting?.required_mail_lead_gen}
-                        required_message={
-                          chatbotSetting?.required_message_lead_gen
-                        }
-                        submit_button_text={
-                          chatbotSetting?.submit_text_lead_gen
-                        }
-                        submit_button_color={
-                          chatbotSetting?.submit_button_color_lead_gen
-                        }
-                        submission_message_heading={
-                          chatbotSetting?.submission_message_heading_lead_gen
-                        }
-                        sumbission_message={
-                          chatbotSetting?.sumbission_message_lead_gen
-                        }
-                      />
-                    )}
-                </div>
-              );
-            })
+                {item.sender === "bot" &&
+                  chatbotSetting?.lead_collection &&
+                  index <= 2 && (
+                    <LeadGenForm
+                      bot_id={chatIdData?.bot_id}
+                      chat_id={chatIdData?.id}
+                      is_name={chatbotSetting?.is_name_lead_gen}
+                      is_phone={chatbotSetting?.is_phone_lead_gen}
+                      is_mail={chatbotSetting?.is_mail_lead_gen}
+                      is_message={chatbotSetting?.is_message_lead_gen}
+                      required_name={chatbotSetting?.required_name_lead_gen}
+                      required_phone={chatbotSetting?.required_phone_lead_gen}
+                      required_mail={chatbotSetting?.required_mail_lead_gen}
+                      required_message={
+                        chatbotSetting?.required_message_lead_gen
+                      }
+                      submit_button_text={
+                        chatbotSetting?.submit_text_lead_gen
+                      }
+                      submit_button_color={
+                        chatbotSetting?.submit_button_color_lead_gen
+                      }
+                      submission_message_heading={
+                        chatbotSetting?.submission_message_heading_lead_gen
+                      }
+                      sumbission_message={
+                        chatbotSetting?.sumbission_message_lead_gen
+                      }
+                    />
+                  )}
+              </div>
+            );
+          })
           : chatbotSetting?.welcome_message_is_active && (
-              <>
-                <div className="flex justify-start gap-2 mb-2">
-                  <Image
-                    src={chatbotImage}
-                    alt="Bot"
-                    className="w-8 h-8 rounded-full"
-                    width={20}
-                    height={20}
-                  />
-                  <div
-                    className="bg-gray-200 p-3 rounded-xl max-w-xs text-sm"
-                    style={{
-                      backgroundColor: chatbotSetting?.message_bg
-                        ? chatbotSetting?.message_bg
-                        : "#c2c2c2",
-                    }}
-                  >
-                    {chatbotSetting?.welcome_message_value}
-                  </div>
+            <>
+              <div className="flex justify-start gap-2 mb-2">
+                <Image
+                  src={chatbotImage}
+                  alt="Bot"
+                  className="w-8 h-8 rounded-full"
+                  width={20}
+                  height={20}
+                />
+                <div
+                  className="bg-gray-200 p-3 rounded-xl max-w-xs text-sm"
+                  style={{
+                    backgroundColor: chatbotSetting?.message_bg
+                      ? chatbotSetting?.message_bg
+                      : "#c2c2c2",
+                  }}
+                >
+                  {chatbotSetting?.welcome_message_value}
                 </div>
-              </>
-            )}
+              </div>
+            </>
+          )}
         {isBotTyping && (
           <div className="flex justify-start items-center gap-2 mb-2">
             <Image
@@ -297,11 +302,16 @@ const ChatbotEmbedSection = ({
                   ? chatbotSetting?.placeholder_value
                   : "Type a message..."
               }
-              className={`${errors.message ? "border-red-500" : ""} w-full ${
-                chatMessages?.length ? "pl-12" : ""
-              } p-2 text-sm rounded-md border text-black border-gray-300 focus:outline-none`}
+              className={`${errors.message ? "border-red-500" : ""} w-full ${chatMessages?.length ? "pl-12" : ""
+                } p-2 text-sm rounded-md border text-black border-gray-300 focus:outline-none`}
             />
           </div>
+          <MicrophoneRecorder
+            setTranscript={(text: string) => setValue("message", text)}
+            transcript={watch("message")}
+            isRecording={isRecording}
+            setIsRecording={setIsRecording}
+          />
           <button
             className="p-2 rounded text-white"
             type="submit"

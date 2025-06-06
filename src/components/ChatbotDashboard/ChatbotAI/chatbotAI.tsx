@@ -154,7 +154,7 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
       <h2 className="text-2xl font-bold my-4">AI</h2>
       <div className="min-h-screen ">
         {/* AI Creativity Section */}
-        <div className="bg-white rounded-xl p-6 mb-6">
+        <div className="bg-white rounded-xl p-6 pb-10 mb-6">
           <h2 className="text-lg font-bold text-black mb-1">AI Temperature</h2>
           <p className="text-sm text-gray-700 mb-4">
             Change the slider to increase or reduce creativity of the bot <br />
@@ -179,8 +179,8 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
               />
 
               <div className="flex mt-2 px-1">
-                <span className="text-sm text-gray-500 absolute top-2.5 left-0">{creativity}%</span>
-                <span className="text-sm text-gray-500 absolute top-2.5 right-0">100%</span>
+                <span className="text-sm text-gray-500 absolute top-4 left-0">{creativity}%</span>
+                <span className="text-sm text-gray-500 absolute top-4 right-0">100%</span>
               </div>
             </div>
           </div>
@@ -189,10 +189,11 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
         {/* AI Instruction Prompt Section */}
         <div className="bg-white rounded-xl p-6">
           <h2 className="text-lg font-bold text-black mb-1">
-            AI Instruction Prompt
+            Domain-Specific Instruction Rules
+
           </h2>
           <p className="text-sm text-gray-700 mb-4">
-            Give instructions here to tune the behaviour of the bot. You can
+            Give instructions here to tune the behavior of the bot for different domains. You can
             simply explain how you want the bot to behave. <br />
             This will be used as part of the prompt to the AI model.
           </p>
