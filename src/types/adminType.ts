@@ -46,6 +46,14 @@ export interface TokenBotsData {
 }
 
 
+export interface ToolsDataType {
+  id?: number;
+  tool: string;
+  model: string;
+  status: boolean;
+}
+
+
 export interface ProductMonitoringItem {
   id: number;
   name: string;
@@ -137,7 +145,7 @@ export interface UserCredits {
   token_per_unit: number;
   chatbots_allowed: number;
 }
-iexport nterface HistoryUserCredits {
+export interface HistoryUserCredits {
   id: number;
   user_id: number;
   trans_id: number;

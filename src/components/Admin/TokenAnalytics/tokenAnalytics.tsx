@@ -5,7 +5,6 @@ import { AppDispatch, RootState } from "@/store/store";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import {
   deleteTokenBots,
-  getAllTokenBots,
   getTopConsumptionUsers,
 } from "@/store/slices/admin/adminSlice";
 import Image from "next/image";
@@ -79,7 +78,7 @@ const TokenAnalytics = () => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [tokenData, setTokenData] = useState<any>({});
   const dispatch = useDispatch<AppDispatch>();
-  const { tokenBotsData, topTokenUsersData } = useSelector(
+  const { topTokenUsersData } = useSelector(
     (state: RootState) => state.admin
   );
 
@@ -87,15 +86,6 @@ const TokenAnalytics = () => {
     (state: RootState) => state.tokens.admin
   );
   useEffect(() => {
-    dispatch(
-      getAllTokenBots({
-        page,
-        limit,
-        search,
-        sortBy,
-        sortOrder,
-      })
-    );
     dispatch(getTopConsumptionUsers());
     dispatch(fetchAdminTokenCreditReport({}))
   }, [dispatch, search, page, limit, sortBy, sortOrder]);

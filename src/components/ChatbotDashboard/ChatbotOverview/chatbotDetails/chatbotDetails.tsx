@@ -88,7 +88,7 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
           </div>
           <div className="flex flex-col items-start mb-[10px] mt-auto gap-4">
             <h2 className="text-black font-semibold text-lg ">
-              <span className="text-[#6B6B6B]">Response Tokens:</span>{" "}
+              <span className="text-[#6B6B6B]">Request Tokens:</span>{" "}
               {tokensData?.user_request_token +
                 tokensData?.slack_request_tokens +
                 tokensData?.whatsapp_request_tokens +
@@ -96,7 +96,7 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
                 tokensData?.zapier_request_tokens || 0}
             </h2>
             <h2 className="text-black font-semibold text-lg ">
-              <span className="text-[#6B6B6B]">Request Tokens:</span>{" "}
+              <span className="text-[#6B6B6B]">Response Tokens:</span>{" "}
               {tokensData?.user_response_token +
                 tokensData?.slack_response_tokens +
                 tokensData?.whatsapp_response_tokens +

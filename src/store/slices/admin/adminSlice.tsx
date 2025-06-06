@@ -6,7 +6,7 @@ import {
 } from "../activity/activitySlice";
 import toast from "react-hot-toast";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
-import { AdminAllUsers, AdminLogsActivity, AdminUsersData, ClientLogsActivity, ClientUsersData, PaymentsGateway, ProductMonitoringData, RolePermissions, SubscriptionPlansData, TokenBotsData } from "@/types/adminType";
+import { AdminAllUsers, AdminLogsActivity, AdminUsersData, ClientLogsActivity, ClientUsersData, PaymentsGateway, ProductMonitoringData, RolePermissions, SubscriptionPlansData, TokenBotsData, ToolsDataType } from "@/types/adminType";
 
 export const getAllUsers = createAsyncThunk<
   any,
@@ -212,7 +212,7 @@ export const deleteSubscriptionsPlan = createAsyncThunk<
   }
 );
 
-export const getAllTokenBots = createAsyncThunk<
+export const getAllTools = createAsyncThunk<
   any,
   {
     page?: number;
@@ -222,7 +222,7 @@ export const getAllTokenBots = createAsyncThunk<
     sortOrder?: string;
   }
 >(
-  "admin/getAllTokenBots",
+  "admin/getAllTools",
   async (
     { },
     { dispatch, rejectWithValue }
@@ -257,12 +257,7 @@ export const createTokenBots = createAsyncThunk<any, { payload: any }>(
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toasterSuccess("Token created successfully!", 2000, "id")
-        dispatch(
-          getAllTokenBots({
-            page: 1,
-            limit: 10,
-          })
-        );
+
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot!");
@@ -289,12 +284,6 @@ export const deleteTokenBots = createAsyncThunk<any, { token_bot_id?: number }>(
       );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        dispatch(
-          getAllTokenBots({
-            page: 1,
-            limit: 10,
-          })
-        );
         toasterSuccess("Token bot deleted successfully!", 2000, "id")
         return response.data;
       } else {
@@ -537,7 +526,7 @@ export const updateClientByAdmin = createAsyncThunk<
   }
 );
 
-export const updateTools = createAsyncThunk<any, { id: number; status: string }>(
+export const updateToolsStatus = createAsyncThunk<any, { id: number; status: boolean }>(
   "admin/updateBotToken",
   async ({ id, status }, { dispatch, rejectWithValue }) => {
     try {
@@ -545,9 +534,9 @@ export const updateTools = createAsyncThunk<any, { id: number; status: string }>
       const response = await http.put(`/admin/tool/${id}/status`, { status });
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("Tools Status updated successfully!", 2000, "id")
+        toasterSuccess(response.message || "Tools Status updated successfully!", 2000, "id")
         dispatch(
-          getAllTokenBots({})
+          getAllTools({})
         );
         return response.data;
       } else {
@@ -955,7 +944,7 @@ const initialState = {
   permissionsLoading: false,
   allUsersData: {} as AdminAllUsers,
   subscriptionPlansData: {} as SubscriptionPlansData,
-  tokenBotsData: {} as TokenBotsData,
+  toolsData: [] as ToolsDataType[],
   topTokenUsersData: [] as UserProfileData[],
   productMonitoringData: {} as ProductMonitoringData,
   adminUsers: [] as AdminUsersData[],
@@ -1006,14 +995,14 @@ const adminSlice = createSlice({
         state.loading = false;
       })
 
-      .addCase(getAllTokenBots.pending, (state) => {
+      .addCase(getAllTools.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getAllTokenBots.fulfilled, (state, action) => {
+      .addCase(getAllTools.fulfilled, (state, action) => {
         state.loading = false;
-        state.tokenBotsData = action?.payload;
+        state.toolsData = action?.payload.data;
       })
-      .addCase(getAllTokenBots.rejected, (state, action) => {
+      .addCase(getAllTools.rejected, (state, action) => {
         state.loading = false;
       })
 
