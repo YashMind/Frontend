@@ -176,5 +176,5 @@ export default async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|favicon.ico|images|api|embed.js).*)"],
+  matcher: ["/((?!_next|favicon.ico|images|api|webhook|embed.js).*)"],
 };
