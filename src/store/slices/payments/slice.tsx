@@ -31,7 +31,8 @@ export const createPaymentOrder = createAsyncThunk(
     async (orderData: {
         customer_id: number;
         return_url: string;
-        plan_id: number;
+        plan_id?: number;
+        credit?: number;
     }, { rejectWithValue }) => {
         try {
             const response = await http.post('/payment/cashfree/create-order', orderData);

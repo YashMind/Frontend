@@ -110,7 +110,8 @@ const Gateways = ({ plan_id, credit }: { plan_id?: string, credit?: string }) =>
         dispatch(
             createPaymentOrder({
                 customer_id: userData.id,
-                plan_id: parseInt(plan_id),
+                plan_id: parseInt(plan_id) || undefined,
+                credit: parseInt(credit) || undefined,
                 return_url:
                     typeof window !== "undefined"
                         ? `${window.location.origin}/payment/return`
