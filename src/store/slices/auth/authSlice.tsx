@@ -109,6 +109,27 @@ export const getMeData = createAsyncThunk<any, { router: AppRouterInstance }>(
   }
 );
 
+export const isLoggedin = createAsyncThunk<any>(
+  "auth/isLoggedin",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.get("/auth/me");
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("auth failed");
+      }
+    } catch (error: any) {
+
+      return rejectWithValue("An error occurred during auth");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 
 export const getRecentSignups = createAsyncThunk<any, void>(
   "admin/getRecentSignups",
@@ -150,7 +171,7 @@ export const signInUser = createAsyncThunk<
         dispatch(getMeData({ router }));
         toasterSuccess("user logged in successfully!", 2000, "id");
         // toast.success("user logged in successfully!");
-        router.push("/chatbot");
+        router.push("/chatbot-dashboard/main");
         return response.data;
       } else {
         return rejectWithValue("Signup failed");
@@ -225,6 +246,7 @@ interface AuthState {
   loading: boolean;
   data: any[]; // if used somewhere else, else remove it
   userData: UserProfileData | null; // currently used for logged-in user profile
+  loggedInUser: UserProfileData | null; // currently used for logged-in user profile
   userDetails: any;
   recentSignups: {
     count: number;
@@ -317,6 +339,16 @@ const authSlice = createSlice({
         state.userData = action.payload.data || action.payload.user;
       })
       .addCase(getMeData.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(isLoggedin.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(isLoggedin.fulfilled, (state, action) => {
+        state.loading = false;
+        state.loggedInUser = action.payload.data || action.payload.user;
+      })
+      .addCase(isLoggedin.rejected, (state, action) => {
         state.loading = false;
       });
   },

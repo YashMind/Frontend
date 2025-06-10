@@ -6,7 +6,7 @@ import {
 } from "../activity/activitySlice";
 import toast from "react-hot-toast";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
-import { AdminAllUsers, AdminLogsActivity, AdminUsersData, ClientLogsActivity, ClientUsersData, PaymentsGateway, ProductMonitoringData, RolePermissions, SubscriptionPlansData, TokenBotsData, ToolsDataType } from "@/types/adminType";
+import { AdminAllUsers, AdminLogsActivity, AdminUsersData, ClientLogsActivity, ClientUsersData, PaymentsGateway, ProductMonitoringData, RolePermissions, SubscriptionPlansData, SubscriptionPlansPublic, SubscriptionPlansPublicData, TokenBotsData, ToolsDataType } from "@/types/adminType";
 
 export const getAllUsers = createAsyncThunk<
   any,
@@ -60,6 +60,32 @@ export const getAllSubscriptionPlans = createAsyncThunk<any, void>(
       dispatch(startLoadingActivity());
 
       const response = await http.get("/admin/subscription-plans");
+
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("Failed to fetch subscription plans!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toasterError(error?.response?.data?.detail, 2000, "id");
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred while fetching subscription plans.");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const getPublicSubscriptionPlans = createAsyncThunk<any, void>(
+  "admin/getPublicSubscriptionPlans",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+
+      const response = await http.get("/admin/subscription-plans/public");
 
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
@@ -944,6 +970,7 @@ const initialState = {
   permissionsLoading: false,
   allUsersData: {} as AdminAllUsers,
   subscriptionPlansData: {} as SubscriptionPlansData,
+  publicSubscriptionPlansData: {} as SubscriptionPlansPublicData,
   toolsData: [] as ToolsDataType[],
   topTokenUsersData: [] as UserProfileData[],
   productMonitoringData: {} as ProductMonitoringData,
@@ -992,6 +1019,16 @@ const adminSlice = createSlice({
         state.subscriptionPlansData = action?.payload;
       })
       .addCase(getAllSubscriptionPlans.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(getPublicSubscriptionPlans.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getPublicSubscriptionPlans.fulfilled, (state, action) => {
+        state.loading = false;
+        state.publicSubscriptionPlansData = action?.payload;
+      })
+      .addCase(getPublicSubscriptionPlans.rejected, (state, action) => {
         state.loading = false;
       })
 

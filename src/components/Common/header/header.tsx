@@ -3,10 +3,24 @@ import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { getMeData, isLoggedin } from "@/store/slices/auth/authSlice";
+import { FaArrowLeftLong, FaArrowRightLong, FaForward } from "react-icons/fa6";
+import { BiArrowFromLeft, BiArrowToRight } from "react-icons/bi";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const HomeHeader = () => {
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
   const pathname = usePathname();
+  const userData: UserProfileData | null = useSelector(
+    (state: RootState) => state.auth.loggedInUser
+  );
+
+  useEffect(() => {
+    dispatch(isLoggedin())
+  }, [])
   const [navItem, setNavItem] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
@@ -52,12 +66,17 @@ const HomeHeader = () => {
             >
               Sign in
             </button> */}
-            <button
+            {userData ? <button
+              className="flex items-center gap-2 py-[14px] px-6 text-white text-base font-medium rounded-[18px] bg-[linear-gradient(90.04deg,_#501794_0.03%,_#3E70A1_101.88%)] hover:from-purple-700 hover:to-blue-600 transition-all cursor-pointer"
+              onClick={() => router.push("/chatbot-dashboard/main")}
+            >
+              Dashboard <FaArrowRightLong size={20} />
+            </button> : <button
               className="py-[14px] px-[43px] text-white text-base font-medium rounded-[18px] bg-[linear-gradient(90.04deg,_#501794_0.03%,_#3E70A1_101.88%)] hover:from-purple-700 hover:to-blue-600 transition-all cursor-pointer"
               onClick={() => router.push("/auth/signin")}
             >
               Sign In
-            </button>
+            </button>}
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"
@@ -100,22 +119,20 @@ const HomeHeader = () => {
             </button>
           </div>
           <div
-            className={`${
-              isMenuOpen
-                ? "flex flex-col items-center justify-center"
-                : "hidden"
-            }  w-full md:flex md:flex-row md:w-auto md:order-1 `}
+            className={`${isMenuOpen
+              ? "flex flex-col items-center justify-center"
+              : "hidden"
+              }  w-full md:flex md:flex-row md:w-auto md:order-1 `}
             id="navbar-sticky"
           >
             <ul className="flex flex-col items-center gap-6 px-4 py-4 md:flex-row md:items-start  rounded-[43px] bg-[#bfbaff4f]/90 backdrop-blur-md  text-white ">
               <li>
                 <Link
                   href="/"
-                  className={`${
-                    navItem === 1
-                      ? "bg-white text-black rounded-[27px] px-3"
-                      : ""
-                  } text-lg font-normal py-2   cursor-pointer`}
+                  className={`${navItem === 1
+                    ? "bg-white text-black rounded-[27px] px-3"
+                    : ""
+                    } text-lg font-normal py-2   cursor-pointer`}
                   onClick={() => {
                     setNavItem(1);
                     setIsMenuOpen(false);
@@ -127,11 +144,10 @@ const HomeHeader = () => {
               <li>
                 <Link
                   href="/chatbot"
-                  className={` ${
-                    navItem === 2
-                      ? "bg-white text-black rounded-[27px] px-3"
-                      : ""
-                  } text-lg font-normal py-2 hover:text-gray-300 px-3 cursor-pointer`}
+                  className={` ${navItem === 2
+                    ? "bg-white text-black rounded-[27px] px-3"
+                    : ""
+                    } text-lg font-normal py-2 hover:text-gray-300 px-3 cursor-pointer`}
                   onClick={() => {
                     setNavItem(2);
                     setIsMenuOpen(false);
@@ -143,11 +159,10 @@ const HomeHeader = () => {
               <li>
                 <Link
                   href="/voice-agent"
-                  className={`${
-                    navItem === 3
-                      ? "bg-white text-black rounded-[27px] px-3"
-                      : ""
-                  } text-lg font-normal py-2  hover:text-gray-300 px-3 cursor-pointer`}
+                  className={`${navItem === 3
+                    ? "bg-white text-black rounded-[27px] px-3"
+                    : ""
+                    } text-lg font-normal py-2  hover:text-gray-300 px-3 cursor-pointer`}
                   onClick={() => {
                     setNavItem(3);
                     setIsMenuOpen(false);

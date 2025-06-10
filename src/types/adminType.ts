@@ -11,7 +11,8 @@ export interface AdminAllUsers {
 export interface SubscriptionPlans {
   id?: number;
   name: string;
-  pricing: number;
+  pricingInr: number;
+  pricingDollar: number;
   token_per_unit: number;
   chatbots_allowed: number;
   duration_days: number;
@@ -24,6 +25,27 @@ export interface SubscriptionPlans {
 export interface SubscriptionPlansData {
   current_page?: number;
   data: SubscriptionPlans[];
+  total_count?: number;
+  total_pages?: number;
+}
+
+export interface SubscriptionPlansPublic {
+  id?: number;
+  name: string;
+  pricingInr: number;
+  pricingDollar: number;
+  token_per_unit: number;
+  chatbots_allowed: number;
+  duration_days: number;
+  features: string;
+  users_active?: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface SubscriptionPlansPublicData {
+  current_page?: number;
+  data: SubscriptionPlansPublic[];
   total_count?: number;
   total_pages?: number;
 }

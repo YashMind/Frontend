@@ -1,6 +1,5 @@
 "use client";
 import {
-  createSubscriptionPlan,
   updateBotProductStatus,
 } from "@/store/slices/admin/adminSlice";
 import { AppDispatch } from "@/store/store";
@@ -36,7 +35,7 @@ const AddEditProduct = ({ show, onHide }: AddEditPlanProps) => {
 
   const dispatch = useDispatch<AppDispatch>();
   const onSubmit = (data: any) => {
- dispatch(updateBotProductStatus({ id: data.id, status: "deactive" }));    reset();
+    dispatch(updateBotProductStatus({ id: data.id, status: "deactive" })); reset();
     onHide();
   };
 

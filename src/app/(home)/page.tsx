@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import "./style.css";
 import HomeBanner from "@/components/Home/banner/banner";

@@ -1,5 +1,5 @@
 "use client"
-import { getAllSubscriptionPlans } from "@/store/slices/admin/adminSlice";
+import { getAllSubscriptionPlans, getPublicSubscriptionPlans } from "@/store/slices/admin/adminSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -9,13 +9,13 @@ const PriceSection = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter()
 
-  const { subscriptionPlansData } = useSelector(
+  const { publicSubscriptionPlansData } = useSelector(
     (state: RootState) => state.admin
   );
 
   useEffect(() => {
     dispatch(
-      getAllSubscriptionPlans()
+      getPublicSubscriptionPlans()
     );
   }, [dispatch]);
 
@@ -32,17 +32,17 @@ const PriceSection = () => {
 
         <div className="pt-12">
           <div className="mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {subscriptionPlansData?.data?.map((item: any, index) => {
+            {publicSubscriptionPlansData?.data?.map((item: any, index) => {
               const isPro = item.name === "Pro";
               const isEnterprise = item.name === "Enterprise";
-              const isBasic = !isPro && !isEnterprise;
+              const isBasic = item.name === "Basic";
 
               const wrapperClass = isPro
                 ? "p-[2.31px] rounded-tr-[18px] rounded-bl-[18px] bg-gradient-to-r from-[#4E2295] to-[#42579D] h-full"
                 : "bg-[#1B1441] rounded-tr-[18px] rounded-bl-[18px] border border-[#FFFFFF33] p-6 text-white flex flex-col justify-between";
 
               const innerClass = isPro
-                ? "bg-[#1B1441] rounded-tr-[16px] rounded-bl-[16px] backdrop-blur-[32.8px] shadow px-5 py-8 text-white flex flex-col justify-between h-full"
+                ? "bg-[#1B1441] rounded-tr-[16px] rounded-bl-[16px] backdrop-blur-[32.8px] shadow px-5 py-8 text-white flex flex-col justify-between h-full "
                 : "";
 
               return (
@@ -64,18 +64,20 @@ const PriceSection = () => {
                             : "Ultimate access with high limits, all features, and max scalability."}
                       </p>
                       <h2 className="text-[28px] font-semibold pb-[20px]">
-                        ₹{item.pricing}{" "}
+                        {item.currency === "USD" && "$"}
+                        {item.currency === "INR" && "₹"}
+                        {item.pricing}{" "}
+
                         <span className="text-xs font-normal text-[#FFFFFFA1]">
                           /month
                         </span>
                       </h2>
 
                       {item.is_active ? (
-                        (isPro || isEnterprise) && (
-                          <button onClick={() => router.push('/gateways/' + item.id)} className="w-full rounded-full bg-gradient-to-r from-[#501794] to-[#40659F] py-2 mb-6 text-white font-medium text-[17px]">
-                            Choose This Plan
-                          </button>
-                        )
+                        <button onClick={() => router.push('/gateways/' + item.id)} className="w-full rounded-full bg-gradient-to-r from-[#501794] to-[#40659F] py-2 mb-6 text-white font-medium text-[17px]">
+                          Choose This Plan
+                        </button>
+
                       ) : (
                         <p className="text-red-500 font-semibold mb-4">This Plan is Not Active Right Now</p>
                       )}
@@ -90,15 +92,11 @@ const PriceSection = () => {
                       </ul>
                     </div>
 
-                    {(isPro || isEnterprise || isBasic) && (
-                      <div className="mt-6">
+                    {(
+                      <div className="mb-2 mt-10 self-stretch">
                         <hr
                           className={
-                            isPro
-                              ? "border-purple-400 mb-4"
-                              : isEnterprise
-                                ? "border-blue-400 mb-4"
-                                : "border-[2.31px] border-transparent [border-image-source:linear-gradient(98.8deg,#DE4DBC_26.92%,#1D86C2_68.19%,#2B126F_132.4%)] [border-image-slice:1] my-[20px]"
+                            " border-transparent [border-image-source:linear-gradient(98.8deg,#DE4DBC_26.92%,#1D86C2_68.19%,#2B126F_132.4%)] [border-image-slice:1] mb-2"
                           }
                         />
                         <p className="text-xs">• 100% Satisfaction Guarantee</p>

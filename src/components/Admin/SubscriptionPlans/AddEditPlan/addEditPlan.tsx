@@ -17,10 +17,14 @@ interface AddEditPlanProps {
 const schema = yup.object().shape({
   id: yup.number(),
   name: yup.string().required("Name is required"),
-  pricing: yup
+  pricingInr: yup
     .number()
-    .typeError("Pricing must be a number")
-    .required("Pricing is required "),
+    .typeError("INR Pricing must be a number")
+    .required("INR Pricing is required "),
+  pricingDollar: yup
+    .number()
+    .typeError("Dollar Pricing must be a number")
+    .required("Dollar Pricing is required "),
   token_per_unit: yup
     .number()
     .typeError("Token limit must be a number")
@@ -60,7 +64,8 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
 
   useEffect(() => {
     setValue("name", planData?.name);
-    setValue("pricing", planData?.pricing);
+    setValue("pricingInr", planData?.pricingInr);
+    setValue("pricingDollar", planData?.pricingDollar);
     setValue("token_per_unit", planData?.token_per_unit);
     setValue("chatbots_allowed", planData?.chatbots_allowed);
     setValue("duration_days", planData?.duration_days);
@@ -99,17 +104,33 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
 
           <div>
             <label className="block mb-1 text-sm font-medium">
+              Pricing (&#8377;)
+            </label>
+            <input
+              placeholder="Enter pricing"
+              type="number"
+              {...register("pricingInr", { valueAsNumber: true })}
+              className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
+            />
+            {errors.pricingInr && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.pricingInr.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <label className="block mb-1 text-sm font-medium">
               Pricing ($)
             </label>
             <input
               placeholder="Enter pricing"
               type="number"
-              {...register("pricing", { valueAsNumber: true })}
+              {...register("pricingDollar", { valueAsNumber: true })}
               className="w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
             />
-            {errors.pricing && (
+            {errors.pricingDollar && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.pricing.message}
+                {errors.pricingDollar.message}
               </p>
             )}
           </div>

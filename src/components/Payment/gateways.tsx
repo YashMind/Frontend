@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from '@/store/store';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast';
 import { BsArrowRight } from 'react-icons/bs';
 import { FaPaypal, FaRupeeSign } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
@@ -121,14 +122,14 @@ const Gateways = ({ plan_id, credit }: { plan_id?: string, credit?: string }) =>
             .unwrap()
             .then(async (res) => {
                 setResponseData(res);
-                if (res.payment_session_id) {
-                    await openCashfreeCheckout(res.payment_session_id);
-                } else {
-                    console.error("Invalid payment session ID:", res);
-                    setError(
-                        res.message || "Payment session not created. Please try again."
-                    );
-                }
+                await openCashfreeCheckout(res.payment_session_id);
+
+            }).catch((e) => {
+                toast.error("Payment session creation failed")
+                console.error("Invalid payment session ID:", e);
+                setError(
+                    e.detail || "Payment session not created. Please try again."
+                );
             });
         console.log(`Processing payment with ${selectedGateway}`);
         setTimeout(() => setIsProcessing(false), 2000);

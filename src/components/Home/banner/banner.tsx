@@ -1,8 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { getMeData, isLoggedin } from "@/store/slices/auth/authSlice";
 
 const slideData = [
   {
@@ -30,9 +33,18 @@ const CTAButton = ({ onClick }: { onClick?: () => void }) => (
     Sign up
   </button>
 );
+const CTADashboardButton = ({ onClick }: { onClick?: () => void }) => (
+  <button
+    className="py-[14px] px-[43px] text-white text-base font-medium rounded-[18px] bg-[linear-gradient(90.04deg,_#501794_0.03%,_#3E70A1_101.88%)] hover:from-purple-700 hover:to-blue-600 transition-all cursor-pointer"
+    onClick={onClick}
+  >
+    Dashboard
+  </button>
+);
 
 const HomeBanner = () => {
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     loop: true,
@@ -40,6 +52,14 @@ const HomeBanner = () => {
       setCurrentSlide(slider.track.details.rel);
     },
   });
+
+  const userData: UserProfileData | null = useSelector(
+    (state: RootState) => state.auth.loggedInUser
+  );
+
+  useEffect(() => {
+    dispatch(isLoggedin())
+  }, [])
 
   const slideCount =
     instanceRef.current?.track?.details?.slides?.length || slideData.length;
@@ -63,7 +83,7 @@ const HomeBanner = () => {
                 <p className="my-[26px] font-bold [font-family:'Roboto_Flex',sans-serif]">
                   {slide.description}
                 </p>
-                <CTAButton onClick={() => router.push("/auth/signup")} />
+                {userData ? <CTADashboardButton onClick={() => router.push("/chat-dashboard/main")} /> : <CTAButton onClick={() => router.push("/auth/signup")} />}
               </div>
             </div>
           </div>
@@ -75,13 +95,13 @@ const HomeBanner = () => {
           className="absolute bottom-20 p-3"
           onClick={() => instanceRef.current?.prev()}
         >
-          <img src="/images/arrow-lft.png" alt="Previous" className="cursor-pointer"/>
+          <img src="/images/arrow-lft.png" alt="Previous" className="cursor-pointer" />
         </button>
         <button
           className="absolute bottom-20 right-0 p-3"
           onClick={() => instanceRef.current?.next()}
         >
-          <img src="/images/arrow-right.png" alt="Next" className="cursor-pointer"/>
+          <img src="/images/arrow-right.png" alt="Next" className="cursor-pointer" />
         </button>
       </div>
 
@@ -90,11 +110,10 @@ const HomeBanner = () => {
           <button
             key={idx}
             onClick={() => instanceRef.current?.moveToIdx(idx)}
-            className={`cursor-pointer w-[16px] h-[16px] rounded-full ${
-              currentSlide === idx
-                ? "bg-[#01BEED]"
-                : "bg-transparent border border-[#01BEED]"
-            }`}
+            className={`cursor-pointer w-[16px] h-[16px] rounded-full ${currentSlide === idx
+              ? "bg-[#01BEED]"
+              : "bg-transparent border border-[#01BEED]"
+              }`}
           />
         ))}
       </div>

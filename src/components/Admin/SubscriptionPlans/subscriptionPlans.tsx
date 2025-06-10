@@ -98,7 +98,8 @@ const SubscriptionPlans = () => {
                     <th className="p-4 text-xs font-medium flex items-center gap-1">
                       Plan Name
                     </th>
-                    <th className="p-4 text-xs font-medium">Pricing</th>
+                    <th className="p-4 text-xs font-medium">Pricing (&#8377;)</th>
+                    <th className="p-4 text-xs font-medium">Pricing ($)</th>
                     <th className="p-4 text-xs font-medium">Token Per unit</th>
                     <th className="p-4 text-xs font-medium">Chatbots</th>
                     <th className="p-4 text-xs font-medium">Duration</th>
@@ -120,7 +121,10 @@ const SubscriptionPlans = () => {
                             {item?.name}
                           </td>
                           <td className="p-4 text-[#AEB9E1] text-xs">
-                            $ {item?.pricing}
+                            &#8377; {item?.pricingInr}
+                          </td>
+                          <td className="p-4 text-[#AEB9E1] text-xs">
+                            $ {item?.pricingDollar}
                           </td>
                           <td className="p-4 text-[#AEB9E1] text-xs">
                             {item?.token_per_unit}
