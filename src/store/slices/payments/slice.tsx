@@ -27,8 +27,8 @@ const initialState: PaymentState = {
 };
 
 // Create payment order
-export const createPaymentOrder = createAsyncThunk(
-    'payment/createOrder',
+export const createPaymentOrderCashfree = createAsyncThunk(
+    'payment/createPaymentOrderCashfree',
     async (orderData: {
         customer_id: number;
         return_url: string;
@@ -47,8 +47,30 @@ export const createPaymentOrder = createAsyncThunk(
     }
 );
 
+export const createPaymentOrderPaypal = createAsyncThunk(
+    'payment/createPaymentOrderPaypal',
+    async (orderData: {
+        customer_id: number;
+        return_url: string;
+        plan_id?: number;
+        credit?: number;
+    }, { rejectWithValue }) => {
+        try {
+            const response = await http.post('/payment/paypal/create-paypal-order', orderData);
+            return response.data;
+        } catch (error: any) {
+            if (error.response) {
+                return rejectWithValue(error.response.data);
+            }
+            return rejectWithValue({ message: error.message });
+        }
+    }
+);
+
+
+
 // Verify payment
-export const verifyPayment = createAsyncThunk(
+export const verifyPaymentCashfree = createAsyncThunk(
     'payment/verifyPayment',
     async (verificationData: { order_id: string; payment_id?: string }, { rejectWithValue }) => {
         try {
@@ -62,6 +84,26 @@ export const verifyPayment = createAsyncThunk(
         }
     }
 );
+
+export const fetchIsInternational = createAsyncThunk<
+    { is_international: boolean },
+    void,
+    { rejectValue: { message: string } }
+>(
+    'payment/is-international',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await http.get('/payment/cashfree/is-international');
+            return response.data; // Must be { is_international: boolean }
+        } catch (error: any) {
+            if (error.response) {
+                return rejectWithValue(error.response.data);
+            }
+            return rejectWithValue({ message: error.message });
+        }
+    }
+);
+
 
 const paymentSlice = createSlice({
     name: 'payment',
@@ -78,29 +120,29 @@ const paymentSlice = createSlice({
     extraReducers: (builder) => {
         builder
             // Create Payment Order
-            .addCase(createPaymentOrder.pending, (state) => {
+            .addCase(createPaymentOrderCashfree.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(createPaymentOrder.fulfilled, (state, action) => {
+            .addCase(createPaymentOrderCashfree.fulfilled, (state, action) => {
                 state.loading = false;
                 state.orderId = action.payload.order_id;
                 state.paymentSessionId = action.payload.payment_session_id;
                 state.orderAmount = action.payload.order_amount;
                 state.orderStatus = action.payload.order_status;
             })
-            .addCase(createPaymentOrder.rejected, (state, action) => {
+            .addCase(createPaymentOrderCashfree.rejected, (state, action) => {
                 state.loading = false;
                 state.error = (action.payload as any)?.message || 'Failed to create payment order';
             })
 
             // Verify Payment
-            .addCase(verifyPayment.pending, (state) => {
+            .addCase(verifyPaymentCashfree.pending, (state) => {
                 state.loading = true;
                 state.error = null;
                 state.verificationStatus = null;
             })
-            .addCase(verifyPayment.fulfilled, (state, action) => {
+            .addCase(verifyPaymentCashfree.fulfilled, (state, action) => {
                 state.loading = false;
                 state.verificationStatus = action.payload.status;
                 state.paymentData = action.payload.payment_data;
@@ -108,7 +150,7 @@ const paymentSlice = createSlice({
                     state.orderStatus = 'completed';
                 }
             })
-            .addCase(verifyPayment.rejected, (state, action) => {
+            .addCase(verifyPaymentCashfree.rejected, (state, action) => {
                 state.loading = false;
                 state.error = (action.payload as any)?.message || 'Failed to verify payment';
                 state.verificationStatus = 'FAILED';

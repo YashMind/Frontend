@@ -122,7 +122,7 @@ const ChatbotDashboardHeader = ({
             href="/"
             className="text-white bg-[#05BDFD] text-[15px] rounded-[18px]  font-semibold focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
-            Return to Home
+            Home
           </Link>
 
           <div className="relative inline-block text-left" ref={menuRef}>
