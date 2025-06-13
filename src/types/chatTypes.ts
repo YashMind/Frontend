@@ -152,9 +152,9 @@ export interface ChatbotSettings {
 
 export interface ChatbotDocLinksArray {
   bot_id: number;
-  chars?: number;
+  user_id: number;
+  parent_link_id: number;
   chatbot_name: string;
-  created_at: string;
   document_link: string;
   id: number;
   public: false;
@@ -162,22 +162,25 @@ export interface ChatbotDocLinksArray {
   target_link: string;
   text_content?: string;
   train_from: string;
+  created_at: string;
   updated_at: string;
-  user_id: number;
+  chars?: number;
 }
-
-export interface ChatbotDocLinks {
+export interface ChatbotDocLinksData {
   current_page: number;
-  data: ChatbotDocLinksArray[];
+  data: Array<{
+    source: string;
+    link: ChatbotDocLinksArray[]; // Replace 'any' with a more specific type if you have one
+    total_target_links: number;
+    total_document_links: number;
+    pending_count: number;
+    failed_count: number;
+    indexed_count: number;
+    total_chars: number;
+  }>;
   total_count: number;
   total_pages: number;
   Indexed?: number;
-  total_target_links?: number;
-  total_document_links?: number;
-  pending_count?: number;
-  failed_count?: number;
-  indexed_count?: number;
-  total_chars?: number;
   user_target_links: number;
   user_pending_count: number;
   user_failed_count: number;

@@ -83,7 +83,7 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
         setValue("type", "E-commerce");
       }
     }
-  }, []);
+  }, [prompts]);
 
   useEffect(() => {
     if (prompts) {

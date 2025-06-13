@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import Image from "next/image";
 import AddBotData from "../ChatbotMain/AddData/addData";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
@@ -20,7 +19,7 @@ const ChatbotOverview = ({
   );
   const dispatch = useDispatch<AppDispatch>();
   const hasRun = useRef(false);
-  
+
   useEffect(() => {
     if (hasRun.current) return;
     hasRun.current = true;

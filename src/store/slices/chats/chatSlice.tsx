@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import {
   ArchivedHistoryMessages,
-  ChatbotDocLinks,
+  ChatbotDocLinksData,
   ChatbotFaqs,
   ChatbotFaqsQuesAnswer,
   ChatbotHistoryMessages,
@@ -978,8 +978,8 @@ export const fetchChatMessageTokensToday = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.detail ||
-          error.message ||
-          "Failed to fetch today's tokens"
+        error.message ||
+        "Failed to fetch today's tokens"
       );
     }
   }
@@ -1032,7 +1032,7 @@ const initialState = {
   chatMessages: [] as ChatbotMessages[],
   chatbotHistory: {} as ChatbotHistoryMessages,
   chatbotFaqs: [] as ChatbotFaqsQuesAnswer[],
-  ChatbotDocLinksData: {} as ChatbotDocLinks,
+  ChatbotDocLinksData: {} as ChatbotDocLinksData,
   chatbotLeadsData: {} as ChatbotLeads,
   chatbotLeadMessages: [] as ChatbotMessages[],
   archivedUserMessages: {} as ArchivedHistoryMessages,
