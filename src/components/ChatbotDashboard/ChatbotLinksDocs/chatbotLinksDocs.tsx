@@ -341,7 +341,7 @@ const Table = ({
     </thead>
     <tbody className="bg-[#f7f6fd]">
       {activeSource.link?.map((item: any, index: number) => (
-        <tr key={index} className="border-b border-gray-200">
+        <tr key={index} className="border-b border-gray-200 ">
           <td className="p-4">
             <input
               type="checkbox"
@@ -352,26 +352,27 @@ const Table = ({
               }
             />
           </td>
-          <td className="text-xs font-medium text-black">
+          <td className="text-xs font-medium text-black px-1">
             <div className="flex gap-3">
               <p className="w-2 h-2 bg-[#DE4DBC] rounded-full"></p>
               {item?.status}
             </div>
           </td>
-          <td className="py-4 text-xs font-medium text-black">
+          <td className="py-4 text-xs font-medium text-black px-1">
             {item?.chars}
           </td>
-          <td className="py-4 text-xs font-medium text-black">
-            {item?.target_link || item?.document_link}
+          <td className="py-4 text-xs font-medium text-black max-w-48 overflow-ellipsis">
+            {item?.target_link && <a href={item?.target_link}>{item?.target_link}</a>}
+            {item?.document_link}
           </td>
-          <td className="py-4 text-xs font-medium text-black">
+          <td className="py-4 text-xs font-medium text-black px-1">
             {item?.created_at}
           </td>
-          <td className="truncate max-w-[150px] p-4 text-xs font-medium text-black">
+          <td className="truncate max-w-[150px] p-4 text-xs font-medium text-black px-1">
             -
           </td>
           <td className="py-4">
-            <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black">
+            <span className="bg-[#DEDEDE] py-1 rounded-full text-xs font-medium text-black px-1">
               {item?.train_from}
             </span>
           </td>
