@@ -19,20 +19,14 @@ const ProductMonitoring = () => {
   );
 
   useEffect(() => {
-    dispatch(
-      getAllTools({})
-    );
+    dispatch(getAllTools({}));
 
-    dispatch(
-      getAllBotProducts({})
-    );
+    dispatch(getAllBotProducts({}));
   }, [dispatch]);
 
-
   const handleToolStatusToggle = (tool_id: number) => {
-    dispatch(updateToolsStatus({ id: tool_id, status: true }))
-  }
-
+    dispatch(updateToolsStatus({ id: tool_id, status: true }));
+  };
 
   return (
     <div>
@@ -62,36 +56,44 @@ const ProductMonitoring = () => {
                     </div>
 
                     {productMonitoringData &&
-                      productMonitoringData?.data?.map((item: any, index: any) => {
-                        return (
-                          <div
-                            className="flex items-center justify-between px-8 py-5 bg-[#0A1330]"
-                            key={index}
-                          >
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs">
-                                {item?.name}
-                              </span>
+                      productMonitoringData?.data?.map(
+                        (item: any, index: any) => {
+                          return (
+                            <div
+                              className="flex items-center justify-between px-8 py-5 bg-[#0A1330]"
+                              key={index}
+                            >
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs">{item?.name}</span>
+                              </div>
+
+                              {/* Toggle switch */}
+                              <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  className="sr-only peer"
+                                  checked={item?.status === "active"}
+                                  onChange={() => {
+                                    const newStatus =
+                                      item.status === "active"
+                                        ? "deactive"
+                                        : "active";
+                                    dispatch(
+                                      updateBotProductStatus({
+                                        id: item.id,
+                                        status: newStatus,
+                                      })
+                                    );
+                                  }}
+                                />
+
+                                <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
+                                <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
+                              </label>
                             </div>
-
-                            {/* Toggle switch */}
-                            <label className="relative inline-flex items-center cursor-pointer">
-                              <input
-                                type="checkbox"
-                                className="sr-only peer"
-                                checked={item?.status === "active"}
-                                onChange={() => {
-                                  const newStatus = item.status === "active" ? "deactive" : "active";
-                                  dispatch(updateBotProductStatus({ id: item.id, status: newStatus }));
-                                }}
-                              />
-
-                              <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-[#1e1b4b] transition duration-300"></div>
-                              <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
-                            </label>
-                          </div>
-                        );
-                      })}
+                          );
+                        }
+                      )}
                   </div>
                 </div>
               </div>
@@ -102,7 +104,9 @@ const ProductMonitoring = () => {
               {/* Product Monitoring */}
               <div>
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-2xl font-semibold">Ai Tools and Models</h2>
+                  <h2 className="text-2xl font-semibold">
+                    Ai Tools and Models
+                  </h2>
                 </div>
 
                 <div className=" border border-gray-700 rounded-lg overflow-hidden pb-8 pt-3">
@@ -115,16 +119,24 @@ const ProductMonitoring = () => {
                   <div className="">
                     {/* Name Row */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4  text-white">
-                      {toolsData && toolsData.map((tool, index) => (
-                        <button
-                          key={index}
-                          className={`${tool.status ? "outline-2 outline-green-600" : ""} bg-gray-800 rounded-2xl shadow-md p-4 transition hover:shadow-lg hover:bg-gray-700 cursor-pointer disabled:cursor-not-allowed text-left`}
-                          onClick={() => handleToolStatusToggle(tool.id)}
-                          disabled={tool.tool != "ChatGPT"}
-                        >
-                          <h3 className="text-lg font-semibold mb-1">{tool.tool}</h3>
-                          <p className="text-sm text-gray-300 mb-2">Model: <span className="font-mono">{tool.model}</span></p>
-                          {/* <span
+                      {toolsData &&
+                        toolsData.map((tool, index) => (
+                          <button
+                            key={index}
+                            className={`${
+                              tool.status ? "outline-2 outline-green-600" : ""
+                            } bg-gray-800 rounded-2xl shadow-md p-4 transition hover:shadow-lg hover:bg-gray-700 cursor-pointer disabled:cursor-not-allowed text-left`}
+                            onClick={() => handleToolStatusToggle(tool.id)}
+                            // disabled={tool.tool != "ChatGPT"}
+                          >
+                            <h3 className="text-lg font-semibold mb-1">
+                              {tool.tool}
+                            </h3>
+                            <p className="text-sm text-gray-300 mb-2">
+                              Model:{" "}
+                              <span className="font-mono">{tool.model}</span>
+                            </p>
+                            {/* <span
                             className={`text-xs px-2 py-0.5 rounded-full ${tool.status === true
                               ? "bg-green-600 text-white"
                               : "bg-red-600 text-white"
@@ -132,11 +144,9 @@ const ProductMonitoring = () => {
                           >
                             {tool.status}
                           </span> */}
-                        </button>
-                      ))}
+                          </button>
+                        ))}
                     </div>
-
-
                   </div>
                 </div>
               </div>
