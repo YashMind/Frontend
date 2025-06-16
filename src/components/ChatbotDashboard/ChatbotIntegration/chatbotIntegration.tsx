@@ -1,10 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PhoneDialog from "./whatsappDialog";
+import { ZapierDialog } from "./ZapierDialog";
+import { useDispatch, useSelector } from "react-redux";
+import { ChatbotsData } from "@/types/chatTypes";
+import { RootState } from "@/store/store";
+import { DownloadButton } from "./downloadWordpress";
 
 const ChatbotIntegration = ({ botId }: { botId?: number }) => {
-  const [openWhatsappDialog, setOpenWhatsappDialog] = useState<boolean>();
+  const dispatch = useDispatch();
+  const [openDialog, setOpenDialog] = useState<{
+    whatsapp: boolean;
+    zapier: boolean;
+  }>({
+    whatsapp: false,
+    zapier: false,
+  });
+  const chatbotData: ChatbotsData = useSelector(
+    (state: RootState) => state.chat.chatbotData
+  );
 
   const slackUrl = process.env.NEXT_PUBLIC_SLACK_URL;
+  const zapierUrl = process.env.NEXT_PUBLIC_ZAPIER_URL;
 
   return (
     <div className="w-full m-10">
@@ -20,8 +36,11 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
             Use your chatbot to respond to incoming messages to your Instagram
             business account.
           </p>
-          <button className="cursor-pointer bg-[#CC39A2] text-white px-4 py-1 rounded-full text-[12px] font-bold">
-            Export All
+          <button
+            disabled
+            className="cursor-pointer bg-[#CC39A2] text-white px-4 py-1 rounded-full text-[12px] font-bold disabled:cursor-not-allowed"
+          >
+            Coming Soon
           </button>
         </div>
 
@@ -36,7 +55,9 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
             24/7 responses.
           </p>
           <button
-            onClick={() => setOpenWhatsappDialog(true)}
+            onClick={() =>
+              setOpenDialog((prev) => ({ ...prev, whatsapp: true }))
+            }
             className="cursor-pointer bg-[#60D669] text-white px-4 py-1 rounded-full text-[12px] font-bold"
           >
             Connect Number
@@ -50,11 +71,18 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
           </div>
           <h2 className="pt-[9px] font-medium text-sm">Wordpress</h2>
           <p className="text-xs py-[9px] font-light">
-            Connect your bot with Slack workspaces for a seamless integration.
+            Connect your bot with Wordpress site for a seamless integration.
           </p>
-          <button className="cursor-pointer bg-[#0073AA] text-white px-4 py-1 rounded-full text-[12px] font-bold">
-            Export All
-          </button>
+          {/* <a
+            href="/wordpress/devbot.zip"
+            className="cursor-pointer bg-[#0073AA] text-white px-4 py-1 rounded-full text-[12px] font-bold"
+          >
+            Download Zip
+          </a> */}
+          <DownloadButton
+            fileUrl="/wordpress/devbot.zip"
+            fileName="yashraa_ai_wordpress.zip"
+          />
         </div>
 
         {/* Card 4 */}
@@ -67,8 +95,11 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
             Use AI-powered automation with Zapier AI Actions to create more
             intelligent workflows.
           </p>
-          <button className="cursor-pointer bg-[#FF4F00] text-white px-4 py-1 rounded-full text-[12px] font-bold">
-            Export All
+          <button
+            className="cursor-pointer bg-[#FF4F00] text-white px-4 py-1 rounded-full text-[12px] font-bold"
+            onClick={() => setOpenDialog((prev) => ({ ...prev, zapier: true }))}
+          >
+            Connect
           </button>
         </div>
 
@@ -100,15 +131,25 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
             Use your chatbot to automatically reply to your Facebook pages
             messages or comments.
           </p>
-          <button className="cursor-pointer bg-[#466CFF] text-white px-4 py-1 rounded-full text-[12px] font-bold">
-            Export All
+          <button
+            disabled
+            className="cursor-pointer bg-[#466CFF] text-white px-4 py-1 rounded-full text-[12px] font-bold disabled:cursor-not-allowed"
+          >
+            Coming Soon
           </button>
         </div>
       </div>
+      {}
+      <ZapierDialog
+        link={zapierUrl}
+        token={chatbotData.token}
+        isOpen={openDialog.zapier}
+        onClose={() => setOpenDialog((prev) => ({ ...prev, zapier: false }))}
+      />
       <PhoneDialog
         botId={botId}
-        isOpen={openWhatsappDialog}
-        onClose={() => setOpenWhatsappDialog(false)}
+        isOpen={openDialog.whatsapp}
+        onClose={() => setOpenDialog((prev) => ({ ...prev, whatsapp: false }))}
       />
     </div>
   );
