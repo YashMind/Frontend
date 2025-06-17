@@ -22,6 +22,7 @@ import {
 } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 import ConfirmationModal from "./deactivateWhatsappConfirmation";
+import Link from "next/link";
 
 const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
   const [formData, setFormData] = useState({
@@ -169,12 +170,16 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col">
       <header className="bg-white shadow-sm py-4 px-6">
         <div className="max-w-4xl mx-auto flex items-center">
-          <button
-            onClick={() => router.back()}
+          <Link
+            href="#" // You can't use router.back() directly in href
+            onClick={(e) => {
+              e.preventDefault();
+              router.back();
+            }}
             className="mr-4 p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
           >
             <FiArrowLeft size={20} />
-          </button>
+          </Link>
           <h1 className="text-xl font-semibold text-gray-800">
             {isRegistered ? "Manage" : "Connect"} WhatsApp Business Account
           </h1>
