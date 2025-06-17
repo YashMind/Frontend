@@ -131,20 +131,22 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           <div className="flex items-center gap-2">
             <div className="flex gap-4">
               <button
-                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${isDisabled
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-purple-600 hover:bg-purple-700"
-                  }`}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
+                  isDisabled
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-purple-600 hover:bg-purple-700"
+                }`}
                 disabled={isDisabled}
                 onClick={() => handleExportDownloadPdf()}
               >
                 Export
               </button>
               <button
-                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${isDisabled
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-red-500 hover:bg-red-600"
-                  }`}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
+                  isDisabled
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-red-500 hover:bg-red-600"
+                }`}
                 disabled={isDisabled}
                 onClick={() => handleDeleteChat()}
               >
@@ -238,7 +240,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
             <tbody className="bg-[#f7f6fd]">
               {chatUserHistory?.data &&
                 Object.entries(chatUserHistory?.data).map(
-                  ([chatId, messages]: any, idx) => {
+                  ([chatId, { platform, messages }]: any, idx) => {
                     const lastMessage = messages[messages?.length - 2];
                     const timeAgo = formatDistanceToNow(
                       new Date(lastMessage?.created_at),
@@ -268,12 +270,12 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
                         <td className="p-4 text-xs font-medium text-black">
                           Original
                         </td>
-                        <td className=" truncate max-w-[150px] p-4 text-xs font-medium text-black">
+                        <td className="truncate max-w-[150px] p-4 text-xs font-medium text-black">
                           {lastMessage?.message?.slice(0, 25)}...
                         </td>
                         <td className="py-4">
-                          <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black">
-                            Web
+                          <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black capitalize">
+                            {platform ?? "Web"}
                           </span>
                         </td>
                         <td className="py-4 flex items-center gap-2">
@@ -310,8 +312,9 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           </button>
           {chatUserHistory?.totalPages >= 1 ? (
             <button
-              className={`w-6 h-6 ${page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
-                }   text-black rounded-[7px] text-sm`}
+              className={`w-6 h-6 ${
+                page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
+              }   text-black rounded-[7px] text-sm`}
             >
               1
             </button>
@@ -326,10 +329,11 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           ) : null}
           {chatUserHistory?.totalPages > 1 ? (
             <button
-              className={`w-6 h-6 ${chatUserHistory?.totalPages === page
-                ? "bg-[#624DE3]"
-                : "bg-gray-200"
-                } text-black rounded-[7px] text-sm`}
+              className={`w-6 h-6 ${
+                chatUserHistory?.totalPages === page
+                  ? "bg-[#624DE3]"
+                  : "bg-gray-200"
+              } text-black rounded-[7px] text-sm`}
             >
               {chatUserHistory?.totalPages}
             </button>

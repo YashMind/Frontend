@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import PhoneDialog from "./whatsappDialog";
+import React, { useState } from "react";
 import { ZapierDialog } from "./ZapierDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { ChatbotsData } from "@/types/chatTypes";
@@ -7,12 +6,9 @@ import { RootState } from "@/store/store";
 import { DownloadButton } from "./downloadWordpress";
 
 const ChatbotIntegration = ({ botId }: { botId?: number }) => {
-  const dispatch = useDispatch();
   const [openDialog, setOpenDialog] = useState<{
-    whatsapp: boolean;
     zapier: boolean;
   }>({
-    whatsapp: false,
     zapier: false,
   });
   const chatbotData: ChatbotsData = useSelector(
@@ -54,14 +50,12 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
             Connect your chatbot to a WhatsApp business number for automatic
             24/7 responses.
           </p>
-          <button
-            onClick={() =>
-              setOpenDialog((prev) => ({ ...prev, whatsapp: true }))
-            }
+          <a
+            href={`/chatbot-dashboard/integration/${botId}/whatsapp`}
             className="cursor-pointer bg-[#60D669] text-white px-4 py-1 rounded-full text-[12px] font-bold"
           >
-            Connect Number
-          </button>
+            Connect
+          </a>
         </div>
 
         {/* Card 3 */}
@@ -145,11 +139,6 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
         token={chatbotData.token}
         isOpen={openDialog.zapier}
         onClose={() => setOpenDialog((prev) => ({ ...prev, zapier: false }))}
-      />
-      <PhoneDialog
-        botId={botId}
-        isOpen={openDialog.whatsapp}
-        onClose={() => setOpenDialog((prev) => ({ ...prev, whatsapp: false }))}
       />
     </div>
   );

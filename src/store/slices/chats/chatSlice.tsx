@@ -978,8 +978,8 @@ export const fetchChatMessageTokensToday = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.detail ||
-        error.message ||
-        "Failed to fetch today's tokens"
+          error.message ||
+          "Failed to fetch today's tokens"
       );
     }
   }
@@ -987,7 +987,17 @@ export const fetchChatMessageTokensToday = createAsyncThunk(
 
 export const registerWhatsappPhoneNumber = createAsyncThunk(
   "integration/registerWhatsappPhoneNumber",
-  async (data: { whatsapp_number: string; bot_id: number }, thunkAPI) => {
+  async (
+    data: {
+      whatsapp_number: string;
+      bot_id: number;
+      access_token: string;
+      phone_number_id: string;
+      business_account_id: string;
+      webhook_secret: string;
+    },
+    thunkAPI
+  ) => {
     try {
       const response = await http.post("/whatsapp/register", data, {
         withCredentials: true,
