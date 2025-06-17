@@ -1011,6 +1011,83 @@ export const registerWhatsappPhoneNumber = createAsyncThunk(
   }
 );
 
+interface WhatsAppRegistration {
+  whatsapp_number: string;
+  phone_number_id: string;
+  business_account_id: string;
+  is_active: boolean;
+  opt_in_date: string;
+}
+
+interface WhatsAppUpdateData {
+  access_token?: string;
+  phone_number_id?: string;
+  business_account_id?: string;
+  webhook_secret?: string;
+  is_active?: boolean;
+}
+
+export const fetchWhatsappRegistration = createAsyncThunk(
+  "integration/fetchWhatsappRegistration",
+  async (bot_id: number, thunkAPI) => {
+    try {
+      const response = await http.get(`/whatsapp/${bot_id}`, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error?.response?.data?.detail || "Failed to fetch WhatsApp registration"
+      );
+    }
+  }
+);
+
+export const updateWhatsappRegistration = createAsyncThunk(
+  "integration/updateWhatsappRegistration",
+  async (
+    data: {
+      bot_id: number;
+      access_token?: string;
+      phone_number_id?: string;
+      business_account_id?: string;
+      webhook_secret?: string;
+      is_active?: boolean;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const { bot_id, ...updateData } = data;
+      const response = await http.put(`/whatsapp/${bot_id}`, updateData, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error?.response?.data?.detail ||
+          "Failed to update WhatsApp registration"
+      );
+    }
+  }
+);
+
+export const deactivateWhatsappRegistration = createAsyncThunk(
+  "integration/deactivateWhatsappRegistration",
+  async (bot_id: number, thunkAPI) => {
+    try {
+      const response = await http.delete(`/whatsapp/${bot_id}`, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error?.response?.data?.detail ||
+          "Failed to deactivate WhatsApp registration"
+      );
+    }
+  }
+);
+
 export const fetchArchivedUserMessages = createAsyncThunk(
   "messages/fetchArchivedUserMessages",
   async (
