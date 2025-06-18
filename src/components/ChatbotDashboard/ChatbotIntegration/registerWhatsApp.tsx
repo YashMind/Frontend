@@ -73,8 +73,6 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-      access_token: "",
-      webhook_secret: "",
     }));
   };
 
@@ -339,9 +337,8 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
               <button
                 onClick={handleSubmit}
                 disabled={isLoading}
-                className={`flex-1 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all ${
-                  isLoading ? "opacity-80 cursor-not-allowed" : "shadow-lg"
-                }`}
+                className={`flex-1 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all ${isLoading ? "opacity-80 cursor-not-allowed" : "shadow-lg"
+                  }`}
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center">
