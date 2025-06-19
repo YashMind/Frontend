@@ -142,7 +142,7 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
       { }
       <AccessDownloadDialog
         token={chatbotData.token}
-        fileUrl="/api/wordpress/devbot.zip"
+        fileUrl="/wordpress/yashraa_wordpress.zip"
         isOpen={openDialog.wordpress}
         onClose={() => setOpenDialog((prev) => ({ ...prev, wordpress: false }))}
       />
