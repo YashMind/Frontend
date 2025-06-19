@@ -106,13 +106,19 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
           <p className="text-xs py-[9px] font-light">
             Connect your bot with Slack workspaces for a seamless integration.
           </p>
-          <a
+          {/* <a
             href={slackUrl + `bot_id=${botId}`}
             className="cursor-pointer bg-[#EBB02E] text-white px-4 py-1 rounded-full text-[12px] font-bold"
             target="_blank"
           >
             Connect
-          </a>
+          </a> */}
+          <Link
+            href={`/chatbot-dashboard/integration/${botId}/slack`}
+            className="cursor-pointer bg-[#EBB02E] text-white px-4 py-1 rounded-full text-[12px] font-bold"
+          >
+            Connect
+          </Link>
         </div>
 
         {/* Card 6 */}
