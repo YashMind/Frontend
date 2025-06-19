@@ -372,7 +372,7 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
 
                                             <a
                                                 // onClick={() => startOAuthFlow()}
-                                                href={`${process.env.NEXT_PUBLIC_API_URL}/api/slack/oauth/start?bot_id=${botId}&client_id=${formData.client_id}`}
+                                                href={`${process.env.NEXT_PUBLIC_API_URL}/slack/oauth/start?bot_id=${botId}&client_id=${formData.client_id}`}
 
                                                 className={`py-3 px-8 rounded-lg font-medium text-white bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all shadow-lg flex items-center justify-center mx-auto ${isConnecting ? "opacity-80" : ""
                                                     }`}
