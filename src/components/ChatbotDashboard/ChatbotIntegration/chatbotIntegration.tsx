@@ -3,13 +3,16 @@ import { ZapierDialog } from "./ZapierDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { ChatbotsData } from "@/types/chatTypes";
 import { RootState } from "@/store/store";
-import { DownloadButton } from "./downloadWordpress";
+import AccessDownloadDialog, { DownloadButton } from "./downloadWordpress";
+import Link from "next/link";
 
 const ChatbotIntegration = ({ botId }: { botId?: number }) => {
   const [openDialog, setOpenDialog] = useState<{
     zapier: boolean;
+    wordpress: boolean
   }>({
     zapier: false,
+    wordpress: false,
   });
   const chatbotData: ChatbotsData = useSelector(
     (state: RootState) => state.chat.chatbotData
@@ -50,12 +53,12 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
             Connect your chatbot to a WhatsApp business number for automatic
             24/7 responses.
           </p>
-          <a
+          <Link
             href={`/chatbot-dashboard/integration/${botId}/whatsapp`}
             className="cursor-pointer bg-[#60D669] text-white px-4 py-1 rounded-full text-[12px] font-bold"
           >
             Connect
-          </a>
+          </Link>
         </div>
 
         {/* Card 3 */}
@@ -67,16 +70,13 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
           <p className="text-xs py-[9px] font-light">
             Connect your bot with Wordpress site for a seamless integration.
           </p>
-          {/* <a
-            href="/wordpress/devbot.zip"
-            className="cursor-pointer bg-[#0073AA] text-white px-4 py-1 rounded-full text-[12px] font-bold"
+
+          <button
+            className="cursor-pointer bg-[#FF4F00] text-white px-4 py-1 rounded-full text-[12px] font-bold"
+            onClick={() => setOpenDialog((prev) => ({ ...prev, wordpress: true }))}
           >
-            Download Zip
-          </a> */}
-          <DownloadButton
-            fileUrl="/wordpress/devbot.zip"
-            fileName="yashraa_ai_wordpress.zip"
-          />
+            Connect
+          </button>
         </div>
 
         {/* Card 4 */}
@@ -133,7 +133,14 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
           </button>
         </div>
       </div>
-      {}
+      { }
+      <AccessDownloadDialog
+        token={chatbotData.token}
+        fileUrl="/api/wordpress/devbot.zip"
+        isOpen={openDialog.wordpress}
+        onClose={() => setOpenDialog((prev) => ({ ...prev, wordpress: false }))}
+      />
+
       <ZapierDialog
         link={zapierUrl}
         token={chatbotData.token}

@@ -24,8 +24,11 @@ import { FaWhatsapp } from "react-icons/fa";
 import ConfirmationModal from "./deactivateWhatsappConfirmation";
 import Link from "next/link";
 
+const MASK = "••••••••••••"; // Consistent mask for all sensitive fields
+
 const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
   const [formData, setFormData] = useState({
+    is_active: false,
     whatsapp_number: "",
     access_token: "",
     phone_number_id: "",
@@ -42,6 +45,10 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showDocs, setShowDocs] = useState(true);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const [webhookSetupMode, setWebhookSetupMode] = useState(false);
+  const [initialWebhookSecret, setInitialWebhookSecret] = useState("");
+  const [isAccessTokenChanged, setIsAccessTokenChanged] = useState(false);
+  const [isWebhookSecretChanged, setIsWebhookSecretChanged] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
@@ -52,14 +59,19 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
         const res = await dispatch(fetchWhatsappRegistration(botId)).unwrap();
         if (res) {
           setFormData({
-            whatsapp_number: res.whatsapp_number,
+            is_active: res.is_active,
+            whatsapp_number: "+" + res.whatsapp_number,
             phone_number_id: res.phone_number_id,
             business_account_id: res.business_account_id,
-            access_token:
-              "•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••",
-            webhook_secret: "••••••••••••••••••••••••••••",
+            access_token: res.access_token ? MASK : "",
+            webhook_secret: res.webhook_secret ? MASK : "",
           });
+          setInitialWebhookSecret(res.webhook_secret || "");
           setIsRegistered(true);
+
+          // Reset change trackers
+          setIsAccessTokenChanged(false);
+          setIsWebhookSecretChanged(false);
         }
       } catch (error) {
         setIsRegistered(false);
@@ -70,34 +82,50 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+
+    // Track changes to sensitive fields
+    if (name === "access_token") {
+      setIsAccessTokenChanged(true);
+    } else if (name === "webhook_secret") {
+      setIsWebhookSecretChanged(true);
+    }
+
+    setFormData(prev => ({
       ...prev,
       [name]: value,
     }));
   };
 
   const validateForm = () => {
-    if (!formData.whatsapp_number) {
-      setError("WhatsApp Business Number is required");
-      return false;
-    }
-    if (!formData.access_token || formData.access_token.startsWith("•••")) {
-      setError("Access Token is required");
-      return false;
-    }
-    if (!formData.phone_number_id) {
-      setError("Phone Number ID is required");
-      return false;
-    }
-    if (!formData.business_account_id) {
-      setError("Business Account ID is required");
-      return false;
-    }
-    if (!formData.webhook_secret || formData.webhook_secret.startsWith("•••")) {
-      setError("Webhook Secret is required");
-      return false;
-    }
+    // Clear previous errors
     setError(null);
+
+    // Validate required fields
+    const requiredFields = [
+      { name: "whatsapp_number", label: "WhatsApp Business Number" },
+      { name: "phone_number_id", label: "Phone Number ID" },
+      { name: "business_account_id", label: "Business Account ID" },
+    ];
+
+    for (const field of requiredFields) {
+      if (!formData[field.name as keyof typeof formData]) {
+        setError(`${field.label} is required`);
+        return false;
+      }
+    }
+
+    // Validate new registrations
+    if (!isRegistered) {
+      if (!formData.access_token || formData.access_token === MASK) {
+        setError("Access Token is required");
+        return false;
+      }
+      if (!formData.webhook_secret || formData.webhook_secret === MASK) {
+        setError("Webhook Verification Token is required");
+        return false;
+      }
+    }
+
     return true;
   };
 
@@ -111,40 +139,42 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
 
     setIsLoading(true);
     try {
-      if (isRegistered) {
-        await dispatch(
-          updateWhatsappRegistration({
-            bot_id: botId,
-            whatsapp_number: formData.whatsapp_number,
-            access_token: formData.access_token,
-            phone_number_id: formData.phone_number_id,
-            business_account_id: formData.business_account_id,
-            webhook_secret: formData.webhook_secret,
-          })
-        ).unwrap();
-        toast.success("WhatsApp integration updated successfully!");
-      } else {
-        await dispatch(
-          registerWhatsappPhoneNumber({
-            bot_id: botId,
-            whatsapp_number: formData.whatsapp_number,
-            access_token: formData.access_token,
-            phone_number_id: formData.phone_number_id,
-            business_account_id: formData.business_account_id,
-            webhook_secret: formData.webhook_secret,
-          })
-        ).unwrap();
-        toast.success("WhatsApp integration successful!");
+      const whatsapp_number = formData.whatsapp_number.replace(/\D/g, '');
+      const payload: any = {
+        bot_id: botId,
+        whatsapp_number,
+        phone_number_id: formData.phone_number_id,
+        business_account_id: formData.business_account_id,
+      };
+
+      // Only include changed tokens
+      if (isAccessTokenChanged && formData.access_token !== MASK) {
+        payload.access_token = formData.access_token;
       }
-      router.push(`/chatbot-dashboard/integration/${botId}`);
+      if (isWebhookSecretChanged && formData.webhook_secret !== MASK) {
+        payload.webhook_secret = formData.webhook_secret;
+      }
+
+      if (!isRegistered) {
+        await dispatch(registerWhatsappPhoneNumber(payload)).unwrap();
+        setInitialWebhookSecret(formData.webhook_secret);
+        setWebhookSetupMode(true);
+        toast.success("WhatsApp integration saved! Now configure your webhook.");
+      } else {
+        await dispatch(updateWhatsappRegistration(payload)).unwrap();
+        toast.success("WhatsApp integration updated successfully!");
+        router.push(`/chatbot-dashboard/integration/${botId}`);
+      }
     } catch (e: any) {
       console.error("Operation failed:", e);
-      toast.error(e || "Failed to process WhatsApp integration");
-      setError(e || "Operation failed. Please check your credentials.");
+      toast.error(e.message || "Failed to process WhatsApp integration");
+      setError(e.message || "Operation failed. Please check your credentials.");
     } finally {
       setIsLoading(false);
     }
   };
+
+
   const toggleSection = (section: string) => {
     setExpandedSection(expandedSection === section ? null : section);
   };
@@ -162,6 +192,11 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
       setIsDeleting(false);
       setShowDeleteModal(false);
     }
+  };
+
+  const completeWebhookSetup = () => {
+    setWebhookSetupMode(false);
+    router.push(`/chatbot-dashboard/integration/${botId}`);
   };
 
   return (
@@ -185,200 +220,221 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
       </header>
 
       <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex">
-        <div className="max-w-2xl h-fit my-auto mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-          {isRegistered && (
-            <div className="bg-green-50 border-b border-green-100 p-4 flex items-center">
-              <FaWhatsapp className="text-green-600 mr-2 text-xl" />
-              <span className="text-green-800 font-medium">
-                WhatsApp is already connected to this bot
-              </span>
+        {webhookSetupMode ? (
+          <div className="max-w-2xl h-fit my-auto mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                Webhook Configuration
+              </h2>
+              <p className="text-gray-600">
+                Follow these steps to complete your WhatsApp integration setup
+              </p>
             </div>
-          )}
 
-          <div className="p-6 border-b border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
-              WhatsApp Business Integration
-            </h2>
-            <p className="text-gray-600">
-              {isRegistered
-                ? "Update your WhatsApp Business Account connection"
-                : "Connect your WhatsApp Business Account to start interacting with customers"}
-            </p>
-          </div>
+            <div className="p-6 space-y-6">
+              <div className="space-y-4">
+                <h3 className="font-medium text-gray-800">Step 1: Configure Webhook in Facebook</h3>
+                <ol className="list-decimal pl-5 space-y-2 text-sm text-gray-700">
+                  <li>Go to <a href="https://developers.facebook.com/apps/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Facebook Developer Portal</a></li>
+                  <li>Select your WhatsApp Business app</li>
+                  <li>Navigate to "WhatsApp" → "Configuration" → "Webhooks"</li>
+                  <li>Click on "Edit" for the "Messages" subscription</li>
+                  <li>Set the Callback URL to:
+                    <code className="block bg-gray-100 p-2 rounded mt-1 text-xs">
+                      https://yashraa.ai/api/whatsapp/webhook
+                    </code>
+                  </li>
+                  <li>Set the Verification Token to:
+                    <code className="block bg-gray-100 p-2 rounded mt-1 text-xs">
+                      {initialWebhookSecret}
+                    </code>
+                  </li>
+                  <li>Subscribe to the following fields: "messages", "message_template_status_update"</li>
+                </ol>
+              </div>
 
-          <div className="p-6 space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* WhatsApp Business Number */}
-              <div className="col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  WhatsApp Business Number
-                  <span className="text-red-500 ml-1">*</span>
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="whatsapp_number"
-                    value={formData.whatsapp_number}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="e.g., 98xxxxxxxx"
-                  />
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                    <FiHelpCircle className="text-gray-400" />
-                  </div>
-                </div>
-                <p className="mt-1 text-xs text-gray-500">
-                  The number registered in Facebook Business Manager
+              <div className="space-y-4">
+                <h3 className="font-medium text-gray-800">Step 2: Verify Webhook</h3>
+                <p className="text-sm text-gray-700">
+                  After saving the webhook configuration, Facebook will send a verification request.
+                  Our system will automatically verify it using the token you provided.
                 </p>
               </div>
 
-              {/* Phone Number ID */}
-              <div className="col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone Number ID
-                  <span className="text-red-500 ml-1">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="phone_number_id"
-                  value={formData.phone_number_id}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="e.g., 987456321789654"
-                />
+              <div className="pt-4">
+                <button
+                  onClick={completeWebhookSetup}
+                  className="w-full py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-lg"
+                >
+                  I've completed the webhook setup
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="max-w-2xl h-fit my-auto mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+            {isRegistered && (
+              <div className="bg-green-50 border-b border-green-100 p-4 flex items-center">
+                <FaWhatsapp className="text-green-600 mr-2 text-xl" />
+                <span className="text-green-800 font-medium">
+                  WhatsApp is already connected to this bot
+                </span>
+              </div>
+            )}
+
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                WhatsApp Business Integration
+              </h2>
+              <p className="text-gray-600">
+                {isRegistered
+                  ? "Update your WhatsApp Business Account connection"
+                  : "Connect your WhatsApp Business Account to start interacting with customers"}
+              </p>
+            </div>
+
+            <div className="p-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* WhatsApp Business Number */}
+                <div className="col-span-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    WhatsApp Business Number
+                    <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="whatsapp_number"
+                      value={formData.whatsapp_number}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="e.g., 98xxxxxxxx"
+                    />
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <FiHelpCircle className="text-gray-400" />
+                    </div>
+                  </div>
+                  <p className="mt-1 text-xs text-gray-500">
+                    The number registered in Facebook Business Manager
+                  </p>
+                </div>
+
+                {/* Phone Number ID */}
+                <div className="col-span-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Phone Number ID
+                    <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="phone_number_id"
+                    value={formData.phone_number_id}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="e.g., 987456321789654"
+                  />
+                </div>
+
+                {/* Business Account ID */}
+                <div className="col-span-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Business Account ID
+                    <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="business_account_id"
+                    value={formData.business_account_id}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="e.g., 123456789098765"
+                  />
+                </div>
+
+                {/* Webhook Secret */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Webhook Verification Token
+                    {!isRegistered && <span className="text-red-500 ml-1">*</span>}
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showWebhookSecret ? "text" : "password"}
+                      name="webhook_secret"
+                      value={formData.webhook_secret}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
+                      placeholder="Verification token"
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      onClick={() => setShowWebhookSecret(!showWebhookSecret)}
+                    >
+                      {showWebhookSecret ? (
+                        <FiEyeOff className="text-gray-500" />
+                      ) : (
+                        <FiEye className="text-gray-500" />
+                      )}
+                    </button>
+                  </div>
+                  <p className="mt-1 text-xs text-gray-500">
+                    {isWebhookSecretChanged
+                      ? "Update your webhook settings on Facebook after changing this"
+                      : "Leave unchanged to keep existing token"}
+                  </p>
+                </div>
+
               </div>
 
-              {/* Business Account ID */}
-              <div className="col-span-1">
+              {/* Access Token */}
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Business Account ID
-                  <span className="text-red-500 ml-1">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="business_account_id"
-                  value={formData.business_account_id}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="e.g., 123456789098765"
-                />
-              </div>
-
-              {/* Webhook Secret */}
-              <div className="col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Webhook Verification Token
-                  <span className="text-red-500 ml-1">*</span>
+                  Facebook Access Token
+                  {!isRegistered && <span className="text-red-500 ml-1">*</span>}
                 </label>
                 <div className="relative">
                   <input
-                    type={showWebhookSecret ? "text" : "password"}
-                    name="webhook_secret"
-                    value={formData.webhook_secret}
+                    type={showAccessToken ? "text" : "password"}
+                    name="access_token"
+                    value={formData.access_token}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
-                    placeholder="Verification token"
+                    placeholder="Enter your access token"
                   />
                   <button
                     type="button"
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    onClick={() => setShowWebhookSecret(!showWebhookSecret)}
+                    onClick={() => setShowAccessToken(!showAccessToken)}
                   >
-                    {showWebhookSecret ? (
+                    {showAccessToken ? (
                       <FiEyeOff className="text-gray-500" />
                     ) : (
                       <FiEye className="text-gray-500" />
                     )}
                   </button>
                 </div>
+                <p className="mt-1 text-xs text-gray-500">
+                  {isRegistered && !isAccessTokenChanged
+                    ? "Leave unchanged to keep existing token"
+                    : "Token from Facebook Developer Portal"}
+                </p>
               </div>
-            </div>
 
-            {/* Access Token */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Facebook Access Token
-                <span className="text-red-500 ml-1">*</span>
-              </label>
-              <div className="relative">
-                <input
-                  type={showAccessToken ? "text" : "password"}
-                  name="access_token"
-                  value={formData.access_token}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
-                  placeholder="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                />
+              {error && (
+                <div className="p-4 bg-red-50 text-red-700 rounded-lg border border-red-200">
+                  {error}
+                </div>
+              )}
+
+              <div className="pt-4 flex gap-4">
                 <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowAccessToken(!showAccessToken)}
+                  onClick={handleSubmit}
+                  disabled={isLoading}
+                  className={`flex-1 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all ${isLoading ? "opacity-80 cursor-not-allowed" : "shadow-lg"
+                    }`}
                 >
-                  {showAccessToken ? (
-                    <FiEyeOff className="text-gray-500" />
-                  ) : (
-                    <FiEye className="text-gray-500" />
-                  )}
-                </button>
-              </div>
-              <p className="mt-1 text-xs text-gray-500">
-                Token from Facebook Developer Portal with
-                whatsapp_business_messaging permissions
-              </p>
-            </div>
-
-            {error && (
-              <div className="p-4 bg-red-50 text-red-700 rounded-lg border border-red-200">
-                {error}
-              </div>
-            )}
-
-            <div className="pt-4 flex gap-4">
-              <button
-                onClick={handleSubmit}
-                disabled={isLoading}
-                className={`flex-1 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all ${isLoading ? "opacity-80 cursor-not-allowed" : "shadow-lg"
-                  }`}
-              >
-                {isLoading ? (
-                  <span className="flex items-center justify-center">
-                    <svg
-                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    {isRegistered ? "Updating..." : "Connecting..."}
-                  </span>
-                ) : isRegistered ? (
-                  "Update Integration"
-                ) : (
-                  "Connect WhatsApp Account"
-                )}
-              </button>
-
-              {isRegistered && (
-                <button
-                  type="button"
-                  onClick={() => setShowDeleteModal(true)}
-                  disabled={isDeleting}
-                  className="flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all shadow-lg"
-                >
-                  {isDeleting ? (
+                  {isLoading ? (
                     <span className="flex items-center justify-center">
                       <svg
                         className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -400,70 +456,144 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
-                      Disconnecting...
+                      {isRegistered ? "Updating..." : "Connecting..."}
                     </span>
+                  ) : isRegistered ? (
+                    "Update Integration"
                   ) : (
-                    <>
-                      <FiTrash2 size={18} />
-                      Disconnect
-                    </>
+                    "Connect WhatsApp Account"
                   )}
                 </button>
-              )}
-            </div>
-          </div>
 
-          <div className="bg-blue-50 border-t border-blue-100 p-6">
-            <h3 className="font-medium text-blue-800 flex items-center">
-              <FiHelpCircle className="mr-2" />
-              Configuration Instructions
-            </h3>
-            <ul className="mt-2 text-sm text-blue-700 space-y-1">
-              <li>• Your credentials will be encrypted and stored securely</li>
-              <li>
-                • Use the webhook URL:{" "}
-                <code className="bg-blue-100 px-1 rounded">
-                  https://yashraa.ai/api/whatsapp/webhook
-                </code>
-              </li>
-              <li>
-                • Ensure your webhook verification token matches the one in
-                Facebook settings
-              </li>
-              <li>
-                • Grant{" "}
-                <code className="bg-blue-100 px-1 rounded">
-                  whatsapp_business_messaging
-                </code>{" "}
-                permissions
-              </li>
-            </ul>
-            <div className="mt-3">
-              <a
-                href="https://developers.facebook.com/docs/whatsapp/cloud-api/get-started"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm"
-              >
-                Facebook API Documentation
-                <svg
-                  className="ml-1 w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                  ></path>
-                </svg>
-              </a>
+                {isRegistered && (
+                  formData.is_active ? (
+                    <button
+                      type="button"
+                      onClick={() => setShowDeleteModal(true)}
+                      disabled={isDeleting}
+                      className="flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all shadow-lg"
+                    >
+                      {isDeleting ? (
+                        <span className="flex items-center justify-center">
+                          <svg
+                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                          Disconnecting...
+                        </span>
+                      ) : (
+                        <>
+                          <FiTrash2 size={18} />
+                          Disconnect
+                        </>
+                      )}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleSubmit}
+                      disabled={isLoading}
+                      className={`flex-1 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all ${isLoading ? "opacity-80 cursor-not-allowed" : "shadow-lg"}`}
+                    >
+                      {isLoading ? (
+                        <span className="flex items-center justify-center">
+                          <svg
+                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                          Connecting...
+                        </span>
+                      ) : (
+                        "Connect"
+                      )}
+                    </button>
+                  )
+                )}
+              </div>
             </div>
-          </div>
-        </div>
+
+            <div className="bg-blue-50 border-t border-blue-100 p-6">
+              <h3 className="font-medium text-blue-800 flex items-center">
+                <FiHelpCircle className="mr-2" />
+                Configuration Instructions
+              </h3>
+              <ul className="mt-2 text-sm text-blue-700 space-y-1">
+                <li>• Your credentials will be encrypted and stored securely</li>
+                <li>
+                  • Use the webhook URL:{" "}
+                  <code className="bg-blue-100 px-1 rounded">
+                    https://yashraa.ai/api/whatsapp/webhook
+                  </code>
+                </li>
+                <li>
+                  • Ensure your webhook verification token matches the one in
+                  Facebook settings
+                </li>
+                <li>
+                  • Grant{" "}
+                  <code className="bg-blue-100 px-1 rounded">
+                    whatsapp_business_messaging or messages
+                  </code>{" "}
+                  permissions
+                </li>
+              </ul>
+              <div className="mt-3">
+                <a
+                  href="https://developers.facebook.com/docs/whatsapp/cloud-api/get-started"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm"
+                >
+                  Facebook API Documentation
+                  <svg
+                    className="ml-1 w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    ></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>)}
 
         {/* Documentation Sidebar */}
         {showDocs && (
