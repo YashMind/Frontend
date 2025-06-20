@@ -41,6 +41,8 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
     const [showClientSecret, setShowClientSecret] = useState(false);
     const [showSigningSecret, setShowSigningSecret] = useState(false);
     const [redirectURI, setRedirectURI] = useState(null)
+    const [activeManifestTab, setActiveManifestTab] = useState('yaml')
+    const [expandedDoc, setExpandedDoc] = useState()
 
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
@@ -74,6 +76,9 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
 
     const toggleSection = (section: string) => {
         setExpandedSection(expandedSection === section ? null : section);
+    };
+    const toggleDoc = (section: string) => {
+        setExpandedDoc(expandedDoc === section ? null : section);
     };
 
     const handleDelete = async () => {
@@ -165,28 +170,6 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
         }
     };
 
-    // const startOAuthFlow = async () => {
-    //     console.log("Client ID:", formData.client_id);
-    //     if (!formData.client_id) {
-    //         setError("Client ID is required to start OAuth");
-    //         return;
-    //     }
-
-
-    //     setIsConnecting(true);
-    //     try {
-    //         // Construct the backend OAuth start URL
-    //         const oauthStartUrl = `http://localhost:8000/api/slack/oauth/start?bot_id=${botId}&client_id=${formData.client_id}`;
-
-    //         // Redirect the browser directly
-    //         window.location.href = oauthStartUrl;
-    //     } catch (e: any) {
-    //         console.error("OAuth initiation failed:", e);
-    //         toast.error(e.message || "Failed to start OAuth flow");
-    //         setError(e.message || "OAuth initiation failed");
-    //         setIsConnecting(false);
-    //     }
-    // };
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col">
@@ -251,6 +234,15 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
                                                 </span>
                                             </div>
                                         </div>
+                                        {isRegistered && <button
+                                            type="button"
+                                            onClick={() => setShowDeleteModal(true)}
+                                            disabled={isDeleting}
+                                            className="flex w-fit justify-center ml-auto gap-2 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all shadow-lg"
+                                        >
+
+                                            <FiTrash2 size={18} />
+                                        </button>}
                                     </div>
                                 </div>
                             </div>
@@ -389,9 +381,6 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
                                                     </>
                                                 )}
                                             </a>
-
-                                            {redirectURI && <div>or
-                                                {redirectURI}</div>}
                                         </div>
 
                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
@@ -466,300 +455,447 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
                             </button>
                         </div>
 
-                        <div className="p-6 space-y-4">
+                        <div className="p-2 space-y-4">
                             <div className="border border-gray-200 rounded-lg overflow-hidden">
                                 <button
                                     className="w-full p-4 text-left font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
-                                    onClick={() => toggleSection("createApp")}
+                                    onClick={() => toggleDoc("manifest")}
                                 >
-                                    <span>Creating Your Slack App</span>
-                                    {expandedSection === "createApp" ? (
-                                        <FiChevronUp />
-                                    ) : (
-                                        <FiChevronDown />
-                                    )}
+                                    <span>Using App Manifest (Recommended)</span>
+                                    {expandedDoc === "manifest" ? <FiChevronUp /> : <FiChevronDown />}
                                 </button>
-                                {expandedSection === "createApp" && (
-                                    <div className="p-4 text-sm text-gray-700 space-y-2">
-                                        <ol className="list-decimal pl-5 space-y-1">
-                                            <li>
-                                                Go to{" "}
-                                                <a
-                                                    href="https://api.slack.com/apps"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-purple-600 hover:underline"
+
+                                {expandedDoc === "manifest" && (
+                                    <div className="p-4 text-sm text-gray-700 space-y-4">
+                                        <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
+                                            <h4 className="font-medium text-blue-800 mb-2">Setup Instructions:</h4>
+                                            <ol className="list-decimal pl-5 space-y-1 text-gray-700">
+                                                <li>Go to <a href="https://api.slack.com/apps" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Slack API Portal</a></li>
+                                                <li>Click "Create New App"</li>
+                                                <li>Select "From an app manifest"</li>
+                                                <li>Choose your workspace</li>
+                                                <li>Select your preferred format below and copy the manifest</li>
+                                                <li>Paste into Slack's manifest editor and click "Create"</li>
+                                            </ol>
+                                        </div>
+
+                                        <div className="border border-gray-200 rounded-lg">
+                                            <div className="flex border-b border-gray-200">
+                                                <button
+                                                    className={`px-4 py-2 text-sm font-medium ${activeManifestTab === 'yaml' ? 'text-purple-600 border-b-2 border-purple-600' : 'text-gray-500 hover:text-gray-700'}`}
+                                                    onClick={() => setActiveManifestTab('yaml')}
                                                 >
-                                                    Slack API Portal
-                                                </a>
-                                            </li>
-                                            <li>Click "Create New App"</li>
-                                            <li>Choose "From scratch"</li>
-                                            <li>Enter your app name and select your workspace</li>
-                                            <li>Click "Create App"</li>
-                                        </ol>
-                                    </div>
-                                )}
-                            </div>
+                                                    YAML Format
+                                                </button>
+                                                <button
+                                                    className={`px-4 py-2 text-sm font-medium ${activeManifestTab === 'json' ? 'text-purple-600 border-b-2 border-purple-600' : 'text-gray-500 hover:text-gray-700'}`}
+                                                    onClick={() => setActiveManifestTab('json')}
+                                                >
+                                                    JSON Format
+                                                </button>
+                                            </div>
 
-                            <div className="border border-gray-200 rounded-lg overflow-hidden">
-                                <button
-                                    className="w-full p-4 text-left font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
-                                    onClick={() => toggleSection("getCredentials")}
-                                >
-                                    <span>Getting Credentials</span>
-                                    {expandedSection === "getCredentials" ? (
-                                        <FiChevronUp />
-                                    ) : (
-                                        <FiChevronDown />
-                                    )}
-                                </button>
-                                {expandedSection === "getCredentials" && (
-                                    <div className="p-4 text-sm text-gray-700 space-y-2">
-                                        <ol className="list-decimal pl-5 space-y-1">
-                                            <li>In your Slack app, go to "Basic Information"</li>
-                                            <li>
-                                                Under "App Credentials", find:
-                                                <ul className="list-disc pl-5 mt-1">
-                                                    <li>Client ID</li>
-                                                    <li>Client Secret</li>
-                                                    <li>Signing Secret</li>
-                                                </ul>
-                                            </li>
-                                            <li>Copy these values into the form</li>
-                                        </ol>
-                                    </div>
-                                )}
-                            </div>
-
-
-
-                            <div className="border border-gray-200 rounded-lg overflow-hidden">
-                                <button
-                                    className="w-full p-4 text-left font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
-                                    onClick={() => toggleSection("redirect")}
-                                >
-                                    <span>Redirect URI Setup</span>
-                                    {expandedSection === "redirect" ? (
-                                        <FiChevronUp />
-                                    ) : (
-                                        <FiChevronDown />
-                                    )}
-                                </button>
-                                {expandedSection === "redirect" && (
-                                    <div className="p-4 text-sm text-gray-700 space-y-2">
-                                        <ol className="list-decimal pl-5 space-y-1">
-                                            <li>In your Slack app dashboard:
-                                                <ul className="list-disc pl-5 mt-1">
-                                                    <li>Go to sidebar → <strong>Features</strong></li>
-                                                    <li>Under Features header → <strong>OAuth & Permissions</strong></li>
-                                                </ul>
-                                            </li>
-                                            <li>Scroll to <strong>"Redirect URLs"</strong> section</li>
-                                            <li>Click <strong>"Add New Redirect URL"</strong></li>
-                                            <li>Add this URL:
-                                                <code className="bg-gray-100 px-1 rounded block mt-1 font-mono">
-                                                    https://yashraa.ai/api/slack/oauth/callback
-                                                </code>
-                                            </li>
-                                            <li>Click <strong>"Save URLs"</strong></li>
-                                        </ol>
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Updated Permissions Section */}
-                            <div className="border border-gray-200 rounded-lg overflow-hidden">
-                                <button
-                                    className="w-full p-4 text-left font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
-                                    onClick={() => toggleSection("permissions")}
-                                >
-                                    <span>Required Bot Permissions</span>
-                                    {expandedSection === "permissions" ? (
-                                        <FiChevronUp />
-                                    ) : (
-                                        <FiChevronDown />
-                                    )}
-                                </button>
-                                {expandedSection === "permissions" && (
-                                    <div className="p-4 text-sm text-gray-700 space-y-2">
-                                        <ol className="list-decimal pl-5 space-y-1">
-                                            <li>Go to <strong>Features → OAuth & Permissions</strong></li>
-                                            <li>Scroll to <strong>"Scopes"</strong> section</li>
-                                            <li>Under <strong>"Bot Token Scopes"</strong>, click <strong>"Add an OAuth Scope"</strong></li>
-                                            <li>Add these scopes:
-                                                <ul className="list-disc pl-5 mt-2 space-y-1">
-                                                    <li>
-                                                        <code className="bg-gray-100 px-1 rounded">app_mentions:read</code> - Read mentions
-                                                    </li>
-                                                    <li>
-                                                        <code className="bg-gray-100 px-1 rounded">channels:history</code> - Read channel messages
-                                                    </li>
-                                                    <li>
-                                                        <code className="bg-gray-100 px-1 rounded">chat:write</code> - Send messages
-                                                    </li>
-                                                    <li>
-                                                        <code className="bg-gray-100 px-1 rounded">commands</code> - Add slash commands
-                                                    </li>
-                                                    <li>
-                                                        <code className="bg-gray-100 px-1 rounded">groups:history</code> - Read private channels
-                                                    </li>
-                                                    <li>
-                                                        <code className="bg-gray-100 px-1 rounded">im:history</code> - Read direct messages
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li className="pt-2"><strong>Important:</strong> Reinstall the app after adding scopes</li>
-                                        </ol>
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="border border-gray-200 rounded-lg overflow-hidden">
-                                <button
-                                    className="w-full p-4 text-left font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
-                                    onClick={() => toggleSection("appHome")}
-                                >
-                                    <span>App Home Configuration</span>
-                                    {expandedSection === "appHome" ? (
-                                        <FiChevronUp />
-                                    ) : (
-                                        <FiChevronDown />
-                                    )}
-                                </button>
-                                {expandedSection === "appHome" && (
-                                    <div className="p-4 text-sm text-gray-700 space-y-2">
-                                        <ol className="list-decimal pl-5 space-y-1">
-                                            <li>Go to <strong>Features → App Home</strong></li>
-                                            <li>Under <strong>"Your App's Presence in Slack"</strong>:
-                                                <ul className="list-disc pl-5 mt-1">
-                                                    <li>Edit Bot display name</li>
-                                                    <li>Set bot presence (online/offline)</li>
-                                                </ul>
-                                            </li>
-                                            <li>Scroll to <strong>"Show Tabs"</strong> section</li>
-                                            <li>Check this box:
-                                                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3 mt-2">
-                                                    <div className="flex items-start">
-                                                        <div className="flex-shrink-0">
-                                                            <FiCheckSquare className="h-5 w-5 text-yellow-500" />
-                                                        </div>
-                                                        <div className="ml-3">
-                                                            <p className="text-sm text-yellow-700">
-                                                                <strong>Allow users to send Slash commands and messages from the messages tab</strong>
-                                                            </p>
-                                                        </div>
+                                            <div className="p-4">
+                                                {activeManifestTab === 'yaml' && (
+                                                    <div className="bg-gray-50 p-4 rounded-md overflow-x-auto">
+                                                        <pre className="text-xs text-gray-800">
+                                                            {`display_information:
+  name: yashraa test
+features:
+  bot_user:
+    display_name: [Your app name]
+    always_online: false
+  slash_commands:
+    - command: /ask
+      url: https://yashraa.ai/api/slack/commands
+      description: Ask a question 
+      usage_hint: Type your question after the command
+      should_escape: false
+oauth_config:
+  redirect_urls:
+    - https://yashraa.ai/api/slack/oauth/callback
+  scopes:
+    bot:
+      - app_mentions:read
+      - channels:history
+      - chat:write
+      - commands
+      - groups:history
+      - im:history
+settings:
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false`}
+                                                        </pre>
                                                     </div>
-                                                </div>
-                                            </li>
-                                            <li>Click <strong>"Save Changes"</strong></li>
-                                        </ol>
+                                                )}
+
+                                                {activeManifestTab === 'json' && (
+                                                    <div className="bg-gray-50 p-4 rounded-md overflow-x-auto">
+                                                        <pre className="text-xs text-gray-800">
+                                                            {`{
+  "display_information": {
+    "name": "yashraa test"
+  },
+  "features": {
+    "bot_user": {
+      "display_name": [Your app name],
+      "always_online": false
+    },
+    "slash_commands": [
+      {
+        "command": "/ask",
+        "url": "https://yashraa.ai/api/slack/commands",
+        "description": "Ask a question",
+        "usage_hint": "Type your question after the command",
+        "should_escape": false
+      }
+    ]
+  },
+  "oauth_config": {
+    "redirect_urls": [
+      "https://yashraa.ai/api/slack/oauth/callback"
+    ],
+    "scopes": {
+      "bot": [
+        "app_mentions:read",
+        "channels:history",
+        "chat:write",
+        "commands",
+        "groups:history",
+        "im:history"
+      ]
+    }
+  },
+  "settings": {
+    "org_deploy_enabled": false,
+    "socket_mode_enabled": false,
+    "token_rotation_enabled": false
+  }
+}`}
+                                                        </pre>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        <div className="text-xs text-gray-500">
+                                            <p><strong>Note:</strong> Make sure to replace placeholder URLs with your actual endpoints if different from the examples.</p>
+                                        </div>
                                     </div>
                                 )}
-                            </div>
-
-                            {/* New Slash Command Section */}
-                            <div className="border border-gray-200 rounded-lg overflow-hidden">
-                                <button
-                                    className="w-full p-4 text-left font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
-                                    onClick={() => toggleSection("slashCommand")}
-                                >
-                                    <span>Slash Command Setup</span>
-                                    {expandedSection === "slashCommand" ? (
-                                        <FiChevronUp />
-                                    ) : (
-                                        <FiChevronDown />
-                                    )}
-                                </button>
-                                {expandedSection === "slashCommand" && (
-                                    <div className="p-4 text-sm text-gray-700 space-y-2">
-                                        <ol className="list-decimal pl-5 space-y-1">
-                                            <li>Go to <strong>Features → Slash Commands</strong></li>
-                                            <li>Click <strong>"Create New Command"</strong></li>
-                                            <li>Configure command:
-                                                <ul className="list-disc pl-5 mt-1">
-                                                    <li><strong>Command:</strong> <code>/ask</code></li>
-                                                    <li><strong>Request URL:</strong>
-                                                        <code className="bg-gray-100 px-1 rounded block mt-1 font-mono">
-                                                            https://yashraa.ai/api/slack/commands
-                                                        </code>
-                                                    </li>
-                                                    <li><strong>Short Description:</strong> Ask questions to the assistant</li>
-                                                    <li><strong>Usage Hint:</strong> [your_question]</li>
-                                                </ul>
-                                            </li>
-                                            <li>Click <strong>"Save"</strong></li>
-                                            <li><strong>Reinstall the app</strong> for changes to take effect</li>
-                                        </ol>
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="mt-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
-                                <h3 className="font-medium text-purple-800 mb-2">
-                                    Need More Help?
-                                </h3>
-                                <ul className="text-sm text-purple-700 space-y-1">
-                                    <li>
-                                        <a
-                                            href="https://api.slack.com/start"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="hover:underline flex items-center"
-                                        >
-                                            <FiHelpCircle className="mr-1" /> Slack API Documentation
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a
-                                            href="https://api.slack.com/authentication/oauth-v2"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="hover:underline flex items-center"
-                                        >
-                                            <FiHelpCircle className="mr-1" /> OAuth Authentication Guide
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a
-                                            href="https://api.slack.com/tutorials"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="hover:underline flex items-center"
-                                        >
-                                            <FiHelpCircle className="mr-1" /> Slack API Tutorials
-                                        </a>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
+                        <div className="p-2 space-y-4">
+                            <div className="border border-gray-200 rounded-lg overflow-hidden"></div>
+                            <button
+                                className="w-full p-4 text-left font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
+                                onClick={() => toggleDoc("scratch")}
+                            >
+                                <span>Using Scratch</span>
+                                {expandedDoc === "scratch" ? <FiChevronUp /> : <FiChevronDown />}
+                            </button>
+
+                            {expandedDoc == "scratch" && <div className="p-6 space-y-4">
+                                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                                    <button
+                                        className="w-full p-4 text-left font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
+                                        onClick={() => toggleSection("createApp")}
+                                    >
+                                        <span>Creating Your Slack App</span>
+                                        {expandedSection === "createApp" ? (
+                                            <FiChevronUp />
+                                        ) : (
+                                            <FiChevronDown />
+                                        )}
+                                    </button>
+                                    {expandedSection === "createApp" && (
+                                        <div className="p-4 text-sm text-gray-700 space-y-2">
+                                            <ol className="list-decimal pl-5 space-y-1">
+                                                <li>
+                                                    Go to{" "}
+                                                    <a
+                                                        href="https://api.slack.com/apps"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-purple-600 hover:underline"
+                                                    >
+                                                        Slack API Portal
+                                                    </a>
+                                                </li>
+                                                <li>Click "Create New App"</li>
+                                                <li>Choose "From scratch"</li>
+                                                <li>Enter your app name and select your workspace</li>
+                                                <li>Click "Create App"</li>
+                                            </ol>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                                    <button
+                                        className="w-full p-4 text-left font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
+                                        onClick={() => toggleSection("getCredentials")}
+                                    >
+                                        <span>Getting Credentials</span>
+                                        {expandedSection === "getCredentials" ? (
+                                            <FiChevronUp />
+                                        ) : (
+                                            <FiChevronDown />
+                                        )}
+                                    </button>
+                                    {expandedSection === "getCredentials" && (
+                                        <div className="p-4 text-sm text-gray-700 space-y-2">
+                                            <ol className="list-decimal pl-5 space-y-1">
+                                                <li>In your Slack app, go to "Basic Information"</li>
+                                                <li>
+                                                    Under "App Credentials", find:
+                                                    <ul className="list-disc pl-5 mt-1">
+                                                        <li>Client ID</li>
+                                                        <li>Client Secret</li>
+                                                        <li>Signing Secret</li>
+                                                    </ul>
+                                                </li>
+                                                <li>Copy these values into the form</li>
+                                            </ol>
+                                        </div>
+                                    )}
+                                </div>
+
+
+
+                                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                                    <button
+                                        className="w-full p-4 text-left font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
+                                        onClick={() => toggleSection("redirect")}
+                                    >
+                                        <span>Redirect URI Setup</span>
+                                        {expandedSection === "redirect" ? (
+                                            <FiChevronUp />
+                                        ) : (
+                                            <FiChevronDown />
+                                        )}
+                                    </button>
+                                    {expandedSection === "redirect" && (
+                                        <div className="p-4 text-sm text-gray-700 space-y-2">
+                                            <ol className="list-decimal pl-5 space-y-1">
+                                                <li>In your Slack app dashboard:
+                                                    <ul className="list-disc pl-5 mt-1">
+                                                        <li>Go to sidebar → <strong>Features</strong></li>
+                                                        <li>Under Features header → <strong>OAuth & Permissions</strong></li>
+                                                    </ul>
+                                                </li>
+                                                <li>Scroll to <strong>"Redirect URLs"</strong> section</li>
+                                                <li>Click <strong>"Add New Redirect URL"</strong></li>
+                                                <li>Add this URL:
+                                                    <code className="bg-gray-100 px-1 rounded block mt-1 font-mono">
+                                                        https://yashraa.ai/api/slack/oauth/callback
+                                                    </code>
+                                                </li>
+                                                <li>Click <strong>"Save URLs"</strong></li>
+                                            </ol>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Updated Permissions Section */}
+                                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                                    <button
+                                        className="w-full p-4 text-left font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
+                                        onClick={() => toggleSection("permissions")}
+                                    >
+                                        <span>Required Bot Permissions</span>
+                                        {expandedSection === "permissions" ? (
+                                            <FiChevronUp />
+                                        ) : (
+                                            <FiChevronDown />
+                                        )}
+                                    </button>
+                                    {expandedSection === "permissions" && (
+                                        <div className="p-4 text-sm text-gray-700 space-y-2">
+                                            <ol className="list-decimal pl-5 space-y-1">
+                                                <li>Go to <strong>Features → OAuth & Permissions</strong></li>
+                                                <li>Scroll to <strong>"Scopes"</strong> section</li>
+                                                <li>Under <strong>"Bot Token Scopes"</strong>, click <strong>"Add an OAuth Scope"</strong></li>
+                                                <li>Add these scopes:
+                                                    <ul className="list-disc pl-5 mt-2 space-y-1">
+                                                        <li>
+                                                            <code className="bg-gray-100 px-1 rounded">app_mentions:read</code> - Read mentions
+                                                        </li>
+                                                        <li>
+                                                            <code className="bg-gray-100 px-1 rounded">channels:history</code> - Read channel messages
+                                                        </li>
+                                                        <li>
+                                                            <code className="bg-gray-100 px-1 rounded">chat:write</code> - Send messages
+                                                        </li>
+                                                        <li>
+                                                            <code className="bg-gray-100 px-1 rounded">commands</code> - Add slash commands
+                                                        </li>
+                                                        <li>
+                                                            <code className="bg-gray-100 px-1 rounded">groups:history</code> - Read private channels
+                                                        </li>
+                                                        <li>
+                                                            <code className="bg-gray-100 px-1 rounded">im:history</code> - Read direct messages
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li className="pt-2"><strong>Important:</strong> Reinstall the app after adding scopes</li>
+                                            </ol>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                                    <button
+                                        className="w-full p-4 text-left font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
+                                        onClick={() => toggleSection("appHome")}
+                                    >
+                                        <span>App Home Configuration</span>
+                                        {expandedSection === "appHome" ? (
+                                            <FiChevronUp />
+                                        ) : (
+                                            <FiChevronDown />
+                                        )}
+                                    </button>
+                                    {expandedSection === "appHome" && (
+                                        <div className="p-4 text-sm text-gray-700 space-y-2">
+                                            <ol className="list-decimal pl-5 space-y-1">
+                                                <li>Go to <strong>Features → App Home</strong></li>
+                                                <li>Under <strong>"Your App's Presence in Slack"</strong>:
+                                                    <ul className="list-disc pl-5 mt-1">
+                                                        <li>Edit Bot display name</li>
+                                                        <li>Set bot presence (online/offline)</li>
+                                                    </ul>
+                                                </li>
+                                                <li>Scroll to <strong>"Show Tabs"</strong> section</li>
+                                                <li>Check this box:
+                                                    <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3 mt-2">
+                                                        <div className="flex items-start">
+                                                            <div className="flex-shrink-0">
+                                                                <FiCheckSquare className="h-5 w-5 text-yellow-500" />
+                                                            </div>
+                                                            <div className="ml-3">
+                                                                <p className="text-sm text-yellow-700">
+                                                                    <strong>Allow users to send Slash commands and messages from the messages tab</strong>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>Click <strong>"Save Changes"</strong></li>
+                                            </ol>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* New Slash Command Section */}
+                                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                                    <button
+                                        className="w-full p-4 text-left font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
+                                        onClick={() => toggleSection("slashCommand")}
+                                    >
+                                        <span>Slash Command Setup</span>
+                                        {expandedSection === "slashCommand" ? (
+                                            <FiChevronUp />
+                                        ) : (
+                                            <FiChevronDown />
+                                        )}
+                                    </button>
+                                    {expandedSection === "slashCommand" && (
+                                        <div className="p-4 text-sm text-gray-700 space-y-2">
+                                            <ol className="list-decimal pl-5 space-y-1">
+                                                <li>Go to <strong>Features → Slash Commands</strong></li>
+                                                <li>Click <strong>"Create New Command"</strong></li>
+                                                <li>Configure command:
+                                                    <ul className="list-disc pl-5 mt-1">
+                                                        <li><strong>Command:</strong> <code>/ask</code></li>
+                                                        <li><strong>Request URL:</strong>
+                                                            <code className="bg-gray-100 px-1 rounded block mt-1 font-mono">
+                                                                https://yashraa.ai/api/slack/commands
+                                                            </code>
+                                                        </li>
+                                                        <li><strong>Short Description:</strong> Ask questions to the assistant</li>
+                                                        <li><strong>Usage Hint:</strong> [your_question]</li>
+                                                    </ul>
+                                                </li>
+                                                <li>Click <strong>"Save"</strong></li>
+                                                <li><strong>Reinstall the app</strong> for changes to take effect</li>
+                                            </ol>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="mt-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
+                                    <h3 className="font-medium text-purple-800 mb-2">
+                                        Need More Help?
+                                    </h3>
+                                    <ul className="text-sm text-purple-700 space-y-1">
+                                        <li>
+                                            <a
+                                                href="https://api.slack.com/start"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="hover:underline flex items-center"
+                                            >
+                                                <FiHelpCircle className="mr-1" /> Slack API Documentation
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a
+                                                href="https://api.slack.com/authentication/oauth-v2"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="hover:underline flex items-center"
+                                            >
+                                                <FiHelpCircle className="mr-1" /> OAuth Authentication Guide
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a
+                                                href="https://api.slack.com/tutorials"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="hover:underline flex items-center"
+                                            >
+                                                <FiHelpCircle className="mr-1" /> Slack API Tutorials
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>}
+                        </div>
                     </div>
-                )}
+                )
+                }
 
                 {/* Show Docs Button (when sidebar is hidden) */}
-                {!showDocs && (
-                    <button
-                        onClick={() => setShowDocs(true)}
-                        className="hidden lg:block fixed right-0 top-1/2 transform -translate-y-1/2 bg-purple-600 text-white p-3 rounded-l-lg shadow-lg hover:bg-purple-700 transition-colors"
-                    >
-                        <FiHelpCircle size={24} />
-                    </button>
-                )}
-            </main>
+                {
+                    !showDocs && (
+                        <button
+                            onClick={() => setShowDocs(true)}
+                            className="hidden lg:block fixed right-0 top-1/2 transform -translate-y-1/2 bg-purple-600 text-white p-3 rounded-l-lg shadow-lg hover:bg-purple-700 transition-colors"
+                        >
+                            <FiHelpCircle size={24} />
+                        </button>
+                    )
+                }
+            </main >
 
             {/* Delete Confirmation Modal */}
-            {isRegistered && (
-                <ConfirmationModal
-                    isOpen={showDeleteModal}
-                    onClose={() => setShowDeleteModal(false)}
-                    onConfirm={handleDelete}
-                    title="Disconnect Slack App"
-                    message="Are you sure you want to disconnect this Slack App? Your bot will no longer be able to interact with Slack."
-                    confirmText={isDeleting ? "Disconnecting..." : "Disconnect"}
-                    confirmColor="red"
-                />
-            )}
-        </div>
+            {
+                isRegistered && (
+                    <ConfirmationModal
+                        isOpen={showDeleteModal}
+                        onClose={() => setShowDeleteModal(false)}
+                        onConfirm={handleDelete}
+                        title="Delete Slack App"
+                        message="Are you sure you want to delete this Slack App? Your bot will no longer be able to interact with Slack."
+                        confirmText={isDeleting ? "Deleting..." : "Delete"}
+                        confirmColor="red"
+                    />
+                )
+            }
+        </div >
     );
 };
 

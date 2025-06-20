@@ -7,6 +7,7 @@ import {
   registerWhatsappPhoneNumber,
   updateWhatsappRegistration,
   deactivateWhatsappRegistration,
+  deleteWhatsappRegistration,
 } from "@/store/slices/chats/chatSlice";
 import { AppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
@@ -42,6 +43,7 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
   const [showAccessToken, setShowAccessToken] = useState(false);
   const [showWebhookSecret, setShowWebhookSecret] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
+  const [showDeactivateModal, setShowDeactivateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showDocs, setShowDocs] = useState(true);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
@@ -179,7 +181,7 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
     setExpandedSection(expandedSection === section ? null : section);
   };
 
-  const handleDelete = async () => {
+  const handleDeactivate = async () => {
     setIsDeleting(true);
     try {
       await dispatch(deactivateWhatsappRegistration(botId)).unwrap();
@@ -188,6 +190,21 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
     } catch (e: any) {
       console.error("Deactivation failed:", e);
       toast.error(e || "Failed to deactivate WhatsApp integration");
+    } finally {
+      setIsDeleting(false);
+      setShowDeactivateModal(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await dispatch(deleteWhatsappRegistration(botId)).unwrap();
+      toast.success("WhatsApp integration deleting successfully!");
+      router.push(`/chatbot-dashboard/integration/${botId}`);
+    } catch (e: any) {
+      console.error("Deleting failed:", e);
+      toast.error(e || "Failed to delete WhatsApp integration");
     } finally {
       setIsDeleting(false);
       setShowDeleteModal(false);
@@ -469,7 +486,7 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
                   formData.is_active ? (
                     <button
                       type="button"
-                      onClick={() => setShowDeleteModal(true)}
+                      onClick={() => setShowDeactivateModal(true)}
                       disabled={isDeleting}
                       className="flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all shadow-lg"
                     >
@@ -540,6 +557,45 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
                     </button>
                   )
                 )}
+              </div>
+              <div>
+                {isRegistered && <button
+                  type="button"
+                  onClick={() => setShowDeleteModal(true)}
+                  disabled={isDeleting}
+                  className="flex w-full justify-center gap-2 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all shadow-lg"
+                >
+                  {isDeleting ? (
+                    <span className="flex items-center justify-center">
+                      <svg
+                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Deleteing...
+                    </span>
+                  ) : (
+                    <>
+                      <FiTrash2 size={18} />
+                      Delete
+                    </>
+                  )}
+                </button>}
               </div>
             </div>
 
@@ -910,12 +966,21 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
 
       {/* Delete Confirmation Modal */}
       <ConfirmationModal
-        isOpen={showDeleteModal}
+        isOpen={showDeactivateModal}
         onClose={() => setShowDeleteModal(false)}
-        onConfirm={handleDelete}
+        onConfirm={handleDeactivate}
         title="Disconnect WhatsApp Account"
         message="Are you sure you want to disconnect this WhatsApp Business Account? Your bot will no longer be able to send or receive WhatsApp messages."
         confirmText={isDeleting ? "Disconnecting..." : "Disconnect"}
+        confirmColor="red"
+      />
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+        title="Delete WhatsApp Account"
+        message="Are you sure you want to delete this WhatsApp Business Account? Your bot will no longer be able to send or receive WhatsApp messages."
+        confirmText={isDeleting ? "Deleting..." : "Delete"}
         confirmColor="red"
       />
     </div>

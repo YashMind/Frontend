@@ -978,8 +978,8 @@ export const fetchChatMessageTokensToday = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.detail ||
-          error.message ||
-          "Failed to fetch today's tokens"
+        error.message ||
+        "Failed to fetch today's tokens"
       );
     }
   }
@@ -1065,7 +1065,7 @@ export const updateWhatsappRegistration = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error?.response?.data?.detail ||
-          "Failed to update WhatsApp registration"
+        "Failed to update WhatsApp registration"
       );
     }
   }
@@ -1082,7 +1082,24 @@ export const deactivateWhatsappRegistration = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error?.response?.data?.detail ||
-          "Failed to deactivate WhatsApp registration"
+        "Failed to deactivate WhatsApp registration"
+      );
+    }
+  }
+);
+
+export const deleteWhatsappRegistration = createAsyncThunk(
+  "integration/deleteWhatsappRegistration",
+  async (bot_id: number, thunkAPI) => {
+    try {
+      const response = await http.delete(`/whatsapp/delete/${bot_id}`, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error?.response?.data?.detail ||
+        "Failed to deactivate WhatsApp registration"
       );
     }
   }
