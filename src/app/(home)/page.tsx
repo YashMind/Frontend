@@ -7,6 +7,7 @@ import ChatLLM from "@/components/Home/chatLLM/chatLLM";
 import PriceSection from "@/components/Home/priceSection/priceSection";
 import Testimonials from "@/components/Home/testimonials/testimonials";
 import FaqSection from "@/components/Home/faqSection/faqSection";
+import VoiceAgent from "@/components/Home/voiceAgent/voiceAgent";
 
 const HomePage = () => {
   return (
@@ -20,11 +21,11 @@ const HomePage = () => {
       {/* Chat Bot Sec */}
       <ChatbotSection />
 
+      {/* Voice Agent section */}
+      <VoiceAgent />
+
       {/* Chat LLM section */}
       <ChatLLM />
-
-      {/* Voice Agent section */}
-      {/* <VoiceAgent /> */}
 
       {/* price section */}
       <PriceSection />

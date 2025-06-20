@@ -27,7 +27,11 @@ const PUBLIC_ROUTES = new Set([
   "/details/terms&condition",
   "/details/voice-agent",
   "/details/contact-us",
+  "/details/about-us",
   "/details/refund-and-cancellation-policy",
+  "/details/gdpr",
+  "/details/code-of-conduct",
+  "/details/disclaimer-and-liability",
   "/types/payment",
 ]);
 

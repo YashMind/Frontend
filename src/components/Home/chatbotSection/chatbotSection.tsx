@@ -31,7 +31,7 @@ const ChatbotSection = () => {
           </div>
 
           {/* Right Content */}
-          <div className="chatbox-content w-full md:w-1/2 text-white text-center md:text-right">
+          <div className="chatbox-content w-full md:w-[50%] pl-8 text-white text-center md:text-left">
             <h2
               className="text-2xl md:text-3xl font-normal mb-4 md:mb-[22px]"
               style={{ fontFamily: "'Audiowide', sans-serif" }}
@@ -39,12 +39,9 @@ const ChatbotSection = () => {
               What <span className="text-[#05BDFD]">Chat Bot</span> Can Do?
             </h2>
             <p className="font-light text-base md:text-xl leading-relaxed">
-              Chatbots can be rule-based, where they follow predefined scripts
-              and decision trees, or they can be powered by artificial
-              intelligence (AI) and natural language processing (NLP) to
-              understand and respond to user inputs more dynamically. The
-              sophistication of a chatbot's capabilities can vary widely
-              depending on its design and the technology behind it.
+              AI-powered chatbots go beyond simple scripts — using advanced language models and natural language processing (NLP) to understand, learn, and respond with human-like intelligence.
+            </p><p className="font-light text-base md:text-xl leading-relaxed">
+              From automating conversations to delivering personalized experiences, their capabilities evolve with every interaction, transforming customer engagement.
             </p>
           </div>
         </div>

@@ -2,14 +2,15 @@ import React from "react";
 
 const VoiceAgent = () => {
   return (
-    <div className="Voice-Agent mt-[80px] md:mt-[117px]">
+
+    <div className="Chat-LLM mt-[80px] md:mt-[117px]">
       <div className="container mx-auto px-4">
-        {/* Heading */}
+        {/* Title */}
         <h1
           className="font-normal text-[24px] md:text-[30px] text-white text-center md:text-left"
           style={{ fontFamily: "'Audiowide', sans-serif" }}
         >
-          Chat Bot
+          Voice Agent
         </h1>
         <img
           src="/images/heading.png"
@@ -18,32 +19,29 @@ const VoiceAgent = () => {
         />
 
         {/* Content */}
-        <div className="flex flex-col md:flex-row items-center  gap-6 mt-6 md:mt-10">
-          {/* Image */}
-          <div className="Chat-img w-full md:w-[40%]">
-            <img
-              src="/images/ai-box.png"
-              alt="AI Box"
-              className="w-full h-auto"
-            />
-          </div>
-
-          {/* Text Content */}
-          <div className="chatbox-content w-full md:w-[60%] text-white text-center md:text-right">
+        <div className="flex flex-col-reverse md:flex-row items-center gap-6 mt-6 md:mt-10">
+          {/* Left Content */}
+          <div className="chatbox-content w-full md:w-1/2 text-white text-center md:text-left">
             <h2
               className="text-2xl md:text-3xl font-normal mb-4 md:mb-[22px]"
               style={{ fontFamily: "'Audiowide', sans-serif" }}
             >
-              What <span className="text-[#05BDFD]">Chat Bot</span> Can Do?
+              What <span className="text-[#05BDFD]">Voice Agent</span> can do?
             </h2>
             <p className="font-light text-base md:text-xl leading-relaxed">
-              Chatbots can be rule-based, where they follow predefined scripts
-              and decision trees, or they can be powered by artificial
-              intelligence (AI) and natural language processing (NLP) to
-              understand and respond to user inputs more dynamically. The
-              sophistication of a chatbot's capabilities can vary widely
-              depending on its design and the technology behind it.
+              AI Voice Agents streamline customer interactions by converting speech to actionable insights. Using advanced NLP and real-time data access, they deliver precise responses, automate workflows, and enhance service quality.
+            </p><p className="font-light text-base md:text-xl leading-relaxed">
+              Constant learning ensures improved performance, driving efficiency and customer satisfaction across enterprise operations.
             </p>
+          </div>
+
+          {/* Right Image */}
+          <div className="Chat-img w-full md:w-1/2">
+            <img
+              src="/images/laptop.png"
+              alt="Laptop"
+              className="w-full h-auto"
+            />
           </div>
         </div>
       </div>

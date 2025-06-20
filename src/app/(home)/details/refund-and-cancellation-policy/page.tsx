@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const RefundAndCancellationPolicy = () => {
     return (
@@ -9,73 +9,69 @@ const RefundAndCancellationPolicy = () => {
             <div className="bg-white text-gray-800 py-12 px-4 lg:px-24 rounded-lg shadow-xl max-w-4xl mx-auto">
                 <div className="max-w-3xl mx-auto p-6">
                     <h2 className="text-3xl lg:text-4xl font-semibold text-center mb-10 text-indigo-600">
-                        Refund And Cancellation Policy
+                        Refund and Cancellation Policy
                     </h2>
 
                     <div className="space-y-8 text-gray-700">
-                        <div className="policy-section">
-                            <h3 className="text-xl font-semibold text-indigo-500 mb-4">1. Cancellations</h3>
-                            <div className="space-y-4 ml-4">
-                                <div>
-                                    <h4 className="font-medium text-gray-800">Service-Based Products:</h4>
-                                    <p className="text-gray-600">You may cancel your service within 24 hours of purchase for a full refund, provided the service has not yet commenced.</p>
-                                </div>
+                        <p>
+                            We strive to provide high-quality AI tools and services. Please review our Refund & Cancellation Policy:
+                        </p>
 
-                                <div>
-                                    <h4 className="font-medium text-gray-800">Digital Products:</h4>
-                                    <p className="text-gray-600">Due to the nature of digital content, cancellations are only accepted prior to download or access being granted.</p>
-                                </div>
-
-                                <div>
-                                    <h4 className="font-medium text-gray-800">Physical Products:</h4>
-                                    <p className="text-gray-600">Orders may be cancelled before shipping. Once shipped, please refer to our return policy.</p>
-                                </div>
-                            </div>
+                        <div>
+                            <h3 className="text-xl font-semibold text-indigo-500 mb-4">Subscriptions</h3>
+                            <ul className="list-disc ml-6 space-y-2">
+                                <li>All subscriptions (monthly/annual) auto-renew unless canceled.</li>
+                                <li>You may cancel your subscription at any time via your YASHRAA account dashboard.</li>
+                                <li>Cancellation stops future billing, but no refunds are issued for unused portions of the current billing cycle.</li>
+                                <li>If you cancel within 24 hours of an initial new subscription (first purchase only), you may request a refund at: <a href="mailto:support@yashraa.ai" className="text-indigo-600 underline">support@yashraa.ai</a>.</li>
+                            </ul>
                         </div>
 
-                        <div className="policy-section">
-                            <h3 className="text-xl font-semibold text-indigo-500 mb-4">2. Refunds</h3>
-                            <div className="space-y-4 ml-4">
-                                <div>
-                                    <h4 className="font-medium text-gray-800">Eligibility for Refund:</h4>
-                                    <p className="text-gray-600">Refunds are granted if:</p>
-                                    <ul className="list-disc ml-6 text-gray-600 space-y-2 mt-2">
-                                        <li>The product or service is defective or not as described.</li>
-                                        <li>The cancellation request is made within the eligible timeframe.</li>
-                                        <li>The issue is reported within 7 days of delivery or service start.</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <h4 className="font-medium text-gray-800">Non-refundable Items:</h4>
-                                    <ul className="list-disc ml-6 text-gray-600 space-y-2">
-                                        <li>Downloaded digital products.</li>
-                                        <li>Customized or personalized items.</li>
-                                        <li>Services already rendered.</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <h4 className="font-medium text-gray-800">Processing Time:</h4>
-                                    <p className="text-gray-600">Approved refunds will be processed within 5–10 business days to the original payment method.</p>
-                                </div>
-                            </div>
+                        <div>
+                            <h3 className="text-xl font-semibold text-indigo-500 mb-4">Non-Subscription (One-Time Purchases)</h3>
+                            <p className="ml-4">One-time purchases (if applicable) are non-refundable once delivered.</p>
                         </div>
 
-                        <div className="policy-section">
-                            <h3 className="text-xl font-semibold text-indigo-500 mb-4">3. How to Request a Refund or Cancellation</h3>
-                            <p className="text-gray-600 ml-4">Please contact us at <a href="mailto:admin@yashraa.ai" className="text-indigo-600 hover:underline">admin@yashraa.ai</a> with your order number and reason for the request. We will respond within 48 hours.</p>
+                        <div>
+                            <h3 className="text-xl font-semibold text-indigo-500 mb-4">Promotions & Trials</h3>
+                            <ul className="list-disc ml-6 space-y-2">
+                                <li>Free trials or discounted offers may be withdrawn/changed at any time.</li>
+                                <li>Refunds are not available for discounted offers unless otherwise stated.</li>
+                            </ul>
                         </div>
 
-                        <div className="policy-section">
-                            <h3 className="text-xl font-semibold text-indigo-500 mb-4">4. Changes to This Policy</h3>
-                            <p className="text-gray-600 ml-4">We reserve the right to modify this policy at any time. Changes will be posted on this page with an updated effective date.</p>
+                        <div>
+                            <h3 className="text-xl font-semibold text-indigo-500 mb-4">Service Downtime</h3>
+                            <p className="ml-4">Temporary outages do not constitute grounds for refunds.</p>
+                        </div>
+
+                        <div>
+                            <h3 className="text-xl font-semibold text-indigo-500 mb-4">How to Request Refund</h3>
+                            <p className="ml-4">
+                                Email: <a href="mailto:support@yashraa.ai" className="text-indigo-600 underline">support@yashraa.ai</a> — Include your account details and reason for request.
+                            </p>
+                            <p className="ml-4">Refund approvals are at our sole discretion, evaluated on a case-by-case basis.</p>
+                        </div>
+
+                        <div>
+                            <h3 className="text-xl font-semibold text-indigo-500 mb-4">User Code of Conduct / Acceptable Use Policy</h3>
+                            <p className="ml-4">To maintain a safe and ethical platform, YASHRAA users must not:</p>
+                            <ul className="list-disc ml-8 space-y-2">
+                                <li>Use AI tools for illegal, harmful, or fraudulent purposes</li>
+                                <li>Generate or share hate speech, discrimination, or misinformation</li>
+                                <li>Attempt to reverse-engineer or bypass AI safeguards</li>
+                                <li>Infringe on third-party IP rights</li>
+                                <li>Share private/confidential data of others without consent</li>
+                                <li>Exploit the platform for spamming or phishing</li>
+                                <li>Interfere with system security or performance</li>
+                            </ul>
+                            <p className="ml-4 mt-2">Violation may result in immediate suspension or termination of access.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default RefundAndCancellationPolicy
+export default RefundAndCancellationPolicy;

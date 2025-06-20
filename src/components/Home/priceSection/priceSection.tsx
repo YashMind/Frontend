@@ -20,7 +20,7 @@ const PriceSection = () => {
   }, [dispatch]);
 
   return (
-    <div className="price mt-[81px]">
+    <div className="price mt-[81px]" id="pricing">
       <div className="container px-4">
         <h1
           className="font-normal text-[24px] sm:text-[30px] text-white text-center sm:text-left"

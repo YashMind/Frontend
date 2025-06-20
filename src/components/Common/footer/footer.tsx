@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { FaFacebook, FaInstagram, FaTelegramPlane, FaWhatsapp, FaYoutube } from "react-icons/fa";
 
 const HomeFooter = () => {
   return (
@@ -27,9 +28,9 @@ const HomeFooter = () => {
             Pick the plan that fits your needs and start unlocking powerful AI
             features today.
           </p>
-          <button className="cursor-pointer w-full bg-gradient-to-r from-[#501794] via-[#5e3aa1] to-[#40659F] font-medium hover:opacity-90 text-white text-sm py-2 px-4 rounded-full transition">
+          <a href="#pricing" className="cursor-pointer w-full bg-gradient-to-r from-[#501794] via-[#5e3aa1] to-[#40659F] font-medium hover:opacity-90 text-white text-sm py-2 px-4 rounded-full transition">
             Choose This Plan
-          </button>
+          </a>
         </div>
 
         {/* About Links */}
@@ -39,11 +40,11 @@ const HomeFooter = () => {
           </h2>
           <ul className="text-sm space-y-2 [font-family:'Roboto_Flex',sans-serif]">
             <li>
-              <Link href="/">Home</Link>
+              <Link href="/details/about-us">About Us</Link>
             </li>
-            {/* <li>
-              <Link href="/details/llm">LLM</Link>
-            </li> */}
+            <li>
+              <Link href="/details/faq">FAQs</Link>
+            </li>
             <li>
               <Link href="/chatbot">Chat Bot</Link>
             </li>
@@ -51,11 +52,12 @@ const HomeFooter = () => {
               <Link href="/voice-agent">Voice Agent</Link>
             </li>
             <li>
-              <Link href="/details/terms&condition">Terms & Conditions</Link>
+              <Link href="/chat-llm">Chat LLM</Link>
             </li>
             <li>
-              <Link href="/details/privacy-policy">Privacy Policy</Link>
+              <Link href="/details/contact-us">Contact us</Link>
             </li>
+
           </ul>
         </div>
 
@@ -65,20 +67,31 @@ const HomeFooter = () => {
             Company
           </h2>
           <ul className="text-sm space-y-2 [font-family:'Roboto_Flex',sans-serif]">
+
             <li>
-              <Link href="/details/about-us">About Us</Link>
+              <Link href="/details/terms&condition">Terms & Conditions</Link>
             </li>
             <li>
-              <Link href="/details/faq">FAQs</Link>
-              </li>
-              <li>
-                <Link href="/details/refund-and-cancellation-policy">
-                  Refund and Cancellation policy
-                </Link>
-              
+              <Link href="/details/privacy-policy">Privacy Policy</Link>
             </li>
             <li>
-              <Link href="/details/contact-us">Contact us</Link>
+              <Link href="/details/refund-and-cancellation-policy">
+                Refund and Cancellation policy
+              </Link>
+            </li>
+            <li>
+              <Link href="/details/gdpr">
+                GDPR
+              </Link>
+            </li>
+            <li>
+              <Link href="/details/code-of-conduct">
+                Use Code of Conduct
+              </Link>
+            </li><li>
+              <Link href="/details/disclaimer-and-liability">
+                Disclaimer & Limitation of Liability Statement
+              </Link>
             </li>
           </ul>
         </div>
@@ -88,19 +101,22 @@ const HomeFooter = () => {
           <h2 className="text-lg md:text-xl font-bold mb-6 md:mb-8 [font-family:'Roboto_Flex',sans-serif]">
             Follow Us
           </h2>
-          <div className="flex space-x-4">
-            <Link href="#">
-              <img src="/images/facebook (3).png" alt="Facebook" />
-            </Link>
-            <Link href="#">
-              <img src="/images/social.png" alt="Twitter" />
-            </Link>
-            <Link href="#">
-              <img src="/images/instra.png" alt="Instagram" />
-            </Link>
-            <Link href="#">
-              <img src="/images/transfer.png" alt="LinkedIn" />
-            </Link>
+          <div className="flex space-x-4 text-2xl text-white">
+            <a href="https://www.youtube.com/@YashraaAI" target="_blank" rel="noopener noreferrer">
+              <FaYoutube />
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61576909360828" target="_blank" rel="noopener noreferrer">
+              <FaFacebook />
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
+              <FaInstagram />
+            </a>
+            <a href="https://web.telegram.org/k/#-2561704830" target="_blank" rel="noopener noreferrer">
+              <FaTelegramPlane />
+            </a>
+            <a href="https://whatsapp.com/channel/0029Vb60ltZ1HspzbzM8dN1y" target="_blank" rel="noopener noreferrer">
+              <FaWhatsapp />
+            </a>
           </div>
         </div>
       </div>
@@ -132,7 +148,7 @@ const HomeFooter = () => {
               <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
                 <path d="..." stroke="white" />
               </svg>
-              <p>support@yashmind.in</p>
+              <p>support@yashraa.ai</p>
             </div>
 
             {/* Phone */}

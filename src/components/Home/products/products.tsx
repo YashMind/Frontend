@@ -48,7 +48,7 @@ const HomeProducts = () => {
             },
             {
               title: "Chat LLM",
-              desc: "Leveraging Cutting-Edge Large Language Models to Transform Multilingual or Document Processing, Enabling Effortless Communication.",
+              desc: "Unlock the Power of Top AI Models. Compare Outputs, Test Multilingual & Document Skills — All in One Place.",
               icon: "/images/icons8-voice-64 1 (2).png",
             },
           ].map((card, idx) => (

@@ -6,9 +6,7 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { getMeData, isLoggedin } from "@/store/slices/auth/authSlice";
-import { FaArrowLeftLong, FaArrowRightLong, FaForward } from "react-icons/fa6";
-import { BiArrowFromLeft, BiArrowToRight } from "react-icons/bi";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 const HomeHeader = () => {
   const router = useRouter();
@@ -21,118 +19,93 @@ const HomeHeader = () => {
   useEffect(() => {
     dispatch(isLoggedin())
   }, [])
+
   const [navItem, setNavItem] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [currency, setCurrency] = useState<'USD' | 'INR'>('USD');
 
   useEffect(() => {
-    if (pathname == "/") {
-      setNavItem(1);
-    }
-    if (pathname == "/chatbot") {
-      setNavItem(2);
-    }
-    if (pathname == "/voice-agent") {
-      setNavItem(3);
-    }
+    if (pathname == "/") setNavItem(1);
+    if (pathname == "/chatbot") setNavItem(2);
+    if (pathname == "/voice-agent") setNavItem(3);
+    if (pathname == "/chat-llm") setNavItem(3);
   }, [pathname]);
 
-  const handleToggle = () => {
-    setIsMenuOpen((prev) => !prev);
+  const toggleCurrency = () => {
+    setCurrency(prev => prev === 'USD' ? 'INR' : 'USD');
   };
 
-
   return (
-    <nav className="fixed w-full left-0 top-0 z-[9]">
-      <div className="container">
-        <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pt-[31px]">
-          <Link
-            href="/"
-            className="flex items-center space-x-3 rtl:space-x-reverse"
-          >
-            <span className="self-center text-4xl font-semibold whitespace-nowrap  text-white">
-              <Image
-                alt="alt"
-                src="/images/yash-removebg-preview.png"
-                height={150}
-                width={150}
-              />
-            </span>
+    <nav className="fixed w-full left-0 top-0 z-[9] bg-gradient-to-r from-50% from-purple-900 to-blue-900 shadow-lg flex items-center ">
+      <div className="container mx-auto px-4 ">
+        <div className="flex flex-wrap items-center justify-between py-4">
+          {/* Logo */}
+          <Link href="/" className="flex items-center">
+            <Image
+              alt="Logo"
+              src="/images/yashraa_header.svg"
+              height={120}
+              width={120}
+              className="h-12 w-[80%] md:h-16"
+            />
           </Link>
-          <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            {/* <button
-              type="button"
-              className="text-white  f  text-lg px-4 py-2 text-center cursor-pointer"
-              onClick={() => router.push("/auth/signin")}
-            >
-              Sign in
-            </button> */}
-            {userData ? <button
-              className="flex items-center gap-2 py-[14px] px-6 text-white text-base font-medium rounded-[18px] bg-[linear-gradient(90.04deg,_#501794_0.03%,_#3E70A1_101.88%)] hover:from-purple-700 hover:to-blue-600 transition-all cursor-pointer"
-              onClick={() => router.push("/chatbot-dashboard/main")}
-            >
-              Dashboard <FaArrowRightLong size={20} />
-            </button> : <button
-              className="py-[14px] px-[43px] text-white text-base font-medium rounded-[18px] bg-[linear-gradient(90.04deg,_#501794_0.03%,_#3E70A1_101.88%)] hover:from-purple-700 hover:to-blue-600 transition-all cursor-pointer"
-              onClick={() => router.push("/auth/signin")}
-            >
-              Sign In
-            </button>}
+
+          {/* Mobile Menu Button */}
+          <div className="flex items-center md:order-2 space-x-4">
+            {/* Currency Toggle */}
+            {userData ? (
+              <button
+                className="hidden sm:flex items-center gap-2 py-2 px-4 md:py-3 md:px-6 text-white text-sm md:text-base font-medium rounded-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all cursor-pointer"
+                onClick={() => router.push("/chatbot-dashboard/main")}
+              >
+                Dashboard <FaArrowRightLong size={16} />
+              </button>
+            ) : (
+              <>
+                <button
+                  className="hidden sm:inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-green-500 to-teal-400 text-white text-sm font-medium rounded-full hover:from-green-600 hover:to-teal-500 transition-colors"
+                >
+                  7-Day Free Trial
+                </button>
+                <button
+                  className="py-2 px-4 md:py-3 md:px-6 text-white text-sm md:text-base font-medium rounded-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all cursor-pointer"
+                  onClick={() => router.push("/auth/signin")}
+                >
+                  Sign In
+                </button>
+              </>
+            )}
+
             <button
-              data-collapse-toggle="navbar-sticky"
               type="button"
-              className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+              className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none text-white hover:bg-white/20"
               aria-controls="navbar-sticky"
               aria-expanded={isMenuOpen}
-              onClick={() => handleToggle()}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
+              <span className="sr-only">Open main menu</span>
               {isMenuOpen ? (
-                // Cross icon (Close)
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               ) : (
-                // Hamburger icon
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               )}
             </button>
           </div>
+
+          {/* Navigation Links */}
           <div
-            className={`${isMenuOpen
-              ? "flex flex-col items-center justify-center"
-              : "hidden"
-              }  w-full md:flex md:flex-row md:w-auto md:order-1 `}
+            className={`${isMenuOpen ? 'flex' : 'hidden'} w-full md:flex md:w-auto md:order-1`}
             id="navbar-sticky"
           >
-            <ul className="flex flex-col items-center gap-6 px-4 py-4 md:flex-row md:items-start  rounded-[43px] bg-[#bfbaff4f]/90 backdrop-blur-md  text-white ">
+            <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium rounded-lg md:flex-row md:space-x-2 lg:space-x-6 md:mt-0">
               <li>
                 <Link
                   href="/"
-                  className={`${navItem === 1
-                    ? "bg-white text-black rounded-[27px] px-3"
-                    : ""
-                    } text-lg font-normal py-2   cursor-pointer`}
+                  className={`block py-2 px-3 rounded-full ${navItem === 1 ? 'bg-white text-purple-900' : 'text-white hover:bg-white/20'}`}
                   onClick={() => {
                     setNavItem(1);
                     setIsMenuOpen(false);
@@ -144,10 +117,7 @@ const HomeHeader = () => {
               <li>
                 <Link
                   href="/chatbot"
-                  className={` ${navItem === 2
-                    ? "bg-white text-black rounded-[27px] px-3"
-                    : ""
-                    } text-lg font-normal py-2 hover:text-gray-300 px-3 cursor-pointer`}
+                  className={`block py-2 px-3 rounded-full ${navItem === 2 ? 'bg-white text-purple-900' : 'text-white hover:bg-white/20'}`}
                   onClick={() => {
                     setNavItem(2);
                     setIsMenuOpen(false);
@@ -159,10 +129,7 @@ const HomeHeader = () => {
               <li>
                 <Link
                   href="/voice-agent"
-                  className={`${navItem === 3
-                    ? "bg-white text-black rounded-[27px] px-3"
-                    : ""
-                    } text-lg font-normal py-2  hover:text-gray-300 px-3 cursor-pointer`}
+                  className={`block py-2 px-3 rounded-full ${navItem === 3 ? 'bg-white text-purple-900' : 'text-white hover:bg-white/20'}`}
                   onClick={() => {
                     setNavItem(3);
                     setIsMenuOpen(false);
@@ -171,24 +138,64 @@ const HomeHeader = () => {
                   Voice Agent
                 </Link>
               </li>
-              {/* <li>
+              <li>
                 <Link
-                  href="/"
-                  className={`${
-                    navItem === 4
-                      ? "bg-white text-black rounded-[27px] px-3"
-                      : ""
-                  } text-lg font-normal py-2 px-3 hover:text-gray-300 cursor-pointer`}
+                  href="/chat-llm"
+                  className={`block py-2 px-3 rounded-full ${navItem === 3 ? 'bg-white text-purple-900' : 'text-white hover:bg-white/20'}`}
                   onClick={() => {
-                    setNavItem(4);
+                    setNavItem(3);
                     setIsMenuOpen(false);
                   }}
                 >
                   Chat LLM
                 </Link>
-              </li> */}
+              </li>
+
+              {/* Mobile-only buttons */}
+              {!userData && isMenuOpen && (
+                <>
+                  <li className="md:hidden">
+                    <button
+                      className="w-full text-left py-2 px-3 rounded-full text-white hover:bg-white/20"
+                      onClick={toggleCurrency}
+                    >
+                      Switch to {currency === 'USD' ? 'INR' : 'USD'}
+                    </button>
+                  </li>
+                  <li className="md:hidden">
+                    <button
+                      className="w-full text-left py-2 px-3 rounded-full bg-gradient-to-r from-green-500 to-teal-400 text-white"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      7-Day Free Trial
+                    </button>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
+        </div>
+      </div>
+      <div className="md:block right-5 hidden mr-5">
+        <div className="w-32 h-8 text-sm bg-white/10 rounded-full flex items-center p-1 relative">
+          <div
+            className={`absolute top-1 left-2 h-6 w-14 bg-white rounded-full transition-all duration-300 ${currency === 'USD' ? 'translate-x-0' : 'translate-x-full'
+              }`}
+          ></div>
+          <button
+            onClick={() => toggleCurrency()}
+            className={`relative z-10 w-1/2 text-center font-medium ${currency === 'USD' ? 'text-purple-900' : 'text-white'
+              }`}
+          >
+            USD
+          </button>
+          <button
+            onClick={() => toggleCurrency()}
+            className={`relative z-10 w-1/2 text-center font-medium ${currency === 'INR' ? 'text-purple-900' : 'text-white'
+              }`}
+          >
+            INR
+          </button>
         </div>
       </div>
     </nav>
