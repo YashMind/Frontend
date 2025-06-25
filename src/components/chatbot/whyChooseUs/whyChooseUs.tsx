@@ -10,12 +10,10 @@ const WhyChooseUs = () => {
               className="text-[32px] md:text-[40px] font-normal"
               style={{ fontFamily: "'Audiowide', sans-serif" }}
             >
-              Why Choose Us?
+              Why Choose YASHRAA?
             </h1>
             <p className="font-bold text-base my-5 md:my-[22px]">
-              We pride ourselves on making it easy for individuals and business
-              owners around the world to use artificial intelligence to become
-              more productive.
+              Access world-class chatbots, customize AI personalities, and seamlessly integrate your data. weather you scaling customer support or automating tasks — YASHRAA makes AI adoption effortless, flexible, and ROI-focused for businesses of all sizes.
             </p>
             <a
               href="/auth/signin"

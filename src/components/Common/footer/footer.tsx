@@ -170,8 +170,7 @@ const HomeFooter = () => {
         </p>
       </div>
       <p className="font-light text-xs py-1 pt-10">
-        "YASHRAA" {"\t \t"} is the registered trademark of the YASHRAA
-        TECHNOLOGIES PRIVATE LIMITED.
+        YASHRAA {"\t \t"} is registered trademark of YASHRAA TECHNOLOGIES PRIVATE LIMITED.
       </p>
     </footer>
   );

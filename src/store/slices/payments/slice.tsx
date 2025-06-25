@@ -3,6 +3,7 @@ import http from '@/services/http/baseUrl';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { boolean } from 'yup';
 
 interface PaymentState {
     orderId: string | null;
@@ -95,6 +96,29 @@ export const fetchIsInternational = createAsyncThunk<
         try {
             const response = await http.get('/payment/cashfree/is-international');
             return response.data; // Must be { is_international: boolean }
+        } catch (error: any) {
+            if (error.response) {
+                return rejectWithValue(error.response.data);
+            }
+            return rejectWithValue({ message: error.message });
+        }
+    }
+);
+
+export const activateTrial = createAsyncThunk<
+    {
+        success: boolean,
+        token_entries: any,
+        details: string,
+    },
+    void,
+    { rejectValue: { message: string } }
+>(
+    'payment/activateTrial',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await http.get('/webhook/payments/activate-trial');
+            return response.data;
         } catch (error: any) {
             if (error.response) {
                 return rejectWithValue(error.response.data);

@@ -49,9 +49,8 @@ const Step = ({ number, title, description, image, imagePosition }: any) => {
 
   return (
     <div
-      className={`flex flex-col lg:flex-row items-start gap-10 ${
-        number === "2" ? "my-[76px]" : ""
-      }`}
+      className={`flex flex-col lg:flex-row items-start gap-10 ${number === "2" ? "my-[76px]" : ""
+        }`}
     >
       {imagePosition === "left" ? (
         <>
@@ -83,9 +82,8 @@ const CustomGpt = () => {
             className="text-[40px] font-normal leading-tight"
             style={{ fontFamily: "'Audiowide', sans-serif" }}
           >
-            3 steps to <br />
-            your custom <br />
-            <span className="text-[#34C8FB]">ChatGPT agent</span>
+            3 Simple Steps to use your custom
+            <span className="text-[#34C8FB]"> Chat Bot</span>
           </h2>
           <p className="text-base font-bold mt-[22px]">
             Gain a new employee who helps 24/7/365 answer any questions about your business or chosen data.

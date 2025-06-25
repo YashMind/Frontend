@@ -1,7 +1,5 @@
 import React from "react";
 import ChatbotHeader from "@/components/chatbot/header/chatbotHeader";
-import ChatbotFooter from "@/components/chatbot/footer/chatbotFooter";
-import Image from "next/image";
 import LlmBanner from "./llmBanner/llmBanner";
 import WorkFlowAi from "./workFlowAi/workFlowAi";
 import AiArea from "./aiArea/aiArea";
@@ -39,8 +37,7 @@ const LlmProduct = () => {
       {/* faq */}
       <LlmFaqs />
 
-      {/* footer */}
-      <ChatbotFooter />
+
     </div>
   );
 };

@@ -16,6 +16,8 @@ const HomeHeader = () => {
     (state: RootState) => state.auth.loggedInUser
   );
 
+  console.log("USER DATA: ", userData);
+
   useEffect(() => {
     dispatch(isLoggedin())
   }, [])
@@ -28,7 +30,7 @@ const HomeHeader = () => {
     if (pathname == "/") setNavItem(1);
     if (pathname == "/chatbot") setNavItem(2);
     if (pathname == "/voice-agent") setNavItem(3);
-    if (pathname == "/chat-llm") setNavItem(3);
+    if (pathname == "/chat-llm") setNavItem(4);
   }, [pathname]);
 
   const toggleCurrency = () => {
@@ -53,20 +55,28 @@ const HomeHeader = () => {
           {/* Mobile Menu Button */}
           <div className="flex items-center md:order-2 space-x-4">
             {/* Currency Toggle */}
-            {userData ? (
+            {userData ? (<>
+              {!userData.activate_plan && <Link
+                href={"/activate-trial"}
+                className="hidden sm:inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-green-500 to-teal-400 text-white text-sm font-medium rounded-full hover:from-green-600 hover:to-teal-500 transition-colors"
+              >
+                7-Day Free Trial
+              </Link>}
               <button
                 className="hidden sm:flex items-center gap-2 py-2 px-4 md:py-3 md:px-6 text-white text-sm md:text-base font-medium rounded-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all cursor-pointer"
                 onClick={() => router.push("/chatbot-dashboard/main")}
               >
                 Dashboard <FaArrowRightLong size={16} />
-              </button>
+              </button></>
+
             ) : (
               <>
-                <button
+                <Link
+                  href={"/activate-trial"}
                   className="hidden sm:inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-green-500 to-teal-400 text-white text-sm font-medium rounded-full hover:from-green-600 hover:to-teal-500 transition-colors"
                 >
                   7-Day Free Trial
-                </button>
+                </Link>
                 <button
                   className="py-2 px-4 md:py-3 md:px-6 text-white text-sm md:text-base font-medium rounded-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all cursor-pointer"
                   onClick={() => router.push("/auth/signin")}
@@ -141,7 +151,7 @@ const HomeHeader = () => {
               <li>
                 <Link
                   href="/chat-llm"
-                  className={`block py-2 px-3 rounded-full ${navItem === 3 ? 'bg-white text-purple-900' : 'text-white hover:bg-white/20'}`}
+                  className={`block py-2 px-3 rounded-full ${navItem === 4 ? 'bg-white text-purple-900' : 'text-white hover:bg-white/20'}`}
                   onClick={() => {
                     setNavItem(3);
                     setIsMenuOpen(false);
@@ -177,7 +187,7 @@ const HomeHeader = () => {
         </div>
       </div>
       <div className="md:block right-5 hidden mr-5">
-        <div className="w-32 h-8 text-sm bg-white/10 rounded-full flex items-center p-1 relative">
+        {/* <div className="w-32 h-8 text-sm bg-white/10 rounded-full flex items-center p-1 relative">
           <div
             className={`absolute top-1 left-2 h-6 w-14 bg-white rounded-full transition-all duration-300 ${currency === 'USD' ? 'translate-x-0' : 'translate-x-full'
               }`}
@@ -196,7 +206,7 @@ const HomeHeader = () => {
           >
             INR
           </button>
-        </div>
+        </div> */}
       </div>
     </nav>
   );

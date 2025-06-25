@@ -1,14 +1,14 @@
 import React from "react";
 
 const cardData = [
-  {
-    title: "Instagram",
-    description:
-      "Use your chatbot to respond to incoming messages to your Instagram business account.",
-    img: "/images/icon1.png",
-    borderColor: "#DF437E",
-    bgColor: "#CC39A2",
-  },
+  // {
+  //   title: "Instagram",
+  //   description:
+  //     "Use your chatbot to respond to incoming messages to your Instagram business account.",
+  //   img: "/images/icon1.png",
+  //   borderColor: "#DF437E",
+  //   bgColor: "#CC39A2",
+  // },
   {
     title: "Whatsapp",
     description:
@@ -41,17 +41,17 @@ const cardData = [
     borderColor: "#EBB02E",
     bgColor: "#EBB02E",
   },
-  {
-    title: "Messenger",
-    description:
-      "Use your chatbot to automatically reply to your Facebook pages messages or comments.",
-    img: "/images/facebook-messenger-icon 1.png",
-    borderColor: "#466CFF",
-    bgColor: "#466CFF",
-  },
+  // {
+  //   title: "Messenger",
+  //   description:
+  //     "Use your chatbot to automatically reply to your Facebook pages messages or comments.",
+  //   img: "/images/facebook-messenger-icon 1.png",
+  //   borderColor: "#466CFF",
+  //   bgColor: "#466CFF",
+  // },
 ];
 
-const ChatbotCard = ({
+const IntegerationCard = ({
   title,
   description,
   img,
@@ -71,7 +71,7 @@ const ChatbotCard = ({
       className="text-white px-4 py-1 rounded-full text-[12px] font-bold cursor-pointer"
       style={{ backgroundColor: bgColor }}
     >
-      Export All
+      Connect
     </button>
   </div>
 );
@@ -83,7 +83,7 @@ const OurChatbots = () => {
         {/* Left Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6  w-full lg:w-2/3 text-center">
           {cardData.map((card, index) => (
-            <ChatbotCard key={index} {...card} />
+            <IntegerationCard key={index} {...card} />
           ))}
         </div>
 

@@ -79,7 +79,7 @@ const FeatureCard = ({ icon, iconSize, id, title, description }: any) => (
           height={iconSize.height}
         />
       </div>
-      <div className="text-sm font-light">{id}</div>
+      {/* <div className="text-sm font-light">{id}</div> */}
     </div>
     <div>
       <h4 className=" text-black mb-1 text-lg font-bold py-[14px]">{title}</h4>
@@ -101,17 +101,15 @@ const WhyChooseChatbot = () => {
             className="text-3xl lg:text-4x text-[40px] font-normal text-black mb-4"
             style={{ fontFamily: "'Audiowide', sans-serif" }}
           >
-            Why Choose <span className="text-[#34C8FB]  ">ChatBot ai?</span>
+            Import. Brand. Scale. Succeed.<span className="text-[#34C8FB]  ">             All in One Bot</span>
           </h2>
           <p className="text-black font-bold text-base leading-relaxed max-w-md mx-auto lg:mx-0 mt-[22px]">
-            We pride ourselves on making it easy for individuals and business
-            owners around the world to use artificial intelligence to become
-            more productive.
+            Yashraa’s AI Bots deliver an unmatched experience with versatile features: access chat history, create tailored bot personas,Import business-critical data. Prioritizing privacy and security, while offering seamless branding options the perfect solution to enhance customer interactions, improve efficiency, and future-proof your business with AI.
           </p>
         </div>
 
         {/* Right Section */}
-        <div className="lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-6 m-auto">
+        <div className="lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-4 m-auto">
           {features.map((feature, index) => (
             <FeatureCard key={index} {...feature} />
           ))}

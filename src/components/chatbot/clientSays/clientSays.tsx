@@ -33,42 +33,83 @@ const ClientSays = () => {
   const reviewData = [
     {
       count: 1,
-      name: "NovaTech Solutions",
-
+      name: "Maria Gonzalez, CX Manager, Madrid",
       review:
-        "Working with this team has been an absolute game-changer for our business. From the initial consultation to the final delivery, they maintained excellent communication and demonstrated a deep understanding of our project goals. What stood out the most was their ability to take feedback constructively and apply it immediately, without compromising the vision.",
+        "Yashraa’s chatbot revolutionized our customer support — it’s fast, intelligent, and easy to customize. We deployed it in minutes, and the AI’s natural tone surprised even our team! Support requests dropped by 40% while satisfaction soared.",
     },
     {
       count: 2,
-      name: "GreenBridge Analytics",
+      name: "James Patel, Agency Founder, London",
       review:
-        "I was hesitant at first to outsource such a critical part of our platform, but this team quickly earned our trust. Not only did they deliver high-quality code, but they also took the time to explain the decisions made throughout the process. Their proactive approach saved us time and resources. Truly a professional and talented group of individuals who care about the success of your project.",
+        "We switched to this chatbot after trying several platforms — the difference is night and day! The ability to import knowledge from our PDFs and tailor the bot’s personality makes this a game-changer. Our clients love interacting with it.",
     },
     {
       count: 3,
-      name: "Skyline Retail Group",
+      name: "Anika Sharma, SaaS Entrepreneur, Bengaluru",
       review:
-        "Their attention to detail is unmatched. Every feature was implemented with precision, and the UI/UX design reflects a solid understanding of modern design principles. We had a tight deadline and were prepared for delays, but the team delivered everything ahead of schedule and with zero compromises on quality. I couldn’t have asked for a better development partner.",
+        "As a startup, we needed a chatbot that didn’t require coding but could still deliver results. YASHRAA gave us exactly that — simple setup, powerful features, and fantastic support. Our first week saw 2x more lead conversions!",
     },
     {
       count: 4,
-      name: "PulseWave Health",
+      name: "Tobias Müller, EdTech Consultant, Berlin",
       review:
-        "This is the most seamless collaboration I’ve had with any remote development team. They are responsive, technically proficient, and genuinely invested in helping you succeed. The regular updates and quick iterations made the process stress-free, and the outcome was a polished, professional application that our users love. Highly recommended!",
+        "We operate in the education sector — this chatbot helps us engage with students 24/7. The custom persona and multi-LLM flexibility are huge advantages. Highly reliable and secure too!",
     },
     {
       count: 5,
-      name: "EcoFleet Logistics",
+      name: "William Johnson, E-commerce Director, New York",
       review:
-        "From day one, the experience was top-notch. We had multiple revisions and updates, and the team handled each one gracefully, ensuring that we felt heard and valued throughout the journey. Their expertise goes beyond just writing code—they truly understand the business impact of what they build. If you're looking for reliability and excellence, this is the team to go with.",
+        "On this platform, our custom chatbots have elevated our ecommerce experience. The bots guide customers through FAQs, recommend products, and even handle post-sale support. We’re seeing higher retention and fewer abandoned carts.",
     },
     {
       count: 6,
-      name: "Luminary Creative Studio",
+      name: "Hiroshi Tanaka, Software Consultant, Tokyo",
       review:
-        "It’s rare to find a development team that is both technically skilled and emotionally intelligent. They knew when to push back with better suggestions and when to simply execute. I appreciated their commitment to delivering not just a website, but a complete user experience. The feedback from our users has been overwhelmingly positive. Will definitely work with them again.",
+        "As a freelance developer, I needed a flexible AI chatbot for my clients. YASHRAA’s marketplace model and easy integration made it my go-to platform. Each project is unique — and YASHRAA lets me deliver custom solutions easily.",
     },
-  ];
+    {
+      count: 7,
+      name: "Mark Evans, AI Consultant, Toronto",
+      review:
+        "We tested YASHRAA side-by-side with three major chatbot providers — its performance, security, won hands down. I now recommend it to every client looking to level up their customer engagement.",
+    },
+    {
+      count: 8,
+      name: "Sophia Lee, Marketing Manager, Seoul",
+      review:
+        "With YASHRAA, we built a branded chatbot in less than an hour. The ability to import our training materials and monitor chat history has been a huge win. The flexibility is unmatched.",
+    },
+    {
+      count: 9,
+      name: "Hannah Wilson, Creative Director, Sydney",
+      review:
+        "As a creative agency, we love how this platform lets us craft chatbots that match our clients’ brand voice. Plus, it gives us the flexibility to test and optimize easily.",
+    },
+    {
+      count: 10,
+      name: "Ahmed Nasser, Operations Manager, Dubai",
+      review:
+        "YASHRAA’s AI chatbot helped us automate 80% of our customer service inquiries — freeing up our team for higher-value work. The dashboard is intuitive, and the results speak for themselves.",
+    },
+    {
+      count: 11,
+      name: "Dr. Elena Petrova, HealthTech Innovator, Moscow",
+      review:
+        "Our healthcare chatbot needed to handle sensitive data securely — this bot gave us the privacy controls we needed along with fantastic AI performance. Very impressed.",
+    },
+    {
+      count: 12,
+      name: "Jason Wu, Startup Founder, Singapore",
+      review:
+        "I’m amazed at how fast we got our chatbot live with YASHRAA — zero coding, simple uploads, and amazing AI responses. It's an ideal solution for any fast-paced startup.",
+    },
+    {
+      count: 13,
+      name: "Matteo Ricci, FinTech Consultant, Milan",
+      review:
+        "The fact that YASHRAA supports multiple AI models under one platform is a major plus — no vendor lock-in. Our finance clients appreciate the accuracy and control this gives us. Highly recommended.",
+    }
+  ]
 
   return (
     <div className="bg-[#2b1e8f]  py-10 px-4 md:px-10" id="reviews">
@@ -106,21 +147,20 @@ const ClientSays = () => {
                 index === (currentSlide + 1) % reviewData.length;
               return (
                 <div
-                  className={`keen-slider__slide bg-white rounded-xl flex flex-col items-center text-center shadow-lg overflow-hidden transition-all duration-300 ${
-                    isSecondSlide
-                      ? "h-[550px] w-[301px]"
-                      : "h-[500px] w-[250px]"
-                  } hover:shadow-xl `}
+                  className={`keen-slider__slide bg-white rounded-xl flex flex-col items-center text-center shadow-lg overflow-hidden transition-all duration-300 ${isSecondSlide
+                    ? " w-[301px]"
+                    : " w-[250px]"
+                    } hover:shadow-xl `}
                   key={index}
                 >
-                  <div className="relative w-full h-56 overflow-hidden rounded-t-xl">
+                  {/* <div className="relative w-full h-56 overflow-hidden rounded-t-xl">
                     <img
                       src="/images/testi-1.png"
                       alt="client"
                       className="w-full h-full object-cover transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent" />
-                  </div>
+                  </div> */}
 
                   <div className="p-6 flex flex-col items-center flex-grow">
                     <div className="mb-4">
@@ -140,9 +180,8 @@ const ClientSays = () => {
                     </div>
 
                     <p
-                      className={`text-sm text-gray-600 mb-6 ${
-                        isSecondSlide ? "overflow-y-auto" : "line-clamp-5"
-                      }`}
+                      className={`text-sm text-gray-600 mb-6 ${isSecondSlide ? "overflow-y-auto" : "line-clamp-5"
+                        }`}
                     >
                       {item?.review}
                     </p>

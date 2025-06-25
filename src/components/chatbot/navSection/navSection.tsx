@@ -3,8 +3,8 @@ import React from "react";
 
 const NavSection = () => {
   return (
-    <nav className="text-white bg-gradient-to-b from-[#2B255C] via-[#1300AF] to-[#0083FF] pt-30">
-      <ul className="flex justify-center gap-12 py-4 font-medium">
+    <nav className="text-white bg-gradient-to-b from-[#2B255C] via-[#1300AF] to-[#0083FF] pt-24">
+      <ul className="flex justify-end gap-8 py-4 px-4 font-medium">
         <li>
           <Link
             href="#features"

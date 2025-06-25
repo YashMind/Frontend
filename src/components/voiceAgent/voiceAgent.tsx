@@ -1,7 +1,4 @@
 import React from "react";
-import ChatbotHeader from "@/components/chatbot/header/chatbotHeader";
-import ChatbotFooter from "@/components/chatbot/footer/chatbotFooter";
-import Image from "next/image";
 import VoiceAgentBanner from "./voiceAgentBanner/voiceAgentBanner";
 import VoiceCompanion from "./voiceCompanion/voiceCompanion";
 import TaskManagement from "./taskManagement/taskManagement";

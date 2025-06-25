@@ -33,6 +33,8 @@ interface UserProfileData {
   plan?: string | any;
   tokenUsed?: number;
   status?: string;
+  activate_plan: boolean;
+  base_rate_per_token: number;
 }
 
 interface TrainingText {
