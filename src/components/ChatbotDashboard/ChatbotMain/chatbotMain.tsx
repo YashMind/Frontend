@@ -20,6 +20,7 @@ import ChatbotLinksDocs from "@/components/ChatbotDashboard/ChatbotLinksDocs/cha
 import ChatbotAppearence from "@/components/ChatbotDashboard/ChatbotAppearence/chatbotAppearence";
 import ChatbotIntegration from "@/components/ChatbotDashboard/ChatbotIntegration/chatbotIntegration";
 import { fetchChatMessageTokens, getChatbots, getSingleChatbot } from "@/store/slices/chats/chatSlice";
+import { getUserTimezone } from "@/components/utils/formatDateTime";
 
 const ChatbotMain = ({
   botPage,
@@ -75,6 +76,8 @@ const ChatbotMain = ({
                   className={`relative bg-[#2a2561] rounded-4xl w-full lg:w-[90%] flex ${botId ? "" : "gap-[25px]"
                     }`}
                 >
+
+                  {getUserTimezone()}
                   {botPage !== "main" ? (
                     <ChatbotSidebar botPage={botPage} botId={botId} />
                   ) : null}
