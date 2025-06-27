@@ -1,26 +1,20 @@
 import { formatDistanceToNowStrict, isAfter, subDays } from 'date-fns';
-export const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        timeZone: getUserTimezone(),
-    });
-};
-export const formatTime = (dateString: string) => {
-    console.log(dateString)
-    const date = new Date(dateString);
-    return date.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-        timeZone: getUserTimezone(),
-    });
-};
+import { toZonedTime, format } from 'date-fns-tz';
 
 export const getUserTimezone = () => {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
+};
+
+export const formatDate = (dateString: string) => {
+    const timeZone = getUserTimezone();
+    const zonedDate = toZonedTime(dateString, timeZone);
+    return format(zonedDate, 'MMMM d, yyyy', { timeZone });
+};
+
+export const formatTime = (dateString: string) => {
+    const timeZone = getUserTimezone();
+    const zonedDate = toZonedTime(dateString, timeZone);
+    return format(zonedDate, 'hh:mm aaaa', { timeZone });
 };
 
 export const formatDateOrTimeAgo = (dateString: string) => {
