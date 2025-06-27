@@ -57,7 +57,7 @@ const HomeHeader = () => {
   return (
     <nav className="fixed w-full left-0 top-0 z-[9] bg-gradient-to-r from-50% from-purple-900 to-blue-900 shadow-lg flex items-center ">
       <div className="container mx-auto px-4 ">
-        <div className="flex flex-wrap items-center justify-between py-4">
+        <div className="flex flex-wrap items-center justify-between pb-2 pt-1">
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image

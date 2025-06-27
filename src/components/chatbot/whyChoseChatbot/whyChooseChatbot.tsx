@@ -19,14 +19,6 @@ const features = [
     iconSize: { width: 35, height: 33 },
   },
   {
-    id: "03",
-    title: "Choose Your AI",
-    description:
-      "Select from Open AI GPTs, Claude 3.5, or Google Gemini language models, depending on your requirements.",
-    icon: "/images/ai-icon.png",
-    iconSize: { width: 35, height: 33 },
-  },
-  {
     id: "04",
     title: "Import Your Data",
     description:
