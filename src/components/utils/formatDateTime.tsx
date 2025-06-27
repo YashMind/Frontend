@@ -9,6 +9,7 @@ export const formatDate = (dateString: string) => {
     });
 };
 export const formatTime = (dateString: string) => {
+    console.log(dateString)
     const date = new Date(dateString);
     return date.toLocaleTimeString("en-US", {
         hour: "2-digit",
