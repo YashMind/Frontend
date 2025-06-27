@@ -77,7 +77,6 @@ const ChatbotMain = ({
                     }`}
                 >
 
-                  {getUserTimezone()}
                   {botPage !== "main" ? (
                     <ChatbotSidebar botPage={botPage} botId={botId} />
                   ) : null}

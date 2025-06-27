@@ -5,7 +5,7 @@ export const formatDate = (dateString: string) => {
         year: "numeric",
         month: "long",
         day: "numeric",
-        timeZone: 'Asia/Calcutta',
+        timeZone: getUserTimezone(),
     });
 };
 export const formatTime = (dateString: string) => {
@@ -14,7 +14,7 @@ export const formatTime = (dateString: string) => {
         hour: "2-digit",
         minute: "2-digit",
         hour12: true,
-        timeZone: 'Asia/Calcutta',
+        timeZone: getUserTimezone(),
     });
 };
 
