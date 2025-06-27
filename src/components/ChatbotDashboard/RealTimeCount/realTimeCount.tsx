@@ -4,7 +4,9 @@ import {
   FaMicrophoneAlt,
   FaRobot,
   FaWallet,
-  FaBalanceScale
+  FaBalanceScale,
+  FaExclamationTriangle,
+  FaTimes
 } from "react-icons/fa";
 import StatCard from "./StatCard";
 import { AppDispatch, RootState } from "@/store/store";
@@ -26,6 +28,7 @@ export default function RealTimeCount() {
 
   return (
     <div className={`mt-16 flex flex-col md:flex-row gap-2 p-2 w-full justify-center items-stretch transition flex-nowrap duration-150 `}>
+
       <StatCard
         icon={<FaComments size={20} color="#FFB85C" />}
         title="Chat Bot Usage"
@@ -86,4 +89,5 @@ export default function RealTimeCount() {
     </div>
   );
 };
+
 

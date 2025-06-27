@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AppDispatch, RootState } from "@/store/store";
@@ -10,6 +10,8 @@ import {
 } from "@/store/slices/chats/chatSlice";
 import { ChatbotsData } from "@/types/chatTypes";
 import { formatDate, formatTime } from "../utils/formatDateTime";
+import { FaExclamationTriangle, FaTimes } from "react-icons/fa";
+import AddCreditModal from "./RealTimeCount/addCreditModal";
 interface ChatbotDashboardProps {
   showModal: () => void;
 }
@@ -18,7 +20,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
   const chatbots: ChatbotsData[] = useSelector(
     (state: RootState) => state.chat.chatbots
   );
-
+  const [showCreditModal, setShowCreditModal] = useState<boolean>(false)
   const tokensData = useSelector((state: RootState) => state.chat.tokens);
   const chatbotError = useSelector((state: RootState) => state.chat.error);
   useEffect(() => {
@@ -69,6 +71,8 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
               Create New Bot <br></br> +
             </span>
           </div>
+
+          <LowBalanceReminder currentBalance={tokensData.credits && tokensData.credits.credit_balance} threshold={20} onAddCredits={() => setShowCreditModal(true)} />
         </div>
         <div>
           <h2 className="text-2xl font-semibold mb-2">My Bot List</h2>
@@ -148,8 +152,50 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
           </div>
         </div>
       </div>
+      {showCreditModal && <AddCreditModal onClose={() => setShowCreditModal(false)} />}
     </div>
   );
 };
 
 export default ChatbotDashboard;
+
+
+const LowBalanceReminder = ({ currentBalance, threshold = 10, onAddCredits = () => { } }) => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  // Check if balance is below threshold
+  const isLowBalance = currentBalance < threshold;
+
+  if (!isLowBalance || !isVisible) return null;
+
+  return (
+    <div className="relative low-balance-reminder bg-red-50 border-l-4 border-red-500 rounded-lg p-4 ">
+      {/* Close button */}
+      <button
+        onClick={() => setIsVisible(false)}
+        className="absolute top-2 right-2 text-red-400 hover:text-red-600 transition-colors"
+        aria-label="Dismiss warning"
+      >
+        <FaTimes />
+      </button>
+
+      <div className="flex gap-4  flex-col sm:flex-row justify-between items-start sm:items-center pr-6">
+        <div className="flex items-center mb-2 sm:mb-0">
+          <FaExclamationTriangle className="text-red-500 text-xl mr-3" />
+          <div>
+            <h3 className="text-lg font-semibold text-red-800">Low Credit Balance</h3>
+            <p className="text-red-600">Only {currentBalance} credits remaining</p>
+          </div>
+        </div>
+        {onAddCredits && (
+          <button
+            onClick={onAddCredits}
+            className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
+          >
+            Add Credits Now
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};

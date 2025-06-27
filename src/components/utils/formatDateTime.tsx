@@ -1,42 +1,84 @@
-import { formatDistanceToNowStrict, isAfter, subDays } from 'date-fns';
+import {
+    formatDistanceToNowStrict,
+    isAfter,
+    subDays,
+    addMinutes,
+    parseISO
+} from 'date-fns';
 import { toZonedTime, format } from 'date-fns-tz';
 
-export const getUserTimezone = () => {
-    return Intl.DateTimeFormat().resolvedOptions().timeZone;
+// Get user's timezone (safe for server-side rendering)
+export const getUserTimezone = (): string => {
+    if (typeof Intl !== 'undefined' && Intl.DateTimeFormat) {
+        return Intl.DateTimeFormat().resolvedOptions().timeZone;
+    }
+    return 'UTC'; // Fallback for server-side or unsupported environments
 };
 
-export const formatDate = (dateString: string) => {
+// Calculate offset in minutes between UTC and user's timezone
+const getTimezoneOffset = (date: Date, timeZone: string): number => {
+    try {
+        const utcDate = new Date(date.toISOString());
+        const tzDate = new Date(date.toLocaleString('en-US', { timeZone }));
+        return (utcDate.getTime() - tzDate.getTime()) / (1000 * 60);
+    } catch {
+        return 0; // Fallback to UTC if calculation fails
+    }
+};
+
+// Adjust UTC date to local timezone before conversion
+export const formatDate = (dateString: string): string => {
     const timeZone = getUserTimezone();
-    const zonedDate = toZonedTime(dateString, timeZone);
+    const utcDate = parseISO(dateString);
+
+    // Adjust for timezone offset
+    const offsetMinutes = getTimezoneOffset(utcDate, timeZone);
+    const localDate = addMinutes(utcDate, offsetMinutes);
+
+    const zonedDate = toZonedTime(localDate, timeZone);
     return format(zonedDate, 'MMMM d, yyyy', { timeZone });
 };
 
-export const formatTime = (dateString: string) => {
+export const formatTime = (dateString: string): string => {
     const timeZone = getUserTimezone();
-    const zonedDate = toZonedTime(dateString, timeZone);
-    return format(zonedDate, 'hh:mm aaaa', { timeZone });
+    const utcDate = parseISO(dateString);
+
+    // Adjust for timezone offset
+    const offsetMinutes = getTimezoneOffset(utcDate, timeZone);
+    const localDate = addMinutes(utcDate, offsetMinutes);
+
+    const zonedDate = toZonedTime(localDate, timeZone);
+    return format(zonedDate, 'hh:mm a', { timeZone });
 };
 
-export const formatDateOrTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
+// Additional utility to show date with timezone abbreviation
+export const formatDateTimeWithTz = (dateString: string): string => {
+    const timeZone = getUserTimezone();
+    const utcDate = parseISO(dateString);
+
+    const offsetMinutes = getTimezoneOffset(utcDate, timeZone);
+    const localDate = addMinutes(utcDate, offsetMinutes);
+
+    const zonedDate = toZonedTime(localDate, timeZone);
+    return format(zonedDate, 'MMMM d, yyyy hh:mm a zzz', { timeZone });
+};
+
+export const formatDateOrTimeAgo = (dateString: string): string => {
+    const timeZone = getUserTimezone();
+    const utcDate = parseISO(dateString);
+
+    // Calculate and apply timezone offset
+    const offsetMinutes = getTimezoneOffset(utcDate, timeZone);
+    const localDate = addMinutes(utcDate, offsetMinutes);
+
     const twoDaysAgo = subDays(new Date(), 2);
 
-    if (isAfter(date, twoDaysAgo)) {
-        return `${formatDistanceToNowStrict(date, { addSuffix: true })}`;
+    if (isAfter(localDate, twoDaysAgo)) {
+        return `${formatDistanceToNowStrict(localDate, { addSuffix: true })}`;
     } else {
-        const datePart = date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            timeZone: getUserTimezone(),
-        });
-
-        const timePart = date.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true,
-            timeZone: getUserTimezone(),
-        });
+        // Using date-fns-tz for consistent formatting
+        const datePart = format(toZonedTime(localDate, timeZone), 'MMMM d, yyyy', { timeZone });
+        const timePart = format(toZonedTime(localDate, timeZone), 'hh:mm a', { timeZone });
 
         return `${datePart} at ${timePart}`;
     }
