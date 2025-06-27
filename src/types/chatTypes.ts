@@ -265,7 +265,14 @@ export interface ChatMessageTokens {
 }
 
 export interface ChatMessageTokensToday {
-  request_tokens: number;
-  response_tokens: number;
-  users: number;
+  today: {
+    request_tokens: number;
+    response_tokens: number;
+    users: number;
+  }
+  monthly: {
+    request_tokens: number;
+    response_tokens: number;
+    users: number;
+  }
 }

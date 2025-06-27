@@ -52,13 +52,13 @@ const ChatbotSettings = ({ botId }: { botId?: number }) => {
         <div className="w-full  py-[50] ">
           {/* Basic Section */}
           <div className="bg-white rounded-2xl overflow-hidden shadow-md mb-4">
-            <div className="bg-black text-white px-4 py-2 font-bold text-[22px]">
+            <div className="bg-indigo-600 text-white px-4 py-2 font-bold text-[22px]">
               Basic
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="p-4 space-y-4">
                 <div className="flex items-center justify-between text-sm font-light text-black">
-                  <label>Enter the name of your bot</label>
+                  <label>Name to display for your chatbot</label>
                   <div className="flex items-center gap-1 text-xs">
                     <span className="font-bold">Public</span>
                     <label className="relative inline-flex items-center cursor-pointer">
@@ -67,7 +67,7 @@ const ChatbotSettings = ({ botId }: { botId?: number }) => {
                         {...register("public")}
                         className="sr-only peer"
                       />
-                      <div className="w-9 h-5 bg-gray-300 rounded-full peer peer-checked:bg-black transition duration-300"></div>
+                      <div className="w-9 h-5 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition duration-300"></div>
                       <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow peer-checked:translate-x-full transition duration-300"></div>
                     </label>
                   </div>
@@ -95,14 +95,12 @@ const ChatbotSettings = ({ botId }: { botId?: number }) => {
 
           {/* Delete Account Section */}
           <div className="bg-white rounded-2xl overflow-hidden shadow-md mb-4">
-            <div className="bg-black text-white px-4 py-2 font-bold text-[22px]">
+            <div className="bg-indigo-600 text-white px-4 py-2 font-bold text-[22px]">
               Delete Account
             </div>
             <div className="p-4 space-y-4 text-base text-black  font-light">
               <p>
-                Deleting a bot is a permanent action that cannot be reversed.
-                Deleting the bot will delete all documents indexed against it
-                and all history.
+                Deleting a bot is a permanent action and cannot be undone. This will erase all documents linked to the bot and its complete history.
               </p>
               <input
                 type="checkbox"
@@ -112,7 +110,7 @@ const ChatbotSettings = ({ botId }: { botId?: number }) => {
                 className="cursor-pointer px-4 py-2 rounded-full bg-[#D9D9D9] text-sm focus:outline-none text-[#727272] placeholder-[#727272]"
               />
               <span className="ml-2 text-sm text-gray-600">
-                Yes, I want to delete this bot and all its data permanently.
+                Yes, I want to permanently delete this bot and all its data.
               </span>
               <div>
                 <button

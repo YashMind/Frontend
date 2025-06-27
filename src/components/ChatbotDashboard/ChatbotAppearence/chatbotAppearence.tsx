@@ -302,9 +302,9 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
   return (
     <div className="w-full m-10">
       {" "}
-      <h2 className="text-2xl font-bold mt-[30]">Appearence</h2>
+      <h2 className="text-2xl font-bold mt-[30]">Bot visualisation</h2>
       <p className="text-sm font-light my-[22px]">
-        You can customise the look and feel of your chatbot interface here.
+        Make your chatbot match your brand — customize its look and feel here.
       </p>
       <div className="flex gap-2 w-full">
         <form onSubmit={handleSubmit(onSubmit)} className="basis-3/4 ">
@@ -312,7 +312,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
             <Field
               name="title_value"
               label="Title"
-              description="To be shown on the shared website"
+              description="Displayed on the shared webpage"
               type="text"
               checkbox={true}
               checkbox_value={watch("title_is_active")}
@@ -324,7 +324,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
             <Field
               name="welcome_message_value"
               label="Welcome Message"
-              description="The introductory message from the chatbot"
+              description="Initial greeting message from the chatbot  "
               type="text"
               checkbox={true}
               checkbox_value={watch("welcome_message_is_active")}
@@ -338,7 +338,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
             <Field
               name="suggestions_value"
               label="Suggestions"
-              description="Questions to be shown to user (use , for sepration)"
+              description="Sample questions shown to users (separate using commas)"
               type="textarea"
               checkbox={true}
               checkbox_value={watch("suggestions_is_active")}
@@ -350,7 +350,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
             <Field
               name="placeholder_value"
               label="Placeholder"
-              description="To be shown in the query input"
+              description="Displayed inside the query input field"
               type="text"
               checkbox={true}
               checkbox_value={watch("placeholder_is_active")}

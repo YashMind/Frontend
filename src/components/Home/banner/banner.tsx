@@ -10,8 +10,8 @@ import { FaArrowRight } from "react-icons/fa";
 
 const slideData = [
   {
-    title: "AI That Thinks Ahead",
-    description: "Innovative AI solutions designed to simplify and accelerate your workflow.",
+    title: "YASHRAA AI: One Platform, Endless AI Possibilities",
+    description: "YASHRAA is a powerful All-in-one AI Tools Platform offering subscription-based tools like Chatbots, Voice Agents, LLM APIs, and more — all in one place. Subscribe, and deploy AI solutions tailored to your business needs. Build your AI stack with YASHRAA today!",
   },
   {
     title: "Powerful AI, Seamless Experience",

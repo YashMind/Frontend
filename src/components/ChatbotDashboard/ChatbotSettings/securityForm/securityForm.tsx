@@ -63,14 +63,14 @@ const SecuritySettings = ({ botId }: { botId?: number }) => {
       onSubmit={handleSubmit(onSubmit)}
       className="bg-white rounded-2xl overflow-hidden shadow-md mb-4"
     >
-      <div className="bg-black text-white px-4 py-2 font-bold text-[22px]">
+      <div className="bg-indigo-600 text-white px-4 py-2 font-bold text-[22px]">
         Security
       </div>
       <div className="p-4 space-y-4 font-light text-gray-700 text-base">
         {/* Allow Domains */}
         <div className="flex justify-between items-center">
           <span>
-            Allow these domains only to add the chatbot to their website
+            Restrict these domains to embed the chatbot on their sites
           </span>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
@@ -78,7 +78,7 @@ const SecuritySettings = ({ botId }: { botId?: number }) => {
               {...register("allow_domains")}
               className="sr-only peer"
             />
-            <div className="w-9 h-5 bg-gray-300 rounded-full peer peer-checked:bg-black transition duration-300"></div>
+            <div className="w-9 h-5 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition duration-300"></div>
             <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow peer-checked:translate-x-full transition duration-300"></div>
           </label>
         </div>
@@ -97,14 +97,14 @@ const SecuritySettings = ({ botId }: { botId?: number }) => {
 
         {/* Rate Limiting */}
         <div className="flex justify-between items-center">
-          <span>Enable rate limiting</span>
+          <span>Activate rate limiting for incoming requests</span>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               {...register("rate_limit_enabled")}
               type="checkbox"
               className="sr-only peer"
             />
-            <div className="w-9 h-5 bg-gray-300 rounded-full peer peer-checked:bg-black transition duration-300"></div>
+            <div className="w-9 h-5 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition duration-300"></div>
             <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow peer-checked:translate-x-full transition duration-300"></div>
           </label>
         </div>
@@ -117,7 +117,7 @@ const SecuritySettings = ({ botId }: { botId?: number }) => {
                 placeholder="Limit to"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none text-sm text-gray-700 bg-[#D9D9D9]"
               />
-              <span className="block text-sm text-gray-500 mt-1">messages</span>
+              <span className="block text-sm text-gray-500 mt-1">Tokens</span>
             </div>
 
             <div className="w-1/2">
@@ -127,7 +127,7 @@ const SecuritySettings = ({ botId }: { botId?: number }) => {
                 placeholder="Every X minutes"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none text-sm text-gray-700 bg-[#D9D9D9]"
               />
-              <span className="block text-sm text-gray-500 mt-1">minutes</span>
+              <span className="block text-sm text-gray-500 mt-1">Minute</span>
             </div>
           </div>
         )}

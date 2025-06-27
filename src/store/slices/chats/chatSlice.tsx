@@ -964,12 +964,12 @@ export const fetchChatMessageTokens = createAsyncThunk<
   }
 });
 
-export const fetchChatMessageTokensToday = createAsyncThunk(
-  "chatTokens/fetchToday",
+export const fetchChatMessageTokensSummary = createAsyncThunk(
+  "chatTokens/fetchChatMessageTokensSummary",
   async ({ bot_id }: { bot_id: number }, thunkAPI) => {
     try {
       const response = await http.get<ChatMessageTokensToday>(
-        `/chatbot/tokens/${bot_id}/today`,
+        `/chatbot/tokens/${bot_id}/summary`,
         {
           withCredentials: true,
         }

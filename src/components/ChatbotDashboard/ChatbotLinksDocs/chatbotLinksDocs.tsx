@@ -8,6 +8,8 @@ import {
   getChatbotsDocLinks,
 } from "@/store/slices/chats/chatSlice";
 import { FiRefreshCcw } from "react-icons/fi";
+import { formatLargeNumber } from "@/components/utils/formatLargeNumber";
+import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
 
 const ChatbotLinksDocs = ({
   botPage,
@@ -107,7 +109,7 @@ const ChatbotLinksDocs = ({
             />
             <StatCard
               title="Chars"
-              value={ChatbotDocLinksData?.user_total_chars}
+              value={formatLargeNumber(ChatbotDocLinksData?.user_total_chars)}
             />
             <StatCard
               title="Pending"
@@ -152,7 +154,7 @@ const ChatbotLinksDocs = ({
                 />
                 <StatCard
                   title="Chars"
-                  value={activeSource?.total_chars}
+                  value={formatLargeNumber(activeSource?.total_chars)}
                 />
                 <StatCard
                   title="Pending"
@@ -213,7 +215,7 @@ const ChatbotLinksDocs = ({
 };
 
 // Extracted Components
-const StatCard = ({ title, value }: { title: string; value: number }) => (
+const StatCard = ({ title, value }: { title: string; value: number | string }) => (
   <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
     <span className="text-xl font-semibold">{title}</span>
     <span className="text-3xl font-bold self-end mt-auto">
@@ -366,7 +368,7 @@ const Table = ({
             {item?.document_link}
           </td>
           <td className="py-4 text-xs font-medium text-black px-1">
-            {item?.created_at}
+            {formatDateOrTimeAgo(item?.created_at)}
           </td>
           <td className="truncate max-w-[150px] p-4 text-xs font-medium text-black px-1">
             -

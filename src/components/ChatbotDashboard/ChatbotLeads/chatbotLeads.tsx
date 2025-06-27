@@ -10,6 +10,7 @@ import { AppDispatch, RootState } from "@/store/store";
 import { formatDistanceToNow } from "date-fns";
 import { FaEye } from "react-icons/fa6";
 import ViewLeadChatModal from "./viewLeadChats/viewLeadChats";
+import { ChatbotLeadsArray } from "@/types/chatTypes";
 
 const ChatbotLeads = ({
   botPage,
@@ -72,6 +73,49 @@ const ChatbotLeads = ({
     });
   };
 
+  const exportToCSV = (data: any[], fileName = "data.csv") => {
+    if (!data || !data.length) {
+      console.warn("No data to export");
+      return;
+    }
+
+    const headers = Object.keys(data[0]);
+    const csvRows = [
+      headers.join(","), // header row
+      ...data.map(row =>
+        headers
+          .map(field => {
+            const val = row[field];
+            // Escape quotes and commas
+            const safe = typeof val === "string" ? `"${val.replace(/"/g, '""')}"` : val;
+            return safe;
+          })
+          .join(",")
+      ),
+    ];
+
+    const csvContent = csvRows.join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleConfigureMails = (chatbotleadData: ChatbotLeadsArray) => {
+    if (!chatbotLeadsData?.data) return;
+
+
+    const filteredleads = chatbotLeadsData.data.filter((lead) => selectedIds.includes(lead.id))
+
+    exportToCSV(filteredleads, `Chatbot_${botId}_leads`)
+  }
+
+
   return (
     <div className="w-full m-10">
       <h2 className="text-2xl font-bold my-4">Leads</h2>
@@ -99,8 +143,8 @@ const ChatbotLeads = ({
             <span className="text-black font-medium">Entries</span>
             <button
               className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${isDisabled
-                  ? "bg-red-300 cursor-not-allowed"
-                  : "bg-red-500 hover:bg-red-600"
+                ? "bg-red-300 cursor-not-allowed"
+                : "bg-red-500 hover:bg-red-600"
                 }`}
               disabled={isDisabled}
               onClick={() => handleDeleteChatbotLeads()}
@@ -121,7 +165,7 @@ const ChatbotLeads = ({
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button className="cursor-pointer bg-[#340555] text-white rounded text-sm font-bold py-[7px] px-[11px]">
+            <button onClick={() => { handleConfigureMails(chatbotLeadsData) }} className="cursor-pointer bg-[#340555] text-white rounded text-sm font-bold py-[7px] px-[11px]">
               Configure mails
             </button>
           </div>
@@ -249,8 +293,8 @@ const ChatbotLeads = ({
           {chatbotLeadsData?.total_pages > 1 ? (
             <button
               className={`w-6 h-6 ${chatbotLeadsData?.total_pages === page
-                  ? "bg-[#624DE3]"
-                  : "bg-gray-200"
+                ? "bg-[#624DE3]"
+                : "bg-gray-200"
                 } text-black rounded-[7px] text-sm`}
             >
               {chatbotLeadsData?.total_pages}

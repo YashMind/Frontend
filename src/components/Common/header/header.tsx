@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { getMeData, isLoggedin } from "@/store/slices/auth/authSlice";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa";
 
 const HomeHeader = () => {
   const router = useRouter();
@@ -25,13 +26,29 @@ const HomeHeader = () => {
   const [navItem, setNavItem] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [currency, setCurrency] = useState<'USD' | 'INR'>('USD');
-
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null)
   useEffect(() => {
     if (pathname == "/") setNavItem(1);
     if (pathname == "/chatbot") setNavItem(2);
     if (pathname == "/voice-agent") setNavItem(3);
     if (pathname == "/chat-llm") setNavItem(4);
   }, [pathname]);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !(dropdownRef.current as HTMLElement).contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const toggleCurrency = () => {
     setCurrency(prev => prev === 'USD' ? 'INR' : 'USD');
@@ -62,14 +79,51 @@ const HomeHeader = () => {
               >
                 7-Day Free Trial
               </Link>}
-              <button
+              <Link
                 className="hidden sm:flex items-center gap-2 py-2 px-4 md:py-3 md:px-6 text-white text-sm md:text-base font-medium rounded-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all cursor-pointer"
-                onClick={() => router.push("/chatbot-dashboard/main")}
+                href={"/chatbot-dashboard/main"}
               >
-                Dashboard <FaArrowRightLong size={16} />
-              </button></>
+                Dashboard
+              </Link>
+              <div className="relative inline-block text-left" ref={dropdownRef}>
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="focus:outline-none cursor-pointer"
+                >
+                  <FaUser size={18} color="white" />
+                </button>
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-10">
+                    <div className="py-1">
+                      <Link
+                        href="/settings/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Profile
+                      </Link>
+                      <Link
+                        href="/settings/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Settings
+                      </Link>
+                      <Link
+                        href="/settings/teams"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Invite User
+                      </Link>
+                      <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="cursor-pointer w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}</div>
 
-            ) : (
+            </>) : (
               <>
                 <Link
                   href={"/activate-trial"}
@@ -114,14 +168,10 @@ const HomeHeader = () => {
             <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium rounded-lg md:flex-row md:space-x-2 lg:space-x-6 md:mt-0">
               <li>
                 <Link
-                  href="/"
-                  className={`block py-2 px-3 rounded-full ${navItem === 1 ? 'bg-white text-purple-900' : 'text-white hover:bg-white/20'}`}
-                  onClick={() => {
-                    setNavItem(1);
-                    setIsMenuOpen(false);
-                  }}
+                  className={`block py-2 px-3 rounded-full text-white`}
+                  href={"/chatbot-dashboard/main"}
                 >
-                  Home
+                  Dashboard
                 </Link>
               </li>
               <li>

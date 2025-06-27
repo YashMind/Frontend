@@ -25,12 +25,12 @@ export default function RealTimeCount() {
 
 
   return (
-    <div className={`mt-28 flex gap-2 p-2 w-full justify-center items-stretch transition flex-nowrap duration-150 `}>
+    <div className={`mt-16 flex flex-col md:flex-row gap-2 p-2 w-full justify-center items-stretch transition flex-nowrap duration-150 `}>
       <StatCard
         icon={<FaComments size={20} color="#FFB85C" />}
         title="Chat Bot Usage"
         stats={[
-          { label: "Total", value: tokensData.credits?.credits_purchased || 1 },
+          { label: "Used Tokens", value: tokensData.token_usage && tokensData.token_usage.length > 0 && tokensData.token_usage[0]?.combined_token_consumption || 0 },
           { label: "Used Credits", value: tokensData.credits?.credits_consumed || 0 },
         ]}
         progressPercent={(((tokensData.credits?.credits_consumed || 0) / (tokensData.credits?.credits_purchased || 1)) * 100).toPrecision(1)}
@@ -41,10 +41,10 @@ export default function RealTimeCount() {
         icon={<FaMicrophoneAlt size={20} color="#6AC0E7" />}
         title="Voice Agent Usage"
         stats={[
-          { label: "Consumed", value: 200 },
-          { label: "Used Credits", value: 8 },
+          { label: "Used minutes", value: 0 },
+          { label: "Used Credits", value: 0 },
         ]}
-        progressPercent={20}
+        progressPercent={0}
         gradientFrom="#443973"
         gradientTo="#2C1E5A"
       />
@@ -52,10 +52,10 @@ export default function RealTimeCount() {
         icon={<FaRobot size={20} color="#417ED8" />}
         title="Chat LLM Usage"
         stats={[
-          { label: "Consumed", value: 200 },
-          { label: "Used Credits", value: 8 },
+          { label: "Used Tokens", value: 0 },
+          { label: "Used Credits", value: 0 },
         ]}
-        progressPercent={20}
+        progressPercent={0}
         gradientFrom="#443973"
         gradientTo="#2C1E5A"
       />
@@ -63,10 +63,10 @@ export default function RealTimeCount() {
         icon={<FaWallet size={20} color="#417ED8" />}
         title="Wallet Usage"
         stats={[
-          { label: "Wallet Credits", value: 500 },
-          { label: "Used Credits", value: 200 },
+          { label: "Wallet Credits", value: tokensData.credits?.credits_purchased || 0 },
+          { label: "Used Credits", value: tokensData.credits?.credits_consumed },
         ]}
-        progressPercent={20}
+        progressPercent={(((tokensData.credits?.credits_consumed || 0) / (tokensData.credits?.credits_purchased || 1)) * 100).toPrecision(1)}
         gradientFrom="#443973"
         gradientTo="#2C1E5A"
       />
@@ -74,8 +74,8 @@ export default function RealTimeCount() {
         icon={<FaBalanceScale size={20} color="#417ED8" />}
         title="Balance"
         stats={[
-          { label: "Total", value: tokensData.credits?.credits_purchased || 1 },
-          { label: "Used Credits", value: tokensData.credits?.credits_consumed || 0 },
+
+          { label: "Balance Credits", value: (tokensData.credits?.credits_purchased - tokensData.credits?.credits_consumed) },
         ]}
         buttonText="Add Credit"
         onButtonClick={() => setShowCreditModal(true)}

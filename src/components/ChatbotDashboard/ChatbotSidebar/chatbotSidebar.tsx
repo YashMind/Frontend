@@ -31,6 +31,15 @@ const sidebarSections: SidebarSection[] = [
   {
     links: [
       {
+        label: "All Chatbots list",
+        icon: <PiSquaresFourBold size={20} />,
+        path: "main",
+        key: "main",
+      },
+    ],
+  }, {
+    links: [
+      {
         label: "Overview",
         icon: <PiSquaresFourBold size={20} />,
         path: "overview",

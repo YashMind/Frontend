@@ -283,14 +283,14 @@ const ProfileSettings = () => {
                 <p className="mt-1 capitalize">{userData.role || "N/A"}</p>
               </div>
 
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-500">
                   Tokens Used
                 </label>
                 <p className="mt-1">
                   {tokensData.total_tokens?.toLocaleString() || "0"}
                 </p>
-              </div>
+              </div> */}
 
 
               {isEditing && !userData.provider && (
@@ -325,13 +325,13 @@ const ProfileSettings = () => {
                 Bots Quota
               </h2>
               <div className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                {chatbots.length || 0}/5 available
+                {chatbots.length || 0}/{tokensData.credits.chatbots_allowed || 1} available
               </div>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2.5">
               <div
                 className="bg-blue-600 h-2.5 rounded-full"
-                style={{ width: `${((chatbots.length || 0) / 5) * 100}%` }}
+                style={{ width: `${((chatbots.length || 0) / (tokensData.credits.chatbots_allowed ?? 1)) * 100}%` }}
               ></div>
             </div>
             <p className="mt-3 text-sm text-gray-500">
@@ -339,28 +339,6 @@ const ProfileSettings = () => {
             </p>
           </div>
 
-          {/* Tokens Quota Card */}
-          <div className="rounded-xl border border-gray-200 bg-white basis-1/2 p-6 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-xl font-semibold text-gray-800">
-                Tokens Quota
-              </h2>
-              <div className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                {tokensData.total_tokens}/1000 used
-              </div>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
-              <div
-                className="bg-green-600 h-2.5 rounded-full"
-                style={{
-                  width: `${((tokensData.total_tokens || 0) / 1000) * 100}%`,
-                }}
-              ></div>
-            </div>
-            <p className="mt-3 text-sm text-gray-500">
-              Resets on 1st of each month
-            </p>
-          </div>
         </div>
       </div>
       <ChangePasswordModal

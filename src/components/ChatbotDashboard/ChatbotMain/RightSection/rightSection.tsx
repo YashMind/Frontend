@@ -22,12 +22,12 @@ const RightSection = ({ showModal, botId }: ShowModalProps) => {
 
 
   return (
-    <div className="hidden lg:block w-[10%] bg-[#2a2561] rounded-[58px]">
+    <div className="hidden lg:block max-w-[10%] p-2 bg-[#2a2561] rounded-4xl">
       <div className='flex flex-col gap-4 p-4'>
         {chatbots?.map((chatbot) => <Link href={`/chatbot-dashboard/overview/${chatbot.id}`} className='cursor-pointer'> <Image
           className={`m-auto p-2 ${botId == chatbot.id && `bg-white/20 rounded-full`}`}
           alt="alt"
-          src={"/images/face2.png"}
+          src={chatbot?.image ? process.env.NEXT_PUBLIC_BACKEND_URL + chatbot.image : "/images/bot2.png"}
           height={68}
           width={58}
           title={chatbot.chatbot_name}

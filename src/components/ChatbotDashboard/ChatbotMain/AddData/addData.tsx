@@ -113,9 +113,11 @@ const AddBotData = ({
     (formType: "form1" | "form2") => (data: ChatbotDocLinksData) => {
       data.bot_id = botId;
       data.chatbot_name = chatbotData?.chatbot_name;
-      if (formType === "form2" && data.document_link === "") {
-        toasterError("Please upload a File!",2000,"id")
-        // toast.error("please upload a file!");
+      if (formType === "form1" && data.target_link === "") {
+        toasterError("Please upload a File!", 2000, "id")
+      }
+      else if (formType === "form2" && data.document_link === "") {
+        toasterError("Please upload a File!", 2000, "id")
       } else {
         dispatch(createChatbotDocLinks({ payload: data }));
         handleBack();
@@ -134,13 +136,11 @@ const AddBotData = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
         {/* Left: Add Data Section */}
         <div >
-          <h2 className="text-2xl font-bold mb-15">Add Data</h2>
+          <h2 className="text-2xl font-bold mb-10">Add Data</h2>
 
-          <h3 className="text-xl font-semibold mb-4">Train from link</h3>
-          <p className="text-xs text-gray-300 mb-8">
-            Enter the link to a webpage and we will visit all pages
-            <br></br>
-            starting from it and list them for you to choose from
+          <h3 className="text-xl font-semibold mb-2">Train from link</h3>
+          <p className="text-sm text-gray-300 mb-4 w-[85%]">
+            Provide the Link of any webpage or Documents — we’ll scan the site and retrieve all linked pages for you to select and train your bot on it.
           </p>
           <form onSubmit={handleSubmit(onSubmit("form1"))}>
             <div className=" flex flex-wrap gap-2 mb-9">
@@ -150,11 +150,10 @@ const AddBotData = ({
                     key={label}
                     type="button"
                     onClick={() => handleTrainFromClick(label)}
-                    className={`cursor-pointer px-4 py-1 rounded-md text-sm font-semibold ${
-                      activeTrainFrom === label
-                        ? "bg-cyan-500 text-white"
-                        : "bg-gray-400 text-white"
-                    }`}
+                    className={`cursor-pointer px-4 py-1 rounded-full text-sm font-semibold ${activeTrainFrom === label
+                      ? "bg-cyan-500 text-white"
+                      : "bg-gray-400 text-white"
+                      }`}
                   >
                     {label}
                   </button>

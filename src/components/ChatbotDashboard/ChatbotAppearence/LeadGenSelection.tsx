@@ -18,7 +18,7 @@ const LeadGenSelection = ({
             Lead Generation
           </h2>
           <p className="text-sm text-[#727272]">
-            Collect leads either before or during a conversation
+            Gather leads before or during chatbot interaction
           </p>
         </div>
 
@@ -29,8 +29,8 @@ const LeadGenSelection = ({
             checked={watch("lead_collection")}
             className="sr-only peer"
           />
-          <div className="w-12 h-6 bg-[#9592AD] rounded-full peer-checked:bg-[#9592AD] transition-colors duration-300"></div>
-          <div className="absolute left-1 top-1 bg-black w-4 h-4 rounded-full transition-transform duration-300 peer-checked:translate-x-6"></div>
+          <div className="w-12 h-6 bg-[#9592AD] rounded-full peer-checked:bg-indigo-600 transition-colors duration-300"></div>
+          <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-300 peer-checked:translate-x-6"></div>
         </label>
       </div>
 

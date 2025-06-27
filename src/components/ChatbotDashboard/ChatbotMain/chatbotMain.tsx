@@ -50,10 +50,10 @@ const ChatbotMain = ({
     setModalShow(true);
   };
 
-  return (
+  return (<>
+    <ChatbotDashboardHeader fix={true} addBgColor={true} role={role} chatbotError={chatbotError} />
     <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
       {/* header */}
-      <ChatbotDashboardHeader fix={true} addBgColor={true} role={role} chatbotError={chatbotError} />
 
       {(botPage == "voice-agent" || botPage == "llm") ? <div className="min-h-screen flex items-center justify-center text-white text-2xl font-bold">
         <div className="p-8 bg-white text-black">
@@ -115,7 +115,7 @@ const ChatbotMain = ({
             </div>
           </div>}
         </>}
-    </div>
+    </div></>
   );
 };
 

@@ -51,11 +51,10 @@ Services Offered: [List of services]`);
   return (
     <div className="w-full ml-10 ">
       <h2 className="text-2xl font-bold my-4 ">
-        Bot Usage Guidelines and Brand Instructions
+        Train Bot with simple text
       </h2>
       <p className="text-sm font-light">
-        Includes owner details, tone and phrasing rules, formatting styles, and
-        mandatory workflow or policy instructions.
+        Easily enhance your chatbot’s training by adding additional text below. It’s a fast and simple way to update your bot with new information.
       </p>
       <div className="bg-[#2E265C]flex items-center justify-center mt-4">
         <div className="bg-white rounded-2xl w-full max-w-5xl p-4">

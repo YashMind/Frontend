@@ -59,7 +59,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
     setCurrentMessages(chats);
   };
 
-  const handleCreateDownloadPdf = (messages: any[], chatBot: ChatbotsData) => {
+  const handleCreateDownloadPdf = (messages: any[], platform: string, chatBot: ChatbotsData) => {
     const doc = new jsPDF();
     const botId = messages[0]?.bot_id || "Unknown";
     const chatId = messages[0]?.chat_id || "Unknown";
@@ -84,8 +84,8 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
 
     autoTable(doc, {
       startY: 60,
-      head: [["Chat ID", "Location", "Started On", "Ended On"]],
-      body: [[chatId, "Unknown", createdAt, endAt]],
+      head: [["Chat ID", "Location", "Started On", "Ended On", "Platform"]],
+      body: [[chatId, "Unknown", createdAt, endAt, platform || "WEB"]],
       styles: { fontSize: 10 },
       headStyles: { fillColor: [98, 77, 227], textColor: 255 },
     });
@@ -115,9 +115,10 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
     if (!chatUserHistory?.data) return;
 
     selectedIds.forEach((chatId: number) => {
-      const messages = chatUserHistory?.data[chatId];
+      const messages = chatUserHistory?.data[chatId].messages;
+      const platform = chatUserHistory?.data[chatId].platform;
       if (messages && messages.length > 0) {
-        handleCreateDownloadPdf(messages, chatUserHistory?.chatBot);
+        handleCreateDownloadPdf(messages, platform, chatUserHistory?.chatBot);
       }
     });
   };
@@ -131,22 +132,20 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           <div className="flex items-center gap-2">
             <div className="flex gap-4">
               <button
-                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
-                  isDisabled
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-purple-600 hover:bg-purple-700"
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${isDisabled
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-purple-600 hover:bg-purple-700"
+                  }`}
                 disabled={isDisabled}
                 onClick={() => handleExportDownloadPdf()}
               >
                 Export
               </button>
               <button
-                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
-                  isDisabled
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-red-500 hover:bg-red-600"
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${isDisabled
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-red-500 hover:bg-red-600"
+                  }`}
                 disabled={isDisabled}
                 onClick={() => handleDeleteChat()}
               >
@@ -239,7 +238,9 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
             </thead>
             <tbody className="bg-[#f7f6fd]">
               {chatUserHistory?.data &&
-                Object.entries(chatUserHistory?.data).map(
+                Object.entries(chatUserHistory?.data).sort(
+                  ([, a], [, b]) => new Date(b.messages[0].created_at).getTime() - new Date(a.messages[0].created_at).getTime()
+                ).map(
                   ([chatId, { platform, messages }]: any, idx) => {
                     const lastMessage = messages[messages?.length - 2];
                     const timeAgo = formatDistanceToNow(
@@ -288,6 +289,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
                               onClick={() =>
                                 handleCreateDownloadPdf(
                                   messages,
+                                  platform,
                                   chatUserHistory?.chatBot
                                 )
                               }
@@ -312,9 +314,8 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           </button>
           {chatUserHistory?.totalPages >= 1 ? (
             <button
-              className={`w-6 h-6 ${
-                page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
-              }   text-black rounded-[7px] text-sm`}
+              className={`w-6 h-6 ${page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
+                }   text-black rounded-[7px] text-sm`}
             >
               1
             </button>
@@ -329,11 +330,10 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           ) : null}
           {chatUserHistory?.totalPages > 1 ? (
             <button
-              className={`w-6 h-6 ${
-                chatUserHistory?.totalPages === page
-                  ? "bg-[#624DE3]"
-                  : "bg-gray-200"
-              } text-black rounded-[7px] text-sm`}
+              className={`w-6 h-6 ${chatUserHistory?.totalPages === page
+                ? "bg-[#624DE3]"
+                : "bg-gray-200"
+                } text-black rounded-[7px] text-sm`}
             >
               {chatUserHistory?.totalPages}
             </button>

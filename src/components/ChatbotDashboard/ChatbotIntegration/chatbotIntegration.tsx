@@ -23,10 +23,13 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
 
   return (
     <div className="w-full m-10">
-      <h2 className="text-2xl font-bold my-[30]">Integration</h2>
+      <div className="my-7">
+        <h2 className="text-2xl font-bold ">Apps Integration</h2>
+        <p>Streamline your workflow by connecting to popular software and social media through our integrations.</p>
+      </div>
       <div className="grid grid-cols-3 md:grid-cols-3 gap-6 w-full  text-center bg-[#9592AE] p-18 rounded-[24px] ">
         {/* Card 1 */}
-        <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative">
+        {/* <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative">
           <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#DF437E] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
             <img className="" src="/images/icon1.png" />
           </div>
@@ -41,10 +44,10 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
           >
             Coming Soon
           </button>
-        </div>
+        </div> */}
 
         {/* Card 2 */}
-        <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative ">
+        <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mt-8">
           <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#60D669] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
             <img className="" src="/images/logos_whatsapp-icon.png" />
           </div>
@@ -62,7 +65,7 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
         </div>
 
         {/* Card 3 */}
-        <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative ">
+        <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mt-8">
           <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#0073AA] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
             <img className="" src="/images/wordpress.png" />
           </div>
@@ -122,7 +125,7 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
         </div>
 
         {/* Card 6 */}
-        <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mt-8 ">
+        {/* <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mt-8 ">
           <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#466CFF] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
             <img className="" src="/images/facebook-messenger-icon 1.png" />
           </div>
@@ -137,7 +140,7 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
           >
             Coming Soon
           </button>
-        </div>
+        </div> */}
       </div>
       { }
       <AccessDownloadDialog

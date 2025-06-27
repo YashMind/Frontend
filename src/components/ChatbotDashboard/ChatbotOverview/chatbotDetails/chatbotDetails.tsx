@@ -9,11 +9,12 @@ import { VscLightbulbSparkle } from "react-icons/vsc";
 import { LuAlarmClock } from "react-icons/lu";
 import {
   fetchChatMessageTokens,
-  fetchChatMessageTokensToday,
+  fetchChatMessageTokensSummary,
   getChatbotsDocLinks,
   getChatbotsLeads,
 } from "@/store/slices/chats/chatSlice";
 import { ChatMessageTokensToday } from "@/types/chatTypes";
+import { formatLargeNumber } from "@/components/utils/formatLargeNumber";
 
 const ChatbotDetails = ({ botId }: { botId?: number }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,15 +28,15 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
     (state: RootState) => state.chat.chatbotLeadsData.total_count
   );
 
-  const [tokensConsumedToday, setTokensConsumedToday] =
+  const [tokensConsumedSummary, setTokensConsumedSummary] =
     useState<ChatMessageTokensToday>();
 
   useEffect(() => {
     if (botId) {
-      dispatch(fetchChatMessageTokensToday({ bot_id: botId }))
+      dispatch(fetchChatMessageTokensSummary({ bot_id: botId }))
         .unwrap()
         .then((res) => {
-          setTokensConsumedToday(res);
+          setTokensConsumedSummary(res);
         });
     }
   }, [dispatch, botId]);
@@ -47,99 +48,153 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
   }, [dispatch]);
 
   return (
-    <div className="w-full ml-20">
-      <div className="flex flex-wrap gap-4 w-[650px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px] ">
-        <div className="bg-white rounded-2xl p-4 w-full sm:w-[48%] ">
-          <div className="flex justify-between mb-2">
-            <div className="flex items-center space-x-2 justify-between w-full">
-              <p className="font-semibold text-base  text-[#000]">
-                Today's Users and Token Consumption
-              </p>
-              <div className="p-2 rounded-full bg-[#161A55]">
-                <LuAlarmClock size={30} />
-              </div>
+    <div className="flex-1">
+      <div className="flex flex-wrap gap-4 bg-[#FFFFFF80] px-6 py-[37px] rounded-[28px] w-full max-w-4xl">
+        <div className="bg-white rounded-2xl p-6 flex-1 shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-xl font-bold text-gray-800">Today's Usage</h3>
+            <div className="p-3 rounded-full bg-indigo-100 text-indigo-600">
+              <LuAlarmClock size={24} className="text-current" />
             </div>
           </div>
-          <div className="flex flex-col items-start mb-[10px] mt-[10px] gap-4">
-            <h2 className="text-black font-semibold text-lg ">
-              <span className="text-[#6B6B6B]">Users:</span>{" "}
-              {tokensConsumedToday?.users || 0}
-            </h2>
-            <h2 className="text-black font-semibold text-lg ">
-              <span className="text-[#6B6B6B]">Request Tokens:</span>{" "}
-              {tokensConsumedToday?.request_tokens || 0}
-            </h2>
-            <h2 className="text-black font-semibold text-lg ">
-              <span className="text-[#6B6B6B]">Response Tokens:</span>{" "}
-              {tokensConsumedToday?.response_tokens || 0}
-            </h2>
+
+          <div className="space-y-4">
+            {/* Users */}
+            <div className="flex justify-between items-center">
+              <span className="text-gray-500 font-medium">Active Users</span>
+              <span className="text-xl font-bold text-gray-800">
+                {tokensConsumedSummary?.today?.users || 0}
+              </span>
+            </div>
+
+            {/* Tokens */}
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-500 font-medium">Request Tokens</span>
+                <span className="text-xl font-semibold text-gray-800">
+                  {tokensConsumedSummary?.today?.request_tokens || 0}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <span className="text-gray-500 font-medium">Response Tokens</span>
+                <span className="text-xl font-semibold text-gray-800">
+                  {tokensConsumedSummary?.today?.response_tokens || 0}
+                </span>
+              </div>
+
+              <div className="pt-3 border-t border-gray-100">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700 font-semibold">Total Consumption</span>
+                  <span className="text-2xl font-bold text-indigo-700">
+                    {(tokensConsumedSummary?.today?.response_tokens || 0) +
+                      (tokensConsumedSummary?.today?.request_tokens || 0)}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="bg-white rounded-2xl p-4 w-full sm:w-[48%] ">
-          <div className="flex justify-between mb-2">
-            <div className="flex items-center space-x-2 justify-between w-full">
-              <p className="font-semibold text-base  text-[#000]">
-                Overall Token Consumption
-              </p>
-              <div className="p-2 rounded-full bg-[#161A55]">
-                <BiMessageRounded size={30} />
-              </div>
+        <div className="bg-white rounded-2xl p-6 flex-1 shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-xl font-bold text-gray-800">Monthly's Usage</h3>
+            <div className="p-3 rounded-full bg-indigo-100 text-indigo-600">
+              <LuAlarmClock size={24} className="text-current" />
             </div>
           </div>
-          <div className="flex flex-col items-start mb-[10px] mt-auto gap-4">
-            <h2 className="text-black font-semibold text-lg ">
-              <span className="text-[#6B6B6B]">Request Tokens:</span>{" "}
-              {tokensData?.user_request_token +
-                tokensData?.slack_request_tokens +
-                tokensData?.whatsapp_request_tokens +
-                tokensData?.wordpress_request_tokens +
-                tokensData?.zapier_request_tokens || 0}
-            </h2>
-            <h2 className="text-black font-semibold text-lg ">
-              <span className="text-[#6B6B6B]">Response Tokens:</span>{" "}
-              {tokensData?.user_response_token +
-                tokensData?.slack_response_tokens +
-                tokensData?.whatsapp_response_tokens +
-                tokensData?.wordpress_response_tokens +
-                tokensData?.zapier_response_tokens || 0}
-            </h2>
+
+          <div className="space-y-4">
+            {/* Users */}
+            <div className="flex justify-between items-center">
+              <span className="text-gray-500 font-medium">Active Users</span>
+              <span className="text-xl font-bold text-gray-800">
+                {tokensConsumedSummary?.monthly?.users || 0}
+              </span>
+            </div>
+
+            {/* Tokens */}
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-500 font-medium">Request Tokens</span>
+                <span className="text-xl font-semibold text-gray-800">
+                  {tokensConsumedSummary?.monthly?.request_tokens || 0}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <span className="text-gray-500 font-medium">Response Tokens</span>
+                <span className="text-xl font-semibold text-gray-800">
+                  {tokensConsumedSummary?.monthly?.response_tokens || 0}
+                </span>
+              </div>
+
+              <div className="pt-3 border-t border-gray-100">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700 font-semibold">Total Consumption</span>
+                  <span className="text-2xl font-bold text-indigo-700">
+                    {(tokensConsumedSummary?.monthly?.response_tokens || 0) +
+                      (tokensConsumedSummary?.monthly?.request_tokens || 0)}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap gap-4 w-[650px] bg-[#FFFFFF80] px-4  py-[37px] rounded-[28px] mt-[22px] ">
-        <div className="bg-white rounded-2xl p-4 w-full sm:w-[48%] ">
-          <div className="flex justify-between mb-2">
-            <div className="flex items-center space-x-2 justify-between w-full">
-              <p className="font-semibold text-base  text-[#000]">
-                Fastbot Leads:{" "}
-              </p>
-              <div className="p-2 rounded-full bg-[#161A55]">
-                <IoPersonSharp size={30} />
-              </div>
+      <div className="flex flex-wrap gap-6 w-full max-w-4xl bg-white/50 px-6 py-8 rounded-3xl mt-6 backdrop-blur-sm">
+        {/* Leads Card */}
+        <div className="bg-white rounded-2xl p-6 w-full sm:w-[48%] shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-gray-800">Leads</h3>
+            <div className="p-3 rounded-full bg-indigo-100 text-indigo-600">
+              <IoPersonSharp size={24} className="text-current" />
             </div>
           </div>
-          <div className="flex  items-center mb-[10px] mt-[10px] gap-10">
-            <h2 className="text-black font-semibold text-lg ">
-              <span className="text-[#6B6B6B]">Generated:</span>{" "}
+          <div className="flex items-center justify-between">
+            <span className="text-gray-500 font-medium">Generated</span>
+            <span className="text-2xl font-bold text-indigo-600">
               {chatbotLeads || 0}
-            </h2>
+            </span>
           </div>
+          {/* Optional: Add progress bar or comparison */}
+          {/* <div className="mt-4 pt-3 border-t border-gray-100">
+            <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-indigo-500"
+                style={{ width: `${Math.min(100, (chatbotLeads || 0) / 10)}%` }}
+              ></div>
+            </div>
+            <p className="text-xs text-gray-500 mt-1">10% of monthly target</p>
+          </div> */}
         </div>
-        <div className="bg-white rounded-2xl p-4 w-full sm:w-[48%] ">
-          <div className="flex justify-between mb-2">
-            <div className="flex items-center space-x-2 justify-between w-full">
-              <p className="font-semibold text-base  text-[#000]">Trained</p>
-              <div className="p-2 rounded-full bg-[#161A55]">
-                <VscLightbulbSparkle size={30} />
-              </div>
+
+        {/* Trained Card */}
+        <div className="bg-white rounded-2xl p-6 w-full sm:w-[48%] shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-gray-800">Knowledge Base</h3>
+            <div className="p-3 rounded-full bg-emerald-100 text-emerald-600">
+              <VscLightbulbSparkle size={24} className="text-current" />
             </div>
           </div>
-          <div className="flex  items-center mb-[10px] mt-[10px] gap-10">
-            <h2 className="text-black font-semibold text-lg ">
-              <span className="text-[#6B6B6B]">Character used:</span>{" "}
-              {trainedChars || 0}
-            </h2>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-500 font-medium">Characters used</span>
+            <span className="text-2xl font-bold text-emerald-600">
+              {trainedChars ? formatLargeNumber(trainedChars.toLocaleString()) : 0}
+            </span>
           </div>
+          {/* Optional: Add usage visualization */}
+          {/* <div className="mt-4 pt-3 border-t border-gray-100">
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>Storage used</span>
+              <span>{(trainedChars / 1000000).toFixed(1)}MB / 10MB</span>
+            </div>
+            <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden mt-1">
+              <div
+                className="h-full bg-emerald-500"
+                style={{ width: `${Math.min(100, (trainedChars || 0) / 100000)}%` }}
+              ></div>
+            </div>
+          </div> */}
         </div>
       </div>
     </div>
