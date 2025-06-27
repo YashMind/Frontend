@@ -5,7 +5,7 @@ export const formatDate = (dateString: string) => {
         year: "numeric",
         month: "long",
         day: "numeric",
-        timeZone: "Asia/Kolkata",
+        timeZone: getUserTimezone(),
     });
 };
 export const formatTime = (dateString: string) => {
@@ -14,8 +14,12 @@ export const formatTime = (dateString: string) => {
         hour: "2-digit",
         minute: "2-digit",
         hour12: true,
-        timeZone: "Asia/Kolkata",
+        timeZone: getUserTimezone(),
     });
+};
+
+export const getUserTimezone = () => {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
 };
 
 export const formatDateOrTimeAgo = (dateString: string) => {
@@ -29,14 +33,14 @@ export const formatDateOrTimeAgo = (dateString: string) => {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
-            timeZone: 'Asia/Kolkata',
+            timeZone: getUserTimezone(),
         });
 
         const timePart = date.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit',
             hour12: true,
-            timeZone: 'Asia/Kolkata',
+            timeZone: getUserTimezone(),
         });
 
         return `${datePart} at ${timePart}`;

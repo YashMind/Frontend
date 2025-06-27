@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import * as yup from "yup";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useForm, Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -44,6 +44,7 @@ const AddBotData = ({
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<UpdateChatbotData>({
     resolver: yupResolver(schema) as Resolver<UpdateChatbotData>,
@@ -65,6 +66,28 @@ const AddBotData = ({
     "text/csv",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   ];
+
+  const target_link = watch('target_link')
+
+
+  useEffect(() => {
+    if (target_link) {
+      try {
+        const url = new URL(target_link);
+        const isBaseLink = url.pathname === "/" && !url.search && !url.hash;
+
+        if (!isBaseLink) {
+          setValue("train_from", "Webpage");
+          setActiveTrainFrom("Webpage")
+        }
+      } catch (e) {
+        // Invalid URL fallback
+        setValue("train_from", "Webpage");
+        setActiveTrainFrom("Webpage")
+      }
+    }
+  }, [target_link]);
+
 
   const uploadFile = (file: File) => {
     const formData = new FormData();
@@ -150,6 +173,7 @@ const AddBotData = ({
                     key={label}
                     type="button"
                     onClick={() => handleTrainFromClick(label)}
+                    value={watch('train_from')}
                     className={`cursor-pointer px-4 py-1 rounded-full text-sm font-semibold ${activeTrainFrom === label
                       ? "bg-cyan-500 text-white"
                       : "bg-gray-400 text-white"

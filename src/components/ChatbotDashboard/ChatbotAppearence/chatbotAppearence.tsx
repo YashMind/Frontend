@@ -364,10 +364,10 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
               <div className="flex justify-between items-center mb-4 bg">
                 <div>
                   <h2 className="font-medium text-gray-900 text-base">
-                    Styling
+                    Style Of Bot
                   </h2>
                   <p className="text-sm text-[#727272]">
-                    Upload your avatar and set colors
+                    Upload Your Bot avatar & set color
                   </p>
                 </div>
               </div>

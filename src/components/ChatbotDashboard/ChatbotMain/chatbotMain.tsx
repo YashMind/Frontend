@@ -31,6 +31,9 @@ const ChatbotMain = ({
   role?: string;
 }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { chatbotData: activeChatbot, loading: chatbotLoading } = useSelector((state: RootState) =>
+    state.chat
+  );
 
   useEffect(() => {
     if (botId !== undefined) {
@@ -69,7 +72,7 @@ const ChatbotMain = ({
               {/* Owner Section */}
               <div className="flex gap-6">
                 <div
-                  className={`bg-[#2a2561] rounded-4xl w-full lg:w-[90%] flex ${botId ? "" : "gap-[25px]"
+                  className={`relative bg-[#2a2561] rounded-4xl w-full lg:w-[90%] flex ${botId ? "" : "gap-[25px]"
                     }`}
                 >
                   {botPage !== "main" ? (
@@ -102,6 +105,9 @@ const ChatbotMain = ({
                   ) : null}
                   {botPage === "settings" ? <ChatbotSettings botId={botId} /> : null}
                   {/* second div */}
+                  {botPage !== "main" && < div className="absolute top-5 right-5 text-right text-gray-200 text-lg font-semibold uppercase">
+                    {activeChatbot.chatbot_name}
+                  </div>}
                 </div>
                 <RightSection showModal={showModal} botId={botId} />
                 <CreatebotModal show={modalShow} onHide={() => setModalShow(false)} />
@@ -115,7 +121,7 @@ const ChatbotMain = ({
             </div>
           </div>}
         </>}
-    </div></>
+    </div ></>
   );
 };
 

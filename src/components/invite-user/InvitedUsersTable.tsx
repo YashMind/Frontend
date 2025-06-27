@@ -290,9 +290,8 @@ const InvitedUsersTable = ({ invitedUsers }: InvitedUsersTableProps) => {
                     <button
                       onClick={() => handleRevokeClick(user)}
                       disabled={revokeLoading}
-                      className={`text-red-600 hover:text-red-900 ${
-                        revokeLoading ? "opacity-50 cursor-not-allowed" : ""
-                      }`}
+                      className={`text-red-600 hover:text-red-900 ${revokeLoading ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
                     >
                       Revoke Access
                     </button>

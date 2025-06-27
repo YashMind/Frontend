@@ -100,23 +100,23 @@ const ChatbotLinksDocs = ({
           {/* Overall Bot Statistics */}
           <div className="bg-[#9592AE] justify-evenly rounded-[28px] p-4 flex gap-4 items-center w-full my-[30px]">
             <StatCard
-              title="Crawled Links"
+              title="All Crawled Links"
               value={ChatbotDocLinksData?.user_target_links}
             />
             <StatCard
-              title="Trained"
-              value={ChatbotDocLinksData?.user_target_links - ChatbotDocLinksData?.user_pending_count}
+              title="All Trained"
+              value={ChatbotDocLinksData?.user_target_links > ChatbotDocLinksData?.user_pending_count ? ChatbotDocLinksData?.user_target_links - ChatbotDocLinksData?.user_pending_count : 0}
             />
             <StatCard
-              title="Chars"
+              title="All Chars"
               value={formatLargeNumber(ChatbotDocLinksData?.user_total_chars)}
             />
             <StatCard
-              title="Pending"
+              title="All Pending"
               value={ChatbotDocLinksData?.user_pending_count}
             />
             <StatCard
-              title="Failed"
+              title="All Failed"
               value={ChatbotDocLinksData?.user_failed_count}
             />
           </div>

@@ -179,7 +179,7 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
           <div className="flex items-center justify-between">
             <span className="text-gray-500 font-medium">Characters used</span>
             <span className="text-2xl font-bold text-emerald-600">
-              {trainedChars ? formatLargeNumber(trainedChars.toLocaleString()) : 0}
+              {trainedChars ? formatLargeNumber(trainedChars) : 0}
             </span>
           </div>
           {/* Optional: Add usage visualization */}

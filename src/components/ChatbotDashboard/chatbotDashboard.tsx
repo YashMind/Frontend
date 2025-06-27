@@ -44,14 +44,15 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                     {/* {tokensData.token_usage[0].token_limit || 1} */}
                   </p>
                 </div>
+
                 <div className="w-full bg-gray-600 h-2 rounded-full">
                   <div
                     className="bg-[#501794] h-2 rounded-full "
                     style={{
                       width:
-                        ((tokensData.token_usage[0]
-                          .combined_token_consumption) ?? 0 /
-                          tokensData.token_usage[0].token_limit ?? 1) *
+                        (((tokensData.token_usage[0]
+                          .combined_token_consumption) /
+                          tokensData.token_usage[0].token_limit) ?? 0) *
                         100 +
                         "%",
                     }}

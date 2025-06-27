@@ -156,11 +156,10 @@ const ArchivedMessageModal = ({
                               {session.map((message) => (
                                 <div
                                   key={message.id}
-                                  className={`p-3 rounded-lg ${
-                                    message.sender === "user"
-                                      ? "bg-purple-50 ml-8 text-right"
-                                      : "bg-gray-50 mr-8"
-                                  }`}
+                                  className={`p-3 rounded-lg ${message.sender === "user"
+                                    ? "bg-purple-50 ml-8 text-right"
+                                    : "bg-gray-50 mr-8"
+                                    }`}
                                 >
                                   <p className="text-gray-800">
                                     {message.message}
@@ -168,7 +167,7 @@ const ArchivedMessageModal = ({
                                   <time className="text-xs text-gray-500 mt-1 block">
                                     {new Date(
                                       message.created_at
-                                    ).toLocaleString([], {
+                                    ).toLocaleString("en_US", {
                                       hour: "2-digit",
                                       minute: "2-digit",
                                       year: "numeric",
