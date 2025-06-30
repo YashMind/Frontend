@@ -28,9 +28,9 @@ const HomeFooter = () => {
             Pick the plan that fits your needs and start unlocking powerful AI
             features today.
           </p>
-          <a href="#pricing" className="cursor-pointer w-full bg-gradient-to-r from-[#501794] via-[#5e3aa1] to-[#40659F] font-medium hover:opacity-90 text-white text-sm py-2 px-4 rounded-full transition">
-            Choose This Plan
-          </a>
+          <Link href="/#pricing" className="cursor-pointer w-full bg-gradient-to-r from-[#501794] via-[#5e3aa1] to-[#40659F] font-medium hover:opacity-90 text-white text-sm py-2 px-4 rounded-full transition">
+            Choose a Plan
+          </Link>
         </div>
 
         {/* About Links */}
@@ -156,7 +156,7 @@ const HomeFooter = () => {
               <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
                 <path d="..." stroke="white" />
               </svg>
-              <p>+91-9529786418</p>
+              <p>+91-8623893563</p>
             </div>
           </div>
         </div>

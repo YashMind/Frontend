@@ -44,7 +44,8 @@ const ContactUs = () => {
                       href="tel:+919529786418 "
                       className="hover:text-indigo-500"
                     >
-                      +91-9529786418
+                      +91-8623893563
+
                     </a>
                   </p>
                 </div>
@@ -70,10 +71,10 @@ const ContactUs = () => {
                   <h3 className="text-lg font-medium text-gray-900">Email</h3>
                   <p className="mt-1 text-gray-600">
                     <a
-                      href="mailto:support@yashmind.in"
+                      href="mailto:support@yashraa.ai"
                       className="hover:text-indigo-500"
                     >
-                      support@yashmind.in
+                      support@yashraa.ai
                     </a>
                   </p>
                 </div>

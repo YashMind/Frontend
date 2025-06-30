@@ -40,7 +40,7 @@ const faqsData = [
   {
     title: "What LLM models does ChatBot use?",
     paragraph:
-      "Yashraa leverages leading large language models such as OpenAI’s GPT, Google’s PaLM, and other state-of-the-art AI models. This ensures accurate, contextual, and human-like responses tailored to your content.",
+      "Yashraa leverages leading large language models such as OpenAI’s GPT, Google’s Gemini , Anthropic's Claude , Deepseek ,  Alibaba’s Qwen and other state-of-the-art AI models. This ensures accurate, contextual, and human-like responses tailored to your content.",
   },
   {
     title: "How do I contact customer support?",
@@ -109,9 +109,8 @@ export default function Page() {
               >
                 {item.title}
                 <span
-                  className={`text-white text-xl font-normal cursor-pointer transition-transform duration-300 ${
-                    activeItems.includes(item.title) ? "rotate-180" : ""
-                  }`}
+                  className={`text-white text-xl font-normal cursor-pointer transition-transform duration-300 ${activeItems.includes(item.title) ? "rotate-180" : ""
+                    }`}
                 >
                   ˄
                 </span>
@@ -119,11 +118,10 @@ export default function Page() {
 
               <div
                 id={`faq-content-${index}`}
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                  activeItems.includes(item.title)
-                    ? "max-h-96 opacity-100 px-4"
-                    : "max-h-0 opacity-0"
-                }`}
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${activeItems.includes(item.title)
+                  ? "max-h-96 opacity-100 px-4"
+                  : "max-h-0 opacity-0"
+                  }`}
               >
                 {activeItems.includes(item.title) && (
                   <p className="pb-4 text-base text-[#FAFAFA]">

@@ -5,9 +5,9 @@ const FaqSection = () => {
   const [accordianItems, setAccordianItems] = useState<string[]>([]);
   const faqsData = [
     {
-      title: "Do you maintain your apps?",
+      title: "How Yashraa's wallet credit system works ?",
       paragraph:
-        "Yes, we provide ongoing maintenance and updates for all our applications. Our team actively monitors performance, resolves bugs, and rolls out enhancements to ensure optimal functionality and user experience. Customer satisfaction is a top priority, and we take pride in offering reliable long-term support.",
+        " Yashraa's  wallet credit system works on 1 credit = ₹1.  For eg. In a ₹500 Basic  plan you gets 500 credits. In a  ₹2000 Pro plan you gets 2000 credits , similarly applicable for other plans. You can also Add additional credits according  your need during active plan.",
     },
     {
       title: "How does AI Collective get all these AIs?",
@@ -90,11 +90,10 @@ const FaqSection = () => {
                   {faqsData?.map((item, index) => (
                     <div
                       key={index}
-                      className={`border ${
-                        accordianItems.includes(item?.title)
-                          ? "border-cyan-400"
-                          : "border-[#747474]"
-                      } rounded-lg overflow-hidden bg-[#0f003e]`}
+                      className={`border ${accordianItems.includes(item?.title)
+                        ? "border-cyan-400"
+                        : "border-[#747474]"
+                        } rounded-lg overflow-hidden bg-[#0f003e]`}
                     >
                       <div className="flex items-center justify-between pl-6 pr-4 py-4">
                         <div className="flex gap-3 items-center">
@@ -106,11 +105,10 @@ const FaqSection = () => {
                           </h3>
                         </div>
                         <button
-                          className={`text-white cursor-pointer ${
-                            accordianItems.includes(item?.title)
-                              ? "bg-cyan-400"
-                              : "bg-[#152329]"
-                          } w-[60px] md:w-[86px] h-[60px] md:h-[80px] flex items-center justify-center rounded-sm text-2xl md:text-3xl`}
+                          className={`text-white cursor-pointer ${accordianItems.includes(item?.title)
+                            ? "bg-cyan-400"
+                            : "bg-[#152329]"
+                            } w-[60px] md:w-[86px] h-[60px] md:h-[80px] flex items-center justify-center rounded-sm text-2xl md:text-3xl`}
                           onClick={() => handleAccordian(item?.title)}
                         >
                           {accordianItems.includes(item?.title) ? "-" : "+"}

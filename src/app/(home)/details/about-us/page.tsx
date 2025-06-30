@@ -1,5 +1,6 @@
+import Link from "next/link";
 import React from "react";
-import { FiCheckCircle, FiLayers, FiDollarSign, FiUnlock, FiTrendingUp, FiShield } from "react-icons/fi";
+import { FiCheckCircle, FiLayers, FiDollarSign, FiTrendingUp, FiShield } from "react-icons/fi";
 
 export default function AboutUs() {
   return (
@@ -16,10 +17,7 @@ export default function AboutUs() {
                     <span className="block text-indigo-600">YASHRAA</span>
                   </h1>
                   <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                    Your All-in-One AI Tools Marketplace
-                  </p>
-                  <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                    Empowering businesses with accessible, adaptable AI solutions
+                    Your All-in-One AI Tools Platform
                   </p>
                 </div>
               </div>
@@ -28,48 +26,28 @@ export default function AboutUs() {
         </div>
       </div>
 
-      {/* Mission Section */}
+      {/* Intro Section */}
       <div className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:text-center">
-            <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">Our Purpose</h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Democratizing AI for Everyone
-            </p>
-            <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+            <p className="mt-4 max-w-3xl text-xl text-gray-500 lg:mx-auto">
               At YASHRAA, we believe that AI should be accessible, adaptable, and empowering for businesses of all sizes.
+              We are a next-generation AI tools platform offering a wide range of subscription-based AI products and services — all under one roof.
             </p>
-          </div>
-
-          <div className="mt-10">
-            <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-              <div className="bg-indigo-50 p-6 rounded-lg">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">Our Mission</h3>
-                <p className="mt-2 text-base text-gray-500">
-                  To democratize access to powerful AI technologies, helping businesses unlock new opportunities through intelligent automation and innovation.
-                </p>
-              </div>
-              <div className="bg-indigo-50 p-6 rounded-lg">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">Our Vision</h3>
-                <p className="mt-2 text-base text-gray-500">
-                  To become the world's leading AI marketplace — empowering every business with the tools to thrive in the AI-driven future.
-                </p>
-              </div>
-            </div>
+            <p className="mt-6 max-w-3xl text-xl text-gray-500 lg:mx-auto">
+              Our platform connects businesses, entrepreneurs, developers, and creators with cutting-edge AI technologies that drive innovation and efficiency. Whether you're looking to streamline operations, enhance customer experiences, or automate complex processes — YASHRAA has you covered.
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Marketplace Section */}
+      {/* Platform Section */}
       <div className="py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:text-center">
             <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">Innovation</h2>
             <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Our Marketplace Model
-            </p>
-            <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-              A new approach to AI tool adoption
+              Our Platform Model
             </p>
           </div>
 
@@ -77,7 +55,7 @@ export default function AboutUs() {
             <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
               <div>
                 <p className="text-lg text-gray-500">
-                  Unlike traditional single-solution providers, YASHRAA operates as an open marketplace where you can explore, compare, and subscribe to a variety of AI-powered tools across multiple domains.
+                  Unlike traditional single-solution providers, YASHRAA operates as an All-in-One AI Tools Platform where you can explore, and subscribe to a variety of AI-powered tools across multiple domains.
                 </p>
                 <p className="mt-4 text-lg text-gray-500">
                   With flexible pricing plans and seamless integrations, YASHRAA lets you build your own AI stack tailored to your business needs.
@@ -181,18 +159,13 @@ export default function AboutUs() {
               {[
                 {
                   icon: <FiLayers className="h-8 w-8 text-white" />,
-                  title: "Unified Marketplace",
+                  title: "All-in-One Platform",
                   description: "Discover and manage all your AI tools in one place."
                 },
                 {
                   icon: <FiDollarSign className="h-8 w-8 text-white" />,
                   title: "Flexible Pricing",
                   description: "Pay-as-you-go & subscriptions for startups to enterprises."
-                },
-                {
-                  icon: <FiUnlock className="h-8 w-8 text-white" />,
-                  title: "Vendor-Neutral",
-                  description: "Access top AI models without vendor lock-in."
                 },
                 {
                   icon: <FiTrendingUp className="h-8 w-8 text-white" />,
@@ -202,7 +175,7 @@ export default function AboutUs() {
                 {
                   icon: <FiShield className="h-8 w-8 text-white" />,
                   title: "Privacy & Compliance",
-                  description: "Your data protected under strict privacy standards."
+                  description: "Your data protected under strict privacy standards with full GDPR compliance."
                 }
               ].map((item, index) => (
                 <div key={index} className="text-center">
@@ -218,8 +191,37 @@ export default function AboutUs() {
         </div>
       </div>
 
+      {/* Mission Section */}
+      <div className="py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="lg:text-center">
+            <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">Our Purpose</h2>
+            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+              Driving AI Accessibility
+            </p>
+          </div>
+
+          <div className="mt-10">
+            <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
+              <div className="bg-indigo-50 p-6 rounded-lg">
+                <h3 className="text-lg leading-6 font-medium text-gray-900">Our Mission</h3>
+                <p className="mt-2 text-base text-gray-500">
+                  To democratize access to powerful AI technologies, helping businesses unlock new opportunities through intelligent automation and innovation.
+                </p>
+              </div>
+              <div className="bg-indigo-50 p-6 rounded-lg">
+                <h3 className="text-lg leading-6 font-medium text-gray-900">Our Vision</h3>
+                <p className="mt-2 text-base text-gray-500">
+                  To become the world's leading All-in-One AI Tools Platform — empowering every business with the tools to thrive in the AI-driven future.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* CTA Section */}
-      <div className="bg-white">
+      <div className="bg-gray-50">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
             <span className="block">Ready to transform your business with AI?</span>
@@ -227,12 +229,12 @@ export default function AboutUs() {
           </h2>
           <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
             <div className="inline-flex rounded-md shadow">
-              <a
-                href="#"
+              <Link
+                href="/#pricing"
                 className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
               >
                 Get started
-              </a>
+              </Link>
             </div>
           </div>
         </div>
