@@ -8,8 +8,8 @@ const SupportTicketsTabs = () => {
     const [activeTab, setActiveTab] = useState<'tickets' | 'form'>('tickets');
 
     return (
-        <div className="max-w-6xl mx-auto p-6">
-            <h1 className="text-3xl font-bold text-white mb-8">Support Center</h1>
+        <div className="max-w-6xl mx-auto p-6 md:pt-18 h-full">
+            <h1 className="text-3xl font-bold text-white mb-2">Support Center</h1>
 
             {/* Tabs Navigation */}
             <div className="border-b border-gray-200 mb-6">

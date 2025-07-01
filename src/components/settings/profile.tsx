@@ -149,7 +149,7 @@ const ProfileSettings = () => {
   }
 
   return (
-    <div className="p-4 h-full pt-18">
+    <div className="p-4 h-full md:pt-18">
       <div className="max-w-4xl mx-auto ">
         <div className="flex justify-between items-center mt-4 mb-6 ">
           <h1 className="text-4xl font-bold text-white">User Profile</h1>
@@ -317,9 +317,9 @@ const ProfileSettings = () => {
             </div>
           )}
         </div>
-        <div className="flex gap-x-6 !my-4 container max-w-6xl mx-auto ">
+        <div className="flex gap-x-4 mt-4  max-w-6xl mx-auto ">
           {/* Bots Quota Card */}
-          {tokensData && tokensData.credits && <div className="rounded-xl border border-gray-200 bg-white basis-1/2 p-6 shadow-sm hover:shadow-md transition-shadow">
+          {tokensData && tokensData.credits && <div className="rounded-xl border border-gray-200 bg-white flex-1 p-6 shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-xl font-semibold text-gray-800">
                 Bots Quota

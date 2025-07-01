@@ -13,9 +13,9 @@ import Chats from "@/components/settings/chats";
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
   return (
-    <div className="">
+    <div className="h-full min-h-screen">
       <ChatbotDashboardHeader addBgColor={true} fix={true} />
-      <div className="flex flex-col lg:flex-row items-stretch p-2 sm:p-4  bg-gradient-to-br from-[#1a1440] to-[#2a0e61] md:h-screen">
+      <div className="flex flex-col lg:flex-row items-stretch p-2 sm:p-4 bg-gradient-to-br from-[#1a1440] to-[#2a0e61] min-h-screen">
         {/* Sidebar - becomes horizontal on small screens */}
         <div className="lg:basis-1/5 mt-18 rounded-xl bg-white/30 text-white py-2 lg:py-4 space-y-1 lg:space-y-3 mb-4 lg:mb-0 lg:sticky lg:top-16 overflow-y-auto">
           <div className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible gap-1 lg:gap-3 px-1 lg:px-0">

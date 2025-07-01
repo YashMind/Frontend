@@ -25,7 +25,7 @@ const Chats = () => {
     }
   }, [dispatch]);
   return (
-    <div className="max-w-3xl mx-auto px-4 py-2">
+    <div className="max-w-3xl mx-auto px-4 md:pt-18 py-2">
       <h1 className="text-2xl font-bold text-white mb-8">Settings</h1>
 
       <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
