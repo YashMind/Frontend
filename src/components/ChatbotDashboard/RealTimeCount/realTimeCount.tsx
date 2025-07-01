@@ -67,7 +67,7 @@ export default function RealTimeCount() {
         title="Wallet Usage"
         stats={[
           { label: "Wallet Credits", value: tokensData.credits?.credits_purchased || 0 },
-          { label: "Used Credits", value: tokensData.credits?.credits_consumed },
+          { label: "Used Credits", value: tokensData.credits?.credits_consumed || 0 },
         ]}
         progressPercent={(((tokensData.credits?.credits_consumed || 0) / (tokensData.credits?.credits_purchased || 1)) * 100).toPrecision(1)}
         gradientFrom="#443973"
@@ -78,7 +78,7 @@ export default function RealTimeCount() {
         title="Balance"
         stats={[
 
-          { label: "Balance Credits", value: (tokensData.credits?.credits_purchased - tokensData.credits?.credits_consumed) },
+          { label: "Balance Credits", value: (tokensData.credits?.credits_purchased - tokensData.credits?.credits_consumed) || 0 },
         ]}
         buttonText="Add Credit"
         onButtonClick={() => setShowCreditModal(true)}
