@@ -93,12 +93,12 @@ const ChatbotLinksDocs = ({
 
   return (
     <div className="w-full m-4">
-      <h2 className="max-md:ml-12 text-2xl font-bold">Links / Docs</h2>
+      <h2 className="max-md:ml-12 text-xl max-w-1/2 font-bold">Links / Docs</h2>
 
       {!uploadDocs ? (
         <>
           {/* Overall Bot Statistics */}
-          <div className="bg-[#9592AE] justify-evenly rounded-[28px] p-4 flex gap-4 items-center w-full my-[30px]">
+          <div className="flex flex-wrap bg-[#9592AE] justify-evenly rounded-xl p-3 gap-4 items-center w-full mt-8">
             <StatCard
               title="All Crawled Links"
               value={ChatbotDocLinksData?.user_target_links}
@@ -140,10 +140,10 @@ const ChatbotLinksDocs = ({
             ))}
           </div>
 
-          <div className="bg-white">
+          <div className="bg-white ">
             {/* Active Source Statistics */}
             {activeSource && (
-              <div className="bg-gray-200 justify-evenly p-4 flex gap-4 items-center w-full ">
+              <div className="bg-gray-200 justify-evenly p-4 flex flex-wrap gap-4 items-center w-full ">
                 <StatCard
                   title="Crawled Links"
                   value={activeSource?.total_target_links}
@@ -169,7 +169,7 @@ const ChatbotLinksDocs = ({
 
             {/* Actions Bar */}
             <div className="flex flex-wrap items-center justify-between gap-4 bg-[#9592AE] px-6 py-4">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <ShowEntries limit={limit} setLimit={setLimit} setPage={setPage} />
                 <DeleteButton
                   isDisabled={isDisabled}
@@ -184,9 +184,9 @@ const ChatbotLinksDocs = ({
             </div>
 
             {/* Table */}
-            <div className="overflow-hidden text-sm w-full">
+            <div className=" text-sm w-full overflow-hidden">
               {activeSource?.link?.length ? (
-                <>
+                <div className="overflow-auto">
                   <Table
                     activeSource={activeSource}
                     selectedIds={selectedIds}
@@ -198,7 +198,7 @@ const ChatbotLinksDocs = ({
                     setPage={setPage}
                     totalPages={ChatbotDocLinksData?.total_pages}
                   />
-                </>
+                </div>
               ) : (
                 <div className="text-center py-8 bg-[#f7f6fd] text-gray-500">
                   No data available
@@ -216,8 +216,8 @@ const ChatbotLinksDocs = ({
 
 // Extracted Components
 const StatCard = ({ title, value }: { title: string; value: number | string }) => (
-  <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900 text-center p-4">
-    <span className="text-xl font-semibold">{title}</span>
+  <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900  p-4">
+    <span className="text-base font-semibold">{title}</span>
     <span className="text-3xl font-bold self-end mt-auto">
       {value || 0}
     </span>
@@ -333,12 +333,12 @@ const Table = ({
             onChange={handleSelectAll}
           />
         </th>
-        <th className="py-[14px] text-sm font-bold text-black">Status</th>
-        <th className="py-[14px] text-sm font-bold text-black">Chars</th>
-        <th className="py-[14px] text-sm font-bold text-black">Data</th>
-        <th className="py-[14px] text-sm font-bold text-black">Date Added</th>
-        <th className="py-[14px] text-sm font-bold text-black">Retrain</th>
-        <th className="py-[14px] text-sm font-bold text-black">Type</th>
+        <th className="py-[14px] px-2 text-sm font-bold text-black">Status</th>
+        <th className="py-[14px] px-2 text-sm font-bold text-black">Chars</th>
+        <th className="py-[14px] px-2 text-sm font-bold text-black">Data</th>
+        <th className="py-[14px] px-2 text-sm font-bold text-black">Date Added</th>
+        <th className="py-[14px] px-2 text-sm font-bold text-black">Retrain</th>
+        <th className="py-[14px] px-2 text-sm font-bold text-black">Type</th>
       </tr>
     </thead>
     <tbody className="bg-[#f7f6fd]">
@@ -354,27 +354,27 @@ const Table = ({
               }
             />
           </td>
-          <td className="text-xs font-medium text-black px-1">
+          <td className="text-xs font-medium text-black px-2">
             <div className="flex gap-3">
               <p className="w-2 h-2 bg-[#DE4DBC] rounded-full"></p>
               {item?.status}
             </div>
           </td>
-          <td className="py-4 text-xs font-medium text-black px-1">
+          <td className="py-4 text-xs font-medium text-black px-2">
             {item?.chars}
           </td>
           <td className="py-4 text-xs font-medium text-black max-w-48 overflow-ellipsis">
             {item?.target_link && <a href={item?.target_link}>{item?.target_link}</a>}
             {item?.document_link}
           </td>
-          <td className="py-4 text-xs font-medium text-black px-1">
+          <td className="py-4 text-xs font-medium text-black px-2">
             {formatDateOrTimeAgo(item?.created_at)}
           </td>
-          <td className="truncate max-w-[150px] p-4 text-xs font-medium text-black px-1">
+          <td className="truncate max-w-[150px] p-4 text-xs font-medium text-black px-2">
             -
           </td>
-          <td className="py-4">
-            <span className="bg-[#DEDEDE] py-1 rounded-full text-xs font-medium text-black px-1">
+          <td className="py-4 px-2">
+            <span className="bg-[#DEDEDE] py-1 rounded-full text-xs font-medium text-black px-2">
               {item?.train_from}
             </span>
           </td>

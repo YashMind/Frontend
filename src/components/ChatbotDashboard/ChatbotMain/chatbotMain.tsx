@@ -107,7 +107,7 @@ const ChatbotMain = ({
                   ) : null}
                   {botPage === "settings" ? <ChatbotSettings botId={botId} /> : null}
                   {/* second div */}
-                  {botPage !== "main" && < div className="absolute top-5 right-5 text-right text-gray-200 text-lg font-semibold uppercase">
+                  {botPage !== "main" && < div className="absolute top-5 right-5 text-right text-gray-200 text-base font-semibold uppercase">
                     {activeChatbot.chatbot_name}
                   </div>}
                 </div>
