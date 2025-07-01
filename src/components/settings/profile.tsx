@@ -147,6 +147,28 @@ const ProfileSettings = () => {
       toast.error("Failed to change password");
     })
   }
+  const profileImage = ({ userPic, editedPic }: { userPic: string; editedPic: File | string | null }) => {
+    // If editedPic is a File object, convert it to a blob URL
+    if (editedPic instanceof File || editedPic instanceof Blob) {
+      return URL.createObjectURL(editedPic);
+    }
+    // If editedPic is already a URL string, return it directly
+    else if (editedPic) {
+      return editedPic;
+    }
+
+    // If userPic exists and is a URL (starts with 'http'), return it
+    if (userPic?.startsWith('http')) {
+      return userPic;
+    }
+    // If userPic exists but is a relative path, prepend backend URL
+    else if (userPic) {
+      return process.env.NEXT_PUBLIC_BACKEND_URL + userPic;
+    }
+
+    // Fallback: default user image
+    return '/images/userimg.png';
+  };
 
   return (
     <div className="p-4 h-full md:pt-18">
@@ -182,7 +204,7 @@ const ProfileSettings = () => {
           <div className="flex justify-center items-center mb-6">
             <img
               src={
-                userData.picture ?? editedData.picture ?? "/images/userimg.png"
+                profileImage({ userPic: userData.picture, editedPic: editedData.picture })
               }
               alt="Profile"
               className="w-20 h-20 rounded-full object-cover"
