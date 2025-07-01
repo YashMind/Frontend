@@ -79,6 +79,19 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
           <div className="flex flex-wrap gap-4 bg-[#FFFFFF80]/20 backdrop-blur-3xl p-4 rounded-3xl m-4">
             {chatbots &&
               chatbots?.map((item, index: number) => {
+
+                let imgUrl
+
+                if (item.image) {
+                  if (((item.image) as string).startsWith('http') || ((item.image) as string).startsWith('https')) {
+                    imgUrl = item.image
+                  } else {
+                    imgUrl = process.env.NEXT_PUBLIC_BACKEND_URL +
+                      item.image
+                  }
+                } else {
+                  imgUrl = "/images/bot2.png"
+                }
                 return (
                   <Link
                     key={index}
@@ -91,12 +104,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                         <div className="relative">
                           <Image
                             alt="Chatbot avatar"
-                            src={
-                              item?.image
-                                ? process.env.NEXT_PUBLIC_BACKEND_URL +
-                                item.image
-                                : "/images/bot2.png"
-                            }
+                            src={imgUrl}
                             height={56}
                             width={56}
                             className="rounded-full border-2 border-white shadow-sm"
