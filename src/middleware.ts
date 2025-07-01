@@ -181,5 +181,5 @@ export default async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|favicon.ico|images|api|webhook|embed.js).*)"],
+  matcher: ["/((?!_next|favicon.ico|images|api|uploads|webhook|embed.js).*)"],
 };
