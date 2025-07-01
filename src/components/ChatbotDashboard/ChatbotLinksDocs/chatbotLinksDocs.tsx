@@ -92,8 +92,8 @@ const ChatbotLinksDocs = ({
   const activeSource = ChatbotDocLinksData.data?.[activeSourceIndex] || null;
 
   return (
-    <div className="w-full m-12">
-      <h2 className="text-2xl font-bold">Links / Docs</h2>
+    <div className="w-full m-4">
+      <h2 className="max-md:ml-12 text-2xl font-bold">Links / Docs</h2>
 
       {!uploadDocs ? (
         <>

@@ -300,15 +300,15 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
   };
 
   return (
-    <div className="w-full m-10">
+    <div className="max-w-screen m-4">
       {" "}
-      <h2 className="text-2xl font-bold mt-[30]">Bot visualisation</h2>
+      <h2 className="text-2xl font-bold mb-4 max-md:ml-12">Bot visualisation</h2>
       <p className="text-sm font-light my-[22px]">
         Make your chatbot match your brand — customize its look and feel here.
       </p>
-      <div className="flex gap-2 w-full">
+      <div className="flex max-md:flex-wrap-reverse gap-2 w-full">
         <form onSubmit={handleSubmit(onSubmit)} className="basis-3/4 ">
-          <div className="space-y-2 flex-1 bg-[#9e99b6] p-[36] rounded-[20px]">
+          <div className="space-y-2 flex-1 bg-[#9e99b6] p-2 rounded-xl">
             <Field
               name="title_value"
               label="Title"
@@ -360,7 +360,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
               register={register}
             />
             <LeadGenSelection register={register} watch={watch} />
-            <div className="bg-white rounded-2xl shadow-md p-6 w-full">
+            <div className="bg-white rounded-2xl shadow-md p-4 w-full">
               <div className="flex justify-between items-center mb-4 bg">
                 <div>
                   <h2 className="font-medium text-gray-900 text-base">
@@ -465,9 +465,10 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
             </div>
           </div>
         </form>
+
         <ChatbotDummy chatbotSettings={watch()} />
       </div>
-    </div>
+    </div >
   );
 };
 

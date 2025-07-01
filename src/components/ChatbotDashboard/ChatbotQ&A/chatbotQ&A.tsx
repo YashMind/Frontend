@@ -18,9 +18,9 @@ const schema = yup.object().shape({
   ),
 });
 
-const ChatbotQA = ({botId}:{botId?: number}) => {
+const ChatbotQA = ({ botId }: { botId?: number }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const chatbotFaqs:ChatbotFaqsQuesAnswer[] = useSelector((state: RootState)=> state.chat.chatbotFaqs);
+  const chatbotFaqs: ChatbotFaqsQuesAnswer[] = useSelector((state: RootState) => state.chat.chatbotFaqs);
   const {
     register,
     control,
@@ -41,12 +41,12 @@ const ChatbotQA = ({botId}:{botId?: number}) => {
 
   const onSubmit = (data: any) => {
     data.bot_id = Number(botId);
-    data.questions = data.questions?.filter((item:ChatbotFaqsQuesAnswer)=> !item?.faqId);
-    dispatch(createChatbotFaqs({payload:data}));
+    data.questions = data.questions?.filter((item: ChatbotFaqsQuesAnswer) => !item?.faqId);
+    dispatch(createChatbotFaqs({ payload: data }));
   };
 
-  useEffect(()=>{
-    dispatch(getChatbotsFaqs({bot_id: botId}));
+  useEffect(() => {
+    dispatch(getChatbotsFaqs({ bot_id: botId }));
   }, [])
 
   useEffect(() => {
@@ -62,24 +62,24 @@ const ChatbotQA = ({botId}:{botId?: number}) => {
   }, [chatbotFaqs, reset]);
 
   const handleDeleteAllFaqs = () => {
-    dispatch(deleteChatbotsAllFaqs({bot_id: botId}));
+    dispatch(deleteChatbotsAllFaqs({ bot_id: botId }));
     remove();
   }
 
-  const handleDeleteFaq = (item:ChatbotFaqsQuesAnswer, index:number) => {
-    if(item?.faqId){
-      dispatch(deleteChatbotsFaqs({bot_id: botId, faq_id: item?.faqId}));
+  const handleDeleteFaq = (item: ChatbotFaqsQuesAnswer, index: number) => {
+    if (item?.faqId) {
+      dispatch(deleteChatbotsFaqs({ bot_id: botId, faq_id: item?.faqId }));
     }
     remove(index)
   }
 
   return (
-    <div className="w-full m-5">
-      <h2 className="text-2xl font-bold my-4">Q & A</h2>
+    <div className="w-full m-4">
+      <h2 className="text-2xl font-bold mb-4 max-md:ml-12">Q & A</h2>
       <div className="bg-[#2E265C] ">
         {/* Header */}
-        <div className="bg-[#FFFFFF80] rounded-t-xl flex items-center justify-between px-5 py-2">
-          <div className="flex items-center gap-8">
+        <div className="bg-[#FFFFFF80] rounded-t-xl flex flex-wrap gap-y-2 items-center justify-between px-5 py-2">
+          <div className="flex items-center gap-4">
             <button
               className="cursor-pointer w-8 h-8 bg-white rounded-full flex items-center justify-center text-3xl  font-bold text-[#2E265C]"
               onClick={() => append({ question: "", answer: "" })}
@@ -133,7 +133,7 @@ const ChatbotQA = ({botId}:{botId?: number}) => {
           id="dynamicQAForm"
         >
           {fields &&
-            fields.map((item:any, index:number) => {
+            fields.map((item: any, index: number) => {
               return (
                 <div className="bg-white rounded-b-xl p-5" key={index}>
                   <div className="flex justify-between items-center mb-2">

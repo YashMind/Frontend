@@ -124,12 +124,12 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
   };
 
   return (
-    <div className="w-full m-10">
-      <h2 className="text-2xl font-bold my-4">Chat History</h2>
+    <div className="w-full m-4">
+      <h2 className="max-md:ml-12 text-2xl font-bold mb-4">Chat History</h2>
       <div className="bg-white rounded-b-xl overflow-hidden text-sm w-full xl:w-full rounded-[40px] mb-8">
         {/* Top Actions */}
         <div className="flex flex-wrap items-center justify-between gap-4 bg-[#9592AE] px-6 py-4 ">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <div className="flex gap-4">
               <button
                 className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${isDisabled
@@ -203,7 +203,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
 
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="min-w-[800px] w-full  text-left text-gray-800">
+          <table className="w-fit  text-left text-gray-800">
             <thead className="bg-white text-gray-600 border-y border-gray-300">
               <tr>
                 <th className="p-4">
@@ -213,25 +213,25 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
                     onChange={handleSelectAll}
                   />
                 </th>
-                <th className="py-[14px] text-sm font-bold text-black">
+                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
                   Country
                 </th>
-                <th className="py-[14px] text-sm font-bold text-black">
+                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
                   Started
                 </th>
-                <th className="py-[14px] text-sm font-bold text-black">
+                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
                   Status
                 </th>
-                <th className="py-[14px] text-sm font-bold text-black">
+                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
                   Language
                 </th>
-                <th className="py-[14px] text-sm font-bold text-black">
+                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
                   Last message
                 </th>
-                <th className="py-[14px] text-sm font-bold text-black">
+                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
                   Platform
                 </th>
-                <th className="py-[14px] text-sm font-bold text-black">
+                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
                   Action
                 </th>
               </tr>

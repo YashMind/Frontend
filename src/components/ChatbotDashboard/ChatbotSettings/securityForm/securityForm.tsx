@@ -61,7 +61,7 @@ const SecuritySettings = ({ botId }: { botId?: number }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-white rounded-2xl overflow-hidden shadow-md mb-4"
+      className="bg-white rounded-xl overflow-hidden shadow-md mb-4"
     >
       <div className="bg-indigo-600 text-white px-4 py-2 font-bold text-[22px]">
         Security

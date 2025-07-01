@@ -22,12 +22,12 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
   const zapierUrl = process.env.NEXT_PUBLIC_ZAPIER_URL;
 
   return (
-    <div className="w-full m-10">
-      <div className="my-7">
+    <div className="w-full m-4">
+      <div className="max-md:ml-12 mb-4">
         <h2 className="text-2xl font-bold ">Apps Integration</h2>
         <p>Streamline your workflow by connecting to popular software and social media through our integrations.</p>
       </div>
-      <div className="grid grid-cols-3 md:grid-cols-3 gap-6 w-full  text-center bg-[#9592AE] p-18 rounded-[24px] ">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full  text-center bg-[#9592AE] p-4 rounded-xl ">
         {/* Card 1 */}
         {/* <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative">
           <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#DF437E] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">

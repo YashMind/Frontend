@@ -150,11 +150,11 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
   };
 
   return (
-    <div className="w-full m-10">
-      <h2 className="text-2xl font-bold my-4">AI</h2>
-      <div className="min-h-screen ">
+    <div className="w-full m-4">
+      <h2 className="text-2xl font-bold mb-4 max-md:ml-12">AI</h2>
+      <div className="w-full overflow-hidden">
         {/* AI Creativity Section */}
-        <div className="bg-white rounded-xl p-6 pb-10 mb-6">
+        <div className="bg-white rounded-xl p-6 pb-10 mb-6 ">
           <h2 className="text-lg font-bold text-black mb-1">AI Temperature</h2>
           <p className="text-sm text-gray-700 mb-4">
             Adjust the slider to control how creative or precise the bot’s responses are . this is known as the ‘temperature’ setting.
@@ -196,7 +196,7 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
           </p>
 
           {/* Dropdown + Buttons */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-wrap gap-y-2 items-center justify-between mb-4">
             <select
               className="bg-[#797879] text-sm font-bold px-4 py-2 rounded-md border-transparent outline-0"
               {...register("type")}
@@ -228,7 +228,7 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
                 );
               })}
             </select>
-            <div className="flex gap-2">
+            <div className="flex  gap-2">
               <button
                 onClick={() => onDelete()}
                 className="bg-[#4B4351] text-white text-sm px-4 py-2 rounded-md cursor-pointer"

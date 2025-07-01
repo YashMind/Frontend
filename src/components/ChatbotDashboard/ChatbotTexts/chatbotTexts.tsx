@@ -49,8 +49,8 @@ Services Offered: [List of services]`);
   }, [chatbotData?.text_content]);
 
   return (
-    <div className="w-full ml-10 ">
-      <h2 className="text-2xl font-bold my-4 ">
+    <div className="w-full m-4">
+      <h2 className="text-2xl max-w-[50%] font-bold mb-4 max-md:ml-12">
         Train Bot with simple text
       </h2>
       <p className="text-sm font-light">

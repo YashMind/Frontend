@@ -117,8 +117,8 @@ const ChatbotLeads = ({
 
 
   return (
-    <div className="w-full m-10">
-      <h2 className="text-2xl font-bold my-4">Leads</h2>
+    <div className="w-full m-4">
+      <h2 className="text-2xl font-bold mb-4 max-md:ml-12">Leads</h2>
 
       <div className="bg-white rounded-b-xl overflow-hidden  text-sm w-full rounded-[40px] mb-8 mr-3 ">
         {/* Top Actions */}

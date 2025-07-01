@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { BiSolidRightArrow } from "react-icons/bi";
+import { BiSolidRightArrow, BiMenu, BiX } from "react-icons/bi";
 import {
   MdOutlineDatasetLinked,
   MdOutlineSettingsRemote,
@@ -96,8 +96,6 @@ const sidebarSections: SidebarSection[] = [
       },
     ],
   },
-
-
   {
     title: "Deployment",
     links: [
@@ -141,40 +139,137 @@ const ChatbotSidebar = ({
   botPage?: string;
   botId?: number;
 }) => {
-  const renderLink = (link: SidebarLink) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    if (mobileMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [mobileMenuOpen]);
+
+  const renderLink = (link: SidebarLink, showLabel = true) => {
     const isActive = botPage === link.key;
     return (
       <Link
         key={link.key}
         href={`/chatbot-dashboard/${link.path}/${botId}`}
+        onClick={() => setMobileMenuOpen(false)} // Close sidebar when a link is clicked
         className={`flex items-center gap-3 text-sm font-medium py-2 px-3 rounded-lg transition-all
           ${isActive
             ? "bg-[#1C1C1C] text-[#01BEED] font-semibold"
             : "text-gray-300 hover:bg-[#2A2A2A] hover:text-white"
           }`}
       >
-        {link.icon}
-        <span>{link.label}</span>
-        {isActive && (
-          <BiSolidRightArrow className="ml-auto animate-pulse text-[#01BEED]" />
+        <span className="flex-shrink-0">{link.icon}</span>
+        {showLabel && (
+          <>
+            <span>{link.label}</span>
+            {isActive && (
+              <BiSolidRightArrow className="ml-auto animate-pulse text-[#01BEED]" />
+            )}
+          </>
         )}
       </Link>
     );
   };
 
+
   return (
-    <div className="w-[260px] bg-black text-white p-5 flex flex-col gap-8 rounded-tl-[58px] rounded-bl-[58px]">
-      {sidebarSections.map(({ title, links }, idx) => (
-        <div key={idx} className="flex flex-col gap-4">
-          {title && (
-            <p className="text-xs uppercase text-gray-500 tracking-wide pl-2">
-              {title}
-            </p>
-          )}
-          <div className="flex flex-col gap-1">{links.map(renderLink)}</div>
+    <>
+      {/* Mobile menu button */}
+      <div className={`${mobileMenuOpen ? "hidden" : "block"} md:hidden absolute top-4 left-4 z-50`}>
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className="p-2 rounded-lg bg-black text-white"
+        >
+          <BiMenu size={24} />
+        </button>
+      </div>
+
+      {/* Mobile sidebar */}
+      <div
+        ref={sidebarRef}
+        className={`fixed inset-y-10 left-0 z-40 w-64 bg-black text-white p-5 flex flex-col gap-2 transform transition-transform duration-300 ease-in-out md:hidden
+          ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
+      >
+        {/* Close button for mobile sidebar */}
+        <div className="flex justify-end">
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="p-2 rounded-lg text-gray-300 hover:text-white cursor-pointer"
+          >
+            <BiX size={24} color="#ffffff" />
+          </button>
         </div>
-      ))}
-    </div>
+
+        <div className="overflow-y-auto h-full">
+          {sidebarSections.map(({ title, links }, idx) => (
+            <div key={idx} className="flex flex-col gap-2 mb-4">
+              {title && (
+                <p className="text-xs uppercase text-gray-500 tracking-wide pl-2">
+                  {title}
+                </p>
+              )}
+              <div className="flex flex-col gap-1">
+                {links.map((link) => renderLink(link, true))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Medium screen sidebar (icons only) */}
+      <div
+        className={`hidden lg:hidden  ${hovered ? "md:block left-20 w-fit" : "md:block w-16"} z-20  bg-black p-3 hover:w-64 transition-all duration-300 ease-in-out rounded-l-2xl`}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        <div className="flex flex-col gap-8 h-full overflow-y-auto">
+          {sidebarSections.map(({ title, links }, idx) => (
+            <div key={idx} className="flex flex-col gap-2 mb-4">
+              {hovered && title && (
+                <p className="text-xs uppercase text-gray-500 tracking-wide pl-2">
+                  {title}
+                </p>
+              )}
+              <div className="flex flex-col gap-1">
+                {links.map((link) => renderLink(link, hovered))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Large screen sidebar (full width) */}
+      <div className="hidden lg:static lg:block w-[260px] bg-black text-white p-5  flex-col gap-8 rounded-l-3xl fixed left-0 top-0 h-full">
+        {sidebarSections.map(({ title, links }, idx) => (
+          <div key={idx} className="flex flex-col gap-2 mb-4">
+            {title && (
+              <p className="text-xs uppercase text-gray-500 tracking-wide pl-2">
+                {title}
+              </p>
+            )}
+            <div className="flex flex-col gap-1">
+              {links.map((link) => renderLink(link, true))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 

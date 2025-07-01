@@ -84,7 +84,7 @@ export const Field = ({
   register,
 }: FieldProps) => {
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6 w-full">
+    <div className="bg-white rounded-2xl shadow-md p-4 w-full">
       <div className="flex justify-between items-center mb-4">
         <div>
           <h2 className="font-medium text-gray-900 text-base">{label}</h2>
@@ -162,7 +162,7 @@ export const ColorPickerField = ({
   };
 
   return (
-    <div className={`space-y-2 ${className} text-gray-900`}>
+    <div className={`space-y-1 ${className} text-gray-900`}>
       <div>
         <label className="block text-sm font-medium text-gray-900">
           {label}

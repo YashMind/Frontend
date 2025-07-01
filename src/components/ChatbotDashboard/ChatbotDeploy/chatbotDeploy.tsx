@@ -51,8 +51,8 @@ const ChatbotDeploy = () => {
   const embedScript = `<script defer src="${process.env.NEXT_PUBLIC_UI_URL}/embed.js" data-bot-id="${chatbotData?.token}"></script>`;
 
   return (
-    <div className="w-full m-10">
-      <h2 className="text-2xl font-bold my-[30]">Deploy</h2>
+    <div className="w-full m-4">
+      <h2 className="text-2xl font-bold mb-8 max-md:ml-12">Deploy</h2>
       <div className="bg-[#312d63] min-h-screen flex items-center justify-center p-4 rounded-[28px]">
         <div className="w-full max-w-6xl space-y-6">
           {/* Top Section */}

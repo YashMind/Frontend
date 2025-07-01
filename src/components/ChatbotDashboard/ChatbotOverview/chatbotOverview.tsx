@@ -31,7 +31,7 @@ const ChatbotOverview = ({
   return (
     <div className="w-full m-4">
       {botPage === "overview" ? (
-        <h2 className="text-2xl font-bold mb-4 ">Overview</h2>
+        <h2 className="max-md:ml-12 text-2xl font-bold mb-3 ">Overview</h2>
       ) : null}
       {botPage === "overview" ? (
         <div className="flex flex-wrap flex-row-reverse md:flex-row gap-10 w-full">

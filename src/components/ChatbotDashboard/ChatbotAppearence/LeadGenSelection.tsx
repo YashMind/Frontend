@@ -11,7 +11,7 @@ const LeadGenSelection = ({
 }) => {
   const lead_gen = watch("lead_collection");
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6 w-full">
+    <div className="bg-white rounded-2xl shadow-md p-4 w-full">
       <div className="flex justify-between items-center mb-4">
         <div>
           <h2 className="font-medium text-gray-900 text-base">

@@ -45,13 +45,13 @@ const ChatbotSettings = ({ botId }: { botId?: number }) => {
     dispatch(deleteChatbot({ bot_id: botId, router }));
   };
   return (
-    <div className="w-full m-10">
-      <h2 className="text-2xl font-bold my-[24] ">Settings</h2>
+    <div className="w-full m-4">
+      <h2 className="text-2xl font-bold mb-5 max-md:ml-12">Settings</h2>
 
-      <div className="bg-[#312d63] min-h-screen p-4 w-[675px] rounded-[38px] mb-5">
-        <div className="w-full  py-[50] ">
+      <div className="bg-[#312d63] min-h-screen p-4 max-w-[320px] rounded-2xl">
+        <div className="w-full">
           {/* Basic Section */}
-          <div className="bg-white rounded-2xl overflow-hidden shadow-md mb-4">
+          <div className="bg-white rounded-xl overflow-hidden shadow-md mb-4">
             <div className="bg-indigo-600 text-white px-4 py-2 font-bold text-[22px]">
               Basic
             </div>
@@ -94,7 +94,7 @@ const ChatbotSettings = ({ botId }: { botId?: number }) => {
           <SecuritySettings botId={botId} />
 
           {/* Delete Account Section */}
-          <div className="bg-white rounded-2xl overflow-hidden shadow-md mb-4">
+          <div className="bg-white rounded-xl overflow-hidden shadow-md mb-4">
             <div className="bg-indigo-600 text-white px-4 py-2 font-bold text-[22px]">
               Delete Account
             </div>
