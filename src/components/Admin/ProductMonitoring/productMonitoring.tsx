@@ -10,6 +10,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import AddEditProduct from "./AddEditProduct/addEditProduct";
 
+
+const commonNames = {
+  'gpt-3.5-turbo': 'GPT-3.5 Turbo',
+  'gpt-4': 'GPT-4',
+  'gpt-4o': 'GPT-4o (mini)',
+  'gemini-2.5-pro-preview-06-05': 'Gemini 2.5 Pro (Preview)',
+  'models/gemini-2.5-flash-preview-05-20': 'Gemini 2.5 Flash (Preview)',
+  'deepseek-chat': 'DeepSeek Chat V3',
+  'deepseek-reasoner': 'DeepSeek Reasoner R1'
+};
+
 const ProductMonitoring = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
 
@@ -123,11 +134,10 @@ const ProductMonitoring = () => {
                         toolsData.map((tool, index) => (
                           <button
                             key={index}
-                            className={`${
-                              tool.status ? "outline-2 outline-green-600" : ""
-                            } bg-gray-800 rounded-2xl shadow-md p-4 transition hover:shadow-lg hover:bg-gray-700 cursor-pointer disabled:cursor-not-allowed text-left`}
+                            className={`${tool.status ? "outline-2 outline-green-600" : ""
+                              } bg-gray-800 rounded-2xl shadow-md p-4 transition hover:shadow-lg hover:bg-gray-700 cursor-pointer disabled:cursor-not-allowed text-left`}
                             onClick={() => handleToolStatusToggle(tool.id)}
-                            // disabled={tool.tool != "ChatGPT"}
+                          // disabled={tool.tool != "ChatGPT"}
                           >
                             <h3 className="text-lg font-semibold mb-1">
                               {tool.tool}
@@ -136,6 +146,10 @@ const ProductMonitoring = () => {
                               Model:{" "}
                               <span className="font-mono">{tool.model}</span>
                             </p>
+                            {commonNames[tool.model] && <p className="text-sm text-gray-300 mb-2">
+                              Common name:{" "}
+                              <span className="font-mono">{commonNames[tool.model]}</span>
+                            </p>}
                             {/* <span
                             className={`text-xs px-2 py-0.5 rounded-full ${tool.status === true
                               ? "bg-green-600 text-white"
