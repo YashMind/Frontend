@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signInUser, signUpUser } from "@/store/slices/auth/authSlice";
 import LoginWithGoogle from "@/components/auth/LoginWithGoogle/loginWithGoogle";
@@ -56,6 +56,9 @@ const getValidationSchema = (type: "signin" | "signup") => {
 const AuthForm = ({ formType }: { formType: "signin" | "signup" }) => {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
+    const searchParams = useSearchParams()
+
+
 
     const {
         register,
@@ -69,7 +72,13 @@ const AuthForm = ({ formType }: { formType: "signin" | "signup" }) => {
     const onSubmit = (data: AuthFormInput) => {
         if (formType === "signin") {
             const { email, password } = data as SignInForm;
-            dispatch(signInUser({ payload: { email, password }, router }));
+            dispatch(signInUser({ payload: { email, password }, router })).unwrap().then((res) => {
+                if (searchParams.get('from')) {
+                    router.push(searchParams.get('from') ?? '/chatboard-dashboard/main');
+                    return
+                }
+                router.push('/chatboard-dashboard/main');
+            });
         } else {
             const { email, password, fullName, confirmPassword } = data as SignUpForm;
             dispatch(signUpUser({ payload: { email, password, fullName, confirmPassword }, router }));

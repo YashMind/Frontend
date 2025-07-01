@@ -5,9 +5,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { getMeData, isLoggedin } from "@/store/slices/auth/authSlice";
+import { getMeData, isLoggedin, logoutUser } from "@/store/slices/auth/authSlice";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
+import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
 
 const HomeHeader = () => {
   const router = useRouter();
@@ -17,7 +18,6 @@ const HomeHeader = () => {
     (state: RootState) => state.auth.loggedInUser
   );
 
-  console.log("USER DATA: ", userData);
 
   useEffect(() => {
     dispatch(isLoggedin())
@@ -27,6 +27,7 @@ const HomeHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [currency, setCurrency] = useState<'USD' | 'INR'>('USD');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [openLogoutModal, setOpenLogoutModal] = useState(false)
   const dropdownRef = useRef(null)
   useEffect(() => {
     if (pathname == "/") setNavItem(1);
@@ -52,6 +53,9 @@ const HomeHeader = () => {
 
   const toggleCurrency = () => {
     setCurrency(prev => prev === 'USD' ? 'INR' : 'USD');
+  };
+  const handleConfirmLogout = async () => {
+    await dispatch(logoutUser({ router }));
   };
 
   return (
@@ -114,7 +118,7 @@ const HomeHeader = () => {
                         Invite User
                       </Link>
                       <button
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => setOpenLogoutModal(true)}
                         className="cursor-pointer w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                       >
                         Logout
@@ -258,6 +262,13 @@ const HomeHeader = () => {
           </button>
         </div> */}
       </div>
+      <ConfirmDeleteModal
+        isOpen={openLogoutModal}
+        onClose={() => setOpenLogoutModal(false)}
+        onConfirm={handleConfirmLogout}
+        title="Log out Account?"
+        message={`Are you sure you want to Logout your Account?`}
+      />
     </nav>
   );
 };

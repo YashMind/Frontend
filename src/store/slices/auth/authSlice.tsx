@@ -171,7 +171,7 @@ export const signInUser = createAsyncThunk<
         dispatch(getMeData({ router }));
         toasterSuccess("user logged in successfully!", 2000, "id");
         // toast.success("user logged in successfully!");
-        router.push("/chatbot-dashboard/main");
+        // router.push("/chatbot-dashboard/main");
         return response.data;
       } else {
         return rejectWithValue("Signup failed");

@@ -19,6 +19,9 @@ import { chatsIdData, TextMessage } from "@/types/chatTypes";
 import { pathToImage } from "@/services/utils/helpers";
 import ChatMessages from "../utils/MessageRenderer";
 import MicrophoneRecorder from "../ChatbotDashboard/ChatbotOverview/chatbotSection/MicrophoneRecorder";
+import { isLoggedin } from "@/store/slices/auth/authSlice";
+import toast from "react-hot-toast";
+import { redirect } from "next/navigation";
 
 const schema = yup.object().shape({
   message: yup.string().required("Message is required"),
@@ -32,8 +35,27 @@ const ChatbotEmbedSection = ({
   botId?: string;
   domainUrl?: string;
 }) => {
+  const hasRun = useRef(false);
+  const messagesEndRef: any = useRef(null);
+  const dispatch = useDispatch<AppDispatch>();
   const [isBotTyping, setIsBotTyping] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+
+  const chatIdData: chatsIdData = useSelector(
+    (state: RootState) => state.chat.chatIdData
+  );
+  const chatMessages = useSelector(
+    (state: RootState) => state.chat.chatMessages
+  );
+  const chatbotData = useSelector((state: RootState) => state.chat.chatbotData);
+  const chatbotSetting = useSelector(
+    (state: RootState) => state.appearance.settings
+  );
+  const userData: UserProfileData | null = useSelector(
+    (state: RootState) => state.auth.loggedInUser
+  );
+
+
   const {
     register,
     handleSubmit,
@@ -51,15 +73,35 @@ const ChatbotEmbedSection = ({
     },
   });
 
-  const dispatch = useDispatch<AppDispatch>();
-  const chatIdData: chatsIdData = useSelector(
-    (state: RootState) => state.chat.chatIdData
-  );
-  const chatMessages = useSelector(
-    (state: RootState) => state.chat.chatMessages
-  );
 
-  const chatbotData = useSelector((state: RootState) => state.chat.chatbotData);
+  useEffect(() => {
+    if (!chatbotData.public) {
+      dispatch(isLoggedin()).unwrap().then((res) => {
+        // if(res.user.)
+      }).catch((err) => {
+        toast.error('Unauthorized, Kindly login')
+        redirect(`/auth/signin?from=/embed/${botId}`)
+      })
+    }
+  }, [chatbotData])
+
+  useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
+    if (botId !== undefined) {
+      dispatch(createChatsIdToken({ token: botId }));
+    }
+  }, [dispatch, botId]);
+
+  useEffect(() => {
+    messagesEndRef?.current?.scrollIntoView({ behavior: "smooth" });
+    if (chatIdData.bot_id && chatIdData.id) {
+      setValue("chat_id", chatIdData.id);
+      setValue("bot_id", chatIdData.bot_id);
+    }
+  }, [chatMessages, chatIdData.bot_id, chatIdData.id]);
+
+
   const onSubmit = (data: TextMessage) => {
     setIsBotTyping(true);
     setIsRecording(false)
@@ -70,25 +112,6 @@ const ChatbotEmbedSection = ({
     });
   };
 
-  const hasRun = useRef(false);
-
-  useEffect(() => {
-    if (hasRun.current) return;
-    hasRun.current = true;
-    if (botId !== undefined) {
-      dispatch(createChatsIdToken({ token: botId }));
-    }
-  }, [dispatch, botId]);
-
-  const messagesEndRef: any = useRef(null);
-
-  useEffect(() => {
-    messagesEndRef?.current?.scrollIntoView({ behavior: "smooth" });
-    if (chatIdData.bot_id && chatIdData.id) {
-      setValue("chat_id", chatIdData.id);
-      setValue("bot_id", chatIdData.bot_id);
-    }
-  }, [chatMessages, chatIdData.bot_id, chatIdData.id]);
 
   const handleDeleteChats = () => {
     dispatch(
@@ -96,9 +119,6 @@ const ChatbotEmbedSection = ({
     );
   };
 
-  const chatbotSetting = useSelector(
-    (state: RootState) => state.appearance.settings
-  );
   const chatbotImage =
     chatbotSetting && chatbotSetting?.image
       ? pathToImage(chatbotSetting?.image) ?? "/images/face2.webp"

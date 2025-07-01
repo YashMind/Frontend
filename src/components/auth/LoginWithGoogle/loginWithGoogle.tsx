@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import http from "@/services/http/baseUrl";
 import toast from "react-hot-toast";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
@@ -9,6 +9,7 @@ import { toasterError, toasterSuccess } from "@/services/utils/toaster";
 const LoginWithGoogle = () => {
   const router = useRouter();
 
+  const searchParams = useSearchParams()
   const signUpWithGoogle = async (accessToken: string) => {
     try {
       // const { data: profile } = await axios.get(
@@ -35,7 +36,6 @@ const LoginWithGoogle = () => {
       throw error;
     }
   };
-
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (response) => {
       try {
@@ -44,7 +44,11 @@ const LoginWithGoogle = () => {
         if (user) {
           toasterSuccess("Logged with google successfully!", 2000, "id")
           // toast.success("Logged with google successfully!");
-          router.push("/chatbot");
+          if (searchParams.get('from')) {
+            router.push(searchParams.get('from') ?? "/chatbot-dashboard/main");
+            return
+          }
+          router.push("/chatbot-dashboard/main");
         }
       } catch (err) {
         toasterError("Login with google failed!", 2000, "id")
