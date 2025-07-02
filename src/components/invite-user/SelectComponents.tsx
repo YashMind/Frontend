@@ -1,7 +1,7 @@
 "use client";
 
 import Select from "react-select";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface ChatbotOption {
   value: number;
@@ -15,7 +15,6 @@ interface UserOption {
 
 interface SelectComponentsProps {
   chatbotOptions: ChatbotOption[];
-  userOptions: UserOption[];
   onChatbotChange: (option: ChatbotOption | null) => void;
   onUsersChange: (options: UserOption[]) => void;
   isDisabled: boolean;
@@ -25,33 +24,57 @@ interface SelectComponentsProps {
 
 export default function SelectComponents({
   chatbotOptions,
-  userOptions,
   onChatbotChange,
   onUsersChange,
   isDisabled,
   selectedChatbot,
   selectedUsers,
 }: SelectComponentsProps) {
-  // Use local state to avoid hydration issues
   const [mounted, setMounted] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // Only render after component has mounted on the client
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Handle chatbot selection
   const handleChatbotChange = (newValue: any) => {
     onChatbotChange(newValue as ChatbotOption);
   };
 
-  // Handle users selection
-  const handleUsersChange = (newValue: any) => {
-    onUsersChange(newValue as UserOption[]);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "," || e.key === "Enter") {
+      e.preventDefault();
+      const email = inputValue.trim();
+      if (email && isValidEmail(email)) {
+        const newUser = { value: email, label: email };
+        onUsersChange([...selectedUsers, newUser]);
+        setInputValue("");
+      }
+    } else if (e.key === "Backspace" && inputValue === "" && selectedUsers.length > 0) {
+      // Remove last tag when backspace is pressed on empty input
+      const newUsers = [...selectedUsers];
+      newUsers.pop();
+      onUsersChange(newUsers);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const removeTag = (index: number) => {
+    const newUsers = [...selectedUsers];
+    newUsers.splice(index, 1);
+    onUsersChange(newUsers);
+  };
+
+  const isValidEmail = (email: string) => {
+    // Simple email validation regex
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   if (!mounted) {
-    // Return placeholder elements during SSR and initial client render
     return (
       <>
         <div className="h-10 bg-gray-100 rounded animate-pulse mb-4"></div>
@@ -79,24 +102,48 @@ export default function SelectComponents({
 
       <div>
         <label className="block text-sm font-medium text-gray-500 mb-2">
-          Select Users to Invite
+          Enter User Emails (comma separated)
         </label>
-        <Select
-          isMulti
-          value={selectedUsers}
-          onChange={handleUsersChange}
-          options={userOptions}
-          placeholder="Select users to invite"
-          className="text-black cursor-pointer"
-          classNamePrefix="select"
-          isDisabled={isDisabled}
-          styles={{
-            multiValueRemove: (base) => ({
-              ...base,
-              cursor: "pointer",
-            }),
-          }}
-        />
+        <div
+          className={`min-h-10 p-2 border rounded-md flex flex-wrap gap-2 items-center ${isDisabled ? "bg-gray-100" : "bg-white"}`}
+          onClick={() => inputRef.current?.focus()}
+        >
+          {selectedUsers.map((user, index) => (
+            <div
+              key={index}
+              className="flex items-center bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm"
+            >
+              {user.label}
+              {!isDisabled && (
+                <button
+                  type="button"
+                  className="ml-1 text-blue-500 hover:text-blue-700"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeTag(index);
+                  }}
+                >
+                  &times;
+                </button>
+              )}
+            </div>
+          ))}
+          {!isDisabled && (
+            <input
+              ref={inputRef}
+              type="text"
+              value={inputValue}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              placeholder={selectedUsers.length === 0 ? "user@example.com" : ""}
+              className="flex-1 min-w-[100px] outline-none bg-white"
+              disabled={isDisabled}
+            />
+          )}
+        </div>
+        <p className="mt-1 text-xs text-gray-500">
+          Type comma or press enter to add email
+        </p>
       </div>
     </>
   );

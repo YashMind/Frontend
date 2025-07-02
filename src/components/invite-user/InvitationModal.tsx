@@ -251,7 +251,6 @@ const InvitationModal = ({
           <div className="space-y-6">
             <SelectComponents
               chatbotOptions={chatbotOptions}
-              userOptions={userOptions}
               onChatbotChange={(option) => {
                 setSelectedChatbot(option);
                 if (option && option.value) {
@@ -281,11 +280,10 @@ const InvitationModal = ({
           <button
             onClick={handleSubmit}
             disabled={isSubmitting || invitationLoading}
-            className={`px-6 py-2 rounded-md text-white font-medium ${
-              isSubmitting || invitationLoading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-indigo-600 hover:bg-indigo-700"
-            }`}
+            className={`px-6 py-2 rounded-md text-white font-medium ${isSubmitting || invitationLoading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-indigo-600 hover:bg-indigo-700"
+              }`}
           >
             {isSubmitting || invitationLoading
               ? "Sending..."
