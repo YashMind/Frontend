@@ -107,9 +107,10 @@ const ChatbotLinksDocs = ({
               title="All Trained"
               value={ChatbotDocLinksData?.user_target_links > ChatbotDocLinksData?.user_pending_count ? ChatbotDocLinksData?.user_target_links - ChatbotDocLinksData?.user_pending_count : 0}
             />
-            <StatCard
+            <CharStatCard
               title="All Chars"
               value={formatLargeNumber(ChatbotDocLinksData?.user_total_chars)}
+              total={formatLargeNumber(ChatbotDocLinksData?.allowed_total_chars)}
             />
             <StatCard
               title="All Pending"
@@ -152,9 +153,10 @@ const ChatbotLinksDocs = ({
                   title="Trained"
                   value={activeSource?.total_target_links - activeSource?.pending_count}
                 />
-                <StatCard
+                <CharStatCard
                   title="Chars"
                   value={formatLargeNumber(activeSource?.total_chars)}
+                  total={formatLargeNumber(ChatbotDocLinksData?.allowed_total_chars)}
                 />
                 <StatCard
                   title="Pending"
@@ -220,6 +222,16 @@ const StatCard = ({ title, value }: { title: string; value: number | string }) =
     <span className="text-base font-semibold">{title}</span>
     <span className="text-3xl font-bold self-end mt-auto">
       {value || 0}
+    </span>
+  </div>
+);
+
+// Extracted Components
+const CharStatCard = ({ title, value, total }: { title: string; value: number | string; total: number | string }) => (
+  <div className="flex flex-col items-start flex-1 h-32 rounded-xl bg-white text-gray-900  p-4">
+    <span className="text-base font-semibold">{title}</span>
+    <span className=" flex items-end text-3xl font-bold self-end mt-auto">
+      <p>{value || 0}</p>{" "}<p className="text-base font-light"> / {total || 0}</p>
     </span>
   </div>
 );

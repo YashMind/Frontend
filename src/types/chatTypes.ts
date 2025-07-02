@@ -186,6 +186,7 @@ export interface ChatbotDocLinksData {
   user_failed_count: number;
   user_indexed_count: number;
   user_total_chars: number;
+  allowed_total_chars: number;
 }
 
 export interface ChatbotCustomSettings {
