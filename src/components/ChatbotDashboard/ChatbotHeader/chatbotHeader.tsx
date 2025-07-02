@@ -94,7 +94,7 @@ const ChatbotDashboardHeader = ({
           {/* Mobile Menu Button */}
           <button
             type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden  focus:outline-none focus:ring-2 focus:ring-gray-200 hover:bg-gray-100 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
             aria-controls="navbar-sticky"
             aria-expanded={isMenuOpen}
             onClick={handleToggle}

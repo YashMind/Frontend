@@ -52,6 +52,12 @@ const sidebarSections: SidebarSection[] = [
       {
         label: "Content Upload",
         icon: <MdOutlineDatasetLinked size={20} />,
+        path: "update",
+        key: "update",
+      },
+      {
+        label: "Links and Docs",
+        icon: <MdOutlineDatasetLinked size={20} />,
         path: "links-docs",
         key: "links-docs",
       },

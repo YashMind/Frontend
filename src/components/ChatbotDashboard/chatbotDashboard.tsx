@@ -92,68 +92,61 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                 } else {
                   imgUrl = "/images/bot2.png"
                 }
+
+                const token = tokensData.token_usage.find((tok) => tok.bot_id == item.id)
                 return (
                   <Link
                     key={index}
                     href={`/chatbot-dashboard/overview/${item?.id}`}
-                    className="bg-white rounded-xl p-5 flex-1 sm:flex-0 md:basis-1/4 lg:basis-1/5 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-blue-100"
+                    className="group bg-white rounded-lg p-4 flex-1 sm:flex-0 md:basis-1/4 lg:basis-1/5 shadow-xs hover:shadow-sm transition-all duration-200 border border-gray-100 hover:border-blue-100 min-h-[120px] flex flex-col justify-between"
                   >
-                    {/* Header with avatar and timestamp */}
-                    <div className="flex justify-between items-start gap-4 mb-3">
-                      <div className="flex items-center space-x-3">
-                        <div className="relative">
+                    {/* Compact header row */}
+                    <div className="flex justify-between items-start ">
+                      <div className="flex items-center gap-2">
+                        <div className="relative h-10 w-10 rounded-full bg-blue-50 border border-blue-100 ">
                           <Image
                             alt="Chatbot avatar"
                             src={imgUrl}
-                            height={56}
-                            width={56}
-                            className="rounded-full border-2 border-white shadow-sm"
+                            fill
+                            className="object-cover"
                           />
-                          <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></span>
+                          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border border-white"></span>
                         </div>
                       </div>
-                      <div className="flex flex-col items-end font-light text-right text-xs text-gray-500 space-y-0.5 whitespace-nowrap">
-                        <span>{formatDate(item?.created_at)}</span>
-                        <span>{formatTime(item?.created_at)}</span>
-                      </div>
-                    </div>
-
-                    {/* Chatbot name and status */}
-                    <div className="mb-1">
-                      <h2 className="text-gray-800 font-semibold text-lg line-clamp-1 uppercase">
-                        {item?.chatbot_name}
-                      </h2>
-                    </div>
-
-                    {/* Footer with status and privacy indicator */}
-                    <div className="flex justify-between items-center">
-                      {/* <div className="flex items-center space-x-1.5">
-                      <span className={`w-2.5 h-2.5 rounded-full ${item. ? 'bg-green-400' : 'bg-gray-300'}`}></span>
-                      <span className="text-xs text-gray-500">
-                        {item.active ? 'Active' : 'Inactive'}
-                      </span>
-                    </div> */}
-
-                      {!item.public && (
-                        <div className="flex items-center space-x-1 bg-blue-50 px-2 py-1 rounded-md">
-                          <Image
-                            alt="Private"
-                            src="/images/password.png"
-                            height={16}
-                            width={16}
-                            className="opacity-70"
-                          />
-                          <span className="text-xs text-blue-600">Private</span>
+                      <div className="text-right">
+                        <div className="text-xs text-gray-400 whitespace-nowrap">
+                          {formatDate(item?.created_at)}
                         </div>
-                      )}
+                        <div className="text-xs text-gray-400 whitespace-nowrap">
+                          {formatTime(item?.created_at)}
+                        </div></div>
                     </div>
+                    <h3 className="text-gray-800 font-medium text-lg uppercase line-clamp-1 group-hover:text-blue-600">
+                      {item?.chatbot_name}
+                    </h3>
 
-                    {/* Optional: Add description if available */}
+                    {/* Compact description (if available) */}
                     {item.description && (
-                      <p className="mt-3 text-sm text-gray-600 line-clamp-2">
+                      <p className="text-xs text-gray-500 line-clamp-2 mt-1">
                         {item.description}
                       </p>
                     )}
+
+                    {/* Compact footer */}
+                    <div className="mt-2">
+                      <div className="flex justify-between items-center text-xs">
+                        <div className="flex items-center gap-1">
+                          <div className="w-2 h-2 rounded-full bg-blue-400"></div>
+                          <span className="text-gray-500">
+                            {((token?.user_request_token ?? 0) + (token?.user_response_token ?? 0)).toLocaleString()} tokens
+                          </span>
+                        </div>
+                        <span className={`px-1.5 py-0.5 rounded text-xs ${item.public ? 'text-green-700 bg-green-50' : 'text-blue-700 bg-blue-50'
+                          }`}>
+                          {item.public ? 'Public' : 'Private'}
+                        </span>
+                      </div>
+                    </div>
                   </Link>
                 );
               })}

@@ -131,7 +131,7 @@ const AddCreditModal = ({ onClose }: { onClose: () => void }) => {
                     <br /><br />
                     Credits added through this option will remain valid only until your current plan expires.
                     To extend validity, consider upgrading or purchasing a new plan.
-                    Please note: activating a new plan will replace any remaining credits from the current one.
+                    Balance credit should not carry forward for next month.
                 </p>
 
                 <div className="mt-6 flex justify-end space-x-2">

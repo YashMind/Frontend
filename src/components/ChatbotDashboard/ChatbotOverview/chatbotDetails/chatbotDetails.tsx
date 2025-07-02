@@ -21,8 +21,8 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
   const tokensData = useSelector((state: RootState) =>
     state.chat.tokens.token_usage?.find((bot) => bot.bot_id == botId)
   );
-  const trainedChars = useSelector(
-    (state: RootState) => state.chat.ChatbotDocLinksData.total_chars
+  const { allowed_total_chars, data } = useSelector(
+    (state: RootState) => state.chat.ChatbotDocLinksData
   );
   const chatbotLeads = useSelector(
     (state: RootState) => state.chat.chatbotLeadsData.total_count
@@ -178,9 +178,16 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
           </div>
           <div className="flex items-center justify-between">
             <span className="text-gray-500 font-medium">Characters used</span>
-            <span className="text-2xl font-bold text-emerald-600">
-              {trainedChars ? formatLargeNumber(trainedChars) : 0}
-            </span>
+            {allowed_total_chars && data && < div >
+
+              <span className="text-2xl font-bold text-emerald-600">
+                {formatLargeNumber(data[0].total_chars ?? 0) ?? 0}
+              </span>
+              <span className="font-bold text-emerald-600 text-sm">
+                {" "}/{" "}{allowed_total_chars ? formatLargeNumber(allowed_total_chars) : 0}
+              </span>
+            </div>}
+
           </div>
           {/* Optional: Add usage visualization */}
           {/* <div className="mt-4 pt-3 border-t border-gray-100">
@@ -197,7 +204,7 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
           </div> */}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
