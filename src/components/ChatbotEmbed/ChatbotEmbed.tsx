@@ -75,7 +75,8 @@ const ChatbotEmbedSection = ({
 
 
   useEffect(() => {
-    if (!chatbotData.public) {
+    console.log(chatbotData)
+    if (Object.keys(chatbotData).length > 0 && !chatbotData.public) {
       dispatch(isLoggedin()).unwrap().then((res) => {
         // if(res.user.)
       }).catch((err) => {
@@ -132,7 +133,7 @@ const ChatbotEmbedSection = ({
 
   return (
     <div
-      className="w-full  h-[650px] rounded-lg shadow-md flex flex-col justify-between "
+      className="w-full h-full min-h-[650px] rounded-lg shadow-md flex flex-col justify-between "
       style={{ backgroundColor: chatbotSetting?.chat_window_bg ?? "#ffffff" }}
     >
       <div className="p-4 flex items-center gap-2 border-b">

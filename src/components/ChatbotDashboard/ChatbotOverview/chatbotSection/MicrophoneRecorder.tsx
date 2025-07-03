@@ -56,20 +56,28 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({
             finalTranscript += result[0].transcript + " ";
           }
         }
-
+        const prev = transcriptRef.current.trim();
+        const curr = finalTranscript.trim();
+        const updated = prev && curr ? `${prev} ${curr}` : prev || curr;
         // Use ref instead of state directly to get latest value
-        setTranscript(transcriptRef.current + " " + finalTranscript);
+        setTranscript(updated);
       };
 
       recognition.onerror = (event: any) => {
-        console.error("Speech recognition error", event.error);
+        console.warn("Speech recognition error:", event.error);
+
         if (event.error === "not-allowed") {
-          toast.error(
-            "Microphone access denied. Please allow microphone permission."
-          );
+          toast.error("Microphone access denied. Please allow microphone permission.");
+          stopRecording();
+        } else if (event.error === "aborted") {
+          // Optional: only log or toast if needed
+          console.info("Speech recognition was aborted.");
+        } else {
+          toast.error(`Speech recognition error: ${event.error}`);
+          stopRecording();
         }
-        stopRecording();
       };
+
 
       recognitionRef.current = recognition;
     }
@@ -80,7 +88,7 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({
   }, [setTranscript]);
 
   const stopAll = () => {
-    if (recognitionRef.current) {
+    if (recognitionRef.current && recognitionRef.current.running) {
       recognitionRef.current.stop();
     }
     if (mediaRecorderRef.current) {
@@ -166,12 +174,17 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({
       mediaRecorderRef.current.stop();
     }
 
-    if (recognitionRef.current) {
+    if (recognitionRef.current && recognitionRef.current.running) {
       recognitionRef.current.stop();
     }
 
-    if (audioContextRef.current) {
-      audioContextRef.current.close();
+    if (
+      audioContextRef.current &&
+      audioContextRef.current.state !== "closed"
+    ) {
+      audioContextRef.current.close().catch((err) => {
+        console.warn("Error closing AudioContext:", err);
+      });
     }
 
     if (animationRef.current) {
@@ -182,21 +195,6 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({
     setIsProcessing(false);
   };
 
-  // Calculate bar heights for visualization
-  const getVisualizationBars = () => {
-    const barCount = 5;
-    return Array.from({ length: barCount }).map((_, i) => {
-      const scale = Math.max(0, volume - i * 0.2);
-      const height = `${Math.round(scale * 100)}%`;
-      return (
-        <div
-          key={i}
-          className="w-1 bg-blue-500 rounded-full mx-0.5 transition-all duration-75"
-          style={{ height }}
-        />
-      );
-    });
-  };
 
   return (
     <div className="flex flex-col items-center justify-center space-y-1 bg-white rounded-lg ">
@@ -208,9 +206,9 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({
           type="button"
         >
           {isProcessing ? (
-            <FaSpinner className="animate-spin h-5 w-5" />
+            <FaSpinner className="animate-spin h-5 w-5 text-green-700" />
           ) : isRecording ? (
-            getVisualizationBars()
+            <FaMicrophone className="h-5 w-5 text-red-500 animate-pulse" />
           ) : (
             <FaMicrophone className="h-5 w-5 text-blue-500" />
           )}

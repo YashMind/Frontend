@@ -11,7 +11,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { uploadDocument } from "@/store/slices/chats/chatSlice";
 import { pathToImage } from "@/services/utils/helpers";
-import { ColorPickerField, Field, IFormInput, ImageField } from "./Fields";
+import { ColorPickerField, Field, IFormInput, ImageField, SoundUploadField } from "./Fields";
 import LeadGenSelection from "./LeadGenSelection";
 import { toasterSuccess } from "@/services/utils/toaster";
 
@@ -72,6 +72,8 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       submit_text_lead_gen: chatbotSetting?.submit_text_lead_gen || "Submit",
       submit_button_color_lead_gen:
         chatbotSetting?.submit_button_color_lead_gen || "#555555",
+
+      popup_sound: chatbotSetting?.popup_sound || "",
     },
   });
 
@@ -203,6 +205,11 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
           chatbotSetting.submit_button_color_lead_gen
         );
       }
+
+      if (chatbotSetting?.popup_sound !== undefined) {
+        const popup_sound = pathToImage(chatbotSetting.popup_sound);
+        popup_sound ? setValue("popup_sound", popup_sound) : setValue("popup_sound", "");
+      }
     }
   }, [chatbotSetting, setValue]);
 
@@ -233,6 +240,20 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
             setValue("image", res?.url);
 
             data.image = res?.url;
+          });
+      }
+    }
+    console.log("typeof data.popup_sound", typeof data.popup_sound, data.popup_sound);
+    if (typeof data.popup_sound === "object") {
+      const popup_sound = new FormData();
+      if (data.popup_sound) {
+        popup_sound.append("file", data.popup_sound);
+        await dispatch(uploadDocument({ payload: popup_sound }))
+          .unwrap()
+          .then((res) => {
+            setValue("popup_sound", res?.url);
+
+            data.popup_sound = res?.url;
           });
       }
     }
@@ -280,6 +301,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
           sumbission_message_lead_gen: data.sumbission_message_lead_gen,
           submit_text_lead_gen: data.submit_text_lead_gen,
           submit_button_color_lead_gen: data.submit_button_color_lead_gen,
+          popup_sound: data.popup_sound,
         },
       })
     )
@@ -307,7 +329,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
         Make your chatbot match your brand — customize its look and feel here.
       </p>
       <div className="flex max-md:flex-wrap-reverse gap-2 w-full">
-        <form onSubmit={handleSubmit(onSubmit)} className="basis-3/4 ">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full md:basis-3/4  ">
           <div className="space-y-2 flex-1 bg-[#9e99b6] p-2 rounded-xl">
             <Field
               name="title_value"
@@ -371,7 +393,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
                   </p>
                 </div>
               </div>
-              <div className="flex m-1 gap-5 h-full">
+              <div className="flex flex-col gap-5 h-full">
                 <div className="basis-1/2 space-y-2">
                   <ImageField
                     label="Chatbot avatar"
@@ -379,34 +401,30 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
                     value={watch("image") || "/images/face2.webp"}
                     register={register}
                   />
-                  <div className="flex gap-2">
-                    <ColorPickerField
-                      name="message_bg"
-                      label="Bot message background"
-                      register={register}
-                      defaultValue={watch("message_bg")}
-                    />{" "}
-                    <ColorPickerField
-                      name="message_color"
-                      label="Bot message text color"
-                      defaultValue={watch("message_color")}
-                      register={register}
-                    />{" "}
-                  </div>
-                  <div className="flex gap-2">
-                    <ColorPickerField
-                      name="user_message_bg"
-                      label="User message background"
-                      defaultValue={watch("user_message_bg")}
-                      register={register}
-                    />
-                    <ColorPickerField
-                      name="user_message_color"
-                      label="User message text color"
-                      defaultValue={watch("user_message_color")}
-                      register={register}
-                    />
-                  </div>
+                  <ColorPickerField
+                    name="message_bg"
+                    label="Bot message background"
+                    register={register}
+                    defaultValue={watch("message_bg")}
+                  />{" "}
+                  <ColorPickerField
+                    name="message_color"
+                    label="Bot message text color"
+                    defaultValue={watch("message_color")}
+                    register={register}
+                  />{" "}
+                  <ColorPickerField
+                    name="user_message_bg"
+                    label="User message background"
+                    defaultValue={watch("user_message_bg")}
+                    register={register}
+                  />
+                  <ColorPickerField
+                    name="user_message_color"
+                    label="User message text color"
+                    defaultValue={watch("user_message_color")}
+                    register={register}
+                  />
                   <ColorPickerField
                     name="chat_window_bg"
                     label="Chat window background"
@@ -421,20 +439,18 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
                     value={watch("chat_icon")}
                     register={register}
                   />
-                  <div className="flex gap-2">
-                    <ColorPickerField
-                      name="live_message_bg"
-                      label="Live chat message background"
-                      defaultValue={watch("live_message_bg")}
-                      register={register}
-                    />
-                    <ColorPickerField
-                      name="live_message_color"
-                      label="Live chat message text color"
-                      defaultValue={watch("live_message_color")}
-                      register={register}
-                    />{" "}
-                  </div>
+                  <ColorPickerField
+                    name="live_message_bg"
+                    label="Live chat message background"
+                    defaultValue={watch("live_message_bg")}
+                    register={register}
+                  />
+                  <ColorPickerField
+                    name="live_message_color"
+                    label="Live chat message text color"
+                    defaultValue={watch("live_message_color")}
+                    register={register}
+                  />{" "}
                   <ColorPickerField
                     name="dots_color"
                     label="Loading dots color"
@@ -450,6 +466,11 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
                 </div>
               </div>
             </div>
+
+            <SoundUploadField
+              initialSound={watch('popup_sound') || null}
+              onSoundChange={(file) => setValue('popup_sound', file)}
+            />
 
             <div className="mt-[23] flex gap-3">
               <button

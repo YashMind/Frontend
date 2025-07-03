@@ -18,7 +18,7 @@ type MenuItem = {
 
 const SubscriptionPlans = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
   const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
   const [planData, setPlanData] = useState<any>({});
@@ -68,7 +68,7 @@ const SubscriptionPlans = () => {
 
   const handleDeleteClick = (item: any) => {
     setSelectedUser(item.id);
-    setIsModalOpen(true);
+    setIsDeleteModalOpen(true);
   };
 
   const handleConfirmDelete = async () => {
@@ -91,6 +91,9 @@ const SubscriptionPlans = () => {
                 <h1 className="text-white text-lg font-semibold mb-4 ">
                   All Plans
                 </h1>
+                <button onClick={() => {
+                  setModalShow(true);
+                }} className="px-2 text-sm leading-1 h-7 bg-green-600 text-white rounded-md">Add new Plan</button>
               </div>
               <table className="min-w-full  text-sm">
                 <thead>
@@ -193,8 +196,8 @@ const SubscriptionPlans = () => {
 
           </div>
           <ConfirmDeleteModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
+            isOpen={isDeleteModalOpen}
+            onClose={() => setIsDeleteModalOpen(false)}
             onConfirm={handleConfirmDelete}
             title="Delete Subscription Plan"
             message={`Are you sure to Delete the Plan ?`}

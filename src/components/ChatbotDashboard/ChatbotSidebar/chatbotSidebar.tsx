@@ -50,12 +50,6 @@ const sidebarSections: SidebarSection[] = [
     title: "Training Data",
     links: [
       {
-        label: "Content Upload",
-        icon: <MdOutlineDatasetLinked size={20} />,
-        path: "update",
-        key: "update",
-      },
-      {
         label: "Links and Docs",
         icon: <MdOutlineDatasetLinked size={20} />,
         path: "links-docs",
@@ -209,7 +203,7 @@ const ChatbotSidebar = ({
       {/* Mobile sidebar */}
       <div
         ref={sidebarRef}
-        className={`fixed inset-y-10 left-0 z-40 w-64 bg-black text-white p-5 flex flex-col gap-2 transform transition-transform duration-300 ease-in-out md:hidden h-screen
+        className={`fixed overflow-auto no-scrollbar inset-y-10 left-0 z-40 w-64 bg-black text-white p-5 flex flex-col gap-2 transform transition-transform duration-300 ease-in-out md:hidden h-screen
           ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         {/* Close button for mobile sidebar */}
@@ -240,7 +234,7 @@ const ChatbotSidebar = ({
 
       {/* Medium screen sidebar (icons only) */}
       <div
-        className={`hidden lg:hidden  ${hovered ? "md:block left-20 w-fit" : "md:block w-16"} z-20  bg-black p-3 hover:w-64 transition-all duration-300 ease-in-out rounded-l-2xl`}
+        className={`hidden lg:hidden  ${hovered ? "md:block left-20 w-fit" : "md:block w-16"} z-20  bg-black p-3 hover:w-64 transition-all duration-300 ease-in-out rounded-2xl `}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
@@ -261,7 +255,7 @@ const ChatbotSidebar = ({
       </div>
 
       {/* Large screen sidebar (full width) */}
-      <div className="hidden lg:static lg:block w-[260px] bg-black text-white p-5  flex-col gap-8 rounded-l-3xl fixed left-0 top-0 h-full">
+      <div className="hidden h-fit lg:static overflow-auto lg:block w-[260px] bg-black text-white p-5  flex-col gap-8 rounded-2xl  left-0 top-0 ">
         {sidebarSections.map(({ title, links }, idx) => (
           <div key={idx} className="flex flex-col gap-2 mb-4">
             {title && (

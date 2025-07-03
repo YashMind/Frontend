@@ -1,21 +1,30 @@
 "use client"
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
 import toast from "react-hot-toast";
 import { QRCodeCanvas } from 'qrcode.react';
 import Head from "next/head";
 import { ChatbotsData } from "@/types/chatTypes";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
+import { fetchChatbotSettings } from "@/store/slices/chats/appearanceSettings";
+import { pathToImage } from "@/services/utils/helpers";
 
 
 const ChatbotDeploy = () => {
+  const dispatch = useDispatch<AppDispatch>()
   const chatbotData: ChatbotsData = useSelector((state: RootState) => state.chat.chatbotData);
+  const settings = useSelector((state: RootState) => state.appearance.settings)
 
   const inputRef1: any = useRef(null);
   const inputRef2: any = useRef(null);
   const inputRef3: any = useRef(null);
+
+  useEffect(() => {
+    if (chatbotData)
+      dispatch(fetchChatbotSettings(chatbotData.id))
+  }, [chatbotData])
 
   const handleCopy = (inputRef: any) => {
     if (inputRef.current) {
@@ -48,7 +57,15 @@ const ChatbotDeploy = () => {
 
   const iframeCode = `<iframe style="width: 400px; height: 600px;" src="${process.env.NEXT_PUBLIC_UI_URL}/embed/${chatbotData?.token}"></iframe>`;
 
-  const embedScript = `<script defer src="${process.env.NEXT_PUBLIC_UI_URL}/embed.js" data-bot-id="${chatbotData?.token}"></script>`;
+  const embedScript = `
+  <script defer src="${process.env.NEXT_PUBLIC_UI_URL}/embed.js" 
+    data-bot-id="${chatbotData?.token}"
+    ${settings?.chat_icon ? `data-icon="${pathToImage(settings.chat_icon)}"` : ''}
+    ${settings?.popup_sound ? `data-sound="${pathToImage(settings.popup_sound)}"` : ''}
+  ></script>
+`.replace(/\n\s+/g, ' '); // Remove line breaks and extra spaces
+
+  console.log(embedScript)
 
   return (
     <div className="w-full m-4">

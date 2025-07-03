@@ -227,3 +227,14 @@ input:-webkit-autofill:active {
   cursor: pointer  !important;
   background-color: #f0f0f0 !important; /* optional for hover effect */
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}

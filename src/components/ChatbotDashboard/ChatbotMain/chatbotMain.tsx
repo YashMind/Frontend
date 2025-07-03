@@ -56,7 +56,7 @@ const ChatbotMain = ({
 
   return (<>
     <ChatbotDashboardHeader fix={true} addBgColor={true} role={role} chatbotError={chatbotError} />
-    <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459] ">
+    <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459]">
       {/* header */}
 
       {(botPage == "voice-agent" || botPage == "llm") ? <div className="min-h-screen flex items-center justify-center text-white text-2xl font-bold">
@@ -66,20 +66,19 @@ const ChatbotMain = ({
       </div> :
         <>
           {!chatbotError ? <>
-            <div className="min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 ">
+            <div className=" bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 ">
               {/* Real Time Count + Table */}
               <RealTimeCount />
-
-              {/* Owner Section */}
-              <div className="flex gap-6">
+              <div className="flex gap-4">
+                {botPage !== "main" ? (
+                  <ChatbotSidebar botPage={botPage} botId={botId} />
+                ) : null}
+                {/* Owner Section */}
                 <div
-                  className={`relative overflow-auto bg-[#2a2561] rounded-4xl w-full lg:w-[90%] flex ${botId ? "" : "gap-[25px]"
+                  className={`relative overflow-auto bg-[#2a2561] rounded-2xl w-full lg:w-[90%] flex ${botId ? "" : "gap-[25px]"
                     }`}
                 >
 
-                  {botPage !== "main" ? (
-                    <ChatbotSidebar botPage={botPage} botId={botId} />
-                  ) : null}
                   {botPage === "main" ? (
                     <ChatbotDashboard showModal={showModal} />
                   ) : null}

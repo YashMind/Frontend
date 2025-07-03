@@ -148,6 +148,7 @@ export interface ChatbotSettings {
   sumbission_message_lead_gen: string;
   submit_text_lead_gen: string;
   submit_button_color_lead_gen: string;
+  popup_sound: string;
 }
 
 export interface ChatbotDocLinksArray {

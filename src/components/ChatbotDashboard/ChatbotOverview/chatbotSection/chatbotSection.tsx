@@ -18,6 +18,7 @@ import { ChatbotsData, chatsIdData, TextMessage } from "@/types/chatTypes";
 import { IoMdSend } from "react-icons/io";
 import MicrophoneRecorder from "./MicrophoneRecorder";
 import ChatMessages from "@/components/utils/MessageRenderer";
+import AutoResizingTextarea from "./AutoResizingTextArea";
 
 const schema = yup.object().shape({
   message: yup.string().required("Message is required"),
@@ -272,6 +273,7 @@ const ChatbotSection = ({
         )}
 
         <div ref={messagesEndRef} />
+
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-wrap gap-1 m-1 mx-2">
@@ -290,7 +292,7 @@ const ChatbotSection = ({
               })}
         </div>
 
-        <div className="border-t p-2 flex items-center gap-1">
+        <div className="border-t p-2 flex items-end gap-1">
           <div className="relative w-full">
             {chatMessages?.length > 0 ? (
               <VscClearAll
@@ -300,17 +302,7 @@ const ChatbotSection = ({
                 onClick={() => handleDeleteChats()}
               />
             ) : null}
-            <input
-              {...register("message")}
-              type="text"
-              placeholder={
-                chatbotSetting?.placeholder_is_active
-                  ? chatbotSetting?.placeholder_value
-                  : "Type a message..."
-              }
-              className={`${errors.message ? "border-red-500" : ""} ${chatMessages?.length ? "pl-12" : ""
-                } w-full p-2 text-sm rounded-md border text-black border-gray-300 bg-gray-50 focus:outline-none`}
-            />
+            <AutoResizingTextarea value={watch('message')} register={register} onChange={(e) => setValue('message', e.target.value)} chatbotSetting={chatbotSetting} chatMessages={chatMessages} errors={errors} />
           </div>
           <MicrophoneRecorder
             setTranscript={(text: string) => setValue("message", text)}

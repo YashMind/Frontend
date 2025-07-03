@@ -15,6 +15,9 @@ export interface SubscriptionPlans {
   pricingDollar: number;
   token_per_unit: number;
   chatbots_allowed: number;
+  chars_allowed: number;
+  webpages_allowed: number;
+  team_strength: number;
   duration_days: number;
   features: string;
   users_active?: number;

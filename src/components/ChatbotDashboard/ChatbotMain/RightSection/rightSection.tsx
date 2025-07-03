@@ -22,7 +22,7 @@ const RightSection = ({ showModal, botId }: ShowModalProps) => {
 
 
   return (
-    <div className="hidden lg:block max-w-[10%] p-2 bg-[#2a2561] rounded-4xl">
+    <div className="hidden lg:block max-w-[10%] p-2 bg-[#2a2561] rounded-2xl">
       <div className='flex flex-col gap-4 p-4'>
         {chatbots?.map((chatbot, index) => {
 
