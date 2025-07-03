@@ -66,18 +66,18 @@ const ChatbotMain = ({
       </div> :
         <>
           {!chatbotError ? <>
-            <div className=" bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 ">
+            <div className=" bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 h-full min-h-screen">
               {/* Real Time Count + Table */}
               <RealTimeCount />
               <div className="flex gap-4">
-                {botPage !== "main" ? (
-                  <ChatbotSidebar botPage={botPage} botId={botId} />
-                ) : null}
                 {/* Owner Section */}
                 <div
-                  className={`relative overflow-auto bg-[#2a2561] rounded-2xl w-full lg:w-[90%] flex ${botId ? "" : "gap-[25px]"
+                  className={`relative h-full overflow-auto bg-[#2a2561] rounded-2xl w-full lg:w-[90%] flex ${botId ? "" : "gap-[25px]"
                     }`}
                 >
+                  {botPage !== "main" ? (
+                    <ChatbotSidebar botPage={botPage} botId={botId} />
+                  ) : null}
 
                   {botPage === "main" ? (
                     <ChatbotDashboard showModal={showModal} />
