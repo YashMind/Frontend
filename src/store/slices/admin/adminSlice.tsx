@@ -16,11 +16,16 @@ export const getAllUsers = createAsyncThunk<
     search?: string;
     sortBy?: string;
     sortOrder?: string;
+    plan?: string;
+    status?: string;
+    token_used?: string;
+    start_date?: string;
+    end_date?: string;
   }
 >(
   "admin/getAllUsers",
   async (
-    { page, limit, search, sortBy, sortOrder },
+    { page, limit, search, sortBy, sortOrder, plan, status, token_used, start_date, end_date },
     { dispatch, rejectWithValue }
   ) => {
     try {
@@ -31,6 +36,12 @@ export const getAllUsers = createAsyncThunk<
         limit: limit?.toString(),
         sort_by: sortBy,
         sort_order: sortOrder,
+        plan: plan,
+        status: status,
+        token_used: token_used,
+        start_date: start_date,
+        end_date: end_date
+
       };
       const response = await http.get("/admin/get-all-users", {
         params,
