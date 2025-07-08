@@ -95,6 +95,7 @@ const AddBotData = ({
     dispatch(uploadDocument({ payload: formData }))
       .unwrap()
       .then((res) => {
+        setValue('train_from', 'Document Upload')
         setValue("document_link", res?.url);
       });
   };
@@ -137,11 +138,14 @@ const AddBotData = ({
       data.bot_id = botId;
       data.chatbot_name = chatbotData?.chatbot_name;
       if (formType === "form1" && data.target_link === "") {
-        toasterError("Please upload a File!", 2000, "id")
+        toasterError("Please add a Link!", 2000, "id")
       }
       else if (formType === "form2" && data.document_link === "") {
         toasterError("Please upload a File!", 2000, "id")
       } else {
+        if (data.document_link) {
+          data.train_from = "Document Upload"
+        }
         dispatch(createChatbotDocLinks({ payload: data }));
         handleBack();
         reset();

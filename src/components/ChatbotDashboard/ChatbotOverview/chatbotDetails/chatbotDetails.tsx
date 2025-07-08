@@ -21,7 +21,7 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
   const tokensData = useSelector((state: RootState) =>
     state.chat.tokens.token_usage?.find((bot) => bot.bot_id == botId)
   );
-  const { allowed_total_chars, data } = useSelector(
+  const { allowed_total_chars, user_total_chars, } = useSelector(
     (state: RootState) => state.chat.ChatbotDocLinksData
   );
   const chatbotLeads = useSelector(
@@ -178,10 +178,10 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
           </div>
           <div className="flex items-center justify-between">
             <span className="text-gray-500 font-medium">Characters used</span>
-            {allowed_total_chars && data && < div >
+            {allowed_total_chars && < div >
 
               <span className="text-2xl font-bold text-emerald-600">
-                {formatLargeNumber(data[0].total_chars ?? 0) ?? 0}
+                {formatLargeNumber(user_total_chars ?? 0) ?? 0}
               </span>
               <span className="font-bold text-emerald-600 text-sm">
                 {" "}/{" "}{allowed_total_chars ? formatLargeNumber(allowed_total_chars) : 0}

@@ -77,9 +77,7 @@ const getTimezoneOffset = (date: Date, timeZone: string): number => {
 export const formatDate = (dateString: string, timeZone: string): string => {
     try {
         const date = parseISO(ensureUTC(dateString));
-        console.log("#######################: USING TIMEZONE FOR DATE" + timeZone + "#########################")
         if (!isValidDate(date)) throw new Error("Invalid date");
-
         const zonedDate = toZonedTime(date, timeZone);
         return format(zonedDate, 'MMMM d, yyyy', { timeZone });
     } catch (err) {
@@ -90,24 +88,18 @@ export const formatDate = (dateString: string, timeZone: string): string => {
 
 export const formatTime = (dateString: string, timeZone: string): string => {
     const date = parseISO(ensureUTC(dateString)); // parse ISO string to Date object (UTC)
-    console.log("#######################: USING TIMEZONE FOR TIME" + timeZone + "#########################")
-
     const zonedDate = toZonedTime(date, timeZone); // convert to timezone
     return format(zonedDate, 'hh:mm a', { timeZone }); // format with timezone context
 };
 
 export const formatDateTimeWithTz = (dateString: string, timeZone: string): string => {
     const utcDate = parseISO(ensureUTC(dateString));
-    console.log("#######################: USING TIMEZONE FOR DATE TIME" + timeZone + "#########################")
-
     const zonedDate = toZonedTime(utcDate, timeZone);
     return format(zonedDate, 'MMMM d, yyyy hh:mm a zzz', { timeZone });
 };
 
 export const formatDateOrTimeAgo = (dateString: string, timeZone: string, ago: number = 2): string => {
     const utcDate = parseISO(ensureUTC(dateString));
-    console.log("#######################: USING TIMEZONE FOR DATE" + timeZone + "#########################")
-
     const zonedDate = toZonedTime(utcDate, timeZone);
     const twoDaysAgo = subDays(new Date(), ago);
 

@@ -1125,6 +1125,34 @@ export const fetchArchivedUserMessages = createAsyncThunk(
   }
 );
 
+interface EmailSendRequest {
+  subject: string;
+  html_content: string;
+  recipients: string[];
+  in_reply_to?: string;
+  references?: string;
+}
+
+export const sendEmail = createAsyncThunk(
+  'email/sendEmail',
+  async (emailData: EmailSendRequest, { rejectWithValue }) => {
+    try {
+      const response = await http.post('/admin/send-email', emailData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
+    } catch (error: any) {
+      // Handle different error formats (AxiosError vs others)
+      if (error.response) {
+        return rejectWithValue(error.response.data);
+      }
+      return rejectWithValue({ message: error.message });
+    }
+  }
+);
+
 const initialState = {
   loading: false,
   error: null as null | string,

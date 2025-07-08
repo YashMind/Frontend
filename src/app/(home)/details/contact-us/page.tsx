@@ -1,6 +1,72 @@
-import React from "react";
+'use client'
+import { sendEmail } from "@/store/slices/chats/chatSlice";
+import { AppDispatch, RootState } from "@/store/store";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const ContactUs = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  // const { loading, error, messageId } = useSelector((state: RootState) => state.email);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: ""
+  });
+  const [emailState, setEmailState] = useState({
+    loading: false,
+    error: null as string | null,
+    success: false
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEmailState({
+      loading: true,
+      error: null,
+      success: false
+    });
+    // Prepare the email data
+    const emailData = {
+      subject: `Contact Form Submission from ${formData.name}`,
+      html_content: `
+        <html>
+          <body>
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${formData.name}</p>
+            <p><strong>Email:</strong> ${formData.email}</p>
+            <p><strong>Phone:</strong> ${formData.phone || 'Not provided'}</p>
+            <p><strong>Message:</strong></p>
+            <p>${formData.message}</p>
+          </body>
+        </html>
+      `,
+      recipients: ["support@yashraa.ai"] // Your support email
+    };
+
+    dispatch(sendEmail(emailData)).unwrap().then((res) => setEmailState({
+      loading: false,
+      error: null,
+      success: true
+    })).catch((error) => {
+      // Handle errors
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to send email';
+
+      setEmailState({
+        loading: false,
+        error: errorMessage,
+        success: false
+      });
+    });
+  };
   return (
     <div className="min-h-screen bg-gray-50 py-12 pt-38 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -147,7 +213,22 @@ const ContactUs = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-6">
               Send us a message
             </h2>
-            <form className="space-y-6">
+
+            {/* Success message */}
+            {emailState.success && (
+              <div className="mb-6 p-4 bg-green-100 text-green-700 rounded">
+                Thank you for your message! We'll get back to you soon.
+              </div>
+            )}
+
+            {/* Error message */}
+            {emailState.error && (
+              <div className="mb-6 p-4 bg-red-100 text-red-700 rounded">
+                {emailState.error}
+              </div>
+            )}
+
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="name"
@@ -159,6 +240,8 @@ const ContactUs = () => {
                   type="text"
                   id="name"
                   name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                   required
                 />
@@ -175,6 +258,8 @@ const ContactUs = () => {
                   type="email"
                   id="email"
                   name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                   required
                 />
@@ -191,6 +276,8 @@ const ContactUs = () => {
                   type="tel"
                   id="phone"
                   name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
@@ -206,6 +293,8 @@ const ContactUs = () => {
                   id="message"
                   name="message"
                   rows={4}
+                  value={formData.message}
+                  onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                   required
                 ></textarea>
@@ -214,9 +303,11 @@ const ContactUs = () => {
               <div>
                 <button
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  disabled={emailState.loading}
+                  className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${emailState.loading ? "opacity-70 cursor-not-allowed" : ""
+                    }`}
                 >
-                  Send Message
+                  {emailState.loading ? "Sending..." : "Send Message"}
                 </button>
               </div>
             </form>
