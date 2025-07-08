@@ -97,9 +97,7 @@ export const formatDateTimeWithTz = (dateString: string, timeZone: string): stri
     const utcDate = parseISO(dateString);
     console.log("#######################: USING TIMEZONE FOR DATE TIME" + timeZone + "#########################")
 
-    const offsetMinutes = getTimezoneOffset(utcDate, timeZone);
-    const localDate = addMinutes(utcDate, offsetMinutes);
-    const zonedDate = toZonedTime(localDate, timeZone);
+    const zonedDate = toZonedTime(utcDate, timeZone);
     return format(zonedDate, 'MMMM d, yyyy hh:mm a zzz', { timeZone });
 };
 
@@ -107,9 +105,7 @@ export const formatDateOrTimeAgo = (dateString: string, timeZone: string, ago: n
     const utcDate = parseISO(dateString);
     console.log("#######################: USING TIMEZONE FOR DATE" + timeZone + "#########################")
 
-    const offsetMinutes = getTimezoneOffset(utcDate, timeZone);
-    const localDate = addMinutes(utcDate, offsetMinutes);
-    const zonedDate = toZonedTime(localDate, timeZone);
+    const zonedDate = toZonedTime(utcDate, timeZone);
     const twoDaysAgo = subDays(new Date(), ago);
 
     if (isAfter(zonedDate, twoDaysAgo)) {
