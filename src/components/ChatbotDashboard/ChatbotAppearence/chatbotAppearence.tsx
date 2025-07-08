@@ -439,7 +439,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
                     value={watch("chat_icon")}
                     register={register}
                   />
-                  <ColorPickerField
+                  {/* <ColorPickerField
                     name="live_message_bg"
                     label="Live chat message background"
                     defaultValue={watch("live_message_bg")}
@@ -450,7 +450,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
                     label="Live chat message text color"
                     defaultValue={watch("live_message_color")}
                     register={register}
-                  />{" "}
+                  />{" "} */}
                   <ColorPickerField
                     name="dots_color"
                     label="Loading dots color"

@@ -11,6 +11,8 @@ import { formatDistanceToNow } from "date-fns";
 import { FaEye } from "react-icons/fa6";
 import ViewLeadChatModal from "./viewLeadChats/viewLeadChats";
 import { ChatbotLeadsArray } from "@/types/chatTypes";
+import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
+import { useTimezone } from "@/context/TimeZoneContext";
 
 const ChatbotLeads = ({
   botPage,
@@ -19,6 +21,7 @@ const ChatbotLeads = ({
   botPage: string;
   botId?: number;
 }) => {
+  const { timezone, isLoading } = useTimezone()
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -172,72 +175,70 @@ const ChatbotLeads = ({
         </div>
 
         {/* Table */}
-        <table className="w-full text-left text-gray-800">
-          <thead className="bg-white text-gray-600 border-y border-gray-300">
-            <tr>
-              <th className="p-4">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 accent-[#5E2EFF]"
-                  onChange={handleSelectAll}
-                />
-              </th>
-              <th className="py-[14px] text-sm font-bold text-black">Name</th>
-              <th className="py-[14px] text-sm font-bold text-black">Email</th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Contact
-              </th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Message
-              </th>
-              <th className="py-[14px] text-sm font-bold text-black">
-                Submitted
-              </th>
-              <th className="py-[14px] text-sm font-bold text-black">Type</th>
-              <th className="py-[14px] text-sm font-bold text-black">Action</th>
-            </tr>
-          </thead>
-          <tbody className="bg-[#f7f6fd]">
-            {chatbotLeadsData?.data &&
-              chatbotLeadsData?.data?.map((item, index) => {
-                const timeAgo = formatDistanceToNow(
-                  new Date(item?.created_at),
-                  { addSuffix: true }
-                );
-                return (
-                  <tr key={index} className="border-b border-gray-200">
-                    <td className="p-4">
-                      <input
-                        type="checkbox"
-                        className="w-4 h-4 accent-[#5E2EFF]"
-                        checked={selectedIds.includes(Number(item?.id))}
-                        onChange={(e) =>
-                          handleSelectRow(Number(item?.id), e.target.checked)
-                        }
-                      />
-                    </td>
-                    <td className="text-xs font-medium text-black">
-                      {item?.name}
-                    </td>
-                    <td className="text-xs font-medium text-black">
-                      {item?.email}
-                    </td>
-                    <td className="text-xs font-medium text-black">
-                      {item?.contact}
-                    </td>
-                    <td className=" truncate max-w-[150px] text-xs font-medium text-black">
-                      {item?.message?.slice(0, 20)}...
-                    </td>
-                    <td className="text-xs font-medium text-black">
-                      {timeAgo}
-                    </td>
-                    <td className="">
-                      <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black">
-                        {item?.type}
-                      </span>
-                    </td>
-                    <td className="py-4 flex items-center gap-2">
-                      {/* <button>
+        <div className="overflow-x-auto">
+          <table className="w-fit md:w-full  text-left text-gray-800">
+            <thead className="bg-white text-gray-600 border-y border-gray-300 ">
+              <tr>
+                <th className="px-4 min-w-5 ">
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 accent-[#5E2EFF]"
+                    onChange={handleSelectAll}
+                  />
+                </th>
+                <th className="py-[14px] text-sm font-bold text-black min-w-5 px-2">Name</th>
+                <th className="py-[14px] text-sm font-bold text-black min-w-5 px-2">Email</th>
+                <th className="py-[14px] text-sm font-bold text-black min-w-5 px-2">
+                  Contact
+                </th>
+                <th className="py-[14px] text-sm font-bold text-black min-w-5 px-2">
+                  Message
+                </th>
+                <th className="py-[14px] text-sm font-bold text-black min-w-5 px-2">
+                  Submitted
+                </th>
+                <th className="py-[14px] text-sm font-bold text-black min-w-5 px-2">Type</th>
+                <th className="py-[14px] text-sm font-bold text-black min-w-5 px-2">Action</th>
+              </tr>
+            </thead>
+            <tbody className="bg-[#f7f6fd]">
+              {chatbotLeadsData?.data &&
+                chatbotLeadsData?.data?.map((item, index) => {
+                  const timeAgo = !isLoading && formatDateOrTimeAgo(item?.created_at, timezone, 10);
+                  return (
+                    <tr key={index} className="border-b border-gray-200">
+                      <td className="p-4 min-w-5 px-4">
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 accent-[#5E2EFF]"
+                          checked={selectedIds.includes(Number(item?.id))}
+                          onChange={(e) =>
+                            handleSelectRow(Number(item?.id), e.target.checked)
+                          }
+                        />
+                      </td>
+                      <td className="text-xs font-medium text-black min-w-5 px-2">
+                        {item?.name}
+                      </td>
+                      <td className="text-xs font-medium text-black min-w-5 px-2">
+                        {item?.email}
+                      </td>
+                      <td className="text-xs font-medium text-black min-w-5 px-2">
+                        {item?.contact}
+                      </td>
+                      <td className=" truncate max-w-[150px] text-xs font-medium text-black min-w-5 px-2">
+                        {item?.message?.slice(0, 20)}...
+                      </td>
+                      <td className="text-xs font-medium text-black min-w-5 px-2 text-nowrap">
+                        {timeAgo}
+                      </td>
+                      <td className="">
+                        <span className="bg-[#DEDEDE] py-1 rounded-full text-xs font-medium text-black min-w-5 px-2">
+                          {item?.type}
+                        </span>
+                      </td>
+                      <td className="py-4 flex items-center gap-2 min-w-5 px-2">
+                        {/* <button>
                         <Image
                           className="m-auto mb-4"
                           alt="alt"
@@ -246,10 +247,10 @@ const ChatbotLeads = ({
                           width={24}
                         />
                       </button> */}
-                      <button onClick={() => handleViewChats(item?.chat_id)}>
-                        <FaEye size={20} />
-                      </button>
-                      {/* <button>
+                        <button onClick={() => handleViewChats(item?.chat_id)}>
+                          <FaEye size={20} />
+                        </button>
+                        {/* <button>
                         <Image
                           className="m-auto mb-4"
                           alt="alt"
@@ -258,12 +259,12 @@ const ChatbotLeads = ({
                           width={24}
                         />
                       </button> */}
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table></div>
 
         {/* Pagination */}
         <div className="flex justify-center items-center gap-2 px-6 py-4 bg-white border-t border-gray-200">

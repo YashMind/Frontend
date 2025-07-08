@@ -22,8 +22,11 @@ import { FaSlack } from "react-icons/fa";
 import Link from "next/link";
 import ConfirmationModal from "./deactivateWhatsappConfirmation";
 import { deleteSlackInstallation, getSlackCredentials, registerSlackCredentials, startSlackOAuth, updateSlackCredentials } from "@/store/slices/chats/slackIntegration";
+import { useTimezone } from "@/context/TimeZoneContext";
+import { formatDate } from "@/components/utils/formatDateTime";
 
 const RegisterSlackPage = ({ botId }: { botId: number }) => {
+    const { timezone, isLoading } = useTimezone()
     const [formData, setFormData] = useState({
         client_id: "",
         client_secret: "",
@@ -230,7 +233,7 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
                                                 </span>
                                                 <span className="ml-3 text-gray-500">
                                                     Connected on:{" "}
-                                                    {new Date(installation.installed_at).toLocaleDateString()}
+                                                    {!isLoading ? formatDate(installation.installed_at, timezone) : "-"}
                                                 </span>
                                             </div>
                                         </div>

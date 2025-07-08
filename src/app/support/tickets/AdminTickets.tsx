@@ -1,8 +1,10 @@
 "use client"
 import StatusBadge from '@/components/utils/statusBadge';
+import { useTimezone } from '@/context/TimeZoneContext';
 import { fetchAllTickets } from '@/store/slices/supportTicket/slice';
 import { AppDispatch, RootState } from '@/store/store';
 import { SupportTicket } from '@/types/supportTickets';
+import { formatDate } from 'date-fns';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,6 +15,7 @@ interface AdminTicketsProps {
 
 const AdminTickets = ({ onSelectTicket }: AdminTicketsProps) => {
     const dispatch = useDispatch<AppDispatch>();
+    const { isLoading, timezone } = useTimezone()
     const { tickets, loading, error } = useSelector((state: RootState) => state.tickets);
 
     useEffect(() => {
@@ -92,7 +95,7 @@ const AdminTickets = ({ onSelectTicket }: AdminTicketsProps) => {
                                     {ticket.user.fullName}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {new Date(ticket.created_at).toLocaleDateString()}
+                                    {!isLoading ? formatDate(ticket.created_at, timezone) : "-"}
                                 </td>
                             </tr>
                         ))}

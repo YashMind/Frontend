@@ -1,4 +1,6 @@
+import { useTimezone } from "@/context/TimeZoneContext";
 import React from "react";
+import { formatDateTimeWithTz } from "./utils/formatDateTime";
 
 interface LogItem {
   id: number;
@@ -22,6 +24,7 @@ const ITEMS_PER_PAGE = 5;
 
 export const ActivityLogsModal: React.FC<Props> = ({ isOpen, onClose, logs, total, currentPage, onPageChange }) => {
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
+  const { isLoading, timezone } = useTimezone()
 
   if (!isOpen) return null;
 
@@ -48,7 +51,7 @@ export const ActivityLogsModal: React.FC<Props> = ({ isOpen, onClose, logs, tota
                   <td className="border border-gray-600 p-2">{log.role}</td>
                   <td className="border border-gray-600 p-2">{log.action}</td>
                   <td className="border border-gray-600 p-2">{log.log_activity}</td>
-                  <td className="border border-gray-600 p-2">{new Date(log.created_at).toLocaleString()}</td>
+                  <td className="border border-gray-600 p-2">{!isLoading ? formatDateTimeWithTz(log.created_at, timezone) : "-"}</td>
                 </tr>
               ))
             ) : (

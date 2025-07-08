@@ -3,16 +3,60 @@ import {
     isAfter,
     subDays,
     addMinutes,
-    parseISO
+    parseISO,
+    isValid as isValidDate,
 } from 'date-fns';
 import { toZonedTime, format } from 'date-fns-tz';
 
-// Get user's timezone (safe for server-side rendering)
-export const getUserTimezone = (): string => {
+// Client-side timezone detection (synchronous)
+const getClientTimezone = (): string => {
     if (typeof Intl !== 'undefined' && Intl.DateTimeFormat) {
         return Intl.DateTimeFormat().resolvedOptions().timeZone;
     }
-    return 'UTC'; // Fallback for server-side or unsupported environments
+    return 'UTC';
+};
+
+// Server-side timezone from cookie (with fallback)
+export const getUserTimezone = async (): Promise<string> => {
+    if (typeof window === 'undefined') {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/timezone`, {
+                cache: 'no-store',
+            });
+
+            if (!response.ok) throw new Error('Failed to fetch timezone');
+
+            const { timezone } = await response.json();
+
+            // Remove any surrounding quotes from the timezone
+            const cleanedTimezone = timezone ? timezone.replace(/^"|"$/g, '') : null;
+            return cleanedTimezone || process.env.TZ || 'UTC';
+        } catch (error) {
+            console.error('Error fetching timezone:', error);
+            return process.env.TZ || 'UTC';
+        }
+    }
+
+    try {
+        const cookieValue = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('timezone='))
+            ?.split('=')[1];
+
+        if (cookieValue) {
+            // Decode and remove quotes
+            const decodedValue = decodeURIComponent(cookieValue);
+            return decodedValue.replace(/^"|"$/g, '');
+        }
+
+        const detectedTimezone = getClientTimezone();
+        // Set cookie without quotes
+        document.cookie = `timezone=${encodeURIComponent(detectedTimezone)}; path=/; max-age=31536000`;
+        return detectedTimezone;
+    } catch (error) {
+        console.error('Error getting timezone:', error);
+        return 'UTC';
+    }
 };
 
 // Calculate offset in minutes between UTC and user's timezone
@@ -22,64 +66,50 @@ const getTimezoneOffset = (date: Date, timeZone: string): number => {
         const tzDate = new Date(date.toLocaleString('en-US', { timeZone }));
         return (utcDate.getTime() - tzDate.getTime()) / (1000 * 60);
     } catch {
-        return 0; // Fallback to UTC if calculation fails
+        return 0;
     }
 };
 
-// Adjust UTC date to local timezone before conversion
-export const formatDate = (dateString: string): string => {
-    const timeZone = getUserTimezone();
-    const utcDate = parseISO(dateString);
+// Synchronous formatting functions
+export const formatDate = (dateString: string, timeZone: string): string => {
+    try {
+        const date = parseISO(dateString.trim());
+        if (!isValidDate(date)) throw new Error("Invalid date");
 
-    // Adjust for timezone offset
-    const offsetMinutes = getTimezoneOffset(utcDate, timeZone);
-    const localDate = addMinutes(utcDate, offsetMinutes);
-
-    const zonedDate = toZonedTime(localDate, timeZone);
-    return format(zonedDate, 'MMMM d, yyyy', { timeZone });
+        const zonedDate = toZonedTime(date, timeZone);
+        return format(zonedDate, 'MMMM d, yyyy', { timeZone });
+    } catch (err) {
+        console.error("formatDate error:", err);
+        return '-';
+    }
 };
 
-export const formatTime = (dateString: string): string => {
-    const timeZone = getUserTimezone();
-    const utcDate = parseISO(dateString);
-
-    // Adjust for timezone offset
-    const offsetMinutes = getTimezoneOffset(utcDate, timeZone);
-    const localDate = addMinutes(utcDate, offsetMinutes);
-
-    const zonedDate = toZonedTime(localDate, timeZone);
-    return format(zonedDate, 'hh:mm a', { timeZone });
+export const formatTime = (dateString: string, timeZone: string): string => {
+    const date = parseISO(dateString); // parse ISO string to Date object (UTC)
+    const zonedDate = toZonedTime(date, timeZone); // convert to timezone
+    return format(zonedDate, 'hh:mm a', { timeZone }); // format with timezone context
 };
 
-// Additional utility to show date with timezone abbreviation
-export const formatDateTimeWithTz = (dateString: string): string => {
-    const timeZone = getUserTimezone();
+export const formatDateTimeWithTz = (dateString: string, timeZone: string): string => {
     const utcDate = parseISO(dateString);
-
     const offsetMinutes = getTimezoneOffset(utcDate, timeZone);
     const localDate = addMinutes(utcDate, offsetMinutes);
-
     const zonedDate = toZonedTime(localDate, timeZone);
     return format(zonedDate, 'MMMM d, yyyy hh:mm a zzz', { timeZone });
 };
 
-export const formatDateOrTimeAgo = (dateString: string): string => {
-    const timeZone = getUserTimezone();
+export const formatDateOrTimeAgo = (dateString: string, timeZone: string, ago: number = 2): string => {
     const utcDate = parseISO(dateString);
-
-    // Calculate and apply timezone offset
     const offsetMinutes = getTimezoneOffset(utcDate, timeZone);
     const localDate = addMinutes(utcDate, offsetMinutes);
+    const zonedDate = toZonedTime(localDate, timeZone);
+    const twoDaysAgo = subDays(new Date(), ago);
 
-    const twoDaysAgo = subDays(new Date(), 2);
-
-    if (isAfter(localDate, twoDaysAgo)) {
-        return `${formatDistanceToNowStrict(localDate, { addSuffix: true })}`;
-    } else {
-        // Using date-fns-tz for consistent formatting
-        const datePart = format(toZonedTime(localDate, timeZone), 'MMMM d, yyyy', { timeZone });
-        const timePart = format(toZonedTime(localDate, timeZone), 'hh:mm a', { timeZone });
-
-        return `${datePart} at ${timePart}`;
+    if (isAfter(zonedDate, twoDaysAgo)) {
+        return `${formatDistanceToNowStrict(zonedDate, { addSuffix: true })}`;
     }
+
+    const datePart = format(zonedDate, 'MMMM d, yyyy', { timeZone });
+    const timePart = format(zonedDate, 'hh:mm a', { timeZone });
+    return `${datePart} at ${timePart}`;
 };

@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { fetchChatbotSettings } from "@/store/slices/chats/appearanceSettings";
 import ChatMessages from "@/components/utils/MessageRenderer";
+import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
+import { useTimezone } from "@/context/TimeZoneContext";
 
 interface ChatUserModalProps {
   botId: number;
@@ -14,6 +16,8 @@ interface ChatUserModalProps {
 }
 
 const ViewLeadChatModal = ({ botId, show, onHide }: ChatUserModalProps) => {
+  const { timezone, isLoading } = useTimezone()
+
   const { chatbotLeadMessages } = useSelector((state: RootState) => state.chat);
   const dispatch = useDispatch<AppDispatch>();
   const chatbotSetting = useSelector(
@@ -43,9 +47,7 @@ const ViewLeadChatModal = ({ botId, show, onHide }: ChatUserModalProps) => {
         <div className="h-[400px] overflow-y-auto space-y-4 pr-2">
           {chatbotLeadMessages &&
             chatbotLeadMessages.map((msg: any, idx: number) => {
-              const timeAgo = formatDistanceToNow(new Date(msg?.created_at), {
-                addSuffix: true,
-              });
+              const timeAgo = !isLoading && formatDateOrTimeAgo(msg?.created_at, timezone, 10);
               return (
                 <div
                   key={idx}

@@ -9,8 +9,13 @@ import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import { MdEdit } from "react-icons/md";
 import { FiSearch, FiFilter, FiChevronDown, FiChevronUp } from "react-icons/fi";
 import StatusActionModal from "@/components/StatusActionModal";
+import { formatDateTimeWithTz } from "@/components/utils/formatDateTime";
+import { useTimezone } from "@/context/TimeZoneContext";
 
 const UserManagement = () => {
+  const { timezone, isLoading } = useTimezone()
+
+
   const [modalShow, setModalShow] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [menuOpenId, setMenuOpenId] = useState<any>({});
@@ -43,6 +48,8 @@ const UserManagement = () => {
       ...(dateFilter.end && { endDate: dateFilter.end }),
     };
 
+    console.log({ planFilter, statusFilter, tokenFilter, dateFilter });
+
     dispatch(
       getAllUsers({
         page,
@@ -53,17 +60,8 @@ const UserManagement = () => {
         ...filters
       })
     );
-  }, [dispatch, page, limit, search, sortBy, sortOrder, planFilter, statusFilter, tokenFilter, dateFilter]);
+  }, [dispatch, page, limit, search, sortBy, sortOrder, planFilter, statusFilter, tokenFilter]);
 
-  const handleDateString = (dateString: string) => {
-    const date = new Date(dateString);
-    const updatedDate = date.toLocaleString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-    return updatedDate;
-  };
 
   const handleUpdateStatus = (data: any) => {
     dispatch(
@@ -312,11 +310,11 @@ const UserManagement = () => {
                           {item?.tokenUsed}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
-                          {handleDateString(item?.created_at)}
+                          {!isLoading ? formatDateTimeWithTz(item?.created_at, timezone) : "-"}
                         </td>
                         <td className="p-4">
                           <span className="bg-[#AEB9E133] text-[#AEB9E1] text-xs px-2 py-1 rounded">
-                            {item?.status || 'Active'}
+                            {item?.status || '-'}
                           </span>
                         </td>
                         <td className="p-4 relative">

@@ -20,7 +20,6 @@ import ChatbotLinksDocs from "@/components/ChatbotDashboard/ChatbotLinksDocs/cha
 import ChatbotAppearence from "@/components/ChatbotDashboard/ChatbotAppearence/chatbotAppearence";
 import ChatbotIntegration from "@/components/ChatbotDashboard/ChatbotIntegration/chatbotIntegration";
 import { fetchChatMessageTokens, getChatbots, getSingleChatbot } from "@/store/slices/chats/chatSlice";
-import { getUserTimezone } from "@/components/utils/formatDateTime";
 
 const ChatbotMain = ({
   botPage,

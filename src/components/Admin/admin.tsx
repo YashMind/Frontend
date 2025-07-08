@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AdminSidebar from "./AdminSidebar/adminSidebar";
 import AdminTopbar from "./AdminMain/AdminTopbar/adminTopbar";
 import AdminMain from "./AdminMain/adminMain";
@@ -17,15 +17,17 @@ import { AppDispatch, RootState } from "@/store/store";
 import { getMeData } from "@/store/slices/auth/authSlice";
 import { getAllUsers, getMyPermissions } from "@/store/slices/admin/adminSlice";
 import { useRouter } from "next/navigation";
+import { AdminAllUsers } from "@/types/adminType";
 
 const Admin = ({ adminPage }: { adminPage: string }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
-  const { allUsersData } = useSelector((state: RootState) => state.admin);
-  const permissions = useSelector((state: RootState) => state.admin.myPermissions)
-const userData = useSelector((state: RootState) => state.auth.userData);
+  const [allUsersData, setAllUsersData] = useState<AdminAllUsers | []>([])
 
-const role = userData?.role;
+  const router = useRouter();
+  const permissions = useSelector((state: RootState) => state.admin.myPermissions)
+  const userData = useSelector((state: RootState) => state.auth.userData);
+
+  const role = userData?.role;
   useEffect(() => {
     if (!allUsersData?.data?.length) {
       dispatch(
@@ -33,7 +35,7 @@ const role = userData?.role;
           page: 1,
           limit: 10,
         })
-      );
+      ).unwrap().then(res => setAllUsersData(res));;
     }
   }, [allUsersData?.data?.length]);
 

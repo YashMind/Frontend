@@ -14,8 +14,11 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { format } from "date-fns";
 import { ChatbotsData } from "@/types/chatTypes";
+import { formatDateOrTimeAgo, formatDateTimeWithTz } from "@/components/utils/formatDateTime";
+import { useTimezone } from "@/context/TimeZoneContext";
 
 const ChatbotHistory = ({ botId }: { botId?: number }) => {
+  const { timezone, isLoading } = useTimezone()
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [modalShow, setModalShow] = useState<boolean>(false);
@@ -126,7 +129,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
   return (
     <div className="w-full m-4">
       <h2 className="max-md:ml-12 text-2xl font-bold mb-4">Chat History</h2>
-      <div className="bg-white rounded-b-xl overflow-hidden text-sm w-full xl:w-full rounded-[40px] mb-8">
+      <div className="bg-white rounded-b-xl overflow-hidden text-sm w-full  rounded-[40px] mb-8">
         {/* Top Actions */}
         <div className="flex flex-wrap items-center justify-between gap-4 bg-[#9592AE] px-6 py-4 ">
           <div className="flex items-center gap-2 flex-wrap">
@@ -203,7 +206,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
 
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="w-fit  text-left text-gray-800">
+          <table className="w-fit md:w-full  text-left text-gray-800">
             <thead className="bg-white text-gray-600 border-y border-gray-300">
               <tr>
                 <th className="p-4">
@@ -213,15 +216,10 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
                     onChange={handleSelectAll}
                   />
                 </th>
-                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
-                  Country
-                </th>
-                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
+                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1 ">
                   Started
                 </th>
-                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
-                  Status
-                </th>
+
                 <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
                   Language
                 </th>
@@ -243,10 +241,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
                 ).map(
                   ([chatId, { platform, messages }]: any, idx) => {
                     const lastMessage = messages[messages?.length - 2];
-                    const timeAgo = formatDistanceToNow(
-                      new Date(lastMessage?.created_at),
-                      { addSuffix: true }
-                    );
+                    const timeAgo = formatDateOrTimeAgo(lastMessage?.created_at, timezone, 10);
                     return (
                       <tr key={chatId} className="border-b border-gray-200">
                         <td className="p-4">
@@ -259,17 +254,13 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
                             }
                           />
                         </td>
-                        <td className="p-4 text-xs font-medium text-black">
-                          India
-                        </td>
-                        <td className="p-4 text-xs font-medium text-black">
+
+                        <td className="p-4 text-xs font-medium text-black text-nowrap">
                           {timeAgo}
                         </td>
+
                         <td className="p-4 text-xs font-medium text-black">
-                          Original
-                        </td>
-                        <td className="p-4 text-xs font-medium text-black">
-                          Original
+                          English
                         </td>
                         <td className="truncate max-w-[150px] p-4 text-xs font-medium text-black">
                           {lastMessage?.message?.slice(0, 25)}...

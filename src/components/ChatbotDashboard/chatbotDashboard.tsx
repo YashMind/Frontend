@@ -12,11 +12,13 @@ import { ChatbotsData } from "@/types/chatTypes";
 import { formatDate, formatTime } from "../utils/formatDateTime";
 import { FaExclamationTriangle, FaTimes } from "react-icons/fa";
 import AddCreditModal from "./RealTimeCount/addCreditModal";
+import { useTimezone } from "@/context/TimeZoneContext";
 interface ChatbotDashboardProps {
   showModal: () => void;
 }
 const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { timezone, isLoading } = useTimezone();
   const chatbots: ChatbotsData[] = useSelector(
     (state: RootState) => state.chat.chatbots
   );
@@ -54,7 +56,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                       width:
                         (((tokensData.token_usage[0]
                           .combined_token_consumption) /
-                          tokensData.token_usage[0].token_limit) ?? 0) *
+                          tokensData.token_usage[0].token_limit)) *
                         100 +
                         "%",
                     }}
@@ -115,10 +117,10 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                       </div>
                       <div className="text-right">
                         <div className="text-xs text-gray-400 whitespace-nowrap">
-                          {formatDate(item?.created_at)}
+                          {!isLoading ? formatDate(item?.created_at, timezone) : "-"}
                         </div>
                         <div className="text-xs text-gray-400 whitespace-nowrap">
-                          {formatTime(item?.created_at)}
+                          {!isLoading ? formatTime(item?.created_at, timezone) : "-"}
                         </div></div>
                     </div>
                     <h3 className="text-gray-800 font-medium text-lg uppercase line-clamp-1 group-hover:text-blue-600">

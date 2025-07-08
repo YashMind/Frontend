@@ -10,6 +10,7 @@ import {
 import { FiRefreshCcw } from "react-icons/fi";
 import { formatLargeNumber } from "@/components/utils/formatLargeNumber";
 import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
+import { useTimezone } from "@/context/TimeZoneContext";
 
 const ChatbotLinksDocs = ({
   botPage,
@@ -334,67 +335,71 @@ const Table = ({
   selectedIds: number[];
   handleSelectAll: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSelectRow: (id: number, checked: boolean) => void;
-}) => (
-  <table className="w-full text-left text-gray-800 rounded-xl">
-    <thead className="bg-white text-gray-600 border-y border-gray-300">
-      <tr>
-        <th className="p-4">
-          <input
-            type="checkbox"
-            className="w-4 h-4 accent-[#5E2EFF]"
-            onChange={handleSelectAll}
-          />
-        </th>
-        <th className="py-[14px] px-2 text-sm font-bold text-black">Status</th>
-        <th className="py-[14px] px-2 text-sm font-bold text-black">Chars</th>
-        <th className="py-[14px] px-2 text-sm font-bold text-black">Data</th>
-        <th className="py-[14px] px-2 text-sm font-bold text-black">Date Added</th>
-        <th className="py-[14px] px-2 text-sm font-bold text-black">Retrain</th>
-        <th className="py-[14px] px-2 text-sm font-bold text-black">Type</th>
-      </tr>
-    </thead>
-    <tbody className="bg-[#f7f6fd]">
-      {activeSource.link?.map((item: any, index: number) => (
-        <tr key={index} className="border-b border-gray-200 ">
-          <td className="p-4">
+}) => {
+  const { timezone, isLoading } = useTimezone()
+
+  return (
+    <table className="w-full text-left text-gray-800 rounded-xl">
+      <thead className="bg-white text-gray-600 border-y border-gray-300">
+        <tr>
+          <th className="p-4">
             <input
               type="checkbox"
               className="w-4 h-4 accent-[#5E2EFF]"
-              checked={selectedIds.includes(Number(item?.id))}
-              onChange={(e) =>
-                handleSelectRow(Number(item?.id), e.target.checked)
-              }
+              onChange={handleSelectAll}
             />
-          </td>
-          <td className="text-xs font-medium text-black px-2">
-            <div className="flex gap-3">
-              <p className="w-2 h-2 bg-[#DE4DBC] rounded-full"></p>
-              {item?.status}
-            </div>
-          </td>
-          <td className="py-4 text-xs font-medium text-black px-2">
-            {item?.chars}
-          </td>
-          <td className="py-4 text-xs font-medium text-black max-w-48 overflow-ellipsis">
-            {item?.target_link && <a href={item?.target_link}>{item?.target_link}</a>}
-            {item?.document_link}
-          </td>
-          <td className="py-4 text-xs font-medium text-black px-2">
-            {formatDateOrTimeAgo(item?.created_at)}
-          </td>
-          <td className="truncate max-w-[150px] p-4 text-xs font-medium text-black px-2">
-            -
-          </td>
-          <td className="py-4 px-2">
-            <span className="bg-[#DEDEDE] py-1 rounded-full text-xs font-medium text-black px-2">
-              {item?.train_from}
-            </span>
-          </td>
+          </th>
+          <th className="py-[14px] px-2 text-sm font-bold text-black">Status</th>
+          <th className="py-[14px] px-2 text-sm font-bold text-black">Chars</th>
+          <th className="py-[14px] px-2 text-sm font-bold text-black">Data</th>
+          <th className="py-[14px] px-2 text-sm font-bold text-black">Date Added</th>
+          <th className="py-[14px] px-2 text-sm font-bold text-black">Retrain</th>
+          <th className="py-[14px] px-2 text-sm font-bold text-black">Type</th>
         </tr>
-      ))}
-    </tbody>
-  </table>
-);
+      </thead>
+      <tbody className="bg-[#f7f6fd]">
+        {activeSource.link?.map((item: any, index: number) => (
+          <tr key={index} className="border-b border-gray-200 ">
+            <td className="p-4">
+              <input
+                type="checkbox"
+                className="w-4 h-4 accent-[#5E2EFF]"
+                checked={selectedIds.includes(Number(item?.id))}
+                onChange={(e) =>
+                  handleSelectRow(Number(item?.id), e.target.checked)
+                }
+              />
+            </td>
+            <td className="text-xs font-medium text-black px-2">
+              <div className="flex gap-3">
+                <p className="w-2 h-2 bg-[#DE4DBC] rounded-full"></p>
+                {item?.status}
+              </div>
+            </td>
+            <td className="py-4 text-xs font-medium text-black px-2">
+              {item?.chars}
+            </td>
+            <td className="py-4 text-xs font-medium text-black max-w-48 overflow-ellipsis">
+              {item?.target_link && <a href={item?.target_link}>{item?.target_link}</a>}
+              {item?.document_link}
+            </td>
+            <td className="py-4 text-xs font-medium text-black px-2">
+              {!isLoading ? formatDateOrTimeAgo(item?.created_at, timezone) : "-"}
+            </td>
+            <td className="truncate max-w-[150px] p-4 text-xs font-medium text-black px-2">
+              -
+            </td>
+            <td className="py-4 px-2">
+              <span className="bg-[#DEDEDE] py-1 rounded-full text-xs font-medium text-black px-2">
+                {item?.train_from}
+              </span>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
+};
 
 const Pagination = ({ page, setPage, totalPages }: {
   page: number;

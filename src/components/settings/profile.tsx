@@ -129,13 +129,6 @@ const ProfileSettings = () => {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
-  };
-
-
   const handlePasswordChange = (currentPass: string, newPass: string) => {
     console.log(currentPass, newPass)
 

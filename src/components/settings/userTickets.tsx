@@ -3,9 +3,12 @@ import { fetchUserTickets } from '@/store/slices/supportTicket/slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import StatusBadge from '../utils/statusBadge';
+import { formatDateOrTimeAgo } from '../utils/formatDateTime';
+import { useTimezone } from '@/context/TimeZoneContext';
 
 const UserTickets = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const { isLoading, timezone } = useTimezone()
     const { userTickets, loading, error } = useSelector((state: RootState) => state.tickets);
 
     useEffect(() => {
@@ -69,7 +72,7 @@ const UserTickets = () => {
                                         <StatusBadge status={ticket.status} />
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {new Date(ticket.created_at).toLocaleDateString()}
+                                        {!isLoading ? formatDateOrTimeAgo(ticket.created_at, timezone) : "-"}
                                     </td>
                                     {/* <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         {ticket.thread_link ? (

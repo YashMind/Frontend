@@ -10,6 +10,9 @@ import { HiArrowDownRight } from "react-icons/hi2";
 import MetricDetailsModal from "@/components/DetailsModal";
 import { getRecentSignups } from "@/store/slices/auth/authSlice";
 import { useRouter } from "next/navigation";
+import { useTimezone } from "@/context/TimeZoneContext";
+import { formatDate } from "@/components/utils/formatDateTime";
+import { AdminAllUsers } from "@/types/adminType";
 
 interface AdminTopbarProps {
   allUsersData: AdminAllUsers;
@@ -85,6 +88,7 @@ const MetricCard = ({
 
 const AdminTopbar = ({ allUsersData }: AdminTopbarProps) => {
   const router = useRouter();
+  const { timezone, isLoading } = useTimezone()
   const dispatch = useDispatch<AppDispatch>();
 
   const recentSignupsCount = useSelector((state: RootState) => state.auth.recentSignups?.count ?? 0);
@@ -193,7 +197,7 @@ const AdminTopbar = ({ allUsersData }: AdminTopbarProps) => {
             <td className="border border-gray-700 px-4 py-2">{user.fullName}</td>
             <td className="border border-gray-700 px-4 py-2">{user.email}</td>
             <td className="border border-gray-700 px-4 py-2">
-              {new Date(user.created_at).toLocaleDateString()}
+              {!isLoading ? formatDate(user.created_at, timezone) : "-"}
             </td>
           </tr>
         ))}

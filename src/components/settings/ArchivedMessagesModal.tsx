@@ -3,6 +3,8 @@ import { FiX, FiSearch, FiArchive, FiMessageSquare } from "react-icons/fi";
 import { AppDispatch, RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArchivedUserMessages } from "@/store/slices/chats/chatSlice";
+import { formatDateTimeWithTz } from "../utils/formatDateTime";
+import { useTimezone } from "@/context/TimeZoneContext";
 
 interface ChatMessage {
   id: string;
@@ -32,6 +34,7 @@ const ArchivedMessageModal = ({
   isOpen,
   onClose,
 }: ArchivedMessageModalProps) => {
+  const { isLoading, timezone } = useTimezone()
   const dispatch = useDispatch<AppDispatch>();
   const {
     archivedUserMessages: archivedChats,
@@ -165,15 +168,9 @@ const ArchivedMessageModal = ({
                                     {message.message}
                                   </p>
                                   <time className="text-xs text-gray-500 mt-1 block">
-                                    {new Date(
-                                      message.created_at
-                                    ).toLocaleString("en_US", {
-                                      hour: "2-digit",
-                                      minute: "2-digit",
-                                      year: "numeric",
-                                      month: "2-digit",
-                                      day: "2-digit",
-                                    })}
+                                    {isLoading && message.created_at ?
+                                      formatDateTimeWithTz(message.created_at, timezone) : "-"
+                                    }
                                   </time>
                                 </div>
                               ))}

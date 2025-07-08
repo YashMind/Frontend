@@ -4,6 +4,8 @@ import { RootState, AppDispatch } from "@/store/store";
 import { useState, useEffect, useCallback } from "react";
 import { getInvitedUsers } from "@/store/slices/invitations/invitationSlice";
 import dynamic from "next/dynamic";
+import { formatDate } from "../utils/formatDateTime";
+import { useTimezone } from "@/context/TimeZoneContext";
 
 // Import RevokeConfirmationModal with no SSR
 const RevokeConfirmationModal = dynamic(
@@ -40,6 +42,7 @@ interface InvitedUsersTableProps {
 }
 
 const InvitedUsersTable = ({ invitedUsers }: InvitedUsersTableProps) => {
+  const { isLoading, timezone } = useTimezone()
   const dispatch = useDispatch<AppDispatch>();
   const [isRevokeModalOpen, setIsRevokeModalOpen] = useState(false);
   const [userToRevoke, setUserToRevoke] = useState<InvitedUser | null>(null);
@@ -147,15 +150,7 @@ const InvitedUsersTable = ({ invitedUsers }: InvitedUsersTableProps) => {
     fetchData();
   }, []); // Only run on mount
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
+
 
   const getStatusBadge = (status: string) => {
     const baseClasses = "px-2 py-1 rounded-full text-xs font-medium";
@@ -283,7 +278,7 @@ const InvitedUsersTable = ({ invitedUsers }: InvitedUsersTableProps) => {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {formatDate(user.created_at)}
+                  {!isLoading ? formatDate(user.created_at, timezone) : '-'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   {user.status !== "revoked" && (
