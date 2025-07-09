@@ -315,7 +315,7 @@ const ContactUs = () => {
         </div>
 
         {/* Map */}
-        <div className="mt-12 bg-white p-6 rounded-lg shadow-lg">
+        {/* <div className="mt-12 bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold text-gray-800 mb-6">
             Find Us on Map
           </h2>
@@ -330,7 +330,7 @@ const ContactUs = () => {
               title="Yashraa Location"
             ></iframe>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

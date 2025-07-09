@@ -1,6 +1,7 @@
 export interface CreatebotForm {
   chatbot_name: string;
   public: boolean;
+  domain: string;
 }
 
 export interface UpdateChatbotData {

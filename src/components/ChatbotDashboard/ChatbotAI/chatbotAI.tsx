@@ -22,27 +22,26 @@ type Prompts = {
   type: string;
   prompt: string;
 };
-
-const promptTypes = [
-  "E-commerce",
-  "General Customer Service",
-  "Hospitality (Hotels)",
-  "Education (Schools)",
-  "Healthcare",
-  "Real Estate",
-  "Finance and Banking",
-  "Restaurant and Food Service",
-  "Event Management",
-  "Legal Services",
-  "Nonprofit Organizations",
-  "Travel Agencies",
+export const promptTypes = [
   "Human Resources",
-  "Tech Support",
-  "Fitness Centers",
-  "Automotive Services",
-  "Insurance Companies",
-  "Job Recruitment",
+  "Healthcare",
   "Entertainment Venues",
+  "Finance and Banking",
+  "Education (Schools)",
+  "Tech Support",
+  "Nonprofit Organizations",
+  "Automotive Services",
+  "Restaurant and Food Service",
+  "E-commerce",
+  "Insurance Companies",
+  "Legal Services",
+  "Real Estate",
+  "General Customer Service",
+  "Job Recruitment",
+  "Hospitality (Hotels)",
+  "Event Management",
+  "Travel Agencies",
+  "Fitness Centers"
 ];
 
 const ChatbotAI = ({ botId }: { botId?: number }) => {

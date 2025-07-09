@@ -8,15 +8,23 @@ import { createChatbot } from "@/store/slices/chats/chatSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import { CreatebotForm } from "@/types/chatTypes";
+import { promptTypes } from "../../ChatbotAI/chatbotAI";
 
 interface EditUserModalProps {
   show: boolean;
   onHide: () => void;
 }
 
+// Define a list of available domains
+const DOMAIN_OPTIONS = promptTypes.map(domain => ({
+  value: domain,
+  label: domain
+}));
+
 const schema = yup.object().shape({
   chatbot_name: yup.string().required("Bot name is required field"),
   public: yup.boolean().optional(),
+  domain: yup.string().required("Please select a domain")
 });
 
 const CreatebotModal = ({ show, onHide }: EditUserModalProps) => {
@@ -51,20 +59,45 @@ const CreatebotModal = ({ show, onHide }: EditUserModalProps) => {
         </button>
         <h2 className="text-2xl font-bold text-black mb-6">Create New Bot</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Give Your bot a name
-          </label>
-          <input
-            {...register("chatbot_name")}
-            type="text"
-            placeholder="Enter bot name"
-            className="w-full border text-black border-gray-300 text-xs rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
-          {errors.chatbot_name && (
-            <span className="text-red-500 mt-2">
-              {errors?.chatbot_name?.message}
-            </span>
-          )}
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Give Your bot a name
+            </label>
+            <input
+              {...register("chatbot_name")}
+              type="text"
+              placeholder="Enter bot name"
+              className="w-full border text-black border-gray-300 text-xs rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            {errors.chatbot_name && (
+              <span className="text-red-500 mt-2">
+                {errors?.chatbot_name?.message}
+              </span>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Select Domain
+            </label>
+            <select
+              {...register("domain")}
+              className="w-full border text-black border-gray-300 text-xs rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            >
+              <option value="">Select a domain</option>
+              {DOMAIN_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            {errors.domain && (
+              <span className="text-red-500 mt-2">
+                {errors?.domain?.message}
+              </span>
+            )}
+          </div>
+
           <div className="pb-5 mt-4">
             <label className="text-sm font-semibold text-gray-700 mb-6">
               Make your bot public
