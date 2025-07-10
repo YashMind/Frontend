@@ -74,7 +74,7 @@ const ChatbotQA = ({ botId }: { botId?: number }) => {
   }
 
   return (
-    <div className="w-full m-4">
+    <div className="m-4">
       <h2 className="text-2xl font-bold mb-4 max-md:ml-12">Q & A</h2>
       <div className="bg-[#2E265C] ">
         {/* Header */}

@@ -49,7 +49,7 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
 
   return (
     <div className="flex-1">
-      <div className="flex flex-wrap gap-4 bg-[#FFFFFF80] px-6 py-[37px] rounded-[28px] w-full max-w-4xl">
+      <div className="flex flex-wrap gap-4 bg-[#FFFFFF80] px-3 py-3 rounded-2xl w-full max-w-4xl">
         <div className="bg-white rounded-2xl p-6 flex-1 shadow-sm hover:shadow-md transition-shadow duration-300">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-xl font-bold text-gray-800">Today's Usage</h3>
@@ -141,9 +141,9 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap gap-6 w-full max-w-4xl bg-white/50 px-6 py-8 rounded-3xl mt-6 backdrop-blur-sm">
+      <div className="flex flex-wrap gap-4 w-full max-w-4xl bg-white/50 px-3 py-3 rounded-2xl mt-6 backdrop-blur-sm">
         {/* Leads Card */}
-        <div className="bg-white rounded-2xl p-6 w-full sm:w-[48%] shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+        <div className="bg-white rounded-2xl p-6 flex-1 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold text-gray-800">Leads</h3>
             <div className="p-3 rounded-full bg-indigo-100 text-indigo-600">
@@ -169,7 +169,7 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
         </div>
 
         {/* Trained Card */}
-        <div className="bg-white rounded-2xl p-6 w-full sm:w-[48%] shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+        <div className="bg-white rounded-2xl p-6 flex-1 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold text-gray-800">Knowledge Base</h3>
             <div className="p-3 rounded-full bg-emerald-100 text-emerald-600">

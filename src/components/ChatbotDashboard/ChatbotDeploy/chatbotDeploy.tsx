@@ -68,7 +68,7 @@ const ChatbotDeploy = () => {
   console.log(embedScript)
 
   return (
-    <div className="w-full m-4">
+    <div className="m-4">
       <h2 className="text-2xl font-bold mb-8 max-md:ml-12">Deploy</h2>
       <div className="bg-[#312d63] min-h-screen flex items-center justify-center p-4 rounded-[28px]">
         <div className="w-full max-w-6xl space-y-6">

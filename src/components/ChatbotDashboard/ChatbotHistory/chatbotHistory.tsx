@@ -127,7 +127,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
   };
 
   return (
-    <div className="w-full m-4">
+    <div className="m-4">
       <h2 className="max-md:ml-12 text-2xl font-bold mb-4">Chat History</h2>
       <div className="bg-white rounded-b-xl overflow-hidden text-sm w-full  rounded-[40px] mb-8">
         {/* Top Actions */}

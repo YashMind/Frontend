@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import CreatebotModal from "./Createbot/createbot";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
@@ -21,19 +21,16 @@ import ChatbotAppearence from "@/components/ChatbotDashboard/ChatbotAppearence/c
 import ChatbotIntegration from "@/components/ChatbotDashboard/ChatbotIntegration/chatbotIntegration";
 import { fetchChatMessageTokens, getChatbots, getSingleChatbot } from "@/store/slices/chats/chatSlice";
 
-const ChatbotMain = ({
-  botPage,
-  botId,
-  role,
-}: {
+type ChatbotMainProps = {
   botPage?: string;
   botId?: number;
   role?: string;
-}) => {
+};
+
+const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { chatbotData: activeChatbot, loading: chatbotLoading } = useSelector((state: RootState) =>
-    state.chat
-  );
+  const { chatbotData: activeChatbot, loading: chatbotLoading, error: chatbotError } = useSelector((state: RootState) => state.chat);
+  const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
     if (botId !== undefined) {
@@ -46,82 +43,106 @@ const ChatbotMain = ({
     dispatch(fetchChatMessageTokens());
   }, [dispatch]);
 
-  const [modalShow, setModalShow] = useState<boolean>(false);
-  const chatbotError: any = useSelector((state: RootState) => state.chat.error);
+  const showModal = () => setModalShow(true);
+  const hideModal = () => setModalShow(false);
 
-  const showModal = () => {
-    setModalShow(true);
+  const renderPageContent = () => {
+    switch (botPage) {
+      case "main": return <ChatbotDashboard showModal={showModal} />;
+      case "update": return <ChatbotOverview botPage={botPage} botId={botId} />;
+      case "overview": return <ChatbotOverview botPage={botPage} botId={botId} />;
+      case "chat-history": return <ChatbotHistory botId={botId} />;
+      case "chat-leads": return <ChatbotLeads botPage={botPage} botId={botId} />
+      case "links-docs": return <ChatbotLinksDocs botPage={botPage} botId={botId} />
+      case "texts": return <ChatbotTexts botId={botId} />;
+      case "faqs": return <ChatbotQA botId={botId} />;
+      case "ai": return <ChatbotAI botId={botId} />;
+      case "appearence": return <ChatbotAppearence botId={botId} />;
+      case "deploy": return <ChatbotDeploy />;
+      case "integration": return <ChatbotIntegration botId={botId} />;
+      case "settings": return <ChatbotSettings botId={botId} />;
+
+      default: return null;
+    }
   };
 
-  return (<>
-    <ChatbotDashboardHeader fix={true} addBgColor={true} role={role} chatbotError={chatbotError} />
-    <div className=" bg-gradient-to-r from-[#002B58] to-[#3B0459]">
-      {/* header */}
 
-      {(botPage == "voice-agent" || botPage == "llm") ? <div className="min-h-screen flex items-center justify-center text-white text-2xl font-bold">
-        <div className="p-8 bg-white text-black">
-          Product Active is not Yet !!
+  const renderMainContent = useMemo(() => {
+    if (chatbotError) {
+      return (
+        <div className="min-h-screen flex items-center justify-center text-white text-2xl font-bold">
+          <div className="p-8 bg-white text-black">
+            {chatbotError} Yet !!
+          </div>
         </div>
-      </div> :
-        <>
-          {!chatbotError ? <>
-            <div className=" bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 h-full min-h-screen">
-              {/* Real Time Count + Table */}
-              <RealTimeCount />
-              <div className="flex gap-4">
-                {/* Owner Section */}
-                <div
-                  className={`relative h-full overflow-auto bg-[#2a2561] rounded-2xl w-full lg:w-[90%] flex ${botId ? "" : "gap-[25px]"
-                    }`}
-                >
-                  {botPage !== "main" ? (
-                    <ChatbotSidebar botPage={botPage} botId={botId} />
-                  ) : null}
+      );
+    }
 
-                  {botPage === "main" ? (
-                    <ChatbotDashboard showModal={showModal} />
-                  ) : null}
-                  {botPage === "update" || botPage === "overview" ? (
-                    <ChatbotOverview botPage={botPage} botId={botId} />
-                  ) : null}
-                  {botPage === "chat-history" ? (
-                    <ChatbotHistory botId={botId} />
-                  ) : null}
-                  {botPage === "chat-leads" ? (
-                    <ChatbotLeads botPage={botPage} botId={botId} />
-                  ) : null}
-                  {botPage === "links-docs" ? (
-                    <ChatbotLinksDocs botPage={botPage} botId={botId} />
-                  ) : null}
-                  {botPage === "texts" ? <ChatbotTexts botId={botId} /> : null}
-                  {botPage === "faqs" ? <ChatbotQA botId={botId} /> : null}
-                  {botPage === "ai" ? <ChatbotAI botId={botId} /> : null}
-                  {botPage === "appearence" ? (
-                    <ChatbotAppearence botId={botId} />
-                  ) : null}
-                  {botPage === "deploy" ? <ChatbotDeploy /> : null}
-                  {botPage === "integration" ? (
-                    <ChatbotIntegration botId={botId} />
-                  ) : null}
-                  {botPage === "settings" ? <ChatbotSettings botId={botId} /> : null}
-                  {/* second div */}
-                  {botPage !== "main" && < div className="absolute top-5 right-5 text-right text-gray-200 text-base font-semibold uppercase">
-                    {activeChatbot.chatbot_name}
-                  </div>}
-                </div>
-                <RightSection showModal={showModal} botId={botId} />
-                <CreatebotModal show={modalShow} onHide={() => setModalShow(false)} />
+    if (botPage === "voice-agent" || botPage === "llm") {
+      return (
+        <div className="min-h-screen flex items-center justify-center text-white text-2xl font-bold">
+          <div className="p-8 bg-white text-black">
+            Product Active is not Yet !!
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 h-full flex flex-col">
+        {/* Header area - fixed height */}
+        <div className="h-[17%] min-h-[60px]">
+          <RealTimeCount />
+        </div>
+
+        {/* Main content area - takes remaining space */}
+        <div className="flex gap-4 flex-1 min-h-0">
+          {/* Sidebar */}
+          {botPage !== "main" && (
+            <div className="overflow-y-auto flex-shrink-0 w-[15%] no-scrollbar rounded-3xl">
+              <ChatbotSidebar botPage={botPage} botId={botId} />
+            </div>
+          )}
+
+          {/* Main content */}
+          <div className={`relative bg-[#2a2561] rounded-2xl flex-1 min-h-0 flex flex-col `}>
+            <div className="overflow-y-auto no-scrollbar">
+              {renderPageContent()}
+            </div>
+            {botPage !== "main" && (
+              <div className="absolute top-5 right-5 text-right text-gray-200 text-base font-semibold uppercase">
+                {activeChatbot.chatbot_name}
               </div>
-            </div>
+            )}
+          </div>
 
-          </> : <div className="min-h-screen flex items-center justify-center text-white text-2xl font-bold">
-            <div className="p-8 bg-white text-black">
-              {chatbotError} Yet !!
+          {/* Right section */}
+          <div className="relative overflow-y-auto w-[7%] flex-shrink-0 hidden lg:block p-0.5 bg-[#2a2561] rounded-2xl border-l border-[#3a3461] no-scrollbar">
+            <RightSection showModal={showModal} botId={botId} />
+          </div>
+        </div>
 
-            </div>
-          </div>}
-        </>}
-    </div ></>
+        <CreatebotModal show={modalShow} onHide={hideModal} />
+      </div>
+    );
+  }, [botPage, botId, chatbotError, modalShow, activeChatbot]);
+
+
+  return (
+    <div className="flex flex-col h-screen">
+      {/* Fixed header - outside the scrollable area */}
+      <ChatbotDashboardHeader
+        fix={true}
+        addBgColor={true}
+        role={role}
+        chatbotError={chatbotError}
+      />
+
+      {/* Scrollable content */}
+      <div className="bg-gradient-to-r from-[#002B58] to-[#3B0459] flex-1 overflow-hidden">
+        {renderMainContent}
+      </div>
+    </div>
   );
 };
 

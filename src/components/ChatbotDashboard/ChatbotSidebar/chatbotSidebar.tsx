@@ -255,19 +255,21 @@ const ChatbotSidebar = ({
       </div>
 
       {/* Large screen sidebar (full width) */}
-      <div className="hidden h-fit lg:static overflow-auto lg:block w-[260px] bg-black text-white p-5  flex-col gap-8 rounded-2xl  left-0 top-0 ">
-        {sidebarSections.map(({ title, links }, idx) => (
-          <div key={idx} className="flex flex-col gap-2 mb-4">
-            {title && (
-              <p className="text-xs uppercase text-gray-500 tracking-wide pl-2">
-                {title}
-              </p>
-            )}
-            <div className="flex flex-col gap-1">
-              {links.map((link) => renderLink(link, true))}
+      <div className="">
+        <div className="hidden h-fit lg:static overflow-auto lg:block  bg-black text-white p-5  flex-col gap-8 rounded-2xl  left-0 top-0 ">
+          {sidebarSections.map(({ title, links }, idx) => (
+            <div key={idx} className="flex flex-col gap-2 mb-4">
+              {title && (
+                <p className="text-xs uppercase text-gray-500 tracking-wide pl-2">
+                  {title}
+                </p>
+              )}
+              <div className="flex flex-col gap-1">
+                {links.map((link) => renderLink(link, true))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </>
   );

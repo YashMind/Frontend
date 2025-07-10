@@ -45,10 +45,10 @@ const ChatbotSettings = ({ botId }: { botId?: number }) => {
     dispatch(deleteChatbot({ bot_id: botId, router }));
   };
   return (
-    <div className="w-full m-4">
+    <div className="m-4">
       <h2 className="text-2xl font-bold mb-5 max-md:ml-12">Settings</h2>
 
-      <div className="bg-[#312d63] min-h-screen p-4 max-w-[320px] rounded-2xl">
+      <div className="bg-[#312d63]  p-4 rounded-2xl">
         <div className="w-full">
           {/* Basic Section */}
           <div className="bg-white rounded-xl overflow-hidden shadow-md mb-4">

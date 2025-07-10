@@ -149,7 +149,7 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
   };
 
   return (
-    <div className="w-full m-4">
+    <div className="m-4">
       <h2 className="text-2xl font-bold mb-4 max-md:ml-12">AI</h2>
       <div className="w-full overflow-hidden">
         {/* AI Creativity Section */}

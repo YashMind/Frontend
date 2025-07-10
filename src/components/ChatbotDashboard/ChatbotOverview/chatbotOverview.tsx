@@ -29,12 +29,12 @@ const ChatbotOverview = ({
   }, [dispatch, botPage, botId]);
 
   return (
-    <div className="w-full m-4">
+    <div className="m-4">
       {botPage === "overview" ? (
         <h2 className="max-md:ml-12 text-2xl font-bold mb-3 ">Overview</h2>
       ) : null}
       {botPage === "overview" ? (
-        <div className="flex flex-wrap flex-row-reverse md:flex-row gap-10 w-full">
+        <div className="flex flex-wrap flex-row-reverse md:flex-row gap-6 w-full">
           <ChatbotDetails botId={botId} />
           {/* right chatbot */}
           <ChatbotSection botId={botId} chatbotData={chatbotData} />

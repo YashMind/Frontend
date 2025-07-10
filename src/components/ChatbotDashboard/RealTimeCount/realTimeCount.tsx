@@ -27,7 +27,7 @@ export default function RealTimeCount() {
 
 
   return (
-    <div className={`mt-16 flex flex-col md:flex-row gap-2 p-2 w-full justify-center items-stretch transition flex-nowrap duration-150 `}>
+    <div className={`mt-[3.5%] flex flex-col md:flex-row gap-2 p-2 w-full justify-center items-stretch transition flex-nowrap duration-150 max-h-[7%] `}>
 
       <StatCard
         icon={<FaComments size={20} color="#FFB85C" />}

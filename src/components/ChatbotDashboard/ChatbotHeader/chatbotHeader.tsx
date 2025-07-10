@@ -76,7 +76,7 @@ const ChatbotDashboardHeader = ({
   return (
     <nav
       className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${fix ? "fixed" : ""
-        } w-full z-90 py-2 md:py-4`}
+        } w-full z-90 max-h-[8%] py-2 md:py-4`}
     >
       <div className="container mx-auto px-4 flex flex-wrap items-center justify-between">
         {/* Logo Section */}

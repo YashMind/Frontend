@@ -22,42 +22,63 @@ const RightSection = ({ showModal, botId }: ShowModalProps) => {
 
 
   return (
-    <div className="hidden lg:block max-w-[10%] p-2 bg-[#2a2561] rounded-2xl">
-      <div className='flex flex-col gap-4 p-4'>
-        {chatbots?.map((chatbot, index) => {
+    <div >
+      <div className="flex flex-col gap-4 p-4">
+        {chatbots?.map((chatbot) => {
+          const getImageUrl = () => {
+            if (!chatbot.image) return "/images/bot2.png";
 
-          let imgUrl
-
-          if (chatbot.image) {
-            if (((chatbot.image) as string).startsWith('http') || ((chatbot.image) as string).startsWith('https')) {
-              imgUrl = chatbot.image
-            } else {
-              imgUrl = process.env.NEXT_PUBLIC_BACKEND_URL +
-                chatbot.image
+            if (typeof chatbot.image === 'string') {
+              if (chatbot.image.startsWith('http')) {
+                return chatbot.image;
+              }
+              return `${process.env.NEXT_PUBLIC_BACKEND_URL}${chatbot.image}`;
             }
-          } else {
-            imgUrl = "/images/bot2.png"
-          }
-          return <Link key={"chatbot-" + index} href={`/chatbot-dashboard/overview/${chatbot.id}`} className='cursor-pointer'> <Image
-            className={`m-auto p-2 ${botId == chatbot.id && `bg-white/20 rounded-full`}`}
-            alt="alt"
-            src={imgUrl}
-            height={68}
-            width={58}
-            title={chatbot.chatbot_name}
-          /></Link>
+
+            return "/images/bot2.png";
+          };
+
+          const imageUrl = getImageUrl();
+          const isActive = botId === chatbot.id;
+
+          return (
+            <Link
+              key={`chatbot-${chatbot.id}`} // Better key using unique id
+              href={`/chatbot-dashboard/overview/${chatbot.id}`}
+              className="cursor-pointer rounded-full transition-all hover:scale-105 hover:bg-white/10"
+              aria-label={`Go to ${chatbot.chatbot_name} dashboard`}
+            >
+              <div className={`p-2 rounded-full ${isActive ? 'bg-white/20' : ''}`}>
+                <Image
+                  className="rounded-full object-cover"
+                  src={imageUrl}
+                  alt={`${chatbot.chatbot_name} avatar`} // More descriptive alt text
+                  width={58}
+                  height={58} // Made equal for perfect circle
+                  quality={85} // Optimize image loading
+                  title={chatbot.chatbot_name}
+                  style={{
+                    aspectRatio: '1/1' // Ensures perfect square
+                  }}
+                />
+              </div>
+            </Link>
+          );
         })}
       </div>
-      <hr className="bg-[linear-gradient(90deg,#501794_49.49%,#3E70A1_50.51%)] p-[1px] rounded-md my-6"></hr>
-      <Image
-        className="m-auto cursor-pointer"
-        alt="alt"
-        src="/images/plus.png"
-        height={24}
-        width={24}
-        onClick={() => showModal()}
+      <div className='sticky bg-[#2a2561] bottom-0 w-full'>
 
-      />
+        <hr className="bg-[linear-gradient(90deg,#501794_49.49%,#3E70A1_50.51%)] p-[1px] rounded-md my-6"></hr>
+        <Image
+          className="m-auto cursor-pointer"
+          alt="alt"
+          src="/images/plus.png"
+          height={24}
+          width={24}
+          onClick={() => showModal()}
+
+        />
+      </div>
     </div>
   )
 }

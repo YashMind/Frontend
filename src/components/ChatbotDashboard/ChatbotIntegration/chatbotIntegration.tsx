@@ -22,7 +22,7 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
   const zapierUrl = process.env.NEXT_PUBLIC_ZAPIER_URL;
 
   return (
-    <div className="w-full m-4">
+    <div className="m-4">
       <div className="max-md:ml-12 mb-4">
         <h2 className="text-2xl font-bold ">Apps Integration</h2>
         <p>Streamline your workflow by connecting to popular software and social media through our integrations.</p>

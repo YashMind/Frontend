@@ -322,7 +322,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
   };
 
   return (
-    <div className="max-w-screen m-4">
+    <div className="m-4">
       {" "}
       <h2 className="text-2xl font-bold mb-4 max-md:ml-12">Bot visualisation</h2>
       <p className="text-sm font-light my-[22px]">
