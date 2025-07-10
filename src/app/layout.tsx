@@ -20,7 +20,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "YASHRAA",
-  description: "YASHRAA is a powerful All-in-one AI Tools Platform offering subscription-based tools like Chatbots, Voice Agents, LLM APIs, and more — all in one place. Subscribe, and deploy AI solutions tailored to your business needs. Build your AI stack with YASHRAA today!"
+  description: "YASHRAA is a powerful All-in-one AI Tools Platform offering subscription-based tools like Chatbots, Voice Agents, LLM APIs, and more — all in one place. Subscribe, and deploy AI solutions tailored to your business needs. Build your AI stack with YASHRAA today!",
+
 };
 
 export default function RootLayout({
@@ -32,9 +33,7 @@ export default function RootLayout({
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
       <html className="scroll-smooth" lang="en" suppressHydrationWarning={true}>
         <head>
-          <link rel="icon" href="/favicon-32x32.png" sizes="32x32" />
-          <link rel="icon" href="/favicon-64x64.png" sizes="64x64" />
-          <link rel="icon" href="/favicon-128x128.png" sizes="128x128" />
+          <link rel="icon" href="./favicon.ico"  />
         </head>
         <body
           suppressHydrationWarning={true}

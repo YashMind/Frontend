@@ -84,20 +84,21 @@ const WhyChooseChatbot = () => {
   return (
     <div
       id="features"
-      className="bg-white pt-[88px] px-4 lg:px-24 bg-no-repeat bg-left-bottom lg:bg-[url('/images/roboot.png')]"
+      className="bg-white pt-[88px] px-4 lg:px-24 bg-no-repeat bg-left-bottom "
     >
       <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row  gap-10">
         {/* Left Section */}
-        <div className="lg:w-1/2 text-center lg:text-left">
+        <div className="lg:w-1/2 text-center lg:text-left bg-center ">
           <h2
             className="text-3xl lg:text-4x text-[40px] font-normal text-black mb-4"
             style={{ fontFamily: "'Audiowide', sans-serif" }}
           >
-            Import. Brand. Scale. Succeed.<span className="text-[#34C8FB]  ">             All in One Bot</span>
+            Import. Brand. Scale. Succeed.<span className="text-[#34C8FB]  ">All in One Bot</span>
           </h2>
           <p className="text-black font-bold text-base leading-relaxed max-w-md mx-auto lg:mx-0 mt-[22px]">
             Yashraa’s AI Bots deliver an unmatched experience with versatile features: access chat history, create tailored bot personas,Import business-critical data. Prioritizing privacy and security, while offering seamless branding options the perfect solution to enhance customer interactions, improve efficiency, and future-proof your business with AI.
           </p>
+          <img src="/images/ai-generated-img.png"/>
         </div>
 
         {/* Right Section */}
