@@ -65,7 +65,7 @@ const FaqSection = () => {
           ></div>
 
           {/* Content Section */}
-          <div className="relative z-1 flex flex-col md:flex-row gap-10 justify-center items-center py-[65px] px-4 md:px-0">
+          <div className="relative z-1 flex flex-col md:flex-row gap-10 justify-center items-center  px-4 md:px-0">
             <div className="container">
               <div className="faq-flex flex flex-col md:flex-row justify-center gap-10 md:gap-20 items-start">
                 {/* Left Side */}
@@ -78,11 +78,8 @@ const FaqSection = () => {
                   >
                     Frequently Asked Question
                   </h2>
-                  <img
-                    src="/images/robo.png"
-                    alt="Bot"
-                    className="mt-6 w-[100px] md:w-auto"
-                  />
+
+                  <img src="/images/ai-generated-img.png" className="mt-20 hidden md:block" />
                 </div>
 
                 {/* Right Side */}

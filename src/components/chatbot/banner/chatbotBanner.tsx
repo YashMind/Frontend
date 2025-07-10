@@ -24,13 +24,13 @@ const ChatbotBanner = () => {
   const slideCount = instanceRef.current?.track.details.slides.length || 0;
 
   return (
- <div className="relative h-screen z-80">
-<div
-    className="absolute inset-0 bg-cover bg-center"
-    style={{ backgroundImage: "url('/images/ai-generated.png')" }}
-></div>
+    <div className="relative h-screen z-80">
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/ai-generated.png')" }}
+      ></div>
 
-<div className="absolute inset-0 bg-[linear-gradient(360deg,_#0083FF_-17.49%,_#1300AF_4.72%,_#2B255C_98.87%)]
+      <div className="absolute inset-0 bg-[linear-gradient(360deg,_#0083FF_-17.49%,_#1300AF_4.72%,_#2B255C_98.87%)]
  opacity-70"></div>
       <div ref={sliderRef} className="keen-slider container h-full">
         {/* Slide 1 */}

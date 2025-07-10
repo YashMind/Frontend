@@ -69,38 +69,41 @@ const Step = ({ number, title, description, image, imagePosition }: any) => {
 
 const CustomGpt = () => {
   return (
-    <div className="bg-[#2C1F94] text-white py-[42px] px-4 lg:px-24">
-      <div className="container flex flex-col lg:flex-row justify-between items-center">
-        <div className="lg:w-2/3 space-y-10">
-          {steps.map((step, index) => (
-            <Step key={index} {...step} />
-          ))}
-        </div>
+    <div className="relative h-screen">
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center z-0"
+        style={{ backgroundImage: "url('/images/chatbot-customgpt.png')" }}
+      ></div>
 
-        <div className="lg:w-1/3 text-center mt-12 lg:mt-0">
-          <h2
-            className="text-[40px] font-normal leading-tight"
-            style={{ fontFamily: "'Audiowide', sans-serif" }}
-          >
-            3 Simple Steps to use your custom
-            <span className="text-[#34C8FB]"> Chat Bot</span>
-          </h2>
-          <p className="text-base font-bold mt-[22px]">
-            Gain a new employee who helps 24/7/365 answer any questions about your business or chosen data.
-          </p>
-          <div className="text-right">
-            <button className="cursor-pointer bg-white text-[#363636] font-semibold px-6 py-2 rounded-[22px] mt-[22px]">
-              Try Now
-            </button>
+      {/* Gradient Overlay - behind content */}
+      <div className="absolute inset-0 bg-[linear-gradient(360deg,_#0083FF_-17.49%,_#1300AF_4.72%,_#2B255C_98.87%)] opacity-70 z-10"></div>
+
+      {/* Content - above gradient */}
+      <div className="relative z-20 text-white py-[42px] px-4 lg:px-24 h-full flex items-center">
+        <div className="container flex flex-col lg:flex-row justify-between items-center">
+          <div className="lg:w-2/3 space-y-10">
+            {steps.map((step, index) => (
+              <Step key={index} {...step} />
+            ))}
           </div>
-          <div className="mt-8">
-            <Image
-              alt="robot"
-              src="/images/robot-small.png"
-              className="m-auto"
-              height={269}
-              width={286}
-            />
+
+          <div className="lg:w-1/3 text-right mt-12 lg:mt-0">
+            <h2
+              className="text-[40px] font-normal leading-tight"
+              style={{ fontFamily: "'Audiowide', sans-serif" }}
+            >
+              3 Simple Steps to use your custom
+              <span className="text-[#34C8FB]"> Chat Bot</span>
+            </h2>
+            <p className="text-base font-bold mt-[22px]">
+              Gain a new employee who helps 24/7/365 answer any questions about your business or chosen data.
+            </p>
+            <div className="text-right">
+              <button className="cursor-pointer bg-white text-[#363636] font-semibold px-6 py-2 rounded-[22px] mt-[22px]">
+                Try Now
+              </button>
+            </div>
           </div>
         </div>
       </div>

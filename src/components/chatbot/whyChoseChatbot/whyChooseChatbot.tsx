@@ -98,7 +98,10 @@ const WhyChooseChatbot = () => {
           <p className="text-black font-bold text-base leading-relaxed max-w-md mx-auto lg:mx-0 mt-[22px]">
             Yashraa’s AI Bots deliver an unmatched experience with versatile features: access chat history, create tailored bot personas,Import business-critical data. Prioritizing privacy and security, while offering seamless branding options the perfect solution to enhance customer interactions, improve efficiency, and future-proof your business with AI.
           </p>
-          <img src="/images/ai-generated-img.png"/>
+          <div className="relative">
+
+            <img src="/images/ai-generated-img.png" className="absolute w-[80%]" />
+          </div>
         </div>
 
         {/* Right Section */}
