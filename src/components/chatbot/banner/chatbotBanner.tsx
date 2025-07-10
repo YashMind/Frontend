@@ -24,10 +24,17 @@ const ChatbotBanner = () => {
   const slideCount = instanceRef.current?.track.details.slides.length || 0;
 
   return (
-    <div className="chatbot-banner bg-gradient-to-t from-[#2B255C] via-[#1300AF] to-[#0083FF] h-screen">
+ <div className="relative h-screen z-80">
+<div
+    className="absolute inset-0 bg-cover bg-center"
+    style={{ backgroundImage: "url('/images/ai-generated.png')" }}
+></div>
+
+<div className="absolute inset-0 bg-[linear-gradient(360deg,_#0083FF_-17.49%,_#1300AF_4.72%,_#2B255C_98.87%)]
+ opacity-70"></div>
       <div ref={sliderRef} className="keen-slider container h-full">
         {/* Slide 1 */}
-        <div className="keen-slider__slide flex flex-col lg:flex-row items-start justify-center pt-28 lg:justify-between px-4">
+        <div className="keen-slider__slide flex flex-col lg:flex-row items-start justify-center pt-28 lg:justify-between px-4" >
           <div className="text-center lg:text-left mb-8 lg:mb-0 lg:w-1/2">
             <h1
               className="text-4xl sm:text-5xl md:text-6xl lg:text-[74px] leading-[100%] py-4 text-white"
@@ -46,13 +53,13 @@ const ChatbotBanner = () => {
               Sign In
             </Link>
           </div>
-          <div className="lg:w-1/2 flex justify-center">
+          {/* <div className="lg:w-1/2 flex justify-center " >
             <img
-              src="/images/slide-img.png"
+              src="/images/ai-generated.png"
               className="max-w-[80%] lg:max-w-full"
               alt="AI Chatbot Illustration"
             />
-          </div>
+          </div> */}
         </div>
 
         {/* Slide 2 */}
@@ -75,13 +82,13 @@ const ChatbotBanner = () => {
               Sign In
             </Link>
           </div>
-          <div className="lg:w-1/2 flex justify-center">
+          {/* <div className="lg:w-1/2 flex justify-center">
             <img
               src="/images/slide-img.png"
               className="max-w-[80%] lg:max-w-full"
               alt="Automation Tools Illustration"
             />
-          </div>
+          </div> */}
         </div>
 
         {/* Slide 3 */}
@@ -104,13 +111,13 @@ const ChatbotBanner = () => {
               Sign In
             </Link>
           </div>
-          <div className="lg:w-1/2 flex justify-center">
+          {/* <div className="lg:w-1/2 flex justify-center">
             <img
               src="/images/slide-img.png"
               className="max-w-[80%] lg:max-w-full"
               alt="Customer Support Illustration"
             />
-          </div>
+          </div> */}
         </div>
       </div>
 

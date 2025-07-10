@@ -78,7 +78,16 @@ const IntegerationCard = ({
 
 const OurChatbots = () => {
   return (
-    <div className="bg-[#1D0F8DED]  md:px-20 text-white pt-[64px]">
+<div className="relative h-screen z-80">
+{/* Background Image */}
+<div
+    className="absolute inset-0 bg-cover bg-center"
+    style={{ backgroundImage: "url('/images/ai-generated-2nd.png')" }}
+></div>
+
+{/* Gradient Overlay */}
+<div className="absolute inset-0 bg-[linear-gradient(360deg,_#0083FF_-17.49%,_#1300AF_4.72%,_#2B255C_98.87%)]
+  opacity-70"></div>
       <div className="block lg:flex items-center justify-between gap-12 container">
         {/* Left Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6  w-full lg:w-2/3 text-center">
@@ -107,7 +116,7 @@ const OurChatbots = () => {
               Try Now
             </button>
           </div>
-          <img src="/images/chat1.png" alt="Robot" className="m-auto" />
+          {/* <img src="/images/ai-generated-2nd.png" alt="Robot" className="m-auto" /> */}
         </div>
       </div>
     </div>
