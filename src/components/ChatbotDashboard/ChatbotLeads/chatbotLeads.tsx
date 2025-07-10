@@ -13,6 +13,7 @@ import ViewLeadChatModal from "./viewLeadChats/viewLeadChats";
 import { ChatbotLeadsArray } from "@/types/chatTypes";
 import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
 import { useTimezone } from "@/context/TimeZoneContext";
+import ConfigureMailDialog from "./configureMailDialog";
 
 const ChatbotLeads = ({
   botPage,
@@ -29,7 +30,9 @@ const ChatbotLeads = ({
   const [sortOrder, setSortOrder] = useState("desc");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [modalShow, setModalShow] = useState<boolean>(false);
+  const [isMailDialogOpen, setIsMailDialogOpen] = useState<boolean>(false)
   const { chatbotLeadsData } = useSelector((state: RootState) => state.chat);
+  const { chatbotData } = useSelector((state: RootState) => state.chat);
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
     const allRowIds = chatbotLeadsData?.data.map((item) => Number(item?.id));
@@ -109,14 +112,7 @@ const ChatbotLeads = ({
     document.body.removeChild(link);
   };
 
-  const handleConfigureMails = (chatbotleadData: ChatbotLeadsArray) => {
-    if (!chatbotLeadsData?.data) return;
 
-
-    const filteredleads = chatbotLeadsData.data.filter((lead) => selectedIds.includes(lead.id))
-
-    exportToCSV(filteredleads, `Chatbot_${botId}_leads`)
-  }
 
 
   return (
@@ -168,7 +164,7 @@ const ChatbotLeads = ({
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button onClick={() => { handleConfigureMails(chatbotLeadsData) }} className="cursor-pointer bg-[#340555] text-white rounded text-sm font-bold py-[7px] px-[11px]">
+            <button onClick={() => setIsMailDialogOpen(true)} className="cursor-pointer bg-[#340555] text-white rounded text-sm font-bold py-[7px] px-[11px]">
               Configure mails
             </button>
           </div>
@@ -313,6 +309,12 @@ const ChatbotLeads = ({
 
       {/* table */}
       <ViewLeadChatModal botId={botId} show={modalShow} onHide={() => setModalShow(false)} />
+      <ConfigureMailDialog
+        botId={botId}
+        email={chatbotData.lead_email}
+        open={isMailDialogOpen}
+        onClose={() => setIsMailDialogOpen(false)}
+      />
     </div>
   );
 };
