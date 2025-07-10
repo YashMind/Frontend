@@ -815,6 +815,30 @@ export const createChatbotLeads = createAsyncThunk<any, { payload: any }>(
     }
   }
 );
+export const configureLeadMail = createAsyncThunk(
+  "chat/configureLeadMail",
+  async (payload: {
+    bot_id: number;
+    email: string;
+
+  }, { rejectWithValue }) => {
+    try {
+      const response = await http.post("/chatbot/configure-lead-mail", payload);
+
+      if (response.status === 200) {
+        toasterSuccess("Email configuration updated successfully!", 2000);
+        return response.data;
+      }
+      return rejectWithValue(response.data?.message || "Failed to update configuration");
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.detail ||
+        error.message ||
+        "An error occurred during configuration";
+      toasterError(errorMessage, 2000);
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
 
 export const getChatbotsLeads = createAsyncThunk<
   any,
