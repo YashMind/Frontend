@@ -95,7 +95,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                   imgUrl = "/images/bot2.png"
                 }
 
-                const token = tokensData.token_usage.find((tok) => tok.bot_id == item.id)
+                const token = tokensData && tokensData.token_usage && tokensData.token_usage.find((tok) => tok.bot_id == item.id)
                 return (
                   <Link
                     key={index}

@@ -23,6 +23,7 @@ const ChatbotPage = () => {
 
       {/* our chatbots */}
       <OurChatbots />
+
       {/* 1 why choose chatbot*/}
       <WhyChooseChatbot />
 

@@ -128,7 +128,7 @@ const ChatbotLinksDocs = ({
             {ChatbotDocLinksData.data?.map((source, index) => (
               <button
                 key={index}
-                className={`px-4 py-2 max-w-40 rounded-t-lg font-medium truncate ${activeSourceIndex === index
+                className={`px-4 py-2 max-w-40 rounded-t-lg font-medium truncate ${!(activeSourceIndex === index)
                   ? "bg-[#624DE3] text-white"
                   : "bg-gray-200 text-gray-700"
                   }`}

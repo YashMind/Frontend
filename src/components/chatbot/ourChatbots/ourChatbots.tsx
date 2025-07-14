@@ -78,26 +78,27 @@ const IntegerationCard = ({
 
 const OurChatbots = () => {
   return (
-<div className="relative h-screen z-80">
-{/* Background Image */}
-<div
-    className="absolute inset-0 bg-cover bg-center"
-    style={{ backgroundImage: "url('/images/ai-generated-2nd.png')" }}
-></div>
+    <div className="relative h-screen z-80">
+      {/* Background Image */}
+      <div
+        className="absolute -z-10 inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/ai-generated-2nd.png')", zIndex: '-10' }}
+      ></div>
 
-{/* Gradient Overlay */}
-<div className="absolute inset-0 bg-[linear-gradient(360deg,_#0083FF_-17.49%,_#1300AF_4.72%,_#2B255C_98.87%)]
-  opacity-70"></div>
-      <div className="block lg:flex items-center justify-between gap-12 container">
+      {/* Gradient Overlay */}
+      <div className="absolute -z-10 inset-0 bg-[linear-gradient(360deg,_#0083FF_-17.49%,_#1300AF_4.72%,_#2B255C_98.87%)] opacity-70"></div>
+
+      {/* Content */}
+      <div className="relative z-10 block lg:flex items-center justify-between gap-12 container h-full">
         {/* Left Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6  w-full lg:w-2/3 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full lg:w-2/3 text-center">
           {cardData.map((card, index) => (
             <IntegerationCard key={index} {...card} />
           ))}
         </div>
 
         {/* Right Section */}
-        <div className="text-center sm:text-left w-full lg:w-1/3">
+        <div className="text-center text-white sm:text-left w-full lg:w-1/3">
           <h2
             className="text-3xl md:text-4xl font-normal mb-4 leading-snug text-center lg:text-right mt-[10px] lg:mt-0"
             style={{ fontFamily: "'Audiowide', sans-serif" }}
@@ -112,11 +113,10 @@ const OurChatbots = () => {
             social media channels at once
           </p>
           <div className=" text-center lg:text-right">
-            <button className="cursor-pointer bg-white text-black px-6 py-2 rounded-full text-lg  font-semibold shadow-md mb-8">
+            <button className="cursor-pointer bg-white text-black px-6 py-2 rounded-full text-lg font-semibold shadow-md mb-8">
               Try Now
             </button>
           </div>
-          {/* <img src="/images/ai-generated-2nd.png" alt="Robot" className="m-auto" /> */}
         </div>
       </div>
     </div>

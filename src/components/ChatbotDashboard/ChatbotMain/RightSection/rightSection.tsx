@@ -39,16 +39,15 @@ const RightSection = ({ showModal, botId }: ShowModalProps) => {
           };
 
           const imageUrl = getImageUrl();
-          const isActive = botId === chatbot.id;
 
           return (
             <Link
               key={`chatbot-${chatbot.id}`} // Better key using unique id
               href={`/chatbot-dashboard/overview/${chatbot.id}`}
-              className="cursor-pointer rounded-full transition-all hover:scale-105 hover:bg-white/10"
+              className={`cursor-pointer rounded-full transition-all hover:scale-105 hover:bg-white/10 ${botId === chatbot.id ? 'bg-white/10' : ''}`}
               aria-label={`Go to ${chatbot.chatbot_name} dashboard`}
             >
-              <div className={`p-2 rounded-full ${isActive ? 'bg-white/20' : ''}`}>
+              <div className={`p-2 rounded-full `}>
                 <Image
                   className="rounded-full object-cover"
                   src={imageUrl}
