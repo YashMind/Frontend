@@ -4,7 +4,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import AddEditPaymentWayModal from "./AddEditPaymentWay/addEditPaymentWay";
-import { AddUpdatePaymentGateway, deletePaymentsGateway, getAllPaymentGateway } from "@/store/slices/admin/adminSlice";
+import {
+  AddUpdatePaymentGateway,
+  deletePaymentsGateway,
+  getAllPaymentGateway,
+} from "@/store/slices/admin/adminSlice";
 import { fetchAdminTransactions } from "@/store/slices/admin/tokenAnalytic";
 
 const BillingSettings = () => {
@@ -13,23 +17,37 @@ const BillingSettings = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { paymentGatewayData } = useSelector((state: RootState) => state.admin);
+const {
+  data: transactions,
+  loading: transactionsLoading,
+  error: transactionsError,
+} = useSelector((state: RootState) => state.tokens.transactions ?? { 
+  data: null, 
+  loading: true, 
+  error: null 
+});
+const transactionsState = useSelector((state: RootState) => state.tokens.transactions);
+console.log("🔍 Full transactions state:", transactionsState);
+console.log("Transactions:", transactions);
+console.log("TransactionsLoading:", transactionsLoading);
+console.log("TransactionsError:", transactionsError);
 
-  const { data: transactions, loading: transactionsLoading, error: transactionsError } = useSelector(
-    (state: RootState) => state.tokens.transactions
-  );
+
 
   useEffect(() => {
+      console.log("Component: Dispatching thunk"); 
+
     dispatch(getAllPaymentGateway());
-    dispatch(fetchAdminTransactions({}))
-  }, []);
+    
+    dispatch(fetchAdminTransactions({}));
+
+  }, [dispatch]);
 
   const deletePaymentGateway = ({ id }: { id?: number }) => {
     dispatch(deletePaymentsGateway({ id: id }));
   };
 
-
   function downloadTransaction(transactionData: any, order_id: string) {
-
     const jsonStr = JSON.stringify(transactionData, null, 2);
     const blob = new Blob([jsonStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -44,7 +62,14 @@ const BillingSettings = () => {
   }
 
   const toggleGatewayStatus = (item: any) => {
-    dispatch(AddUpdatePaymentGateway({ payload: { ...item, status: item.status == 'active' ? "inactive" : 'active' } }));
+    dispatch(
+      AddUpdatePaymentGateway({
+        payload: {
+          ...item,
+          status: item.status == "active" ? "inactive" : "active",
+        },
+      })
+    );
   };
 
   return (
@@ -109,7 +134,6 @@ const BillingSettings = () => {
                               className="border-t border-white/10"
                               key={index}
                             >
-
                               <td className="py-[20px] px-[28px]">
                                 {item?.payment_name}
                               </td>
@@ -118,10 +142,11 @@ const BillingSettings = () => {
                               </td>
                               <td className="py-[20px] px-[28px]">
                                 <span
-                                  className={`${item?.status === "Active"
-                                    ? "bg-[#18B91F]"
-                                    : "bg-[#C38F00]"
-                                    } text-xs font-medium text-[#FBEDED] px-2 py-0.5 rounded-full`}
+                                  className={`${
+                                    item?.status === "Active"
+                                      ? "bg-[#18B91F]"
+                                      : "bg-[#C38F00]"
+                                  } text-xs font-medium text-[#FBEDED] px-2 py-0.5 rounded-full`}
                                 >
                                   {item?.status}
                                 </span>
@@ -134,7 +159,7 @@ const BillingSettings = () => {
                                 <button
                                   className="bg-green-600 text-xs px-2 py-1 rounded cursor-pointer"
                                   onClick={() => {
-                                    toggleGatewayStatus(item)
+                                    toggleGatewayStatus(item);
                                   }}
                                 >
                                   Toggle status
@@ -166,7 +191,6 @@ const BillingSettings = () => {
                     <h3 className="text-white font-medium text-base ">
                       Transaction
                     </h3>
-
                   </div>
                   <table className="w-full text-left text-sm">
                     <thead className="text-white/70 ">
@@ -270,60 +294,116 @@ const BillingSettings = () => {
                       </tr>
                     </thead>
                     <tbody className="text-white/90">
-                      {transactions && transactions.transactions.map((transaction) => <tr className="border-t border-white/10">
-                        <td className="py-[20px] px-[28px] ">{transaction.order_id}</td>
-                        <td className="py-[20px] px-[28px] ">{transaction.payment_id}</td>
-                        <td className=" py-[20px] px-[28px] text-[#AEB9E1]">
-                          {transaction.user?.name}
-                        </td>
-                        <td className=" py-[20px] px-[28px] text-[#AEB9E1]">
-                          {(transaction.created_at)}
-                        </td>
-                        <td className="py-[20px] px-[28px] text-[#AEB9E1] ">
-                          {transaction.amount} {transaction.currency}
-                        </td>
-                        <td className="  py-[20px] px-[28px] text-[#AEB9E1]">
-                          {transaction.plan?.name}
-                        </td>
-                        <td className=" py-[20px] px-[28px] text-[#AEB9E1]">
-                          <span
-                            className={`
+                      {transactions &&
+                        transactions.transactions.map((transaction) => (
+                          <tr className="border-t border-white/10">
+                            <td className="py-[20px] px-[28px] ">
+                              {transaction.order_id ?? "-"}
+                            </td>
+                            <td className="py-[20px] px-[28px] ">
+                              {transaction.payment_id ?? "—"}
+                            </td>
+                            <td className=" py-[20px] px-[28px] text-[#AEB9E1]">
+                              {transaction.user?.name}
+                            </td>
+                            <td className=" py-[20px] px-[28px] text-[#AEB9E1]">
+                              {transaction.created_at}
+                            </td>
+                            <td className="py-[20px] px-[28px] text-[#AEB9E1] ">
+                              {transaction.amount} {transaction.currency}
+                            </td>
+                            <td className="  py-[20px] px-[28px] text-[#AEB9E1]">
+                              {transaction.plan?.name}
+                            </td>
+                            <td className=" py-[20px] px-[28px] text-[#AEB9E1]">
+                              <span
+                                className={`
                               text-xs px-2 py-0.5 rounded-full
-                              ${transaction.status === 'created' ? 'bg-blue-100 text-blue-800' : ''}
-                              ${transaction.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ''}
-                              ${transaction.status === 'success' ? 'bg-green-500 text-white' : ''}
-                              ${transaction.status === 'failed' ? 'bg-red-100 text-red-800' : ''}
-                              ${transaction.status === 'refunded' ? 'bg-purple-100 text-purple-800' : ''}
-                              ${transaction.status === 'cancelled' ? 'bg-gray-200 text-gray-700' : ''}
+                              ${
+                                transaction.status === "created"
+                                  ? "bg-blue-100 text-blue-800"
+                                  : ""
+                              }
+                              ${
+                                transaction.status === "pending"
+                                  ? "bg-yellow-100 text-yellow-800"
+                                  : ""
+                              }
+                              ${
+                                transaction.status === "success"
+                                  ? "bg-green-500 text-white"
+                                  : ""
+                              }
+                              ${
+                                transaction.status === "failed"
+                                  ? "bg-red-100 text-red-800"
+                                  : ""
+                              }
+                              ${
+                                transaction.status === "refunded"
+                                  ? "bg-purple-100 text-purple-800"
+                                  : ""
+                              }
+                              ${
+                                transaction.status === "cancelled"
+                                  ? "bg-gray-200 text-gray-700"
+                                  : ""
+                              }
                             `}
-                          >
-                            {transaction.status}
-                          </span>
-                        </td>
-                        <td>
-                          <div className="flex gap-2 py-[20px] px-[28px]">
+                              >
+                                {transaction.status}
+                              </span>
+                            </td>
+                            <td>
+                              <div className="flex gap-2 py-[20px] px-[28px]">
+                                {transaction.transaction_data && (
+                                  <button
+                                    onClick={() =>
+                                      downloadTransaction(
+                                        transaction.transaction_data,
+                                        transaction.order_id
+                                      )
+                                    }
+                                  >
+                                    <Image
+                                      alt="alt"
+                                      src="/images/download.png"
+                                      height={16}
+                                      width={16}
+                                    />
+                                  </button>
+                                )}
 
-                            {transaction.transaction_data && <button onClick={() => downloadTransaction(transaction.transaction_data, transaction.order_id)}>
-                              <Image
-                                alt="alt"
-                                src="/images/download.png"
-                                height={16}
-                                width={16}
-                              />
-                            </button>}
-
-
-                            {/* <Image
+                                {/* <Image
                               alt="alt"
                               src="/images/tabler_send.png"
                               height={16}
                               width={16}
                             /> */}
-                          </div>
-                        </td>
-                      </tr>)}
-                      {transactionsLoading && <h2 className="mx-auto">Loading ...</h2>}
-                      {transactionsError && <h2 className="mx-auto">{transactionsError}</h2>}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      {transactionsLoading && (
+                        <tr>
+                          <td colSpan={8} className="text-center py-4">
+                            <h2 className="text-white/90">Loading ...</h2>
+                          </td>
+                        </tr>
+                      )}
+
+                     {transactionsError && (
+  <tr>
+    <td colSpan={8} className="text-center py-4">
+      <h2 className="text-white/90">
+        {(typeof transactionsError === "object" && "msg" in transactionsError)
+          ? transactionsError.msg
+          : String(transactionsError)}
+      </h2>
+    </td>
+  </tr>
+)}
+
                     </tbody>
                   </table>
                 </div>

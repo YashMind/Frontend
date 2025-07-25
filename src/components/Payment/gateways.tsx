@@ -12,8 +12,8 @@ import { FaPaypal, FaRupeeSign } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 
 interface PaymentResponse {
-    payment_session_id?: string; // Cashfree
-    approve_url?: string; // PayPal
+    payment_session_id?: string; 
+    approve_url?: string; 
     order_id?: string;
     cf_order_id?: number;
     success?: boolean;
@@ -22,7 +22,7 @@ interface PaymentResponse {
 }
 
 const Gateways = ({ plan_id, credit }: { plan_id?: string, credit?: string }) => {
-    const router = useRouter();
+    const router = useRouter(); 
     const dispatch = useDispatch<AppDispatch>();
     const [selectedGateway, setSelectedGateway] = useState<string | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
@@ -59,13 +59,11 @@ const Gateways = ({ plan_id, credit }: { plan_id?: string, credit?: string }) =>
             setError("Failed to load payment system");
         }
     };
-
     const openCashfreeCheckout = async (paymentSessionId: string) => {
         try {
             if (!window.Cashfree) {
                 throw new Error("Cashfree SDK not loaded");
             }
-
             setIsRedirecting(true);
 
             const checkoutOptions = {

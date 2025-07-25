@@ -44,6 +44,7 @@ const InvitationModal = ({
   );
   const [selectedUsers, setSelectedUsers] = useState<UserOption[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   // Get chatbots from Redux store
   const chatbots = useSelector((state: RootState) => state.chat.chatbots || {});
@@ -71,6 +72,9 @@ const InvitationModal = ({
     }
   }, [isOpen, dispatch]);
 
+  // Email validation function (same as in SelectComponents)
+  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
   // Handle form submission
   const handleSubmit = () => {
     if (!selectedChatbot) {
@@ -78,7 +82,18 @@ const InvitationModal = ({
       return;
     }
 
-    if (selectedUsers.length === 0) {
+    // Add inputValue as email if valid and not already in selectedUsers
+    let usersToSend = [...selectedUsers];
+    const trimmedInput = inputValue.trim();
+    if (
+      trimmedInput &&
+      isValidEmail(trimmedInput) &&
+      !usersToSend.some((u) => u.value === trimmedInput)
+    ) {
+      usersToSend.push({ value: trimmedInput, label: trimmedInput });
+    }
+
+    if (usersToSend.length === 0) {
       toasterError("Please select at least one user", 2000, "id");
       return;
     }
@@ -86,7 +101,7 @@ const InvitationModal = ({
     setIsSubmitting(true);
 
     // Extract email values from selected users
-    const userEmails = selectedUsers.map((user) => user.value);
+    const userEmails = usersToSend.map((user) => user.value);
 
     // Send invitations
     dispatch(
@@ -95,6 +110,9 @@ const InvitationModal = ({
         userEmails: userEmails,
       })
     );
+    // Optionally clear inputValue and selectedUsers after sending
+    setInputValue("");
+    setSelectedUsers([]);
   };
 
   // Handle successful invitation
@@ -264,6 +282,8 @@ const InvitationModal = ({
               isDisabled={invitationLoading}
               selectedChatbot={selectedChatbot}
               selectedUsers={selectedUsers}
+              inputValue={inputValue}
+              setInputValue={setInputValue}
             />
           </div>
         </div>

@@ -8,7 +8,7 @@ import adminSlice from "@/store/slices/admin/adminSlice";
 import invitationSlice from "@/store/slices/invitations/invitationSlice";
 import ticketSlice from "@/store/slices/supportTicket/slice";
 import tokenAnalyticSlice from "@/store/slices/admin/tokenAnalytic";
-
+import countrySlice from "@/store/slices/auth/country";
 export const store = configureStore({
   reducer: {
     auth: signUpSlice,
@@ -20,6 +20,7 @@ export const store = configureStore({
     invitations: invitationSlice,
     tickets: ticketSlice,
     tokens: tokenAnalyticSlice,
+    countries: countrySlice
   },
 });
 

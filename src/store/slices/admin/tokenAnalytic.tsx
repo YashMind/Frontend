@@ -61,8 +61,12 @@ export const fetchAdminTokenCreditReport = createAsyncThunk<
 >('tokenCredit/fetchAdminTokenCreditReport', async ({ page = 1, perPage = 100 }, { rejectWithValue }) => {
     try {
         const response = await http.get(`/admin/token-credit-report?page=${page}&per_page=${perPage}`);
+    console.log('API Response:', response.data); 
+
         return response.data;
     } catch (err: any) {
+            console.error('API Error:', err.response?.data); 
+
         return rejectWithValue(err.response?.data?.detail || 'Failed to fetch admin token report');
     }
 });
@@ -72,13 +76,20 @@ export const fetchAdminTransactions = createAsyncThunk<
     { page?: number; perPage?: number },
     { rejectValue: string }
 >('tokenCredit/fetchAdminTransactions', async ({ page = 1, perPage = 100 }, { rejectWithValue }) => {
+    console.log("thunk started")
     try {
-        const response = await http.get(`/admin/transactions?page=${page}&per_page=${perPage}`);
+        console.log("make api call")
+        const response = await   http.get(`/admin/transactions?page=${page}&per_page=${perPage}`);
+        console.log("response",response)
         return response.data;
-    } catch (err: any) {
+    }    
+
+    catch (err: any) {
+        console.log("error occur", err)
         return rejectWithValue(err.response?.data?.detail || 'Failed to fetch admin token report');
     }
-});
+}    
+);
 
 const tokenCreditSlice = createSlice({
     name: 'tokenCredit',
@@ -121,6 +132,7 @@ const tokenCreditSlice = createSlice({
             .addCase(fetchAdminTransactions.fulfilled, (state, action: PayloadAction<AdminTransactionsType>) => {
                 state.transactions.loading = false;
                 state.transactions.data = action.payload;
+                // console.log("aaaaaaaaaaaaaaaaaaa",state.transactions.data)
             })
             .addCase(fetchAdminTransactions.rejected, (state, action) => {
                 state.transactions.loading = false;

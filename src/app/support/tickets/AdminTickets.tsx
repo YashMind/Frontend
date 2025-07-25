@@ -4,7 +4,7 @@ import { useTimezone } from '@/context/TimeZoneContext';
 import { fetchAllTickets } from '@/store/slices/supportTicket/slice';
 import { AppDispatch, RootState } from '@/store/store';
 import { SupportTicket } from '@/types/supportTickets';
-import { formatDate } from 'date-fns';
+import { format } from 'date-fns';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -95,7 +95,7 @@ const AdminTickets = ({ onSelectTicket }: AdminTicketsProps) => {
                                     {ticket.user.fullName}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {!isLoading ? formatDate(ticket.created_at, timezone) : "-"}
+{!isLoading ? format(new Date(ticket.created_at), "dd MMM yyyy 'at' hh:mm a") : "-"}
                                 </td>
                             </tr>
                         ))}

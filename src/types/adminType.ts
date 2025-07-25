@@ -299,6 +299,8 @@ export interface PlanInfo {
 export interface Transactions {
   id: number;
   order_id: string;
+    total_revenue: number;
+
   payment_id: string;
   amount: number;
   currency: string;
@@ -311,11 +313,8 @@ export interface Transactions {
   plan: PlanInfo | null;
 }
 
-
 export interface AdminTransactionsType {
   transactions: Transactions[];
+  total_revenue: number;
   pagination: any;
 }
-
-
-

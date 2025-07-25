@@ -71,7 +71,7 @@ const MetricCard = ({
     )}
 
     <div className="flex items-center gap-2">
-      <div className="text-2xl font-semibold">{value}</div>
+      <div className="text-2xl font-semibold">{value.toLocaleString()}</div>
       <div
         className="text-sm flex items-center px-[4px] py-[2px] rounded-[2px]"
         style={{
@@ -123,13 +123,13 @@ const AdminTopbar = ({ allUsersData }: AdminTopbarProps) => {
       borderColor: "#05C16833",
     },
     {
-      label: "Tokens Consumed This Month",
+      label: "Total Tokens Consumed",
       icon: <TiEye size={20} />,
-      value: allUsersData?.tokens_consumed ?? 0,
-      changeIcon: <HiArrowDownRight />,
-      changeColor: "#FF5A65",
-      bgColor: "#FF5A6533",
-      borderColor: "#FF5A6533",
+      value: allUsersData?.total_tokens_consumed ?? 0, // Changed from monthly_tokens_consumed
+      changeIcon: <GoArrowUpRight />, // Changed to up arrow assuming total is always growing
+      changeColor: "#14CA74", // Changed to green
+      bgColor: "#05C16833", // Changed to green background
+      borderColor: "#05C16833", // Changed to green border
     },
     {
       label: "New sign ups",

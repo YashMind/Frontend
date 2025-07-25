@@ -170,7 +170,6 @@ const LowBalanceReminder = ({ currentBalance, threshold = 10, onAddCredits = () 
   const isLowBalance = currentBalance < threshold;
 
   if (!isLowBalance || !isVisible) return null;
-
   return (
     <div className="relative low-balance-reminder bg-red-50 border-l-4 border-red-500 rounded-lg p-4 ">
       {/* Close button */}
