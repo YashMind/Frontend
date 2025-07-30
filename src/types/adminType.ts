@@ -6,6 +6,8 @@ export interface AdminAllUsers {
   total_signups?: number;
   tokens_consumed?: number;
   total_subscriptions?: number;
+  total_tokens_consumed?: number;
+  total_messages_consumed?: number;
 }
 
 export interface SubscriptionPlans {
@@ -14,6 +16,7 @@ export interface SubscriptionPlans {
   pricingInr: number;
   pricingDollar: number;
   token_per_unit: number;
+  message_per_unit: number;
   chatbots_allowed: number;
   chars_allowed: number;
   webpages_allowed: number;
@@ -70,7 +73,6 @@ export interface TokenBotsData {
   total_pages: number;
 }
 
-
 export interface ToolsDataType {
   id?: number;
   tool: string;
@@ -78,13 +80,11 @@ export interface ToolsDataType {
   status: boolean;
 }
 
-
 export interface ProductMonitoringItem {
   id: number;
   name: string;
   status: string;
 }
-
 
 export interface ProductMonitoringRes {
   id: number;
@@ -142,7 +142,6 @@ export interface AdminLogsActivity {
   created_at: string;
   updated_at: string;
 }
-
 
 export interface ClientLogsActivity {
   last_added_admin: AdminUsersData;
@@ -228,7 +227,6 @@ export interface TokenUsageHistory {
   recorded_at: Date; // Added from your later requirement
 }
 
-
 export interface UserCreditsAndTokenUsageResponse {
   credits: UserCredits;
   token_usage: Array<TokenUsage>;
@@ -281,7 +279,6 @@ export interface Credit {
   token_usage: TokenUsage[];
 }
 
-
 export interface AdminTokenCreditReport {
   credits: Credit[];
   history_credits: any[]; // You might want to define a proper type for history credits
@@ -299,7 +296,7 @@ export interface PlanInfo {
 export interface Transactions {
   id: number;
   order_id: string;
-    total_revenue: number;
+  total_revenue: number;
 
   payment_id: string;
   amount: number;

@@ -535,7 +535,7 @@ export const conversationMessage = createAsyncThunk<
   async ({ payload }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      dispatch(addUserMessage({ message: payload.message, sender: "user" }));
+      // dispatch(addUserMessage({ message: payload.message, sender: "user" }));
       const response = await http.post(
         `/chatbot/chats/${payload?.chat_id}/message`,
         payload
@@ -817,11 +817,13 @@ export const createChatbotLeads = createAsyncThunk<any, { payload: any }>(
 );
 export const configureLeadMail = createAsyncThunk(
   "chat/configureLeadMail",
-  async (payload: {
-    bot_id: number;
-    email: string;
-
-  }, { rejectWithValue }) => {
+  async (
+    payload: {
+      bot_id: number;
+      email: string;
+    },
+    { rejectWithValue }
+  ) => {
     try {
       const response = await http.post("/chatbot/configure-lead-mail", payload);
 
@@ -829,9 +831,12 @@ export const configureLeadMail = createAsyncThunk(
         toasterSuccess("Email configuration updated successfully!", 2000);
         return response.data;
       }
-      return rejectWithValue(response.data?.message || "Failed to update configuration");
+      return rejectWithValue(
+        response.data?.message || "Failed to update configuration"
+      );
     } catch (error: any) {
-      const errorMessage = error.response?.data?.detail ||
+      const errorMessage =
+        error.response?.data?.detail ||
         error.message ||
         "An error occurred during configuration";
       toasterError(errorMessage, 2000);
@@ -1002,8 +1007,8 @@ export const fetchChatMessageTokensSummary = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.detail ||
-        error.message ||
-        "Failed to fetch today's tokens"
+          error.message ||
+          "Failed to fetch today's tokens"
       );
     }
   }
@@ -1089,7 +1094,7 @@ export const updateWhatsappRegistration = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error?.response?.data?.detail ||
-        "Failed to update WhatsApp registration"
+          "Failed to update WhatsApp registration"
       );
     }
   }
@@ -1106,7 +1111,7 @@ export const deactivateWhatsappRegistration = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error?.response?.data?.detail ||
-        "Failed to deactivate WhatsApp registration"
+          "Failed to deactivate WhatsApp registration"
       );
     }
   }
@@ -1123,7 +1128,7 @@ export const deleteWhatsappRegistration = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error?.response?.data?.detail ||
-        "Failed to deactivate WhatsApp registration"
+          "Failed to deactivate WhatsApp registration"
       );
     }
   }
@@ -1158,12 +1163,12 @@ interface EmailSendRequest {
 }
 
 export const sendEmail = createAsyncThunk(
-  'email/sendEmail',
+  "email/sendEmail",
   async (emailData: EmailSendRequest, { rejectWithValue }) => {
     try {
-      const response = await http.post('/admin/send-email', emailData, {
+      const response = await http.post("/admin/send-email", emailData, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
       return response.data;

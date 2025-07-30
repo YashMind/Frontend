@@ -40,6 +40,7 @@ export interface ChatbotsData {
   lead_email: string;
   limit_to?: number;
   every_minutes?: number;
+  total_messages?: number;
 }
 
 export interface TextMessage {
@@ -246,6 +247,18 @@ interface TokenUsage {
   wordpress_response_tokens: number;
   zapier_request_tokens: number;
   zapier_response_tokens: number;
+  message_limit: number;
+  combined_message_consumption: number;
+  user_request_message: number;
+  user_response_message: number;
+  whatsapp_request_messages: number;
+  whatsapp_response_messages: number;
+  slack_request_messages: number;
+  slack_response_messages: number;
+  wordpress_request_messages: number;
+  wordpress_response_messages: number;
+  zapier_request_messages: number;
+  zapier_response_messages: number;
 }
 
 export interface UserCredits {
@@ -260,12 +273,16 @@ export interface UserCredits {
   credit_balance: number;
   token_per_unit: number;
   chatbots_allowed: number;
+  credits_consumed_messages: number;
+  credit_balance_messages: number;
+  message_per_unit: number;
 }
 
 export interface ChatMessageTokens {
   credits: UserCredits;
   token_usage: TokenUsage[];
   total_token_consumption: number;
+  total_message_consumption?: number;
 }
 
 export interface ChatMessageTokensToday {
@@ -273,10 +290,14 @@ export interface ChatMessageTokensToday {
     request_tokens: number;
     response_tokens: number;
     users: number;
-  }
+    request_messages: number;
+    response_messages: number;
+  };
   monthly: {
     request_tokens: number;
     response_tokens: number;
     users: number;
-  }
+    request_messages: number;
+    response_messages: number;
+  };
 }

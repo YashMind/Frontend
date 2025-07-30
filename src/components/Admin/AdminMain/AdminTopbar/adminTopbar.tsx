@@ -61,10 +61,7 @@ const MetricCard = ({
 
     {openDropdownIndex === index && (
       <div className="absolute right-4 top-10 bg-white text-black rounded-md shadow-lg px-3 py-2 z-50 text-sm">
-        <p
-          className="cursor-pointer hover:underline"
-          onClick={onMoreDetails}
-        >
+        <p className="cursor-pointer hover:underline" onClick={onMoreDetails}>
           More Details
         </p>
       </div>
@@ -88,16 +85,22 @@ const MetricCard = ({
 
 const AdminTopbar = ({ allUsersData }: AdminTopbarProps) => {
   const router = useRouter();
-  const { timezone, isLoading } = useTimezone()
+  const { timezone, isLoading } = useTimezone();
   const dispatch = useDispatch<AppDispatch>();
 
-  const recentSignupsCount = useSelector((state: RootState) => state.auth.recentSignups?.count ?? 0);
-  const recentSignups = useSelector((state: RootState) => state.auth.recentSignups?.data ?? []);
+  const recentSignupsCount = useSelector(
+    (state: RootState) => state.auth.recentSignups?.count ?? 0
+  );
+  const recentSignups = useSelector(
+    (state: RootState) => state.auth.recentSignups?.data ?? []
+  );
 
   const userData: UserProfileData = useSelector(
     (state: RootState) => state.auth.userData!
   );
-  const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
+  const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(
+    null
+  );
   const [selectedMetric, setSelectedMetric] = useState<{
     label: string;
     value: number;
@@ -132,6 +135,15 @@ const AdminTopbar = ({ allUsersData }: AdminTopbarProps) => {
       borderColor: "#05C16833", // Changed to green border
     },
     {
+      label: "Total Messages Consumed",
+      icon: <TiEye size={20} />,
+      value: allUsersData?.total_messages_consumed ?? 0, // Changed from monthly_tokens_consumed
+      changeIcon: <GoArrowUpRight />, // Changed to up arrow assuming total is always growing
+      changeColor: "#14CA74", // Changed to green
+      bgColor: "#05C16833", // Changed to green background
+      borderColor: "#05C16833", // Changed to green border
+    },
+    {
       label: "New sign ups",
       icon: <FaPlusCircle />,
       value: recentSignupsCount ?? 0,
@@ -153,12 +165,15 @@ const AdminTopbar = ({ allUsersData }: AdminTopbarProps) => {
 
   return (
     <div>
-
       <div className="flex items-center justify-between mt-[40px] px-10">
         <h2 className="text-2xl font-semibold">
-          Welcome back, {userData?.fullName ? formatName(userData.fullName) : ""}
+          Welcome back,{" "}
+          {userData?.fullName ? formatName(userData.fullName) : ""}
         </h2>
-        <button onClick={() => router.push("/chatbot-dashboard/main")} className="cursor-pointer bg-[#18B91F] hover:bg-green-600 text-white px-4 py-1 rounded text-xs">
+        <button
+          onClick={() => router.push("/chatbot-dashboard/main")}
+          className="cursor-pointer bg-[#18B91F] hover:bg-green-600 text-white px-4 py-1 rounded text-xs"
+        >
           Back
         </button>
       </div>
@@ -194,7 +209,9 @@ const AdminTopbar = ({ allUsersData }: AdminTopbarProps) => {
       >
         {recentSignups.map((user, idx) => (
           <tr key={idx} className="hover:bg-[#1C2B5E]">
-            <td className="border border-gray-700 px-4 py-2">{user.fullName}</td>
+            <td className="border border-gray-700 px-4 py-2">
+              {user.fullName}
+            </td>
             <td className="border border-gray-700 px-4 py-2">{user.email}</td>
             <td className="border border-gray-700 px-4 py-2">
               {!isLoading ? formatDate(user.created_at, timezone) : "-"}

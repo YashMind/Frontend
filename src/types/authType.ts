@@ -35,6 +35,7 @@ interface UserProfileData {
   status?: string;
   activate_plan: boolean;
   base_rate_per_token: number;
+  messageUsed?: number;
 }
 
 interface TrainingText {

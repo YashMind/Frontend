@@ -8,7 +8,11 @@ import { AppDispatch, RootState } from "@/store/store";
 import { PiDotsThreeOutlineVertical } from "react-icons/pi";
 import DropdownActionMenu from "@/components/DropdownActionMenu";
 import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
-import { deleteSubscriptionsPlan, getAllSubscriptionPlans, toggleSubscriptionPlanStatus } from "@/store/slices/admin/adminSlice";
+import {
+  deleteSubscriptionsPlan,
+  getAllSubscriptionPlans,
+  toggleSubscriptionPlanStatus,
+} from "@/store/slices/admin/adminSlice";
 
 type MenuItem = {
   label: string;
@@ -30,9 +34,7 @@ const SubscriptionPlans = () => {
   );
 
   useEffect(() => {
-    dispatch(
-      getAllSubscriptionPlans()
-    );
+    dispatch(getAllSubscriptionPlans());
   }, [dispatch]);
 
   const getMenuItems = (item: any): MenuItem[] => [
@@ -65,7 +67,6 @@ const SubscriptionPlans = () => {
     },
   ];
 
-
   const handleDeleteClick = (item: any) => {
     setSelectedUser(item.id);
     setIsDeleteModalOpen(true);
@@ -91,9 +92,14 @@ const SubscriptionPlans = () => {
                 <h1 className="text-white text-lg font-semibold mb-4 ">
                   All Plans
                 </h1>
-                <button onClick={() => {
-                  setModalShow(true);
-                }} className="px-2 text-sm leading-1 h-7 bg-green-600 text-white rounded-md">Add new Plan</button>
+                <button
+                  onClick={() => {
+                    setModalShow(true);
+                  }}
+                  className="px-2 text-sm leading-1 h-7 bg-green-600 text-white rounded-md"
+                >
+                  Add new Plan
+                </button>
               </div>
               <table className="min-w-full  text-sm">
                 <thead>
@@ -101,9 +107,14 @@ const SubscriptionPlans = () => {
                     <th className="p-4 text-xs font-medium flex items-center gap-1">
                       Plan Name
                     </th>
-                    <th className="p-4 text-xs font-medium">Pricing (&#8377;)</th>
+                    <th className="p-4 text-xs font-medium">
+                      Pricing (&#8377;)
+                    </th>
                     <th className="p-4 text-xs font-medium">Pricing ($)</th>
                     <th className="p-4 text-xs font-medium">Token Per unit</th>
+                    <th className="p-4 text-xs font-medium">
+                      Message Per unit
+                    </th>
                     <th className="p-4 text-xs font-medium">Chatbots</th>
                     <th className="p-4 text-xs font-medium">Duration</th>
                     <th className="p-4 text-xs font-medium">Features</th>
@@ -131,9 +142,14 @@ const SubscriptionPlans = () => {
                           </td>
                           <td className="p-4 text-[#AEB9E1] text-xs">
                             {item?.token_per_unit}
-                          </td><td className="p-4 text-[#AEB9E1] text-xs">
+                          </td>
+                          <td className="p-4 text-[#AEB9E1] text-xs">
+                            {item?.message_per_unit}
+                          </td>
+                          <td className="p-4 text-[#AEB9E1] text-xs">
                             {item?.chatbots_allowed}
-                          </td><td className="p-4 text-[#AEB9E1] text-xs">
+                          </td>
+                          <td className="p-4 text-[#AEB9E1] text-xs">
                             {item?.duration_days}
                           </td>
 
@@ -167,7 +183,9 @@ const SubscriptionPlans = () => {
                               <div className="relative inline-block">
                                 <button
                                   onClick={() =>
-                                    setOpenMenuIndex((prev) => (prev === index ? null : index))
+                                    setOpenMenuIndex((prev) =>
+                                      prev === index ? null : index
+                                    )
                                   }
                                   className="p-1 rounded-md cursor-pointer"
                                 >
@@ -193,7 +211,6 @@ const SubscriptionPlans = () => {
               onHide={() => setModalShow(false)}
               planData={planData}
             />
-
           </div>
           <ConfirmDeleteModal
             isOpen={isDeleteModalOpen}

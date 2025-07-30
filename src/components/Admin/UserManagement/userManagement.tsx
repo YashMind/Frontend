@@ -4,7 +4,10 @@ import Image from "next/image";
 import EditUserModal from "./EditUser/editUser";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { updateUserByAdmin, getAllUsers } from "@/store/slices/admin/adminSlice";
+import {
+  updateUserByAdmin,
+  getAllUsers,
+} from "@/store/slices/admin/adminSlice";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import { MdEdit } from "react-icons/md";
 import { FiSearch, FiFilter, FiChevronDown, FiChevronUp } from "react-icons/fi";
@@ -13,8 +16,7 @@ import { formatDateTimeWithTz } from "@/components/utils/formatDateTime";
 import { useTimezone } from "@/context/TimeZoneContext";
 
 const UserManagement = () => {
-  const { timezone, isLoading } = useTimezone()
-
+  const { timezone, isLoading } = useTimezone();
 
   const [modalShow, setModalShow] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -33,8 +35,11 @@ const UserManagement = () => {
   const [planFilter, setPlanFilter] = useState<string>("");
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [tokenFilter, setTokenFilter] = useState<string>("");
-  const [dateFilter, setDateFilter] = useState<{ start?: string, end?: string }>({});
-
+  const [dateFilter, setDateFilter] = useState<{
+    start?: string;
+    end?: string;
+  }>({});
+  const [messageFilter, setMessageFilter] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
   const { allUsersData } = useSelector((state: RootState) => state.admin);
 
@@ -57,11 +62,20 @@ const UserManagement = () => {
         search,
         sortBy,
         sortOrder,
-        ...filters
+        ...filters,
       })
     );
-  }, [dispatch, page, limit, search, sortBy, sortOrder, planFilter, statusFilter, tokenFilter]);
-
+  }, [
+    dispatch,
+    page,
+    limit,
+    search,
+    sortBy,
+    sortOrder,
+    planFilter,
+    statusFilter,
+    tokenFilter,
+  ]);
 
   const handleUpdateStatus = (data: any) => {
     dispatch(
@@ -137,7 +151,9 @@ const UserManagement = () => {
             {showFilters && (
               <div className="bg-[#0A1330] p-4 rounded-md mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Plan</label>
+                  <label className="block text-sm text-gray-400 mb-1">
+                    Plan
+                  </label>
                   <select
                     className="w-full bg-[#081028] text-white p-2 rounded-md text-sm border border-[#1f355c]"
                     value={planFilter}
@@ -154,7 +170,9 @@ const UserManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Status</label>
+                  <label className="block text-sm text-gray-400 mb-1">
+                    Status
+                  </label>
                   <select
                     className="w-full bg-[#081028] text-white p-2 rounded-md text-sm border border-[#1f355c]"
                     value={statusFilter}
@@ -171,7 +189,9 @@ const UserManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Token Used</label>
+                  <label className="block text-sm text-gray-400 mb-1">
+                    Token Used
+                  </label>
                   <select
                     className="w-full bg-[#081028] text-white p-2 rounded-md text-sm border border-[#1f355c]"
                     value={tokenFilter}
@@ -188,19 +208,44 @@ const UserManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Signup Date</label>
+                  <label className="block text-sm text-gray-400 mb-1">
+                    Message Used
+                  </label>
+                  <select
+                    className="w-full bg-[#081028] text-white p-2 rounded-md text-sm border border-[#1f355c]"
+                    value={messageFilter}
+                    onChange={(e) => {
+                      setMessageFilter(e.target.value);
+                      setPage(1);
+                    }}
+                  >
+                    <option value="">All</option>
+                    <option value="0-100">0 - 100</option>
+                    <option value="101-500">101 - 500</option>
+                    <option value="501+">501+</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">
+                    Signup Date
+                  </label>
                   <div className="flex gap-2">
                     <input
                       type="date"
                       className="w-full bg-[#081028] text-white p-2 rounded-md text-sm border border-[#1f355c]"
                       value={dateFilter.start || ""}
-                      onChange={(e) => setDateFilter({ ...dateFilter, start: e.target.value })}
+                      onChange={(e) =>
+                        setDateFilter({ ...dateFilter, start: e.target.value })
+                      }
                     />
                     <input
                       type="date"
                       className="w-full bg-[#081028] text-white p-2 rounded-md text-sm border border-[#1f355c]"
                       value={dateFilter.end || ""}
-                      onChange={(e) => setDateFilter({ ...dateFilter, end: e.target.value })}
+                      onChange={(e) =>
+                        setDateFilter({ ...dateFilter, end: e.target.value })
+                      }
                     />
                   </div>
                 </div>
@@ -218,8 +263,8 @@ const UserManagement = () => {
 
             <div className="flex justify-between border-b border-[#1f355c]">
               <div className="text-sm text-gray-400 mt-4">
-                Showing {allUsersData?.current_page} - {allUsersData?.total_pages} of{" "}
-                {allUsersData?.total_count} users
+                Showing {allUsersData?.current_page} -{" "}
+                {allUsersData?.total_pages} of {allUsersData?.total_count} users
               </div>
             </div>
           </div>
@@ -245,9 +290,12 @@ const UserManagement = () => {
                   >
                     <div className="flex items-center gap-1">
                       Plan
-                      {sortBy === "plan" && (
-                        sortOrder === "asc" ? <FiChevronUp /> : <FiChevronDown />
-                      )}
+                      {sortBy === "plan" &&
+                        (sortOrder === "asc" ? (
+                          <FiChevronUp />
+                        ) : (
+                          <FiChevronDown />
+                        ))}
                     </div>
                   </th>
                   <th
@@ -256,9 +304,26 @@ const UserManagement = () => {
                   >
                     <div className="flex items-center gap-1">
                       Token Used
-                      {sortBy === "tokenUsed" && (
-                        sortOrder === "asc" ? <FiChevronUp /> : <FiChevronDown />
-                      )}
+                      {sortBy === "tokenUsed" &&
+                        (sortOrder === "asc" ? (
+                          <FiChevronUp />
+                        ) : (
+                          <FiChevronDown />
+                        ))}
+                    </div>
+                  </th>
+                  <th
+                    className="p-4 text-xs font-medium cursor-pointer hover:text-white"
+                    onClick={() => handleSort("messageUsed")}
+                  >
+                    <div className="flex items-center gap-1">
+                      Message Used
+                      {sortBy === "messageUsed" &&
+                        (sortOrder === "asc" ? (
+                          <FiChevronUp />
+                        ) : (
+                          <FiChevronDown />
+                        ))}
                     </div>
                   </th>
                   <th
@@ -267,9 +332,12 @@ const UserManagement = () => {
                   >
                     <div className="flex items-center gap-1">
                       Signup Date
-                      {sortBy === "created_at" && (
-                        sortOrder === "asc" ? <FiChevronUp /> : <FiChevronDown />
-                      )}
+                      {sortBy === "created_at" &&
+                        (sortOrder === "asc" ? (
+                          <FiChevronUp />
+                        ) : (
+                          <FiChevronDown />
+                        ))}
                     </div>
                   </th>
                   <th
@@ -278,9 +346,12 @@ const UserManagement = () => {
                   >
                     <div className="flex items-center gap-1">
                       Status
-                      {sortBy === "status" && (
-                        sortOrder === "asc" ? <FiChevronUp /> : <FiChevronDown />
-                      )}
+                      {sortBy === "status" &&
+                        (sortOrder === "asc" ? (
+                          <FiChevronUp />
+                        ) : (
+                          <FiChevronDown />
+                        ))}
                     </div>
                   </th>
                   <th className="p-4 text-xs font-medium">Actions</th>
@@ -310,11 +381,16 @@ const UserManagement = () => {
                           {item?.tokenUsed}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
-                          {!isLoading ? formatDateTimeWithTz(item?.created_at, timezone) : "-"}
+                          {item?.messageUsed}
+                        </td>
+                        <td className="p-4 text-[#AEB9E1] text-xs">
+                          {!isLoading
+                            ? formatDateTimeWithTz(item?.created_at, timezone)
+                            : "-"}
                         </td>
                         <td className="p-4">
                           <span className="bg-[#AEB9E133] text-[#AEB9E1] text-xs px-2 py-1 rounded">
-                            {item?.status || '-'}
+                            {item?.status || "-"}
                           </span>
                         </td>
                         <td className="p-4 relative">
@@ -331,7 +407,7 @@ const UserManagement = () => {
                               size={20}
                               className="cursor-pointer"
                               onClick={() => {
-                                handleOpenMenu(item?.id)
+                                handleOpenMenu(item?.id);
                               }}
                             />
                           </div>
@@ -376,7 +452,9 @@ const UserManagement = () => {
             </button>
             {allUsersData?.total_pages >= 1 && (
               <button
-                className={`w-6 h-6 ${page === 1 ? "bg-[#624DE3]" : "bg-gray-200"} text-black rounded-[7px] text-sm`}
+                className={`w-6 h-6 ${
+                  page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
+                } text-black rounded-[7px] text-sm`}
                 onClick={() => setPage(1)}
               >
                 1
@@ -406,12 +484,17 @@ const UserManagement = () => {
                 {page + 1}
               </button>
             )}
-            {allUsersData?.total_pages > 2 && page < allUsersData?.total_pages - 2 && (
-              <span className="mx-1">...</span>
-            )}
+            {allUsersData?.total_pages > 2 &&
+              page < allUsersData?.total_pages - 2 && (
+                <span className="mx-1">...</span>
+              )}
             {allUsersData?.total_pages > 1 && (
               <button
-                className={`w-6 h-6 ${page === allUsersData?.total_pages ? "bg-[#624DE3]" : "bg-gray-200"} text-black rounded-[7px] text-sm`}
+                className={`w-6 h-6 ${
+                  page === allUsersData?.total_pages
+                    ? "bg-[#624DE3]"
+                    : "bg-gray-200"
+                } text-black rounded-[7px] text-sm`}
                 onClick={() => setPage(allUsersData?.total_pages)}
               >
                 {allUsersData?.total_pages}
@@ -420,7 +503,9 @@ const UserManagement = () => {
             <button
               className="text-sm text-[#9E9E9E] font-medium disabled:opacity-50"
               onClick={() => setPage(page + 1)}
-              disabled={allUsersData?.total_pages === page || !allUsersData?.total_pages}
+              disabled={
+                allUsersData?.total_pages === page || !allUsersData?.total_pages
+              }
             >
               Next
             </button>
