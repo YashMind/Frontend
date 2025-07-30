@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaFacebook, FaInstagram, FaTelegramPlane, FaWhatsapp, FaYoutube } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTelegramPlane, FaWhatsapp, FaYoutube,FaLinkedin,FaTwitterSquare } from "react-icons/fa";
 
 const HomeFooter = () => {
   return (
@@ -105,10 +105,10 @@ const HomeFooter = () => {
             <a href="https://www.youtube.com/@YashraaAI" target="_blank" rel="noopener noreferrer">
               <FaYoutube />
             </a>
-            <a href="https://www.facebook.com/profile.php?id=61576909360828" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.facebook.com/share/16fLSGGJEN/?mibextid=qi2Omg" target="_blank" rel="noopener noreferrer">
               <FaFacebook />
             </a>
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.instagram.com/_yashraa_ai_/" target="_blank" rel="noopener noreferrer">
               <FaInstagram />
             </a>
             <a href="https://web.telegram.org/k/#-2561704830" target="_blank" rel="noopener noreferrer">
@@ -116,6 +116,14 @@ const HomeFooter = () => {
             </a>
             <a href="https://whatsapp.com/channel/0029Vb60ltZ1HspzbzM8dN1y" target="_blank" rel="noopener noreferrer">
               <FaWhatsapp />
+            </a>
+             <a href="https://www.linkedin.com/in/yashraa-ai-873838327/" target="_blank" rel="noopener noreferrer">
+              <FaLinkedin />
+
+            </a>
+            <a href="https://x.com/YashraaA16816" target="_blank" rel="noopener noreferrer">
+              <FaTwitterSquare />
+
             </a>
           </div>
         </div>

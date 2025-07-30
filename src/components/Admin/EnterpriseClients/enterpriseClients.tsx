@@ -311,7 +311,7 @@ const handleSaveDiscount = (id: number) => {
                                 type="number"
                                 min={0}
                                 max={100}
-                                step={0.1}                /* optional: allow decimals */
+                                step={0.1}                
                                 value={editedDiscounts[item.id] ?? ""}
                                 onChange={(e) => {
                                   const val = parseFloat(e.target.value);

@@ -82,7 +82,7 @@ const TrialActivationPage = () => {
                                 </svg>
                             </div>
                         </div>
-                        <p className="ml-3 text-gray-200">Full access to all features for 7 days</p>
+                        <p className="ml-3 text-gray-200">Full access to Basic plan features for 7 days</p>
                     </div>
 
                     <div className="flex items-start">

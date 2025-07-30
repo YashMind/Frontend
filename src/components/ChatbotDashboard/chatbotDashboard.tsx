@@ -16,15 +16,28 @@ import { useTimezone } from "@/context/TimeZoneContext";
 interface ChatbotDashboardProps {
   showModal: () => void;
 }
+
 const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { timezone, isLoading } = useTimezone();
   const chatbots: ChatbotsData[] = useSelector(
     (state: RootState) => state.chat.chatbots
   );
+  const user = useSelector((state: RootState) => state.auth.user); 
+
   const [showCreditModal, setShowCreditModal] = useState<boolean>(false)
   const tokensData = useSelector((state: RootState) => state.chat.tokens);
   const chatbotError = useSelector((state: RootState) => state.chat.error);
+  const invitedUsers = useSelector((state: RootState) => state.invitations.invitedUsers);
+  const userData = useSelector((state: RootState) => state.auth.userData);
+  // Determine if the current user is invited
+  const isInvited = Boolean(
+    userData?.email &&
+    Array.isArray(invitedUsers) &&
+    invitedUsers.some((user: any) =>
+      user.shared_email?.toLowerCase() === userData.email.toLowerCase()
+    )
+  );
   useEffect(() => {
     dispatch(fetchChatMessageTokens());
   }, [dispatch]);
@@ -74,7 +87,10 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
             </span>
           </div>
 
-          <LowBalanceReminder currentBalance={tokensData.credits && tokensData.credits.credit_balance} threshold={20} onAddCredits={() => setShowCreditModal(true)} />
+          {/* Show LowBalanceReminder only if user is NOT invited and all data is loaded */}
+          {userData?.email && Array.isArray(invitedUsers) && !isInvited && (
+            <LowBalanceReminder currentBalance={tokensData.credits && tokensData.credits.credit_balance} threshold={20} onAddCredits={() => setShowCreditModal(true)} />
+          )}
         </div>
         <div>
           <h2 className="text-2xl font-semibold mb-2">My Bot List</h2>
@@ -163,7 +179,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
 export default ChatbotDashboard;
 
 
-const LowBalanceReminder = ({ currentBalance, threshold = 10, onAddCredits = () => { } }) => {
+const LowBalanceReminder = ({ currentBalance, threshold = 10, onAddCredits = () => { } }: { currentBalance: number, threshold?: number, onAddCredits?: () => void }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   // Check if balance is below threshold

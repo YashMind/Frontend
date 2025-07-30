@@ -25,6 +25,28 @@ const UserData = {
   role: "",
 };
 
+export const deleteUser = createAsyncThunk(
+  "users/deleteUser",
+  async (userId: number, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.delete(`/auth/${userId}`);
+      
+      if (response.status === 200) {
+        toasterSuccess("User deleted successfully!", 2000, "id");
+        return userId;
+      }
+      return rejectWithValue("Failed to delete user");
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.detail || "Failed to delete user";
+      toasterError(errorMessage, 2000, "id");
+      return rejectWithValue(errorMessage);
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 // Async thunk for signup
 export const signUpUser = createAsyncThunk<
   any,

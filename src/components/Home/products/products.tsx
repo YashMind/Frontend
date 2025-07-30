@@ -77,9 +77,9 @@ const HomeProducts = () => {
               </p>
 
               {/* Button */}
-              <button className="cursor-pointer mt-auto bg-gradient-to-r from-purple-700 to-blue-600 text-white px-5 py-2 rounded-full font-medium text-sm sm:text-base transition">
+              {/* <button className="cursor-pointer mt-auto bg-gradient-to-r from-purple-700 to-blue-600 text-white px-5 py-2 rounded-full font-medium text-sm sm:text-base transition">
                 Try Now
-              </button>
+              </button> */}
             </div>
           ))}
         </div>

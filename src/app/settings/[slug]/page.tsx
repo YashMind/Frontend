@@ -49,7 +49,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               <BsQuestionCircleFill size={20} className="lg:size-[25px]" />
               <span className="text-sm lg:text-base">Help</span>
             </Link>
-            <Link
+            {/* <Link
               className={`p-2 flex gap-2 items-center justify-center lg:justify-start lg:mx-4 whitespace-nowrap ${slug === "chats"
                 ? " bg-white rounded-lg text-black shadow-md"
                 : ""
@@ -58,7 +58,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
             >
               <FaGear size={20} className="lg:size-[25px]" />
               <span className="text-sm lg:text-base">Settings</span>
-            </Link>
+            </Link> */}
           </div>
         </div>
 
