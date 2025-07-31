@@ -21,7 +21,7 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
   const tokensData = useSelector((state: RootState) =>
     state.chat.tokens.token_usage?.find((bot) => bot.bot_id == botId)
   );
-  const { allowed_total_chars, user_total_chars, } = useSelector(
+  const { allowed_total_chars, user_total_chars } = useSelector(
     (state: RootState) => state.chat.ChatbotDocLinksData
   );
   const chatbotLeads = useSelector(
@@ -70,25 +70,37 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
             {/* Tokens */}
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-gray-500 font-medium">Request Tokens</span>
+                <span className="text-gray-500 font-medium">
+                  {/* Request Tokens */}
+                  Request Messages
+                </span>
                 <span className="text-xl font-semibold text-gray-800">
-                  {tokensConsumedSummary?.today?.request_tokens || 0}
+                  {/* {tokensConsumedSummary?.today?.request_tokens || 0} */}
+                  {tokensConsumedSummary?.today?.request_messages || 0}
                 </span>
               </div>
 
               <div className="flex justify-between items-center">
-                <span className="text-gray-500 font-medium">Response Tokens</span>
+                <span className="text-gray-500 font-medium">
+                  {/* Response Tokens */}
+                  Response Messages
+                </span>
                 <span className="text-xl font-semibold text-gray-800">
-                  {tokensConsumedSummary?.today?.response_tokens || 0}
+                  {/* {tokensConsumedSummary?.today?.response_tokens || 0} */}
+                  {tokensConsumedSummary?.today?.response_messages || 0}
                 </span>
               </div>
 
               <div className="pt-3 border-t border-gray-100">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-700 font-semibold">Total Consumption</span>
+                  <span className="text-gray-700 font-semibold">
+                    Total Consumption
+                  </span>
                   <span className="text-2xl font-bold text-indigo-700">
-                    {(tokensConsumedSummary?.today?.response_tokens || 0) +
-                      (tokensConsumedSummary?.today?.request_tokens || 0)}
+                    {/* {(tokensConsumedSummary?.today?.response_tokens || 0) +
+                      (tokensConsumedSummary?.today?.request_tokens || 0)} */}
+                    {(tokensConsumedSummary?.today?.response_messages || 0) +
+                      (tokensConsumedSummary?.today?.request_messages || 0)}
                   </span>
                 </div>
               </div>
@@ -115,25 +127,37 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
             {/* Tokens */}
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-gray-500 font-medium">Request Tokens</span>
+                <span className="text-gray-500 font-medium">
+                  {/* Request Tokens */}
+                  Request Messages
+                </span>
                 <span className="text-xl font-semibold text-gray-800">
-                  {tokensConsumedSummary?.monthly?.request_tokens || 0}
+                  {/* {tokensConsumedSummary?.monthly?.request_tokens || 0} */}
+                  {tokensConsumedSummary?.monthly?.request_messages || 0}
                 </span>
               </div>
 
               <div className="flex justify-between items-center">
-                <span className="text-gray-500 font-medium">Response Tokens</span>
+                <span className="text-gray-500 font-medium">
+                  {/* Response Tokens */}
+                  Response Messages
+                </span>
                 <span className="text-xl font-semibold text-gray-800">
-                  {tokensConsumedSummary?.monthly?.response_tokens || 0}
+                  {/* {tokensConsumedSummary?.monthly?.response_tokens || 0} */}
+                  {tokensConsumedSummary?.monthly?.response_messages || 0}
                 </span>
               </div>
 
               <div className="pt-3 border-t border-gray-100">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-700 font-semibold">Total Consumption</span>
+                  <span className="text-gray-700 font-semibold">
+                    Total Consumption
+                  </span>
                   <span className="text-2xl font-bold text-indigo-700">
-                    {(tokensConsumedSummary?.monthly?.response_tokens || 0) +
-                      (tokensConsumedSummary?.monthly?.request_tokens || 0)}
+                    {/* {(tokensConsumedSummary?.monthly?.response_tokens || 0) +
+                      (tokensConsumedSummary?.monthly?.request_tokens || 0)} */}
+                    {(tokensConsumedSummary?.monthly?.response_messages || 0) +
+                      (tokensConsumedSummary?.monthly?.request_messages || 0)}
                   </span>
                 </div>
               </div>
@@ -171,23 +195,29 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
         {/* Trained Card */}
         <div className="bg-white rounded-2xl p-6 flex-1 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">Knowledge Base</h3>
+            <h3 className="text-lg font-semibold text-gray-800">
+              Knowledge Base
+            </h3>
             <div className="p-3 rounded-full bg-emerald-100 text-emerald-600">
               <VscLightbulbSparkle size={24} className="text-current" />
             </div>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-gray-500 font-medium">Characters used</span>
-            {allowed_total_chars && < div >
-
-              <span className="text-2xl font-bold text-emerald-600">
-                {formatLargeNumber(user_total_chars ?? 0) ?? 0}
-              </span>
-              <span className="font-bold text-emerald-600 text-sm">
-                {" "}/{" "}{allowed_total_chars ? formatLargeNumber(allowed_total_chars) : 0}
-              </span>
-            </div>}
-
+            {allowed_total_chars && (
+              <div>
+                <span className="text-2xl font-bold text-emerald-600">
+                  {formatLargeNumber(user_total_chars ?? 0) ?? 0}
+                </span>
+                <span className="font-bold text-emerald-600 text-sm">
+                  {" "}
+                  /{" "}
+                  {allowed_total_chars
+                    ? formatLargeNumber(allowed_total_chars)
+                    : 0}
+                </span>
+              </div>
+            )}
           </div>
           {/* Optional: Add usage visualization */}
           {/* <div className="mt-4 pt-3 border-t border-gray-100">
@@ -204,7 +234,7 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
           </div> */}
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

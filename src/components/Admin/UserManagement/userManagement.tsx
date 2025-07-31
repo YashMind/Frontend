@@ -43,7 +43,7 @@ const UserManagement = () => {
     start?: string;
     end?: string;
   }>({});
-
+  const [messageFilter, setMessageFilter] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
   const { allUsersData } = useSelector((state: RootState) => state.admin);
 
@@ -250,6 +250,25 @@ const UserManagement = () => {
 
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">
+                    Message Used
+                  </label>
+                  <select
+                    className="w-full bg-[#081028] text-white p-2 rounded-md text-sm border border-[#1f355c]"
+                    value={messageFilter}
+                    onChange={(e) => {
+                      setMessageFilter(e.target.value);
+                      setPage(1);
+                    }}
+                  >
+                    <option value="">All</option>
+                    <option value="0-100">0 - 100</option>
+                    <option value="101-500">101 - 500</option>
+                    <option value="501+">501+</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">
                     Signup Date
                   </label>
                   <div className="flex gap-2">
@@ -336,6 +355,20 @@ const UserManagement = () => {
                   </th>
                   <th
                     className="p-4 text-xs font-medium cursor-pointer hover:text-white"
+                    onClick={() => handleSort("messageUsed")}
+                  >
+                    <div className="flex items-center gap-1">
+                      Message Used
+                      {sortBy === "messageUsed" &&
+                        (sortOrder === "asc" ? (
+                          <FiChevronUp />
+                        ) : (
+                          <FiChevronDown />
+                        ))}
+                    </div>
+                  </th>
+                  <th
+                    className="p-4 text-xs font-medium cursor-pointer hover:text-white"
                     onClick={() => handleSort("created_at")}
                   >
                     <div className="flex items-center gap-1">
@@ -387,6 +420,9 @@ const UserManagement = () => {
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
                           {item?.tokenUsed}
+                        </td>
+                        <td className="p-4 text-[#AEB9E1] text-xs">
+                          {item?.messageUsed}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
                           {!isLoading

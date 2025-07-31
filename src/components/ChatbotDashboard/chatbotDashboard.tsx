@@ -23,25 +23,27 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
   const chatbots: ChatbotsData[] = useSelector(
     (state: RootState) => state.chat.chatbots
   );
-  const user = useSelector((state: RootState) => state.auth.user); 
+  // const user = useSelector((state: RootState) => state.auth.user); 
 
   const [showCreditModal, setShowCreditModal] = useState<boolean>(false)
   const tokensData = useSelector((state: RootState) => state.chat.tokens);
   const chatbotError = useSelector((state: RootState) => state.chat.error);
-  const invitedUsers = useSelector((state: RootState) => state.invitations.invitedUsers);
   const userData = useSelector((state: RootState) => state.auth.userData);
+  
   // Determine if the current user is invited
-  const isInvited = Boolean(
-    userData?.email &&
-    Array.isArray(invitedUsers) &&
-    invitedUsers.some((user: any) =>
-      user.shared_email?.toLowerCase() === userData.email.toLowerCase()
-    )
-  );
+  // const isInvited = Boolean(
+  //   userData?.email &&
+  //   Array.isArray(invitedUsers) &&
+  //   invitedUsers.some((user: any) =>
+  //     user.shared_email?.toLowerCase() === userData.email.toLowerCase()
+  //   )
+  // );
   useEffect(() => {
     dispatch(fetchChatMessageTokens());
   }, [dispatch]);
-
+ console.log("user data",userData)
+ console.log("token",tokensData.has_shared_bots)
+ 
   return (
     <div className="flex gap-6 w-full">
       <div className="bg-[#2a2561]  py-2 rounded-3xl w-full px-6">
@@ -54,11 +56,14 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
               <div className="bg-[#fff] p-4 rounded-2xl  ">
                 <div className="flex gap-4  items-center justify-between">
                   <p className="mb-2 text-black font-semibold text-lg">
-                    All Bots token consumption
+                    {/* All Bots token consumption */}
+                    All Bots message consumption
                   </p>
                   <p className="text-right font-semibold  text-[#501794] text-lg">
-                    {tokensData.token_usage[0].combined_token_consumption || 0}
+                    {/* {tokensData.token_usage[0].combined_token_consumption || 0} */}
                     {/* {tokensData.token_usage[0].token_limit || 1} */}
+                    {tokensData.token_usage[0].combined_message_consumption ||
+                      0}
                   </p>
                 </div>
 
@@ -67,10 +72,9 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                     className="bg-[#501794] h-2 rounded-full "
                     style={{
                       width:
-                        (((tokensData.token_usage[0]
-                          .combined_token_consumption) /
-                          tokensData.token_usage[0].token_limit)) *
-                        100 +
+                        (tokensData.token_usage[0].combined_token_consumption /
+                          tokensData.token_usage[0].token_limit) *
+                          100 +
                         "%",
                     }}
                   />
@@ -83,35 +87,39 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
             onClick={() => showModal()}
           >
             <span className="font-semibold text-lg text-white text-center">
-              Create New Bot <br></br> +
+              Create New Bot <br></br> 
             </span>
           </div>
 
           {/* Show LowBalanceReminder only if user is NOT invited and all data is loaded */}
-          {userData?.email && Array.isArray(invitedUsers) && !isInvited && (
+          {/* {userData?.email && Array.isArray(invitedUsers) && !isInvited && (
             <LowBalanceReminder currentBalance={tokensData.credits && tokensData.credits.credit_balance} threshold={20} onAddCredits={() => setShowCreditModal(true)} />
-          )}
+          )} */}
         </div>
         <div>
           <h2 className="text-2xl font-semibold mb-2">My Bot List</h2>
           <div className="flex flex-wrap gap-4 bg-[#FFFFFF80]/20 backdrop-blur-3xl p-4 rounded-3xl m-4">
             {chatbots &&
               chatbots?.map((item, index: number) => {
-
-                let imgUrl
+                let imgUrl;
 
                 if (item.image) {
-                  if (((item.image) as string).startsWith('http') || ((item.image) as string).startsWith('https')) {
-                    imgUrl = item.image
+                  if (
+                    (item.image as string).startsWith("http") ||
+                    (item.image as string).startsWith("https")
+                  ) {
+                    imgUrl = item.image;
                   } else {
-                    imgUrl = process.env.NEXT_PUBLIC_BACKEND_URL +
-                      item.image
+                    imgUrl = process.env.NEXT_PUBLIC_BACKEND_URL + item.image;
                   }
                 } else {
-                  imgUrl = "/images/bot2.png"
+                  imgUrl = "/images/bot2.png";
                 }
 
-                const token = tokensData && tokensData.token_usage && tokensData.token_usage.find((tok) => tok.bot_id == item.id)
+                const token =
+                  tokensData &&
+                  tokensData.token_usage &&
+                  tokensData.token_usage.find((tok) => tok.bot_id == item.id);
                 return (
                   <Link
                     key={index}
@@ -133,11 +141,16 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                       </div>
                       <div className="text-right">
                         <div className="text-xs text-gray-400 whitespace-nowrap">
-                          {!isLoading ? formatDate(item?.created_at, timezone) : "-"}
+                          {!isLoading
+                            ? formatDate(item?.created_at, timezone)
+                            : "-"}
                         </div>
                         <div className="text-xs text-gray-400 whitespace-nowrap">
-                          {!isLoading ? formatTime(item?.created_at, timezone) : "-"}
-                        </div></div>
+                          {!isLoading
+                            ? formatTime(item?.created_at, timezone)
+                            : "-"}
+                        </div>
+                      </div>
                     </div>
                     <h3 className="text-gray-800 font-medium text-lg uppercase line-clamp-1 group-hover:text-blue-600">
                       {item?.chatbot_name}
@@ -156,12 +169,22 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                         <div className="flex items-center gap-1">
                           <div className="w-2 h-2 rounded-full bg-blue-400"></div>
                           <span className="text-gray-500">
-                            {((token?.user_request_token ?? 0) + (token?.user_response_token ?? 0)).toLocaleString()} tokens
+                            {/* {((token?.user_request_token ?? 0) + (token?.user_response_token ?? 0)).toLocaleString()} tokens */}
+                            {(
+                              (token?.user_request_message ?? 0) +
+                              (token?.user_response_message ?? 0)
+                            ).toLocaleString()}{" "}
+                            messages
                           </span>
                         </div>
-                        <span className={`px-1.5 py-0.5 rounded text-xs ${item.public ? 'text-green-700 bg-green-50' : 'text-blue-700 bg-blue-50'
-                          }`}>
-                          {item.public ? 'Public' : 'Private'}
+                        <span
+                          className={`px-1.5 py-0.5 rounded text-xs ${
+                            item.public
+                              ? "text-green-700 bg-green-50"
+                              : "text-blue-700 bg-blue-50"
+                          }`}
+                        >
+                          {item.public ? "Public" : "Private"}
                         </span>
                       </div>
                     </div>
@@ -171,7 +194,9 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
           </div>
         </div>
       </div>
-      {showCreditModal && <AddCreditModal onClose={() => setShowCreditModal(false)} />}
+      {showCreditModal && (
+        <AddCreditModal onClose={() => setShowCreditModal(false)} />
+      )}
     </div>
   );
 };
@@ -196,13 +221,17 @@ const LowBalanceReminder = ({ currentBalance, threshold = 10, onAddCredits = () 
       >
         <FaTimes />
       </button>
-
-      <div className="flex gap-4  flex-col sm:flex-row justify-between items-start sm:items-center pr-6">
+        {!tokensData?.has_shared_bots && (
+          <div className="flex gap-4  flex-col sm:flex-row justify-between items-start sm:items-center pr-6">
         <div className="flex items-center mb-2 sm:mb-0">
           <FaExclamationTriangle className="text-red-500 text-xl mr-3" />
           <div>
-            <h3 className="text-lg font-semibold text-red-800">Low Credit Balance</h3>
-            <p className="text-red-600">Only {currentBalance} credits remaining</p>
+            <h3 className="text-lg font-semibold text-red-800">
+              Low Credit Balance
+            </h3>
+            <p className="text-red-600">
+              Only {currentBalance} credits remaining
+            </p>
           </div>
         </div>
         {onAddCredits && (
@@ -214,6 +243,8 @@ const LowBalanceReminder = ({ currentBalance, threshold = 10, onAddCredits = () 
           </button>
         )}
       </div>
+        )      }
+      
     </div>
   );
 };

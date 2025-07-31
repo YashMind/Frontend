@@ -29,17 +29,24 @@ const schema = yup.object().shape({
     .number()
     .typeError("Token limit must be a number")
     .required("Token limit is required"),
+  message_per_unit: yup
+    .number()
+    .typeError("Message limit must be a number")
+    .required("Message limit is required"),
   chatbots_allowed: yup
     .number()
     .typeError("Chatbots allowed must be a number")
     .required("Chatbots is required"),
-  chars_allowed: yup.number()
+  chars_allowed: yup
+    .number()
     .typeError("Characters allowed must be a number")
-    .required("Chatbots is required"),
-  webpages_allowed: yup.number()
+    .required("Chars Allowed is required"),
+  webpages_allowed: yup
+    .number()
     .typeError("Webpages allowed must be a number")
-    .required("Chatbots is required"),
-  team_strength: yup.number()
+    .required("Webpages Allowed is required"),
+  team_strength: yup
+    .number()
     .typeError("Team strength must be a number")
     .required("Chatbots is required"),
   duration_days: yup
@@ -71,15 +78,20 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
     onHide();
   };
 
+  const onError = (errors: any) => {
+    console.error("❌ Validation Errors:", errors);
+  };
+
   useEffect(() => {
     setValue("name", planData?.name);
     setValue("pricingInr", planData?.pricingInr);
     setValue("pricingDollar", planData?.pricingDollar);
     setValue("token_per_unit", planData?.token_per_unit);
+    setValue("message_per_unit", planData?.message_per_unit);
     setValue("chatbots_allowed", planData?.chatbots_allowed);
     setValue("chars_allowed", planData?.chars_allowed);
-    setValue("chatbots_allowed", planData?.webpages_allowed);
-    setValue("chatbots_allowed", planData?.team_strength);
+    setValue("webpages_allowed", planData?.webpages_allowed);
+    setValue("team_strength", planData?.team_strength);
     setValue("duration_days", planData?.duration_days);
     setValue("features", planData?.features);
     setValue("id", planData?.id);
@@ -100,7 +112,7 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
           {planData?.id ? "Edit" : "Add"} Token Bot
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {/* Bot Name */}
             <div>
@@ -112,11 +124,16 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
                 type="text"
                 disabled={!!planData?.id}
                 {...register("name")}
-                className={`w-full px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all ${planData?.id ? "cursor-not-allowed bg-gray-700 text-gray-400" : "bg-[#1A2C65] text-white"
-                  }`}
+                className={`w-full px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all ${
+                  planData?.id
+                    ? "cursor-not-allowed bg-gray-700 text-gray-400"
+                    : "bg-[#1A2C65] text-white"
+                }`}
               />
               {errors.name && (
-                <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>
+                <p className="text-red-400 text-xs mt-1">
+                  {errors.name.message}
+                </p>
               )}
             </div>
 
@@ -129,7 +146,9 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
                 {...register("duration_days", { valueAsNumber: true })}
                 className="w-full px-4 py-2.5 rounded-lg bg-[#1A2C65] text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
               >
-                <option value="" disabled selected>Select Duration</option>
+                <option value="" disabled selected>
+                  Select Duration
+                </option>
                 {[
                   { duration: 30, label: "Monthly" },
                   { duration: 90, label: "Quarterly" },
@@ -154,7 +173,9 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
                 Pricing (₹) *
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">₹</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  ₹
+                </span>
                 <input
                   placeholder="0.00"
                   type="number"
@@ -176,7 +197,9 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
                 Pricing ($) *
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  $
+                </span>
                 <input
                   placeholder="0.00"
                   type="number"
@@ -193,7 +216,7 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
             </div>
 
             {/* Token Limit */}
-            <div>
+            {/* <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
                 Token Limit *
               </label>
@@ -206,6 +229,23 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
               {errors.token_per_unit && (
                 <p className="text-red-400 text-xs mt-1">
                   {errors.token_per_unit.message}
+                </p>
+              )}
+            </div> */}
+
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-300">
+                Message Limit *
+              </label>
+              <input
+                placeholder="e.g. 10000"
+                type="number"
+                {...register("message_per_unit", { valueAsNumber: true })}
+                className="w-full px-4 py-2.5 rounded-lg bg-[#1A2C65] text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+              />
+              {errors.message_per_unit && (
+                <p className="text-red-400 text-xs mt-1">
+                  {errors.message_per_unit.message}
                 </p>
               )}
             </div>
@@ -294,7 +334,9 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
               {...register("features")}
               className="w-full px-4 py-2.5 rounded-lg bg-[#1A2C65] text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
             ></textarea>
-            <p className="text-xs text-gray-400 mt-1">Separate features with commas or new lines</p>
+            <p className="text-xs text-gray-400 mt-1">
+              Separate features with commas or new lines
+            </p>
             {errors.features && (
               <p className="text-red-400 text-xs mt-1">
                 {errors.features.message}

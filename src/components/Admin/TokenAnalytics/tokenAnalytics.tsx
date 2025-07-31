@@ -10,7 +10,6 @@ import {
 import Image from "next/image";
 import { fetchAdminTokenCreditReport } from "@/store/slices/admin/tokenAnalytic";
 
-
 interface TokenUsage {
   token_limit: number;
   bot_id: number;
@@ -30,6 +29,19 @@ interface TokenUsage {
   slack_response_tokens: number;
   wordpress_response_tokens: number;
   zapier_response_tokens: number;
+  message_limit: number;
+  user_request_message: number;
+  whatsapp_request_messages: number;
+  slack_request_messages: number;
+  wordpress_request_messages: number;
+  zapier_request_messages: number;
+  combined_message_consumption: number;
+  open_ai_response_message: number;
+  user_response_message: number;
+  whatsapp_response_messages: number;
+  slack_response_messages: number;
+  wordpress_response_messages: number;
+  zapier_response_messages: number;
 }
 
 interface User {
@@ -52,6 +64,9 @@ interface Credit {
   chatbots_allowed: number;
   user: User;
   token_usage: TokenUsage[];
+  message_per_unit: number;
+  credits_consumed_messages: number;
+  credit_balance_messages: number;
 }
 
 interface Pagination {
@@ -78,16 +93,16 @@ const TokenAnalytics = () => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [tokenData, setTokenData] = useState<any>({});
   const dispatch = useDispatch<AppDispatch>();
-  const { topTokenUsersData } = useSelector(
-    (state: RootState) => state.admin
-  );
+  const { topTokenUsersData } = useSelector((state: RootState) => state.admin);
 
-  const { data: tokensCredits, loading: tokensCreditsLoading, error: tokensCreditsError } = useSelector(
-    (state: RootState) => state.tokens.admin
-  );
+  const {
+    data: tokensCredits,
+    loading: tokensCreditsLoading,
+    error: tokensCreditsError,
+  } = useSelector((state: RootState) => state.tokens.admin);
   useEffect(() => {
     dispatch(getTopConsumptionUsers());
-    dispatch(fetchAdminTokenCreditReport({}))
+    dispatch(fetchAdminTokenCreditReport({}));
   }, [dispatch, search, page, limit, sortBy, sortOrder]);
 
   const deleteTokenBot = ({ id }: { id?: number }) => {
@@ -257,7 +272,9 @@ const TokenAnalytics = () => {
             {/* products wise division */}
             <div className="mt-6 p-8 rounded-md text-white border border-[#343B4F] shadow-2xl">
               <div className="flex justify-between border-b border-[#1f355c]">
-                <h2 className="text-lg font-semibold mb-4">Breakdown By Product</h2>
+                <h2 className="text-lg font-semibold mb-4">
+                  Breakdown By Product
+                </h2>
               </div>
               <div className="overflow-x-auto">
                 <table className="min-w-full text-sm text-left">
@@ -274,7 +291,7 @@ const TokenAnalytics = () => {
 
                     <tr
                       className=" hover:bg-[#111827] bg-[#0A1330] transition"
-                    // key={index}
+                      // key={index}
                     >
                       <td className="px-6 py-4 flex items-center gap-2">
                         <div className="w-2.5 h-2.5 rounded-full bg-[#a855f7]"></div>
@@ -304,7 +321,6 @@ const TokenAnalytics = () => {
                         </button>
                       </td> */}
                     </tr>
-
                   </tbody>
                 </table>
               </div>
