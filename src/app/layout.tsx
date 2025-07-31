@@ -35,6 +35,15 @@ export default function RootLayout({
       <html className="scroll-smooth" lang="en" suppressHydrationWarning={true}>
         <head>
           <link rel="icon" href="./favicon.ico"  />
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-FMTKQ1Z2FB"></script>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-FMTKQ1Z2FB');
+          `
+        }} />
         </head>
         <body
           suppressHydrationWarning={true}
