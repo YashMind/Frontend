@@ -36,6 +36,8 @@ const ContactUs = () => {
     });
     // Prepare the email data
     const emailData = {
+       title: `Contact from ${formData.name}`,       // Required by API
+      description: formData.message.substring(0, 50),
       subject: `Contact Form Submission from ${formData.name}`,
       html_content: `
         <html>

@@ -1,5 +1,5 @@
 // components/FacebookLoginButton.tsx
-import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import FacebookLogin, { ReactFacebookLoginInfo } from "react-facebook-login/dist/facebook-login-render-props";
 import { useRouter } from "next/navigation";
 import http from "@/services/http/baseUrl";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
@@ -28,7 +28,7 @@ const LoginWithFacebook = () => {
 
   return (
     <FacebookLogin
-      appId="1160952392055053"
+      appId="1207391863816177"
       autoLoad={false}
       fields="name,email, picture"
       callback={handleFacebookResponse}

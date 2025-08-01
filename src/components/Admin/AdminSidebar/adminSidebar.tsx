@@ -26,7 +26,7 @@ import { RiDashboardHorizontalFill } from "react-icons/ri";
 const menuItems = [
   { label: "Dashboard", path: "/admin/dashboard", icon: <RiDashboardHorizontalFill size={25} />, key: "dashboard" },
   { label: "Overview", path: "/admin/overview", icon: <GrOverview size={25} />, key: "overview" },
-  { label: "Users Management", path: "/admin/users-management", icon: <HiUsers size={25} />, key: "users-management" },
+  { label: "client management", path: "/admin/users-management", icon: <HiUsers size={25} />, key: "users-management" },
   { label: "Subscription Plans", path: "/admin/subscription-plans", icon: <MdOutlineSubscriptions size={25} />, key: "subscription-plans" },
   { label: "Token Analytics", path: "/admin/token-analytics", icon: <IoAnalyticsSharp size={25} />, key: "token-analytics" },
   { label: "Product Monitoring", path: "/admin/product-monitoring", icon: <FaWatchmanMonitoring size={25} />, key: "product-monitoring" },
@@ -46,7 +46,7 @@ export const accessPoints = [
     value: 'overview'
   },
   {
-    label: "Users Management",
+    label: "Cilent Management",
     icon: <HiUsers size={25} />,
     link: '/admin/users-management',
     value: 'users-management'

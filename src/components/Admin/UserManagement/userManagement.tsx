@@ -16,6 +16,8 @@ import { formatDateTimeWithTz } from "@/components/utils/formatDateTime";
 import { useTimezone } from "@/context/TimeZoneContext";
 import { FaTrash } from "react-icons/fa";
 import { deleteUser } from "@/store/slices/auth/authSlice";
+import { getInvitedUsers } from "@/store/slices/invitations/invitationSlice";
+
 
 const UserManagement = () => {
   const { timezone, isLoading } = useTimezone();
@@ -36,7 +38,7 @@ const UserManagement = () => {
 
   // Filters
   const [showFilters, setShowFilters] = useState(false);
-  const [planFilter, setPlanFilter] = useState<string>("");
+  const [planFilter, setPlanFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [tokenFilter, setTokenFilter] = useState<string>("");
   const [dateFilter, setDateFilter] = useState<{
@@ -46,8 +48,12 @@ const UserManagement = () => {
   const [messageFilter, setMessageFilter] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
   const { allUsersData } = useSelector((state: RootState) => state.admin);
+  const { invitedUsers, loading, error } = useSelector((state: RootState) => state.invitations);
 
   // Fetch users when filters or pagination changes
+  useEffect(() => {
+  dispatch(getInvitedUsers());
+}, [dispatch]);
   useEffect(() => {
     const filters = {
       ...(planFilter && { plan: planFilter }),
@@ -56,6 +62,7 @@ const UserManagement = () => {
       ...(dateFilter.start && { startDate: dateFilter.start }),
       ...(dateFilter.end && { endDate: dateFilter.end }),
     };
+
 
     dispatch(
       getAllUsers({
@@ -162,7 +169,7 @@ const UserManagement = () => {
           {/* Search and Filters */}
           <div className="mt-5 bg-[#0B1739] p-5">
             <div className="flex justify-between items-center mb-4">
-              <h1 className="text-white text-lg font-semibold">All Users</h1>
+              <h1 className="text-white text-lg font-semibold">All Cilents</h1>
 
               <div className="flex items-center gap-4">
                 <div className="relative">
@@ -203,10 +210,15 @@ const UserManagement = () => {
                       setPage(1);
                     }}
                   >
-                    <option value="">All Plans</option>
-                    <option value="1">Basic</option>
-                    <option value="2">Pro</option>
-                    <option value="3">Enterprise</option>
+                    <option value="">All Clients</option>
+                    <option value="1">Basic plan</option>
+                    <option value="2">Pro plan</option>
+                    <option value="3">Enterprise plan</option>
+                    <option value="4">Free Plan</option>
+                    <option value="5">Team User</option>
+
+                    
+
                   </select>
                 </div>
 
@@ -417,6 +429,8 @@ const UserManagement = () => {
                           {item?.plan == 1 && "Basic"}
                           {item?.plan == 2 && "Pro"}
                           {item?.plan == 3 && "Enterprise"}
+                          {item?.plan == 4 && "Free"}
+                          {item?.plan == 5 && "Team Member"}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
                           {item?.tokenUsed}

@@ -25,10 +25,10 @@ const schema = yup.object().shape({
     .number()
     .typeError("Dollar Pricing must be a number")
     .required("Dollar Pricing is required "),
-  token_per_unit: yup
-    .number()
-    .typeError("Token limit must be a number")
-    .required("Token limit is required"),
+  // token_per_unit: yup
+  //   .number()
+  //   .typeError("Token limit must be a number")
+  //   .required("Token limit is required"),
   message_per_unit: yup
     .number()
     .typeError("Message limit must be a number")
@@ -96,6 +96,7 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
     setValue("features", planData?.features);
     setValue("id", planData?.id);
   }, [reset, planData?.id, show]);
+  console.log(planData?.name)
 
   return show ? (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -214,8 +215,8 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
                 </p>
               )}
             </div>
-
-            {/* Token Limit */}
+{/* 
+            Token Limit */}
             {/* <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
                 Token Limit *
@@ -287,7 +288,7 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
             </div>
 
             {/* Webpages allowed */}
-            {/* <div>
+            <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
                 Webpages Allowed *
               </label>
@@ -302,10 +303,10 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
                   {errors.webpages_allowed.message}
                 </p>
               )}
-            </div> */}
+            </div>
 
             {/* Team Strength */}
-            {/* <div>
+            <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
                 Team Strength *
               </label>
@@ -320,7 +321,7 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
                   {errors.team_strength.message}
                 </p>
               )}
-            </div> */}
+            </div>
           </div>
 
           {/* Features */}

@@ -15,6 +15,8 @@ const PUBLIC_ROUTES = new Set([
   "/payment/paypal",
   "/auth/signin",
   "/auth/signup",
+  "/auth/forgot-password",
+  "/auth/reset-password",
   "/chatbot",
   "/voice-agent",
   "/llm",
