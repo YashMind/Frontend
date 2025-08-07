@@ -210,12 +210,13 @@ const UserManagement = () => {
                       setPage(1);
                     }}
                   >
-                    <option value="">All Clients</option>
+                    
                     <option value="1">Basic plan</option>
                     <option value="2">Pro plan</option>
                     <option value="3">Enterprise plan</option>
                     <option value="4">Free Plan</option>
                     <option value="5">Team User</option>
+                    <option value="6">All Clients</option>
 
                     
 
@@ -431,6 +432,7 @@ const UserManagement = () => {
                           {item?.plan == 3 && "Enterprise"}
                           {item?.plan == 4 && "Free"}
                           {item?.plan == 5 && "Team Member"}
+                          {item?.plan ==6 && " all cilent"}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
                           {item?.tokenUsed}

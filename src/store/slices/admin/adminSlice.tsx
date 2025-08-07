@@ -904,6 +904,7 @@ export const getAllPaymentGateway = createAsyncThunk<any>(
       const response = await http.get("/admin/get-payments-gateway");
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
+        console.log("@@@@@@@@@@@",response)
         return response.data;
       } else {
         return rejectWithValue("failed to get token bots!");

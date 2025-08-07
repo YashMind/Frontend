@@ -96,6 +96,11 @@ const ChatbotSection = ({
   const handleDeleteChats = () => {
     dispatch(deleteUserChatsMessages({ chat_id: chatIdData.id }));
   };
+  const handleInputValue=(item)=>{
+    setValue("message",item)
+    console.log("clicked")
+console.log(item)
+  }
 
   return (
     <div
@@ -290,12 +295,14 @@ const ChatbotSection = ({
               ?.split(",")
               .map((item: string, index: number) => {
                 return (
-                  <div
+                  <button
                     key={index + "suggestion"}
-                    className="bg-gray-300 text-gray-600 w-fit  rounded-md text-sm py-0.5 px-1.5"
+                    type="button"
+                    className="bg-gray-300 text-gray-600 w-fit  rounded-md text-sm py-0.5 cursor-pointer px-1.5"
+                    onClick={()=>handleInputValue(item.trim())}
                   >
-                    <p>{item.trim()}</p>
-                  </div>
+                    <p >{item.trim()}</p>
+                  </button>
                 );
               })}
         </div>

@@ -21,8 +21,7 @@ import { useRouter } from "next/navigation";
 import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
 import { formatName } from "@/services/utils/helpers";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
-
-
+import './sidebar.css';
 const menuItems = [
   { label: "Dashboard", path: "/admin/dashboard", icon: <RiDashboardHorizontalFill size={25} />, key: "dashboard" },
   { label: "Overview", path: "/admin/overview", icon: <GrOverview size={25} />, key: "overview" },
@@ -111,6 +110,13 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
   };
 
   return (
+    <div className="sidebar">
+      <div className="hamburger">
+            &#9776; 
+
+      </div>
+      <div className="sidebarcontent">
+    </div>
     <aside className="w-[294px] bg-[#081028]   flex flex-col gap-2 rounded-tl-[15px] rounded-bl-[15px]">
       <h2 className="text-xl font-semibold text-center my-[40px]">
         <Image
@@ -189,6 +195,7 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
         </div>
       </Link>
     </aside>
+    </div>
   );
 };
 

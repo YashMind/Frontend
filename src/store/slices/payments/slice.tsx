@@ -67,6 +67,25 @@ export const createPaymentOrderPaypal = createAsyncThunk(
         }
     }
 );
+export const createPaymentOrderRazorPay = createAsyncThunk(
+    'payment/createPaymentOrderRazorpay',
+    async (orderData: {
+        customer_id: number;
+        return_url: string;
+        plan_id?: number;
+        credit?: number;
+    }, { rejectWithValue }) => {
+        try {
+            const response = await http.post('/payment/razorpay/create-order-razorpay', orderData);
+            return response.data;
+        } catch (error: any) {
+            if (error.response) {
+                return rejectWithValue(error.response.data);
+            }
+            return rejectWithValue({ message: error.message });
+        }
+    }
+);
 
 
 
@@ -178,7 +197,25 @@ const paymentSlice = createSlice({
                 state.loading = false;
                 state.error = (action.payload as any)?.message || 'Failed to verify payment';
                 state.verificationStatus = 'FAILED';
-            });
+            })
+            .addCase(createPaymentOrderRazorPay.pending,(state)=>{
+                state.loading=true;
+                state.error=null;
+                state.verificationStatus=null;
+            })
+            .addCase(createPaymentOrderRazorPay.fulfilled,(state,action)=>{
+                 state.loading = false;
+                state.verificationStatus = action.payload.status;
+                state.paymentData = action.payload.payment_data;
+                if (action.payload.status === 'SUCCESS') {
+                    state.orderStatus = 'completed';
+                }
+            })
+             .addCase(createPaymentOrderRazorPay.rejected, (state, action) => {
+                state.loading = false;
+                state.error = (action.payload as any)?.message || 'Failed to verify payment';
+                state.verificationStatus = 'FAILED';
+            })
     },
 });
 

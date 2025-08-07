@@ -279,6 +279,7 @@ export const createChatbotFaqs = createAsyncThunk<
         toasterSuccess("chatbot faqs created successfully!", 2000, "id");
         // toast.success("chatbot faqs created successfully!");
         dispatch(getChatbotsFaqs({ bot_id: payload?.bot_id }));
+        
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot!");

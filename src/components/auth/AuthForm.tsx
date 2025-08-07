@@ -16,6 +16,9 @@ import {
 import LoginWithGoogle from "@/components/auth/LoginWithGoogle/loginWithGoogle";
 import Link from "next/link";
 import LoginWithFacebook from "@/components/auth/LoginWithFacebook/loginWithFacebook";
+import { FaRegEyeSlash,FaRegEye } from "react-icons/fa";
+import { BsEye } from "react-icons/bs";
+
 interface SignInForm {
   email: string;
   password: string;
@@ -184,7 +187,10 @@ const AuthForm = ({ formType }: { formType: "signin" | "signup" }) => {
   //         </div>
   //     );
   // }
-
+const [showPassword,setShowPassword]=useState(false);
+const handleShowPassword=()=>{
+  setShowPassword(!showPassword);
+}
   return (
     <div
       className="h-full lg:h-screen banner bg-center bg-cover bg-no-repeat flex justify-center items-center"
@@ -252,11 +258,12 @@ const AuthForm = ({ formType }: { formType: "signin" | "signup" }) => {
                     <path d="..." fill="#A4A4A4" />
                   </svg>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     {...register("password")}
                     className="bg-transparent outline-none w-full placeholder-white placeholder-opacity-60"
                   />
+                  <button onClick={handleShowPassword} type="button">{showPassword ? <FaRegEye/> : <FaRegEyeSlash/>}</button>
                 </div>
                 {errors.password && (
                   <span className="text-red-500">
@@ -267,7 +274,7 @@ const AuthForm = ({ formType }: { formType: "signin" | "signup" }) => {
                 {formType === "signup" && (
                   <div className="mb-[20px]">
                     <input
-                      type="password"
+                      type={`showPassword ? "text" : "password"`}
                       placeholder="Confirm Password"
                       {...register("confirmPassword")}
                       className="w-full shadow-[inset_0px_0px_11.28px_0px_#00000029] backdrop-blur-[15.23px] text-base font-medium px-[22px] py-4 rounded-lg bg-[#261046] text-[#A4A4A4] focus:outline-none"

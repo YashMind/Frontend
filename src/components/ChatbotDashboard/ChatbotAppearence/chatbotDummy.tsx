@@ -5,6 +5,7 @@ import LeadGenForm from "./LeadGenForm";
 import { ChatbotSettings } from "@/types/chatTypes";
 import { IoMdSend } from "react-icons/io";
 const ChatbotDummy = ({
+  
   chatbotSettings,
 }: {
   chatbotSettings: Partial<Omit<ChatbotSettings, "id">>;
@@ -16,6 +17,10 @@ const ChatbotDummy = ({
       ? chatbotSettings.image
       : "/images/face2.webp";
   // const chatbotAvatar = chatbotSettings.image || "/images/face2.webp";
+  const [inputvalue ,setInputvalue]=useState("")
+  const handleSuggestion=(e:any)=>{
+    setInputvalue(e.target.value)
+  }
   return (
     <div
       className="min-w-[320px] w-[320px] max-md:w-full h-full rounded-lg shadow-md flex flex-col justify-between sticky top-40 mb-10"
@@ -158,18 +163,22 @@ const ChatbotDummy = ({
           {chatbotSettings.suggestions_is_active &&
             chatbotSettings.suggestions_value?.split(",").map((item, index) => {
               return (
-                <div
+                <button
                   key={index + "suggestion"}
-                  className="bg-gray-300 text-gray-600 w-fit  rounded-md text-sm py-0.5 px-1.5"
+                  className="bg-gray-300 text-gray-600 w-fit rounded-md text-sm py-0.5 px-1.5  cursor-pointer"
+                  onClick={() => handleSuggestion(item.trim())}
                 >
-                  <p>{item.trim()}</p>
-                </div>
+                  {item.trim()}
+                </button>
               );
             })}
         </div>
         <div className="border-t p-2 flex items-center gap-2">
           <input
             type="text"
+            value={inputvalue}
+            onChange={(e) => setInputvalue(e.target.value)}
+            
             placeholder={
               chatbotSettings.placeholder_is_active
                 ? chatbotSettings.placeholder_value

@@ -117,7 +117,7 @@ const HomeFooter = () => {
             <a href="https://whatsapp.com/channel/0029Vb60ltZ1HspzbzM8dN1y" target="_blank" rel="noopener noreferrer">
               <FaWhatsapp />
             </a>
-             <a href="https://www.linkedin.com/in/yashraa-ai-873838327/" target="_blank" rel="noopener noreferrer">
+             <a href=" https://www.linkedin.com/company/108015181/admin/page-posts/published/" target="_blank" rel="noopener noreferrer">
               <FaLinkedin />
 
             </a>
