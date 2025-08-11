@@ -67,12 +67,13 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
     const botId = messages[0]?.bot_id || "Unknown";
     const chatId = messages[0]?.chat_id || "Unknown";
     const userId = messages[0]?.user_id || "Unknown";
-    const chatbotCreatedAt = format(new Date(chatBot?.created_at), "PPpp");
-    const createdAt = format(new Date(messages[0]?.created_at), "PPpp");
-    const endAt = format(
-      new Date(messages[messages.length - 1]?.created_at),
-      "PPpp"
-    );
+    const chatbotCreatedAt = formatDateOrTimeAgo(chatBot?.created_at, timezone);
+    console.log("___________________",chatbotCreatedAt)
+    const createdAt = formatDateOrTimeAgo(messages[0]?.created_at, timezone);
+    console.log("------------",createdAt)
+        const endAt = formatDateOrTimeAgo(messages[messages.length - 1]?.created_at, timezone);
+
+    
 
     doc.setFontSize(18);
     doc.text("Chat History", 14, 20);
@@ -119,7 +120,9 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
 
     selectedIds.forEach((chatId: number) => {
       const messages = chatUserHistory?.data[chatId].messages;
+      console.log("--------------------------------------",messages)
       const platform = chatUserHistory?.data[chatId].platform;
+      console.log("----------------------------------------",platform)
       if (messages && messages.length > 0) {
         handleCreateDownloadPdf(messages, platform, chatUserHistory?.chatBot);
       }

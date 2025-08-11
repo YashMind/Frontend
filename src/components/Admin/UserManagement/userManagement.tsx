@@ -38,7 +38,7 @@ const UserManagement = () => {
 
   // Filters
   const [showFilters, setShowFilters] = useState(false);
-  const [planFilter, setPlanFilter] = useState<string>("all");
+  const [planFilter, setPlanFilter] = useState<string>("");
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [tokenFilter, setTokenFilter] = useState<string>("");
   const [dateFilter, setDateFilter] = useState<{
@@ -210,7 +210,7 @@ const UserManagement = () => {
                       setPage(1);
                     }}
                   >
-                    
+                     <option value="">All Plans</option> 
                     <option value="1">Basic plan</option>
                     <option value="2">Pro plan</option>
                     <option value="3">Enterprise plan</option>

@@ -140,8 +140,8 @@ const ChatbotBanner = () => {
           aria-label="Next slide"
         >
           <img
-            src="/images/arrow-lft.png"
-            className="cursor-pointer w-8 h-8"
+            src="/images/arrow-right.png"
+            className="cursor-pointer w-8 h-8 rotate-180"
             alt="Next"
           />
         </button>

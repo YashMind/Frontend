@@ -97,10 +97,11 @@ export const getPublicSubscriptionPlans = createAsyncThunk<any, void>(
       dispatch(startLoadingActivity());
 
       const response = await http.get("/admin/subscription-plans/public");
-
+      console.log("response",response)
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        return response.data;
+        console.log(response.data)
+        return response.data.data;
       } else {
         return rejectWithValue("Failed to fetch subscription plans!");
       }
@@ -1029,6 +1030,7 @@ const adminSlice = createSlice({
       .addCase(getAllSubscriptionPlans.fulfilled, (state, action) => {
         state.loading = false;
         state.subscriptionPlansData = action?.payload;
+        console.log(action.payload)
       })
       .addCase(getAllSubscriptionPlans.rejected, (state, action) => {
         state.loading = false;

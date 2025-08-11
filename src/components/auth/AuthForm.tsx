@@ -272,13 +272,14 @@ const handleShowPassword=()=>{
                 )}
 
                 {formType === "signup" && (
-                  <div className="mb-[20px]">
+                  <div className="mb-[20px] relative">
                     <input
-                      type={`showPassword ? "text" : "password"`}
+                      type={showPassword ? "text" : "password"}
                       placeholder="Confirm Password"
                       {...register("confirmPassword")}
-                      className="w-full shadow-[inset_0px_0px_11.28px_0px_#00000029] backdrop-blur-[15.23px] text-base font-medium px-[22px] py-4 rounded-lg bg-[#261046] text-[#A4A4A4] focus:outline-none"
+                      className="w-full shadow-[inset_0px_0px_11.28px_0px_#00000029]  backdrop-blur-[15.23px] text-base font-medium px-[22px] py-4 rounded-lg bg-[#261046] text-[#A4A4A4] focus:outline-none"
                     />
+                      <button onClick={handleShowPassword} className="relative -right-[416px] -top-[36px]"   type="button">{showPassword ? <FaRegEye/> : <FaRegEyeSlash/>}</button>
                     {errors.confirmPassword && (
                       <span className="text-red-500">
                         {errors.confirmPassword.message}

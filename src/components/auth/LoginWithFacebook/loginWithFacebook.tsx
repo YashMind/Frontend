@@ -3,6 +3,7 @@ import FacebookLogin, { ReactFacebookLoginInfo } from "react-facebook-login/dist
 import { useRouter } from "next/navigation";
 import http from "@/services/http/baseUrl";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
+
 // import toast from "react-hot-toast";
 
 const LoginWithFacebook = () => {
@@ -10,7 +11,7 @@ const LoginWithFacebook = () => {
 
   const handleFacebookResponse = async (response: any) => {
     try {
-      const res = await http.post("http://localhost:8000/facebook-login", { token: response.accessToken });
+      const res = await http.post("http://localhost:8000/api/auth/facebook-login", { token: response.accessToken });
       if (res.status===200) {
         toasterSuccess("Logged with facebook successfully!",2000,"id")
         // toast.success("Logged with facebook successfully!")
@@ -28,10 +29,11 @@ const LoginWithFacebook = () => {
 
   return (
     <FacebookLogin
-      appId="1207391863816177"
+      appId="2271284516636620"
       autoLoad={false}
       fields="name,email, picture"
       callback={handleFacebookResponse}
+       scope="public_profile,email"
       render={(renderProps: any) => (
       <button className="flex items-center justify-center gap-2 bg-[#3B2063] text-[15px] font-medium  text-white px-4 py-3 rounded-[11px] w-full hover:shadow-lg" onClick={renderProps.onClick}>
       <img src="/images/facebook.png" />

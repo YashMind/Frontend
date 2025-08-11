@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { forgetPassword } from "@/store/slices/auth/authSlice";
 import { AppDispatch } from "@/store/store";
-
+import { FaRegEyeSlash,FaRegEye } from "react-icons/fa";
 const page = () => {
   console.log("component called")
   const dispatch = useDispatch<AppDispatch>();
@@ -29,6 +29,7 @@ const page = () => {
       });
     }
   };
+  
 
     return (
       <div
@@ -89,7 +90,9 @@ const page = () => {
                     onClick={() => setShowForgotPassword(false)}
                     className="text-cyan-400 hover:underline text-sm"
                   >
-                    Back to Sign In
+                    <a href="/auth/signin" className="text-cyan-400 hover:underline text-sm">
+                Back to Sign In
+              </a>
                   </button>
                 </div>
               </div>

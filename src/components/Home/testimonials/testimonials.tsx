@@ -258,18 +258,18 @@ const Testimonials = () => {
               </button>
 
               {/* Dots */}
-              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2">
+              {/* <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2">
                 {[...Array(slideCount)].map((_, idx) => (
                   <button
                     key={idx}
                     onClick={() => instanceRef.current?.moveToIdx(idx)}
-                    className={`w-[16px] h-[16px] rounded-full cursor-pointer ${currentSlide === idx
+                    className={`w-[16px] h-[16px] rounded-full cursor-pointer ${currentSlide === idx 
                       ? "bg-[#01BEED]"
                       : "bg-transparent border  border-[#01BEED]"
                       }`}
                   />
                 ))}
-              </div>
+              </div> */}
             </div>
           </section>
         </div>
