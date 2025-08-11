@@ -37,8 +37,8 @@
       position: "fixed",
       bottom: "90px",
       right: "20px",
-      width: "400px",
-      height: "600px",
+      width: "25vw",
+      height: "80vh",
       border: "none",
       zIndex: "100000",
       borderRadius: "16px",
@@ -57,7 +57,7 @@
     // Set custom icon or default
     if (CUSTOM_ICON) {
       if (CUSTOM_ICON.match(/\.(jpeg|jpg|gif|png|svg|webp)$/i)) {
-        bubble.innerHTML = `<img src="${CUSTOM_ICON}" style="width:55px;height:55px;object-fit:contain" alt="Chat">`;
+        bubble.innerHTML = `<img src="${CUSTOM_ICON}" style="width:60px;height:60px;object-fit:cover;border-radius:50%" alt="Chat">`;
       } else {
         bubble.innerHTML = CUSTOM_ICON;
       }

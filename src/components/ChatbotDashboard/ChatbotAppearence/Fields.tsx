@@ -98,6 +98,7 @@ export const Field = ({
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
+              
               {...register(checkbox_name)}
               checked={checkbox_value as boolean}
               className="sr-only peer"
@@ -260,7 +261,7 @@ export const ColorPickerField = ({
                       onChange={handleTextChange}
                       className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm text-black"
                       maxLength={6}
-                      placeholder="#FFFFFF"
+                      placeholder="FFFFFF"
                     />
                   </div>
                 </div>
@@ -278,7 +279,7 @@ export const ColorPickerField = ({
               placeholder="FFFFFF"
             />
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <span className="text-gray-500 sm:text-sm">#</span>
+              {/* <span className="text-gray-500 sm:text-sm">#</span> */}
             </div>
           </div></div>
       </div>
@@ -318,6 +319,7 @@ export const ImageField = ({
   return (
     <div>
       <div className="relative w-24 h-24 mx-auto  ">
+       
         {/* File input - hidden but clickable */}
         <input
           type="file"
@@ -325,8 +327,8 @@ export const ImageField = ({
           {...register(name, {
             onChange: handleImageChange,
           })}
-          className="peer absolute w-full h-full opacity-0 z-10 cursor-pointer "
-        />
+          className="peer absolute w-full h-full opacity-0 z-10 cursor-pointer image"
+        /> 
         {/* Image Preview */}
         <div className="w-full h-full rounded-full overflow-hidden border-2 border-gray-300">
           <Image

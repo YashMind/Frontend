@@ -85,7 +85,7 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
             )}
           </div>
 
-          <div>
+          {/* <div>
             <label className="block mb-1 text-sm font-medium">Plan</label>
             <select
               {...register("plan")}
@@ -99,7 +99,7 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
             {errors.plan && (
               <p className="text-red-500 text-sm mt-1">{errors.plan?.message}</p>
             )}
-          </div>
+          </div> */}
 
 
           <div>

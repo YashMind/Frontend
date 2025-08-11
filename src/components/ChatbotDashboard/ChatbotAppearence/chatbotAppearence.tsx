@@ -20,11 +20,13 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
   const chatbotSetting = useSelector(
     (state: RootState) => state.appearance.settings
   );
+
+
   useEffect(() => {
     if (botId && !chatbotSetting) dispatch(fetchChatbotSettings(botId));
   }, []);
 
-  const { register, handleSubmit, setValue, watch } = useForm<IFormInput>({
+  const { register, handleSubmit, setValue, watch ,reset} = useForm<IFormInput>({
     defaultValues: {
       title_value: chatbotSetting?.title_value || "",
       welcome_message_value: chatbotSetting?.welcome_message_value || "",
@@ -314,12 +316,22 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
         toast.error(e.message || "something went wrong ");
       });
   };
+  useEffect(() => {
+  if (chatbotSetting) {
+    reset(chatbotSetting); // this updates the form fields with new data
+  }
+}, [chatbotSetting, reset]);
 
-  const handleResetAppearance = (
-    e: React.MouseEventHandler<HTMLButtonElement>
-  ) => {
-    dispatch(fetchChatbotSettings(botId!));
-  };
+
+
+  const handleResetAppearance = async () => {
+  const settings = await dispatch(fetchChatbotSettings(botId!)).unwrap();
+    console.log(settings)
+  reset(settings);
+
+
+};
+
 
   return (
     <div className="m-4">
@@ -436,7 +448,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
                   <ImageField
                     label="Start chat icon"
                     name="chat_icon"
-                    value={watch("chat_icon")}
+                    value={watch("chat_icon")|| "/images/face2.webp"}
                     register={register}
                   />
                   {/* <ColorPickerField

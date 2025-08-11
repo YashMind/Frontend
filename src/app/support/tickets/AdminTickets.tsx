@@ -92,7 +92,7 @@ const AdminTickets = ({ onSelectTicket }: AdminTicketsProps) => {
                                     {getAssignee(ticket)}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {ticket.user.fullName}
+                                    {ticket.user?.fullName || 'No user assigned'}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 {!isLoading ? format(new Date(ticket.created_at), "dd MMM yyyy 'at' hh:mm a") : "-"}
