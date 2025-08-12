@@ -21,7 +21,7 @@ const schema = yup.object().shape({
     .string()
     .required("Full Name is a required field")
     .min(3, "Full name must be at least 3 characters"),
-  plan: yup.string(),
+  // plan: yup.string(),
   role: yup.string(),
 });
 
@@ -50,7 +50,7 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
 
   useEffect(() => {
     setValue("fullName", userData?.fullName);
-    setValue("plan", userData?.plan);
+    // setValue("plan", userData?.plan);
     setValue("role", userData?.role);
     setValue("id", userData?.id);
   }, [reset, userData?.id, show]);

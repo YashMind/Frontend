@@ -64,9 +64,9 @@ const TicketDetail = ({ ticketId, onClose }: TicketDetailProps) => {
                     <h3 className="text-lg leading-6 font-medium text-gray-900">
                         {currentTicket.subject}
                     </h3>
-                    <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                        Created by {currentTicket.user.fullName + " (" + currentTicket.user.email + ")"}
-                    </p>
+                    {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                        Created by {currentTicket.user.fullName  + " (" + currentTicket.user.email + ")"}
+                    </p> */}
                 </div>
                 <div className='self-start mr-10 ml-auto'>
                     <StatusBadge status={currentTicket.status} />

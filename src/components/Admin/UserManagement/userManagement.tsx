@@ -40,7 +40,7 @@ const UserManagement = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [planFilter, setPlanFilter] = useState<string>("");
   const [statusFilter, setStatusFilter] = useState<string>("");
-  const [tokenFilter, setTokenFilter] = useState<string>("");
+  const [roleFilter, setroleFilter] = useState<string>("");
   const [dateFilter, setDateFilter] = useState<{
     start?: string;
     end?: string;
@@ -58,7 +58,7 @@ const UserManagement = () => {
     const filters = {
       ...(planFilter && { plan: planFilter }),
       ...(statusFilter && { status: statusFilter }),
-      ...(tokenFilter && { tokenUsed: tokenFilter }),
+      ...(roleFilter && { roleUsed: roleFilter }),
       ...(dateFilter.start && { startDate: dateFilter.start }),
       ...(dateFilter.end && { endDate: dateFilter.end }),
     };
@@ -83,7 +83,7 @@ const UserManagement = () => {
     sortOrder,
     planFilter,
     statusFilter,
-    tokenFilter,
+    roleFilter,
     dateFilter.start,
     dateFilter.end,
   ]);
@@ -124,7 +124,7 @@ const UserManagement = () => {
   const resetFilters = () => {
     setPlanFilter("");
     setStatusFilter("");
-    setTokenFilter("");
+    setroleFilter("");
     setDateFilter({});
     setSearch("");
     setPage(1);
@@ -148,7 +148,7 @@ const UserManagement = () => {
             sortOrder,
             ...(planFilter && { plan: planFilter }),
             ...(statusFilter && { status: statusFilter }),
-            ...(tokenFilter && { tokenUsed: tokenFilter }),
+            ...(roleFilter && { roleUsed: roleFilter }),
             ...(dateFilter.start && { startDate: dateFilter.start }),
             ...(dateFilter.end && { endDate: dateFilter.end }),
           })
@@ -244,13 +244,13 @@ const UserManagement = () => {
 
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">
-                    Token Used
+                    Role
                   </label>
                   <select
                     className="w-full bg-[#081028] text-white p-2 rounded-md text-sm border border-[#1f355c]"
-                    value={tokenFilter}
+                    value={roleFilter}
                     onChange={(e) => {
-                      setTokenFilter(e.target.value);
+                      setroleFilter(e.target.value);
                       setPage(1);
                     }}
                   >
@@ -354,11 +354,11 @@ const UserManagement = () => {
                   </th>
                   <th
                     className="p-4 text-xs font-medium cursor-pointer hover:text-white"
-                    onClick={() => handleSort("tokenUsed")}
+                    onClick={() => handleSort("roleUsed")}
                   >
                     <div className="flex items-center gap-1">
-                      Token Used
-                      {sortBy === "tokenUsed" &&
+                      Role
+                      {sortBy === "role" &&
                         (sortOrder === "asc" ? (
                           <FiChevronUp />
                         ) : (
@@ -435,7 +435,7 @@ const UserManagement = () => {
                           {item?.plan ==6 && " all cilent"}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
-                          {item?.tokenUsed}
+                          {item?.role}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
                           {item?.messageUsed}
