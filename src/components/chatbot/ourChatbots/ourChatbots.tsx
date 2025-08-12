@@ -1,3 +1,7 @@
+"use client"; // Add this at the top since we're using hooks
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 import React from "react";
 
 const cardData = [
@@ -67,22 +71,27 @@ const IntegerationCard = ({
     </div>
     <h2 className="pt-[9px] font-medium text-sm">{title}</h2>
     <p className="text-xs py-[9px] font-light">{description}</p>
-    <button
+    {/* <button
       className="text-white px-4 py-1 rounded-full text-[12px] font-bold cursor-pointer"
       style={{ backgroundColor: bgColor }}
     >
       Connect
-    </button>
+    </button> */}
   </div>
 );
 
 const OurChatbots = () => {
+  const router = useRouter();
+  const userData = useSelector((state: RootState) => state.auth.loggedInUser);
   return (
     <div className="relative h-screen z-80">
       {/* Background Image */}
       <div
         className="absolute -z-10 inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/ai-generated-2nd.png')", zIndex: '-10' }}
+        style={{
+          backgroundImage: "url('/images/ai-generated-2nd.png')",
+          zIndex: "-10",
+        }}
       ></div>
 
       {/* Gradient Overlay */}
@@ -113,8 +122,13 @@ const OurChatbots = () => {
             social media channels at once
           </p>
           <div className=" text-center lg:text-right">
-            <button className="cursor-pointer bg-white text-black px-6 py-2 rounded-full text-lg font-semibold shadow-md mb-8">
-              Try Now
+            <button
+              className="cursor-pointer bg-white text-black px-6 py-2 rounded-full text-lg font-semibold shadow-md mb-8 hover:bg-gray-100 transition-colors duration-300"
+              onClick={() =>
+                router.push(userData ? "/chat-dashboard/main" : "/auth/signin")
+              }
+            >
+              {userData ? "Try Now" : "Try Now"}
             </button>
           </div>
         </div>

@@ -22,7 +22,7 @@ const HomeProducts = () => {
         {/* Cards Section */}
         <div className="flex flex-col md:flex-row flex-wrap justify-center items-center gap-8 md:gap-[41px] relative mt-[40px] space-top">
           {/* Left Arrow */}
-          <div className="relative w-[100px] md:w-[220px] arrow-circle">
+          {/* <div className="relative w-[100px] md:w-[220px] arrow-circle">
             <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 transform p-[3px] bg-gradient-to-b from-purple-500 to-blue-400 rounded-full hover:scale-105 transition">
               <button className="w-[80px] h-[80px] md:w-[160px] md:h-[160px] rounded-full bg-transparent flex items-center justify-center">
                 <img
@@ -32,7 +32,7 @@ const HomeProducts = () => {
                 />
               </button>
             </div>
-          </div>
+          </div> */}
 
           {/* Cards List */}
           {[

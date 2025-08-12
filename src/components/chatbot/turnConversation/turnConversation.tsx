@@ -37,9 +37,9 @@ const FeatureCard = ({
       <h3 className="font-bold text-lg">{title}</h3>
     </div>
     <p className="text-xs text-white font-light mb-4">{description}</p>
-    <button className="cursor-pointer bg-[#0073AA] text-white text-xs px-6 py-2 rounded-[22px] font-bold">
+    {/* <button className="cursor-pointer bg-[#0073AA] text-white text-xs px-6 py-2 rounded-[22px] font-bold">
       Try Now
-    </button>
+    </button> */}
   </div>
 );
 
