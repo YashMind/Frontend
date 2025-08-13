@@ -11,28 +11,19 @@ import { FaArrowRight } from "react-icons/fa";
 const slideData = [
   {
     title: "One Platform, Endless AI Possibilities",
-    description:
-      "YASHRAA is a powerful All-in-one AI Tools Platform offering subscription-based tools like Chatbots, Voice Agents, LLM APIs, and more — all in one place. Subscribe, and deploy AI solutions tailored to your business needs. Build your AI stack with YASHRAA today!",
+    description: "YASHRAA is a powerful All-in-one AI Tools Platform offering subscription-based tools like Chatbots, Voice Agents, LLM APIs, and more — all in one place. Subscribe, and deploy AI solutions tailored to your business needs. Build your AI stack with YASHRAA today!",
   },
   {
     title: "Powerful AI, Seamless Experience",
-    description:
-      "Our technology blends performance with simplicity, delivering a frictionless experience from day one.",
+    description: "Our technology blends performance with simplicity, delivering a frictionless experience from day one.",
   },
   {
     title: "Automate. Accelerate. Achieve.",
-    description:
-      "Let AI take care of the routine, so you can focus on innovation and growth.",
+    description: "Let AI take care of the routine, so you can focus on innovation and growth.",
   },
 ];
 
-const CTAButton = ({
-  onClick,
-  children,
-}: {
-  onClick?: () => void;
-  children: React.ReactNode;
-}) => (
+const CTAButton = ({ onClick, children }: { onClick?: () => void; children: React.ReactNode }) => (
   <button
     className="group relative flex items-center justify-center py-3 px-8 md:py-4 md:px-10 text-white text-base md:text-lg font-medium rounded-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all duration-300 overflow-hidden"
     onClick={onClick}
@@ -73,9 +64,7 @@ const HomeBanner = () => {
     dispatch(isLoggedin());
   }, []);
 
-  const slideCount = loaded
-    ? instanceRef.current?.track.details.slides.length
-    : slideData.length;
+  const slideCount = loaded ? instanceRef.current?.track.details.slides.length : slideData.length;
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
@@ -98,9 +87,7 @@ const HomeBanner = () => {
                 </p>
                 <div className="mt-8">
                   {userData ? (
-                    <CTAButton
-                      onClick={() => router.push("/chat-dashboard/main")}
-                    >
+                    <CTAButton onClick={() => router.push("/chat-dashboard/main")}>
                       Go to Dashboard
                     </CTAButton>
                   ) : (
@@ -126,18 +113,8 @@ const HomeBanner = () => {
             }}
             aria-label="Previous slide"
           >
-            <svg
-              className="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           <button
@@ -148,18 +125,8 @@ const HomeBanner = () => {
             }}
             aria-label="Next slide"
           >
-            <svg
-              className="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </>
@@ -172,11 +139,10 @@ const HomeBanner = () => {
             <button
               key={idx}
               onClick={() => instanceRef.current?.moveToIdx(idx)}
-              className={`cursor-pointer w-3 h-3 md:w-4 md:h-4 rounded-full transition-all duration-300 ${
-                currentSlide === idx
-                  ? "bg-[#01BEED] scale-125"
-                  : "bg-white/50 hover:bg-white/70"
-              }`}
+              className={`cursor-pointer w-3 h-3 md:w-4 md:h-4 rounded-full transition-all duration-300 ${currentSlide === idx
+                ? "bg-[#01BEED] scale-125"
+                : "bg-white/50 hover:bg-white/70"
+                }`}
               aria-label={`Go to slide ${idx + 1}`}
             />
           ))}
