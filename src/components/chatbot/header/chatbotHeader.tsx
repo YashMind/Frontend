@@ -40,8 +40,9 @@ const ChatbotHeader = ({
   return (
     <div className="bg-white">
       <nav
-        className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${fix ? "fixed" : ""
-          } w-full z-90 rounded-[36px] top-0 my-0.5`}
+        className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${
+          fix ? "fixed" : ""
+        } w-full z-90 rounded-[36px] top-0 my-0.5`}
       >
         <div className="container">
           <div className="max-w-screen-xl flex flex-col md:flex-row items-center justify-between mx-auto gap-4 p-4">
@@ -180,16 +181,18 @@ const ChatbotHeader = ({
 
             {/* Navbar Links */}
             <div
-              className={`${isMenuOpen ? "flex flex-col mt-4" : "hidden"
-                } w-full md:flex md:flex-row md:w-auto md:order-1`}
+              className={`${
+                isMenuOpen ? "flex flex-col mt-4" : "hidden"
+              } w-full md:flex md:flex-row md:w-auto md:order-1`}
               id="navbar-sticky"
             >
               <ul className="flex flex-col items-center text-[15px] font-normal p-4 md:p-0 md:space-x-4 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 rounded-lg [font-family:'Roboto_Flex',sans-serif]  ">
                 <li>
                   <Link
                     href="/chatbot-dashboard/main"
-                    className={`block py-2 px-3 text-white ${bot === 1 ? "bg-[#434343]" : ""
-                      } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:text-blue-500`}
+                    className={`block py-2 px-3 text-white ${
+                      bot === 1 ? "bg-[#434343]" : ""
+                    } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:text-blue-500`}
                     onClick={() => {
                       setBot(1);
                       setIsMenuOpen(false);
@@ -201,8 +204,9 @@ const ChatbotHeader = ({
                 <li>
                   <Link
                     href="/voice-agent"
-                    className={`block py-2 px-3 text-white ${bot === 2 ? "bg-[#434343]" : ""
-                      } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:text-blue-500`}
+                    className={`block py-2 px-3 text-white ${
+                      bot === 2 ? "bg-[#434343]" : ""
+                    } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:text-blue-500`}
                     onClick={() => {
                       setBot(2);
                       setIsMenuOpen(false);
@@ -214,8 +218,9 @@ const ChatbotHeader = ({
                 <li>
                   <Link
                     href="/llm"
-                    className={`block py-2 px-3 text-white ${bot === 3 ? "bg-[#434343]" : ""
-                      } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:text-blue-500`}
+                    className={`block py-2 px-3 text-white ${
+                      bot === 3 ? "bg-[#434343]" : ""
+                    } rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:text-blue-500`}
                     onClick={() => {
                       setBot(3);
                       setIsMenuOpen(false);

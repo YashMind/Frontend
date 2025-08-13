@@ -1,7 +1,15 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaFacebook, FaInstagram, FaTelegramPlane, FaWhatsapp, FaYoutube,FaLinkedin,FaTwitterSquare } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaTelegramPlane,
+  FaWhatsapp,
+  FaYoutube,
+  FaLinkedin,
+  FaTwitterSquare,
+} from "react-icons/fa";
 
 const HomeFooter = () => {
   return (
@@ -28,7 +36,10 @@ const HomeFooter = () => {
             Pick the plan that fits your needs and start unlocking powerful AI
             features today.
           </p>
-          <Link href="/#pricing" className="cursor-pointer w-full bg-gradient-to-r from-[#501794] via-[#5e3aa1] to-[#40659F] font-medium hover:opacity-90 text-white text-sm py-2 px-4 rounded-full transition">
+          <Link
+            href="/#pricing"
+            className="cursor-pointer w-full bg-gradient-to-r from-[#501794] via-[#5e3aa1] to-[#40659F] font-medium hover:opacity-90 text-white text-sm py-2 px-4 rounded-full transition"
+          >
             Choose a Plan
           </Link>
         </div>
@@ -57,7 +68,6 @@ const HomeFooter = () => {
             <li>
               <Link href="/details/contact-us">Contact us</Link>
             </li>
-
           </ul>
         </div>
 
@@ -67,7 +77,6 @@ const HomeFooter = () => {
             Company
           </h2>
           <ul className="text-sm space-y-2 [font-family:'Roboto_Flex',sans-serif]">
-
             <li>
               <Link href="/details/terms&condition">Terms & Conditions</Link>
             </li>
@@ -80,15 +89,12 @@ const HomeFooter = () => {
               </Link>
             </li>
             <li>
-              <Link href="/details/gdpr">
-                GDPR
-              </Link>
+              <Link href="/details/gdpr">GDPR</Link>
             </li>
             <li>
-              <Link href="/details/code-of-conduct">
-                Use Code of Conduct
-              </Link>
-            </li><li>
+              <Link href="/details/code-of-conduct">Use Code of Conduct</Link>
+            </li>
+            <li>
               <Link href="/details/disclaimer-and-liability">
                 Disclaimer & Limitation of Liability Statement
               </Link>
@@ -102,28 +108,54 @@ const HomeFooter = () => {
             Follow Us
           </h2>
           <div className="flex space-x-4 text-2xl text-white">
-            <a href="https://www.youtube.com/@YashraaAI" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://www.youtube.com/@YashraaAI"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaYoutube />
             </a>
-            <a href="https://www.facebook.com/share/16fLSGGJEN/?mibextid=qi2Omg" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://www.facebook.com/share/16fLSGGJEN/?mibextid=qi2Omg"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaFacebook />
             </a>
-            <a href="https://www.instagram.com/_yashraa_ai_/" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://www.instagram.com/_yashraa_ai_/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaInstagram />
             </a>
-            <a href="https://web.telegram.org/k/#-2561704830" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://web.telegram.org/k/#-2561704830"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaTelegramPlane />
             </a>
-            <a href="https://whatsapp.com/channel/0029Vb60ltZ1HspzbzM8dN1y" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://whatsapp.com/channel/0029Vb60ltZ1HspzbzM8dN1y"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaWhatsapp />
             </a>
-             <a href=" https://www.linkedin.com/company/108015181/admin/page-posts/published/" target="_blank" rel="noopener noreferrer">
+            <a
+              href=" https://www.linkedin.com/company/108015181/admin/page-posts/published/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaLinkedin />
-
             </a>
-            <a href="https://x.com/YashraaA16816" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://x.com/YashraaA16816"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaTwitterSquare />
-
             </a>
           </div>
         </div>
@@ -156,7 +188,9 @@ const HomeFooter = () => {
               <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
                 <path d="..." stroke="white" />
               </svg>
-              <p>support@yashraa.ai</p>
+              <p>
+                <a href="mailto:support@yashraa.ai">support@yashraa.ai</a>
+              </p>
             </div>
 
             {/* Phone */}
@@ -164,7 +198,9 @@ const HomeFooter = () => {
               <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
                 <path d="..." stroke="white" />
               </svg>
-              <p>+91-8623893563</p>
+              <p>
+                <a href="tel:+91-8623893563">+91-8623893563</a>
+              </p>
             </div>
           </div>
         </div>
@@ -178,7 +214,8 @@ const HomeFooter = () => {
         </p>
       </div>
       <p className="font-light text-xs py-1 pt-10">
-        YASHRAA {"\t \t"} is registered trademark of YASHRAA TECHNOLOGIES PRIVATE LIMITED.
+        YASHRAA {"\t \t"} is registered trademark of YASHRAA TECHNOLOGIES
+        PRIVATE LIMITED.
       </p>
     </footer>
   );
