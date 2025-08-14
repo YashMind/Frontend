@@ -309,11 +309,8 @@ export const ImageField = ({
     console.log("value",value)
     
     if (value && (value instanceof File || value instanceof Blob)) {
-      console.log("value as file or instance")
       const imageUrl = URL.createObjectURL(value);
-      console.log("_____________")
       setPreview(imageUrl);
-      console.log("1111111",imageUrl)
 
       // Revoke URL on cleanup to avoid memory leaks
       return () => URL.revokeObjectURL(imageUrl);
@@ -329,18 +326,12 @@ export const ImageField = ({
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
-    console.log("chnaging image")
     const file = e.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       
       setPreview(imageUrl);
-       if (setValue) {
-        setValue(name, file);
-      }
-          if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
+      setValue(name, file);
 
       
     }
@@ -353,18 +344,18 @@ export const ImageField = ({
         {/* File input - hidden but clickable */}
         <input
           type="file"
-          key={preview}
           accept="image/*"
-          {...register(name, {
-            onChange: handleImageChange,
-          })}
+          onChange={handleImageChange}
           className="peer absolute w-full h-full opacity-0 z-10 cursor-pointer image"
+          key={preview}
         /> 
         
         {/* Image Preview */}
         <div className="w-full h-full rounded-full overflow-hidden border-2 border-gray-300">
           <Image
             src={preview}
+            key={preview}
+
             alt="Preview"
             className="w-full h-full object-cover pointer-events-none"
             width={150}

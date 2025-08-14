@@ -17,8 +17,8 @@ const ChatbotDummy = ({
 
   const chatbotAvatar = useMemo(() => {
 
-    console.log("memo called")
-    const imageValue = typeof chatbotSettings.image=='string'?chatbotSettings.image:chatbotSettings.image[0];
+    console.log("memo called", chatbotSettings.image)
+    const imageValue = chatbotSettings&& chatbotSettings.image ? typeof chatbotSettings.image=='string'?chatbotSettings.image:chatbotSettings.image[0]:null;
 
     if (imageValue instanceof File || imageValue instanceof Blob) {
       console.log("file found")

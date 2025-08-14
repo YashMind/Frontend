@@ -422,7 +422,7 @@ console.log("Parent image value (watch):", watch("image"));
                     label="Chatbot avatar"
                     name="image"
                     value={pathToImage(watch("image")) || "/images/face2.webp"}
-                    register={register}
+                    setValue={setValue}
                   />
                   
                   <ColorPickerField
