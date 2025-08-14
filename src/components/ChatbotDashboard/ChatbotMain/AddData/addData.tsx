@@ -65,28 +65,47 @@ const AddBotData = ({
     "application/msword",
     "text/csv",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/vnd.ms-excel",
   ];
 
   const target_link = watch('target_link')
 
 
-  useEffect(() => {
-    if (target_link) {
-      try {
-        const url = new URL(target_link);
-        const isBaseLink = url.pathname === "/" && !url.search && !url.hash;
+ useEffect(() => {
+  if (target_link) {
+    try {
+      const url = new URL(target_link);
+      const lowerHref = url.href.toLowerCase();
 
-        if (!isBaseLink) {
-          setValue("train_from", "Webpage");
-          setActiveTrainFrom("Webpage")
-        }
-      } catch (e) {
-        // Invalid URL fallback
-        setValue("train_from", "Webpage");
-        setActiveTrainFrom("Webpage")
+      // File type checks
+      if (lowerHref.endsWith(".pdf")) {
+        setValue("train_from", "Pdf");
+        setActiveTrainFrom("Pdf");
+        return;
       }
+
+      if (lowerHref.endsWith(".docx") || lowerHref.endsWith(".doc")) {
+        setValue("train_from", "WordDoc");
+        setActiveTrainFrom("WordDoc");
+        return;
+      }
+
+      // Check if it's a base homepage link
+      const isBaseLink =
+        url.pathname === "/" && !url.search && !url.hash;
+
+      if (!isBaseLink) {
+        setValue("train_from", "Webpage");
+        setActiveTrainFrom("Webpage");
+      }
+    } catch (e) {
+      // Invalid URL fallback
+      setValue("train_from", "Webpage");
+      setActiveTrainFrom("Webpage");
     }
-  }, [target_link]);
+  }
+}, [target_link]);
+
 
 
   const uploadFile = (file: File) => {
