@@ -110,15 +110,11 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
     // ]);
 
     const rows = messages.map((msg, idx) => {
-      // Convert to Date and subtract 5 hours
-      const dateMinus5Hours = new Date(msg.created_at);
-      dateMinus5Hours.setHours(dateMinus5Hours.getHours() - 5);
-
       return [
         idx + 1,
         msg.sender === "user" ? "User" : "Bot",
         msg.message,
-        format(dateMinus5Hours, "PPpp"), // Format after subtraction
+        formatDateOrTimeAgo(msg.created_at, timezone), // Format after subtraction
       ];
     });
 
