@@ -331,7 +331,12 @@ export const ImageField = ({
       const imageUrl = URL.createObjectURL(file);
       
       setPreview(imageUrl);
-      setValue(name, file);
+       if (setValue) {
+        setValue(name, file);
+      }
+          if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
 
       
     }
@@ -345,7 +350,9 @@ export const ImageField = ({
         <input
           type="file"
           accept="image/*"
-          onChange={handleImageChange}
+          {...register(name, {
+            onChange: handleImageChange,
+          })}
           className="peer absolute w-full h-full opacity-0 z-10 cursor-pointer image"
           key={preview}
         /> 
