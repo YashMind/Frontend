@@ -9,6 +9,7 @@ import { AppDispatch, RootState } from "@/store/store";
 import { fetchChatbotSettings } from "@/store/slices/chats/appearanceSettings";
 import { useTimezone } from "@/context/TimeZoneContext";
 import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
+import { pathToImage } from "@/services/utils/helpers";
 
 interface ChatUserModalProps {
   botId?: number;
@@ -63,7 +64,7 @@ const ViewChatModal = ({
                     <>
                       <Image
                         src="/images/face2.webp"
-                        alt="Bot"
+                        alt="Bot_"
                         className="w-8 h-8 rounded-full mr-2"
                         width={20}
                         height={20}

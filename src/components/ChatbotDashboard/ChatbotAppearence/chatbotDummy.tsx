@@ -1,26 +1,51 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import LeadGenForm from "./LeadGenForm";
 import { ChatbotSettings } from "@/types/chatTypes";
 import { IoMdSend } from "react-icons/io";
+import { pathToImage } from "@/services/utils/helpers";
+
 const ChatbotDummy = ({
-  
   chatbotSettings,
 }: {
   chatbotSettings: Partial<Omit<ChatbotSettings, "id">>;
 }) => {
+  console.log(chatbotSettings.image);
   const messagesEndRef: any = useRef(null);
-  const chatbotAvatar =
-    typeof chatbotSettings.image === "string" &&
-      chatbotSettings.image.trim() !== ""
-      ? chatbotSettings.image
-      : "/images/face2.webp";
+  const [inputvalue, setInputvalue] = useState("");
+
+  const chatbotAvatar = useMemo(() => {
+
+    console.log("memo called")
+    const imageValue = typeof chatbotSettings.image=='string'?chatbotSettings.image:chatbotSettings.image[0];
+
+    if (imageValue instanceof File || imageValue instanceof Blob) {
+      console.log("file found")
+      return URL.createObjectURL(imageValue);
+    } else if (typeof imageValue === "string" && imageValue.trim() !== "") {
+      console.log("image string found", imageValue)
+      return pathToImage(imageValue);
+    }
+    return "/images/face2.webp"; // Default fallback
+  }, [chatbotSettings.image]);
   // const chatbotAvatar = chatbotSettings.image || "/images/face2.webp";
-  const [inputvalue ,setInputvalue]=useState("")
-  const handleSuggestion=(e:any)=>{
-    setInputvalue(e.target.value)
-  }
+  const handleSuggestion = (e: any) => {
+    setInputvalue(e.target.value);
+  };
+  React.useEffect(() => {
+    return () => {
+      if (
+        chatbotSettings.image instanceof File ||
+        chatbotSettings.image instanceof Blob
+      ) {
+        if (chatbotAvatar.startsWith("blob:")) {
+          console.log("gggggggggggggggg", chatbotSettings.image);
+          URL.revokeObjectURL(chatbotAvatar);
+        }
+      }
+    };
+  }, [chatbotSettings.image, chatbotAvatar]);
   return (
     <div
       className="min-w-[320px] w-[320px] max-md:w-full h-full rounded-lg shadow-md flex flex-col justify-between sticky top-40 mb-10"
@@ -178,7 +203,6 @@ const ChatbotDummy = ({
             type="text"
             value={inputvalue}
             onChange={(e) => setInputvalue(e.target.value)}
-            
             placeholder={
               chatbotSettings.placeholder_is_active
                 ? chatbotSettings.placeholder_value
@@ -196,7 +220,6 @@ const ChatbotDummy = ({
             type="submit"
           >
             <IoMdSend />
-
           </button>
         </div>
       </div>

@@ -20,6 +20,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
   const chatbotSetting = useSelector(
     (state: RootState) => state.appearance.settings
   );
+  console.log("2222222222222222222222",chatbotSetting)
 
 
   useEffect(() => {
@@ -49,8 +50,8 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       live_message_bg: chatbotSetting?.live_message_bg,
       message_color: chatbotSetting?.message_color || "",
       live_message_color: chatbotSetting?.live_message_color,
-      chat_icon: chatbotSetting?.chat_icon,
-      image: chatbotSetting?.image,
+      chat_icon: chatbotSetting?.chat_icon ?  pathToImage( chatbotSetting?.chat_icon) : undefined,
+      image: chatbotSetting?.image ?  pathToImage( chatbotSetting?.image) : undefined,
       // Lead collection
       lead_collection: chatbotSetting?.lead_collection || false,
       name_lead_gen: chatbotSetting?.name_lead_gen || "Name",
@@ -116,10 +117,13 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
         chat_icon
           ? setValue("chat_icon", chat_icon)
           : setValue("chat_icon", "");
+          console.log("1111111111111111111",chat_icon)
+          console.log(typeof(chat_icon))
       }
       if (chatbotSetting?.image !== undefined) {
         const image = pathToImage(chatbotSetting.image);
         image ? setValue("image", image) : setValue("image", "");
+        console.log("1111111111111111111",image)
       }
       if (chatbotSetting?.lead_collection !== undefined) {
         setValue("lead_collection", chatbotSetting.lead_collection);
@@ -214,8 +218,9 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       }
     }
   }, [chatbotSetting, setValue]);
-
+console.log("-------------------------")
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    console.log("44444444444444444")
     const action = chatbotSetting
       ? updateChatbotSettings
       : createChatbotSettings;
@@ -234,6 +239,8 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
     }
     if (typeof data.image === "object") {
       const image = new FormData();
+
+      console.log("IMAGE: ", data.image)
       if (data.image[0]) {
         image.append("file", data.image[0]);
         await dispatch(uploadDocument({ payload: image }))
@@ -247,6 +254,8 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
     }
     console.log("typeof data.popup_sound", typeof data.popup_sound, data.popup_sound);
     if (typeof data.popup_sound === "object") {
+        console.log("popup sound upload triggered");
+
       const popup_sound = new FormData();
       if (data.popup_sound) {
         popup_sound.append("file", data.popup_sound);
@@ -323,12 +332,12 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
 }, [chatbotSetting, reset]);
 
 
+console.log("Parent image value (watch):", watch("image"));
 
   const handleResetAppearance = async () => {
   const settings = await dispatch(fetchChatbotSettings(botId!)).unwrap();
     console.log(settings)
   reset(settings);
-
 
 };
 
@@ -407,12 +416,15 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
               </div>
               <div className="flex flex-col gap-5 h-full">
                 <div className="basis-1/2 space-y-2">
+
+                {JSON.stringify(watch('image'))}
                   <ImageField
                     label="Chatbot avatar"
                     name="image"
-                    value={watch("image") || "/images/face2.webp"}
+                    value={pathToImage(watch("image")) || "/images/face2.webp"}
                     register={register}
                   />
+                  
                   <ColorPickerField
                     name="message_bg"
                     label="Bot message background"
@@ -448,8 +460,9 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
                   <ImageField
                     label="Start chat icon"
                     name="chat_icon"
-                    value={watch("chat_icon")|| "/images/face2.webp"}
+                    value={pathToImage(watch("chat_icon"))|| "/images/face2.webp"}
                     register={register}
+                    setValue={setValue}
                   />
                   {/* <ColorPickerField
                     name="live_message_bg"

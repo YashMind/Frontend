@@ -34,6 +34,8 @@ export default function RootLayout({
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
       <html className="scroll-smooth" lang="en" suppressHydrationWarning={true}>
         <head>
+          <meta property="og:image" content="https://yashraa.ai/images/yashraa_header.svg"></meta>
+
           <link rel="icon" href="./favicon.ico"  />
           <script async src="https://www.googletagmanager.com/gtag/js?id=G-FMTKQ1Z2FB"></script>
         <script dangerouslySetInnerHTML={{
