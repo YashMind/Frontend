@@ -14,11 +14,14 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { format } from "date-fns";
 import { ChatbotsData } from "@/types/chatTypes";
-import { formatDateOrTimeAgo, formatDateTimeWithTz } from "@/components/utils/formatDateTime";
+import {
+  formatDateOrTimeAgo,
+  formatDateTimeWithTz,
+} from "@/components/utils/formatDateTime";
 import { useTimezone } from "@/context/TimeZoneContext";
 
 const ChatbotHistory = ({ botId }: { botId?: number }) => {
-  const { timezone, isLoading } = useTimezone()
+  const { timezone, isLoading } = useTimezone();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [modalShow, setModalShow] = useState<boolean>(false);
@@ -62,18 +65,23 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
     setCurrentMessages(chats);
   };
 
-  const handleCreateDownloadPdf = (messages: any[], platform: string, chatBot: ChatbotsData) => {
+  const handleCreateDownloadPdf = (
+    messages: any[],
+    platform: string,
+    chatBot: ChatbotsData
+  ) => {
     const doc = new jsPDF();
     const botId = messages[0]?.bot_id || "Unknown";
     const chatId = messages[0]?.chat_id || "Unknown";
     const userId = messages[0]?.user_id || "Unknown";
     const chatbotCreatedAt = formatDateOrTimeAgo(chatBot?.created_at, timezone);
-    console.log("___________________",chatbotCreatedAt)
+    console.log("___________________", chatbotCreatedAt);
     const createdAt = formatDateOrTimeAgo(messages[0]?.created_at, timezone);
-    console.log("------------",createdAt)
-        const endAt = formatDateOrTimeAgo(messages[messages.length - 1]?.created_at, timezone);
-
-    
+    console.log("------------", createdAt);
+    const endAt = formatDateOrTimeAgo(
+      messages[messages.length - 1]?.created_at,
+      timezone
+    );
 
     doc.setFontSize(18);
     doc.text("Chat History", 14, 20);
@@ -94,12 +102,21 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
       headStyles: { fillColor: [98, 77, 227], textColor: 255 },
     });
 
-    const rows = messages.map((msg, idx) => [
-      idx + 1,
-      msg.sender === "user" ? "User" : "Bot",
-      msg.message,
-      format(new Date(msg.created_at), "PPpp"),
-    ]);
+    // const rows = messages.map((msg, idx) => [
+    //   idx + 1,
+    //   msg.sender === "user" ? "User" : "Bot",
+    //   msg.message,
+    //   format(new Date(msg.created_at), "PPpp"),
+    // ]);
+
+    const rows = messages.map((msg, idx) => {
+      return [
+        idx + 1,
+        msg.sender === "user" ? "User" : "Bot",
+        msg.message,
+        formatDateOrTimeAgo(msg.created_at, timezone), // Format after subtraction
+      ];
+    });
 
     autoTable(doc, {
       startY: 90,
@@ -120,9 +137,9 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
 
     selectedIds.forEach((chatId: number) => {
       const messages = chatUserHistory?.data[chatId].messages;
-      console.log("--------------------------------------",messages)
+      console.log("--------------------------------------", messages);
       const platform = chatUserHistory?.data[chatId].platform;
-      console.log("----------------------------------------",platform)
+      console.log("----------------------------------------", platform);
       if (messages && messages.length > 0) {
         handleCreateDownloadPdf(messages, platform, chatUserHistory?.chatBot);
       }
@@ -138,20 +155,22 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           <div className="flex items-center gap-2 flex-wrap">
             <div className="flex gap-4">
               <button
-                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${isDisabled
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-purple-600 hover:bg-purple-700"
-                  }`}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
+                  isDisabled
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-purple-600 hover:bg-purple-700"
+                }`}
                 disabled={isDisabled}
                 onClick={() => handleExportDownloadPdf()}
               >
                 Export
               </button>
               <button
-                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${isDisabled
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-red-500 hover:bg-red-600"
-                  }`}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
+                  isDisabled
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-red-500 hover:bg-red-600"
+                }`}
                 disabled={isDisabled}
                 onClick={() => handleDeleteChat()}
               >
@@ -239,12 +258,19 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
             </thead>
             <tbody className="bg-[#f7f6fd]">
               {chatUserHistory?.data &&
-                Object.entries(chatUserHistory?.data).sort(
-                  ([, a], [, b]) => new Date(b.messages[0].created_at).getTime() - new Date(a.messages[0].created_at).getTime()
-                ).map(
-                  ([chatId, { platform, messages }]: any, idx) => {
+                Object.entries(chatUserHistory?.data)
+                  .sort(
+                    ([, a], [, b]) =>
+                      new Date(b.messages[0].created_at).getTime() -
+                      new Date(a.messages[0].created_at).getTime()
+                  )
+                  .map(([chatId, { platform, messages }]: any, idx) => {
                     const lastMessage = messages[messages?.length - 2];
-                    const timeAgo = formatDateOrTimeAgo(lastMessage?.created_at, timezone, 10);
+                    const timeAgo = formatDateOrTimeAgo(
+                      lastMessage?.created_at,
+                      timezone,
+                      10
+                    );
                     return (
                       <tr key={chatId} className="border-b border-gray-200">
                         <td className="p-4">
@@ -292,8 +318,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
                         </td>
                       </tr>
                     );
-                  }
-                )}
+                  })}
             </tbody>
           </table>
         </div>
@@ -308,8 +333,9 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           </button>
           {chatUserHistory?.totalPages >= 1 ? (
             <button
-              className={`w-6 h-6 ${page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
-                }   text-black rounded-[7px] text-sm`}
+              className={`w-6 h-6 ${
+                page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
+              }   text-black rounded-[7px] text-sm`}
             >
               1
             </button>
@@ -324,10 +350,11 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           ) : null}
           {chatUserHistory?.totalPages > 1 ? (
             <button
-              className={`w-6 h-6 ${chatUserHistory?.totalPages === page
-                ? "bg-[#624DE3]"
-                : "bg-gray-200"
-                } text-black rounded-[7px] text-sm`}
+              className={`w-6 h-6 ${
+                chatUserHistory?.totalPages === page
+                  ? "bg-[#624DE3]"
+                  : "bg-gray-200"
+              } text-black rounded-[7px] text-sm`}
             >
               {chatUserHistory?.totalPages}
             </button>

@@ -4,6 +4,9 @@ import Image from "next/image";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const bannerData = [
   {
@@ -20,6 +23,9 @@ const bannerData = [
   },
 ];
 const VoiceAgentBanner = () => {
+  const router = useRouter();
+  const userData = useSelector((state: RootState) => state.auth.loggedInUser);
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     loop: true,
@@ -57,12 +63,16 @@ const VoiceAgentBanner = () => {
                 {item.para}
               </p>
 
-              <Link
-                href="/auth/signin"
-                className="bg-white text-black text-lg font-semibold rounded-[22px] px-5 py-1"
+              <button
+                className="cursor-pointer bg-white text-black px-6 py-2 rounded-full text-lg font-semibold shadow-md mb-8 hover:bg-gray-100 transition-colors duration-300"
+                onClick={() =>
+                  router.push(
+                    userData ? "/chat-dashboard/main" : "/auth/signin"
+                  )
+                }
               >
-                Sign In
-              </Link>
+                {userData ? "Dashboard" : "Sing In"}
+              </button>
             </div>
           );
         })}

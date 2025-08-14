@@ -1,3 +1,7 @@
+"use client"; // Add this at the top since we're using hooks
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 import Image from "next/image";
 import React from "react";
 
@@ -49,8 +53,9 @@ const Step = ({ number, title, description, image, imagePosition }: any) => {
 
   return (
     <div
-      className={`flex flex-col lg:flex-row items-start gap-10 ${number === "2" ? "my-[76px]" : ""
-        }`}
+      className={`flex flex-col lg:flex-row items-start gap-10 ${
+        number === "2" ? "my-[76px]" : ""
+      }`}
     >
       {imagePosition === "left" ? (
         <>
@@ -68,6 +73,9 @@ const Step = ({ number, title, description, image, imagePosition }: any) => {
 };
 
 const CustomGpt = () => {
+  const router = useRouter();
+  const userData = useSelector((state: RootState) => state.auth.loggedInUser);
+
   return (
     <div className="relative h-screen">
       {/* Background Image */}
@@ -97,11 +105,19 @@ const CustomGpt = () => {
               <span className="text-[#34C8FB]"> Chat Bot</span>
             </h2>
             <p className="text-base font-bold mt-[22px]">
-              Gain a new employee who helps 24/7/365 answer any questions about your business or chosen data.
+              Gain a new employee who helps 24/7/365 answer any questions about
+              your business or chosen data.
             </p>
             <div className="text-right">
-              <button className="cursor-pointer bg-white text-[#363636] font-semibold px-6 py-2 rounded-[22px] mt-[22px]">
-                Try Now
+              <button
+                className="cursor-pointer bg-white text-black px-6 py-2 rounded-full text-lg font-semibold shadow-md mb-8 hover:bg-gray-100 transition-colors duration-300"
+                onClick={() =>
+                  router.push(
+                    userData ? "/chat-dashboard/main" : "/auth/signin"
+                  )
+                }
+              >
+                {userData ? "Try Now" : "Try Now"}
               </button>
             </div>
           </div>
@@ -112,8 +128,6 @@ const CustomGpt = () => {
 };
 
 export default CustomGpt;
-
-
 
 // import Image from "next/image";
 // import React from "react";

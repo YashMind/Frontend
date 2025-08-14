@@ -16,9 +16,9 @@ import {
 import LoginWithGoogle from "@/components/auth/LoginWithGoogle/loginWithGoogle";
 import Link from "next/link";
 import LoginWithFacebook from "@/components/auth/LoginWithFacebook/loginWithFacebook";
-import { FaRegEyeSlash,FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { BsEye } from "react-icons/bs";
-
+import HomeHeader from "@/components/Common/header/header";
 interface SignInForm {
   email: string;
   password: string;
@@ -84,7 +84,6 @@ const AuthForm = ({ formType }: { formType: "signin" | "signup" }) => {
     resolver: yupResolver(getValidationSchema(formType)),
   });
   const searchParams = useSearchParams();
-
 
   const onSubmit = (data: AuthFormInput) => {
     if (formType === "signin") {
@@ -187,17 +186,18 @@ const AuthForm = ({ formType }: { formType: "signin" | "signup" }) => {
   //         </div>
   //     );
   // }
-const [showPassword,setShowPassword]=useState(false);
-const handleShowPassword=()=>{
-  setShowPassword(!showPassword);
-}
+  const [showPassword, setShowPassword] = useState(false);
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <div
-      className="h-full lg:h-screen banner bg-center bg-cover bg-no-repeat flex justify-center items-center"
+      className="h-full  banner bg-center bg-cover bg-no-repeat flex flex-col justify-center items-center"
       style={{ backgroundImage: "url('/images/banner.png')" }}
     >
+      <HomeHeader />
       <div className="container">
-        <div className="flex lg:flex-row items-center justify-between custom-gap-margin">
+        <div className="flex lg:flex-row items-center justify-between custom-gap-margin mt-16">
           <div className="left">
             <img className="rounded:xl-custom" src="/images/robo.png" />
           </div>
@@ -263,7 +263,9 @@ const handleShowPassword=()=>{
                     {...register("password")}
                     className="bg-transparent outline-none w-full placeholder-white placeholder-opacity-60"
                   />
-                  <button onClick={handleShowPassword} type="button">{showPassword ? <FaRegEye/> : <FaRegEyeSlash/>}</button>
+                  <button onClick={handleShowPassword} type="button">
+                    {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+                  </button>
                 </div>
                 {errors.password && (
                   <span className="text-red-500">
@@ -279,7 +281,13 @@ const handleShowPassword=()=>{
                       {...register("confirmPassword")}
                       className="w-full shadow-[inset_0px_0px_11.28px_0px_#00000029]  backdrop-blur-[15.23px] text-base font-medium px-[22px] py-4 rounded-lg bg-[#261046] text-[#A4A4A4] focus:outline-none"
                     />
-                      <button onClick={handleShowPassword} className="relative -right-[416px] -top-[36px]"   type="button">{showPassword ? <FaRegEye/> : <FaRegEyeSlash/>}</button>
+                    <button
+                      onClick={handleShowPassword}
+                      className="relative -right-[416px] -top-[36px]"
+                      type="button"
+                    >
+                      {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+                    </button>
                     {errors.confirmPassword && (
                       <span className="text-red-500">
                         {errors.confirmPassword.message}
@@ -325,7 +333,6 @@ const handleShowPassword=()=>{
                 <LoginWithGoogle />
               </div>
               <hr className="border border-[#727272] my-[20px]" />
-             
 
               <div className="flex gap-4 justify-center">
                 <LoginWithFacebook />
