@@ -353,6 +353,7 @@ export const ImageField = ({
         {/* File input - hidden but clickable */}
         <input
           type="file"
+          key={preview}
           accept="image/*"
           {...register(name, {
             onChange: handleImageChange,
