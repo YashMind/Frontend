@@ -153,14 +153,14 @@ const TokenAnalytics = () => {
                         Token Usage Trends
                       </h3>
                     </div>
-                    <div className="flex justify-center gap-2 items-center text-[#AEB9E1] text-sm">
+                    {/* <div className="flex justify-center gap-2 items-center text-[#AEB9E1] text-sm">
                       <div className="p-1 bg-[#CB3CFF] rounded-full"></div>
                       <h6>Revenue</h6>
                     </div>
                     <div className="flex justify-center gap-2 items-center text-[#AEB9E1] text-sm">
                       <div className="p-1 bg-[#00C2FF] rounded-full"></div>
                       <h6>Expenses</h6>
-                    </div>
+                    </div> */}
                     <div className="relative inline-block text-left">
                       {/* Hidden Checkbox Toggle */}
                       <input
