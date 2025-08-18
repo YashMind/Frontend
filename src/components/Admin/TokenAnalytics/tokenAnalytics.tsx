@@ -10,6 +10,8 @@ import {
 import Image from "next/image";
 import { fetchAdminTokenCreditReport } from "@/store/slices/admin/tokenAnalytic";
 
+import { fetchTotalMessages  } from "@/store/slices/admin/messageSlice";
+
 interface TokenUsage {
   token_limit: number;
   bot_id: number;
@@ -95,6 +97,12 @@ const TokenAnalytics = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { topTokenUsersData } = useSelector((state: RootState) => state.admin);
 
+
+  // const { total:totalMessages, loading:messagesLoading, error } = useSelector((state: RootState) => state.messages);
+  const { total:totalMessages, loading:messagesLoading, error } = useSelector((state: RootState) => state.messages);
+
+
+
   const {
     data: tokensCredits,
     loading: tokensCreditsLoading,
@@ -109,6 +117,11 @@ const TokenAnalytics = () => {
     dispatch(deleteTokenBots({ token_bot_id: id }));
   };
 
+   useEffect(() => {
+    dispatch(fetchTotalMessages());
+  }, [dispatch]);
+
+  
   return (
     <div>
       <div className="">
@@ -230,6 +243,37 @@ const TokenAnalytics = () => {
                     </button>
                   </div>
                   <img src="/images/img3.png" alt="" />
+
+
+
+
+
+
+
+
+
+
+<div className="bg-[#0E1A47] rounded-xl p-4 shadow-lg flex flex-col items-center justify-center">
+              <h3 className="text-white/80 font-semibold text-base mb-2">
+                Total Messages
+              </h3>
+              {messagesLoading ? (
+                <p className="text-white">Loading...</p>
+              ) : (
+                <p className="text-2xl text-white">{totalMessages || 0}</p>
+              )}
+            </div>
+
+
+
+
+
+
+
+
+
+
+
                 </div>
 
                 {/* Breakdown by Product */}

@@ -53,7 +53,7 @@ const schema = yup.object().shape({
     .number()
     .typeError("Duration must be a number")
     .required("Duration is required"),
-  features: yup.string().required("Features is required"),
+  features: yup.string().trim().nullable(),
 });
 
 const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
@@ -151,6 +151,8 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
                   Select Duration
                 </option>
                 {[
+                  { duration: 7, label: "Weekly" },
+                  { duration: 15, label: "15 Days" },
                   { duration: 30, label: "Monthly" },
                   { duration: 90, label: "Quarterly" },
                   { duration: 180, label: "Bi-annually" },
