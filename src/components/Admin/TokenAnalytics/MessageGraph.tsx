@@ -160,7 +160,7 @@ export const MessageGraph = () => {
     <div className="w-full h-[400px] flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <h3 className="text-white text-lg font-semibold">Message Analytics</h3>
-        <div className="flex rounded-md overflow-hidden border border-gray-600">
+        {/* <div className="flex rounded-md overflow-hidden border border-gray-600">
           <button
             className={`px-4 py-2 text-sm ${timeRange === 'monthly' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}
             onClick={() => setTimeRange('monthly')}
@@ -179,7 +179,35 @@ export const MessageGraph = () => {
           >
             Last 10 Days
           </button>
-        </div>
+        </div> */}
+
+
+        <div className="flex gap-0 justify-center text-xs">
+<button
+            className={`px-4 py-2 text-sm ${timeRange === 'daily' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}
+            onClick={() => setTimeRange('daily')}
+          >
+                      Daily
+                    </button>
+                    <button
+            className={`px-4 py-2 text-sm ${timeRange === 'weekly' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}
+            onClick={() => setTimeRange('weekly')}
+          >
+                      Weekly
+                    </button>
+
+
+                     <button
+             className={`px-4 py-2 text-sm ${timeRange === 'monthly' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}
+            onClick={() => setTimeRange('monthly')}
+          >
+            Monthly
+          </button>
+
+
+                  </div>
+
+                  
       </div>
 
       <div className="flex-1">

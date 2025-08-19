@@ -134,8 +134,8 @@ const TokenAnalytics = () => {
           <div className="dashboard-right flex-1 mr-[30px]">
             {/* graph start */}
             <div className="pt-10 text-white">
-              <h2 className="text-2xl font-semibold mb-6">Token Analytics</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <h2 className="text-2xl font-semibold mb-6">Message Analytics</h2>
+              <div className="grid grid-cols-1  gap-6">
                 {/* Token Usage Trends */}
                 <div className="bg-[#0E1A47] rounded-xl p-4 shadow-lg">
                   <div className="flex items-center justify-between mb-4">
@@ -166,88 +166,11 @@ const TokenAnalytics = () => {
                       <div className="p-1 bg-[#00C2FF] rounded-full"></div>
                       <h6>Expenses</h6>
                     </div> */}
-                    <div className="relative inline-block text-left">
-                      {/* Hidden Checkbox Toggle */}
-                      <input
-                        type="checkbox"
-                        id="dropdown-toggle"
-                        className="peer hidden"
-                      />
-                      {/* Button */}
-                      <label
-                        htmlFor="dropdown-toggle"
-                        className="inline-flex items-center justify-between w-46 px-2 py-1 bg-[#0A1330] border border-[#0B1739] rounded-md cursor-pointer text-[#AEB9E1] text-sm"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z"
-                          />
-                        </svg>
-                        Select Option
-                        <svg
-                          className="w-4 h-4 ml-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      </label>
+                    
 
-                      {/* Dropdown Menu */}
-                      <div className="peer-checked:block hidden absolute z-10 mt-2 w-40 bg-white rounded-md shadow-lg border border-gray-200">
-                        <ul className="py-1 text-sm text-gray-700">
-                          <li>
-                            <a
-                              href="#"
-                              className="block px-4 py-2 hover:bg-gray-100"
-                            >
-                              Option 1
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              href="#"
-                              className="block px-4 py-2 hover:bg-gray-100"
-                            >
-                              Option 2
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              href="#"
-                              className="block px-4 py-2 hover:bg-gray-100"
-                            >
-                              Option 3
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
+
                   </div>
-                  <div className="flex gap-0 justify-center text-xs">
-                    <button className="bg-[#C8C8C8] px-2 py-1  text-[#121212]">
-                      Daily
-                    </button>
-                    <button className="bg-white px-2 py-1  text-[#121212]">
-                      Weekly
-                    </button>
-                  </div>
-                  {/* <img src="/images/img3.png" alt="" /> */}
+                 
 
                   <MessageGraph/>
 
@@ -290,7 +213,7 @@ const TokenAnalytics = () => {
                 </div>
 
                 {/* Breakdown by Product */}
-                <div className="bg-[#0E1A47] rounded-xl p-4 shadow-lg">
+                {/* <div className="bg-[#0E1A47] rounded-xl p-4 shadow-lg">
                   <h3 className="text-white/80 font-semibold flex justify-start gap-2 items-center text-base mb-4">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -322,7 +245,7 @@ const TokenAnalytics = () => {
                       LLM
                     </span>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
             {/* token price start */}
@@ -412,7 +335,7 @@ const TokenAnalytics = () => {
                     </th>
                     <th className="p-4 text-xs font-medium">Email</th>
                     <th className="p-4 text-xs font-medium">Plan</th>
-                    <th className="p-4 text-xs font-medium">Token Consumed</th>
+                    <th className="p-4 text-xs font-medium">Message Consumed</th>
                     <th className="p-4 text-xs font-medium">Status</th>
                   </tr>
                 </thead>
@@ -440,7 +363,7 @@ const TokenAnalytics = () => {
                           {item?.plan.name}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
-                          {item?.tokenUsed}
+                          {item?.messageUsed}
                         </td>
 
                         <td className="p-4">
