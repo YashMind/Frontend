@@ -1,58 +1,99 @@
 // src/redux/slices/messageSlice.ts
-
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import http from '@/services/http/baseUrl'; // axios or your configured http instance
+import http from '@/services/http/baseUrl';
 
-// Define the state types
-type MessageState = {
-  total: { month: string; totalMessages: number }[]; // array of month objects
+// Define types with more specific naming
+interface TimePeriodItem {
+  label: string;
+  totalMessages: number;
+}
+
+interface MessageStatistics {
+  monthly: TimePeriodItem[];
+  weekly: TimePeriodItem[];
+  last10Days: TimePeriodItem[];
+}
+
+interface MessageState {
+  stats: MessageStatistics;
   loading: boolean;
   error: string | null;
-};
+  lastFetched: number | null; // Add timestamp of last fetch
+}
 
-// Initial state
 const initialState: MessageState = {
-  total: [],
+  stats: {
+    monthly: [],
+    weekly: [],
+    last10Days: []
+  },
   loading: false,
   error: null,
+  lastFetched: null
 };
 
-// Async thunk to fetch total messages
-export const fetchTotalMessages = createAsyncThunk<
-  { month: string; totalMessages: number }[],
+// More robust error handling
+export const fetchMessageStats = createAsyncThunk<
+  MessageStatistics,
   void,
   { rejectValue: string }
->('messages/fetchTotalMessages', async (_, { rejectWithValue }) => {
+>('messages/fetchMessageStats', async (_, { rejectWithValue }) => {
   try {
-    const response = await http.get('admin/total-messages'); // adjust URL if needed
-    return response.data.data; // backend returns { status: "success", data: [...] }
+    const response = await http.get('admin/total-messages');
+    
+    // Validate response structure
+    if (!response.data?.data) {
+      throw new Error('Invalid response structure');
+    }
+
+    const { monthly, weekly, last_10_days } = response.data.data;
+
+    // Transform data with better type safety
+    const transformData = (items: any[], labelKey: string): TimePeriodItem[] => {
+      return items.map(item => ({
+        label: item[labelKey],
+        totalMessages: item.totalMessages
+      }));
+    };
+
+    return {
+      monthly: transformData(monthly, 'month'),
+      weekly: transformData(weekly, 'week'),
+      last10Days: transformData(last_10_days, 'date')
+    };
+    
   } catch (err: any) {
-    console.error(err);
-    return rejectWithValue(err.response?.data?.detail || 'Failed to fetch total messages');
+    console.error('Failed to fetch message stats:', err);
+    return rejectWithValue(
+      err.response?.data?.detail || 
+      err.message || 
+      'Failed to fetch message statistics'
+    );
   }
 });
 
-// Slice
 const messageSlice = createSlice({
-  name: 'messages', // keep this name as you imported in store
+  name: 'messages',
   initialState,
-  reducers: {},
+  reducers: {
+    // Optional: Add a reset action if needed
+    resetMessageStats: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTotalMessages.pending, (state) => {
+      .addCase(fetchMessageStats.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        fetchTotalMessages.fulfilled,
-        (state, action: PayloadAction<{ month: string; totalMessages: number }[]>) => {
-          state.loading = false;
-          state.total = action.payload;
-        }
-      )
-      .addCase(fetchTotalMessages.rejected, (state, action) => {
+      .addCase(fetchMessageStats.fulfilled, (state, action: PayloadAction<MessageStatistics>) => {
         state.loading = false;
-        state.error = action.payload || 'Unknown error';
+        state.stats = action.payload;
+        state.lastFetched = Date.now(); // Track when data was last fetched
+      })
+      .addCase(fetchMessageStats.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Unknown error occurred';
+        state.lastFetched = null;
       });
   },
 });

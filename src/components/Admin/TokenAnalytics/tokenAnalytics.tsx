@@ -10,7 +10,7 @@ import {
 import Image from "next/image";
 import { fetchAdminTokenCreditReport } from "@/store/slices/admin/tokenAnalytic";
 
-import { fetchTotalMessages  } from "@/store/slices/admin/messageSlice";
+import { fetchMessageStats  } from "@/store/slices/admin/messageSlice";
 import { MessageGraph } from "./MessageGraph";
 
 
@@ -121,7 +121,7 @@ const TokenAnalytics = () => {
   };
 
    useEffect(() => {
-    dispatch(fetchTotalMessages());
+    dispatch(fetchMessageStats());
   }, [dispatch]);
 
   
