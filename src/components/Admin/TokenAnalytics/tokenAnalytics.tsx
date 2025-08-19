@@ -11,6 +11,8 @@ import Image from "next/image";
 import { fetchAdminTokenCreditReport } from "@/store/slices/admin/tokenAnalytic";
 
 import { fetchTotalMessages  } from "@/store/slices/admin/messageSlice";
+import { MessageGraph } from "./MessageGraph";
+
 
 interface TokenUsage {
   token_limit: number;
@@ -99,8 +101,9 @@ const TokenAnalytics = () => {
 
 
   // const { total:totalMessages, loading:messagesLoading, error } = useSelector((state: RootState) => state.messages);
-  const { total:totalMessages, loading:messagesLoading, error } = useSelector((state: RootState) => state.messages);
-
+ const { total: totalMessages, loading: messagesLoading, error } = useSelector(
+    (state: RootState) => state.messages
+  );
 
 
   const {
@@ -122,6 +125,8 @@ const TokenAnalytics = () => {
   }, [dispatch]);
 
   
+
+
   return (
     <div>
       <div className="">
@@ -242,30 +247,38 @@ const TokenAnalytics = () => {
                       Weekly
                     </button>
                   </div>
-                  <img src="/images/img3.png" alt="" />
+                  {/* <img src="/images/img3.png" alt="" /> */}
+
+                  <MessageGraph/>
 
 
 
 
 
+ {/* Total Messages Card
+                //  <div className="bg-[#0E1A47] rounded-xl p-4 shadow-lg flex flex-col items-center justify-center mt-4">
+                //   <h3 className="text-white/80 font-semibold text-base mb-2">
+                //     Total Messages by Month
+                //   </h3>
+                //   {messagesLoading ? (
+                //     <p className="text-white">Loading...</p>
+                //   ) : error ? (
+                //     <p className="text-red-500">{error}</p>
+                //   ) : totalMessages.length === 0 ? (
+                //     <p className="text-white">No messages found</p>
+                //   ) : (
+                //     <ul className="text-white">
+                //       {totalMessages.map((item) => (
+                //         <li key={item.month} className="text-white text-lg">
+                //           {item.month}: {item.totalMessages}
+                //         </li>
+                //       ))}
+                //     </ul>
+                //   )}
+                // </div>  */}
 
 
-
-
-
-<div className="bg-[#0E1A47] rounded-xl p-4 shadow-lg flex flex-col items-center justify-center">
-              <h3 className="text-white/80 font-semibold text-base mb-2">
-                Total Messages
-              </h3>
-              {messagesLoading ? (
-                <p className="text-white">Loading...</p>
-              ) : (
-                <p className="text-2xl text-white">{totalMessages || 0}</p>
-              )}
-            </div>
-
-
-
+                
 
 
 
