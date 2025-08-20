@@ -66,6 +66,18 @@ const AddBotData = ({
     "text/csv",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "application/vnd.ms-excel",
+    "application/vnd.ms-excel.sheet.macroEnabled.12", // .xlsm (official MIME type)
+  "application/vnd.ms-excel.sheet.macroenabled.12", // some browsers lowercase 'enabled'
+  // Excel Templates
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.template", // .xltx
+  "application/vnd.ms-excel.template.macroEnabled.12", // .xltm
+
+  // Excel Add-ins
+  "application/vnd.ms-excel.addin.macroEnabled.12", // .xlam
+
+  // Excel Binary Workbook
+  "application/vnd.ms-excel.sheet.binary.macroEnabled.12", // .xlsb
+
   ];
 
   const target_link = watch('target_link')
