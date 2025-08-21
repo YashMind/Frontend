@@ -64,7 +64,8 @@ export default function UserByPlanGraph() {
       return entry;
     });
   }, [usersByPlan, uniquePlans, uniquePeriods]);
-
+console.log('usersByPlan:', usersByPlan);
+console.log('uniquePeriods:', uniquePeriods);
   return (
     <div className="space-y-4 p-4 bg-[#1E2130] rounded-lg border border-[#343B4F] shadow">
       {/* Header + Filter */}
@@ -133,7 +134,7 @@ export default function UserByPlanGraph() {
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={transformedData}>
-  <CartesianGrid stroke="#2D3748" strokeDasharray="3 3" /> {/* 👈 Add this line */}
+  <CartesianGrid stroke="#2D3748" strokeDasharray="3 3" /> 
   <XAxis dataKey="period" angle={-20} textAnchor="end" />
   <YAxis />
   <Tooltip content={<CustomTooltip />} />

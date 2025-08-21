@@ -10,6 +10,7 @@ import {
   getAllPaymentGateway,
 } from "@/store/slices/admin/adminSlice";
 import { fetchAdminTransactions } from "@/store/slices/admin/tokenAnalytic";
+import Settings from "./Settings";
 
 const BillingSettings = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
@@ -17,30 +18,32 @@ const BillingSettings = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { paymentGatewayData } = useSelector((state: RootState) => state.admin);
-const {
-  data: transactions,
-  loading: transactionsLoading,
-  error: transactionsError,
-} = useSelector((state: RootState) => state.tokens.transactions ?? { 
-  data: null, 
-  loading: true, 
-  error: null 
-});
-const transactionsState = useSelector((state: RootState) => state.tokens.transactions);
-console.log("🔍 Full transactions state:", transactionsState);
-console.log("Transactions:", transactions);
-console.log("TransactionsLoading:", transactionsLoading);
-console.log("TransactionsError:", transactionsError);
-
-
+  const {
+    data: transactions,
+    loading: transactionsLoading,
+    error: transactionsError,
+  } = useSelector(
+    (state: RootState) =>
+      state.tokens.transactions ?? {
+        data: null,
+        loading: true,
+        error: null,
+      }
+  );
+  const transactionsState = useSelector(
+    (state: RootState) => state.tokens.transactions
+  );
+  console.log("🔍 Full transactions state:", transactionsState);
+  console.log("Transactions:", transactions);
+  console.log("TransactionsLoading:", transactionsLoading);
+  console.log("TransactionsError:", transactionsError);
 
   useEffect(() => {
-      console.log("Component: Dispatching thunk"); 
+    console.log("Component: Dispatching thunk");
 
     dispatch(getAllPaymentGateway());
-    
-    dispatch(fetchAdminTransactions({}));
 
+    dispatch(fetchAdminTransactions({}));
   }, [dispatch]);
 
   const deletePaymentGateway = ({ id }: { id?: number }) => {
@@ -392,18 +395,18 @@ console.log("TransactionsError:", transactionsError);
                         </tr>
                       )}
 
-                     {transactionsError && (
-  <tr>
-    <td colSpan={8} className="text-center py-4">
-      <h2 className="text-white/90">
-        {(typeof transactionsError === "object" && "msg" in transactionsError)
-          ? transactionsError.msg
-          : String(transactionsError)}
-      </h2>
-    </td>
-  </tr>
-)}
-
+                      {transactionsError && (
+                        <tr>
+                          <td colSpan={8} className="text-center py-4">
+                            <h2 className="text-white/90">
+                              {typeof transactionsError === "object" &&
+                              "msg" in transactionsError
+                                ? transactionsError.msg
+                                : String(transactionsError)}
+                            </h2>
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -494,7 +497,7 @@ console.log("TransactionsError:", transactionsError);
                 <h2 className="text-2xl  font-semibold mb-[28]"></h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4  bg-[#0B1120] text-white border-[#343B4F] border py-[35px] px-[22px] shadow-[1px_1px_1px_0px_rgba(16,25,52,0.4)] rounded-[12px] ">
-                  {/* Failed Payment Notifications */}
+                  {/* Failed Payment Notifications
                   <div className="px-[13px] py-[34px] border border-[#343B4F] rounded-[12px] bg-[#0A1330] shadow-[1px_1px_1px_0px_rgba(16,25,52,0.4)]">
                     <div className="flex items-center justify-between">
                       <h3 className="font-semibold text-base ">
@@ -508,8 +511,9 @@ console.log("TransactionsError:", transactionsError);
                         />
                         <div className="w-10 h-5 bg-[#AEE5B1] rounded-full peer-checked:bg-green-500 transition duration-300"></div>
                         <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-[#18B91F] rounded-full transition peer-checked:translate-x-5"></div>
-                      </div>
-                    </div>
+                      </div> */}
+                      <Settings/>
+                    {/* </div>
                     <div className="bg-[#081028] p-3">
                       <p className="text-sm font-semibold text-white my-3">
                         Receive alerts when client payment methods fail and
@@ -529,7 +533,7 @@ console.log("TransactionsError:", transactionsError);
                         className="w-full p-2 text-sm bg-[#F0F0F0] border border-gray-600 rounded-md text-[#716B6B] mt-3"
                       />
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Card Expiry Alerts
                   <div className="px-[13px] py-[34px] border border-[#343B4F] rounded-[12px] bg-[#0A1330] shadow-[1px_1px_1px_0px_rgba(16,25,52,0.4)]">
