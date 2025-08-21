@@ -22,7 +22,7 @@ export const store = configureStore({
     tickets: ticketSlice,
     tokens: tokenAnalyticSlice,
     countries: countrySlice,
-    messages: messageSlice  
+    messages: messageSlice,
   },
 });
 
