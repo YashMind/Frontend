@@ -14,6 +14,14 @@ interface PaymentState {
     error: string | null;
     paymentData: any | null;
     verificationStatus: string | null;
+     success: boolean | null;
+    notificationData: any | null;
+     data: {
+    id?: number;
+    push_notification_admin_email?: string;
+    toggle_push_notifications?: boolean;
+  } | null;
+  
 }
 
 const initialState: PaymentState = {
@@ -25,7 +33,12 @@ const initialState: PaymentState = {
     error: null,
     paymentData: null,
     verificationStatus: null,
+     success: null,
+    notificationData: null,
+      data: null,
+   
 };
+
 
 // Create payment order
 export const createPaymentOrderCashfree = createAsyncThunk(
@@ -147,6 +160,57 @@ export const activateTrial = createAsyncThunk<
     }
 );
 
+export const getPushNotificationSettings = createAsyncThunk(
+  'settings/getPushNotificationSettings',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await http.get('admin/settings');
+      return response.data;
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ message: error.message });
+      }
+    }
+  }
+);
+export const updatePushNotificationSettings = createAsyncThunk(
+  'settings/updatePushNotificationSettings',
+  async (data: {
+    push_notification_admin_email: string;
+    toggle_push_notifications: boolean;
+  }, { rejectWithValue }) => {
+    try {
+      const response = await http.post('admin/settings', data);
+      return response.data;
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ message: error.message });
+      }
+    }
+  }
+);
+export const patchPushNotificationSettings = createAsyncThunk(
+  'settings/patchPushNotificationSettings',
+  async (data: {
+    push_notification_admin_email?: string;
+    toggle_push_notifications?: boolean;
+  }, { rejectWithValue }) => {
+    try {
+      const response = await http.patch('admin/settings', data);
+      return response.data;
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ message: error.message });
+      }
+    }
+  }
+);
 
 const paymentSlice = createSlice({
     name: 'payment',
@@ -216,6 +280,28 @@ const paymentSlice = createSlice({
                 state.error = (action.payload as any)?.message || 'Failed to verify payment';
                 state.verificationStatus = 'FAILED';
             })
+             .addCase(getPushNotificationSettings.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getPushNotificationSettings.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(getPushNotificationSettings.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as any)?.message || 'Failed to fetch settings';
+      })
+      .addCase(updatePushNotificationSettings.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.error = null;
+        state.loading = false;
+      })
+      .addCase(patchPushNotificationSettings.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.error = null;
+        state.loading = false;
+      });
     },
 });
 
