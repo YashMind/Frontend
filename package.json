@@ -36,6 +36,7 @@
     "react-phone-input-2": "^2.15.1",
     "react-redux": "^9.2.0",
     "react-select": "^5.10.1",
+    "recharts": "^3.1.2",
     "sanitize-html": "^2.17.0",
     "swiper": "^11.2.6",
     "yup": "^1.6.1"

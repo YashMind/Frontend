@@ -21,7 +21,7 @@ interface SubscriptionPlan {
 const PriceSection = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'quarterly' | 'biannual' | 'annual'>('monthly');
+  const [selectedPlan, setSelectedPlan] = useState<'Weekly' | '15 Days' | 'monthly' | 'quarterly' | 'biannual' | 'annual'>('monthly');
 
   const { publicSubscriptionPlansData, loading, error } = useSelector(
     (state: RootState) => state.admin
@@ -37,14 +37,18 @@ const PriceSection = () => {
   // Filter plans based on duration_days
   const filteredPlans = Object.values(publicSubscriptionPlansData).filter((item: SubscriptionPlan) => {
     switch(selectedPlan) {
+      case 'Weekly':
+        return item.duration_days == 7;
+      case '15 Days':
+        return item.duration_days ==15;
       case 'monthly':
-        return item.duration_days <= 31;
+        return item.duration_days ==30;
       case 'quarterly':
-        return item.duration_days > 31 && item.duration_days <= 93;
+        return item.duration_days ==90;
       case 'biannual':
-        return item.duration_days > 93 && item.duration_days <= 183;
+        return item.duration_days ==180;
       case 'annual':
-        return item.duration_days > 183;
+        return item.duration_days ==365;
       default:
         return false;
     }
@@ -54,14 +58,18 @@ const PriceSection = () => {
 const hasPlansOfType = (type: string) => {
   return Object.values(publicSubscriptionPlansData).some((plan: SubscriptionPlan) => {
     switch (type) {
+      case 'Weekly':
+        return plan.duration_days == 7;
+      case '15 Days':
+        return plan.duration_days == 15;
       case 'monthly':
-        return plan.duration_days <= 31;
+        return plan.duration_days == 30;
       case 'quarterly':
-        return plan.duration_days > 31 && plan.duration_days <= 93;
+        return plan.duration_days == 90;
       case 'biannual':
-        return plan.duration_days > 93 && plan.duration_days <= 183;
+        return plan.duration_days == 180;
       case 'annual':
-        return plan.duration_days > 183;
+        return plan.duration_days ==365;
       default:
         return false;
     }
@@ -70,6 +78,8 @@ const hasPlansOfType = (type: string) => {
 
 
   const getDurationText = (days: number) => {
+    if (days <= 7) return 'Weekly';
+    if (days <= 15) return '15 Days';
     if (days <= 31) return 'month';
     if (days <= 93) return '3 months';
     if (days <= 183) return '6 months';
@@ -88,7 +98,7 @@ const hasPlansOfType = (type: string) => {
         {/* Plan Selection Buttons - Always visible */}
         <div className="flex justify-center mt-8 mb-6">
           <div className="bg-[#1B1441] border border-[#FFFFFF33] rounded-full p-1 flex">
-           {['monthly', 'quarterly', 'biannual', 'annual'].map((planType) =>
+           {['Weekly','15 Days','monthly', 'quarterly', 'biannual', 'annual'].map((planType) =>
   hasPlansOfType(planType) ? (
     <button
       key={planType}
