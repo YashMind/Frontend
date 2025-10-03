@@ -11,7 +11,7 @@ const LoginWithFacebook = () => {
 
   const handleFacebookResponse = async (response: any) => {
     try {
-      const res = await http.post("http://localhost:8000/api/auth/facebook-login", { token: response.accessToken });
+      const res = await http.post("auth/facebook-login", { token: response.accessToken });
       if (res.status===200) {
         toasterSuccess("Logged with facebook successfully!",2000,"id")
         // toast.success("Logged with facebook successfully!")
