@@ -57,7 +57,7 @@ const ChatMessages = ({
         return result;
     }
     return (
-        <p >
+        <div >
             <p style={{
                 backgroundColor: chatbotSetting?.message_bg ?? "lightslategray",
                 color: chatbotSetting?.message_color ?? "black",
@@ -76,7 +76,7 @@ const ChatMessages = ({
                     {btn}
                 </button>
             ))}
-        </p>
+        </div>
     );
 }
 

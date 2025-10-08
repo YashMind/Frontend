@@ -33,7 +33,7 @@ const LoginWithGoogle = () => {
       return data;
     } catch (error) {
       console.error("Google Sign-Up/Login failed:", error);
-      throw error;
+      throw error.response.data.detail;
     }
   };
   const loginWithGoogle = useGoogleLogin({
@@ -50,8 +50,9 @@ const LoginWithGoogle = () => {
           }
           router.push("/chatbot-dashboard/main");
         }
-      } catch (err) {
-        toasterError("Login with google failed!", 2000, "id")
+      } catch (err: any) {
+        console.log("Login with google failed:", err)
+        toasterError(err || "Login with google failed!", 2000, "id")
         // toast.error("Login with google failed!");
       }
     },

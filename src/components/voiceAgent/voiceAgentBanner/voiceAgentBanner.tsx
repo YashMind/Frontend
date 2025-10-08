@@ -41,9 +41,9 @@ const VoiceAgentBanner = () => {
         ref={sliderRef}
         className="keen-slider intract-banner w-full  text-center h-screen pt-48"
       >
-        {bannerData.map((item) => {
+        {bannerData.map((item, index) => {
           return (
-            <div className="keen-slider__slide container">
+            <div key={item.heading + index} className="keen-slider__slide container">
               <div>
                 <Image
                   alt="alt"
@@ -83,11 +83,10 @@ const VoiceAgentBanner = () => {
             <button
               key={idx}
               onClick={() => instanceRef.current?.moveToIdx(idx)}
-              className={`w-[16px] h-[16px] rounded-full ${
-                currentSlide === idx
+              className={`w-[16px] h-[16px] rounded-full ${currentSlide === idx
                   ? "bg-[#01BEED]"
                   : "bg-transparent border  border-[#01BEED]"
-              }`}
+                }`}
             />
           ))}
         </div>
