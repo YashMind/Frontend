@@ -111,14 +111,13 @@ const SubscriptionPlans = () => {
                       Pricing (&#8377;)
                     </th>
                     <th className="p-4 text-xs font-medium">Pricing ($)</th>
-                    <th className="p-4 text-xs font-medium">Token Per unit</th>
                     <th className="p-4 text-xs font-medium">
                       Message Per unit
                     </th>
                     <th className="p-4 text-xs font-medium">Chatbots</th>
                     <th className="p-4 text-xs font-medium">Duration</th>
+                    <th className="p-4 text-xs font-medium">Team Strength</th>
                     <th className="p-4 text-xs font-medium">Features</th>
-                    {/* <th className="p-4 text-xs font-medium">Users Active</th> */}
                     <th className="p-4 text-xs font-medium">Status</th>
                     <th className="p-4 text-xs font-medium">Actions</th>
                   </tr>
@@ -140,9 +139,7 @@ const SubscriptionPlans = () => {
                           <td className="p-4 text-[#AEB9E1] text-xs">
                             $ {item?.pricingDollar}
                           </td>
-                          <td className="p-4 text-[#AEB9E1] text-xs">
-                            {item?.token_per_unit}
-                          </td>
+
                           <td className="p-4 text-[#AEB9E1] text-xs">
                             {item?.message_per_unit}
                           </td>
@@ -152,13 +149,14 @@ const SubscriptionPlans = () => {
                           <td className="p-4 text-[#AEB9E1] text-xs">
                             {item?.duration_days}
                           </td>
+                          <td className="p-4 text-[#AEB9E1] text-xs">
+                            {item?.team_strength}
+                          </td>
 
                           <td className="p-4 text-[#AEB9E1] text-xs">
                             {item?.features}
                           </td>
-                          {/* <td className="p-4 text-[#AEB9E1] text-xs">
-                            {item?.users_active}
-                          </td> */}
+
                           <td className="p-4 text-[#AEB9E1] text-xs">
                             {item?.is_active ? "Active" : "Inactive"}
                           </td>

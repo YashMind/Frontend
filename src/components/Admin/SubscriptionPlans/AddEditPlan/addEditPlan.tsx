@@ -73,9 +73,11 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
 
   const dispatch = useDispatch<AppDispatch>();
   const onSubmit = (data: SubscriptionPlans) => {
-    dispatch(createSubscriptionPlan({ payload: data }));
-    reset();
-    onHide();
+    dispatch(createSubscriptionPlan({ payload: data })).unwrap().then((res) => {
+      console.log("Subscription plan create response:", res)
+      reset();
+      onHide();
+    });
   };
 
   const onError = (errors: any) => {
@@ -96,7 +98,6 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
     setValue("features", planData?.features);
     setValue("id", planData?.id);
   }, [reset, planData?.id, show]);
-  console.log(planData?.name)
 
   return show ? (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -125,11 +126,10 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
                 type="text"
                 disabled={!!planData?.id}
                 {...register("name")}
-                className={`w-full px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all ${
-                  planData?.id
-                    ? "cursor-not-allowed bg-gray-700 text-gray-400"
-                    : "bg-[#1A2C65] text-white"
-                }`}
+                className={`w-full px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all ${planData?.id
+                  ? "cursor-not-allowed bg-gray-700 text-gray-400"
+                  : "bg-[#1A2C65] text-white"
+                  }`}
               />
               {errors.name && (
                 <p className="text-red-400 text-xs mt-1">
@@ -204,9 +204,9 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
                   $
                 </span>
                 <input
-                  placeholder="0.00"
+                  placeholder="0"
                   type="number"
-                  step="0.01"
+                  step="1"
                   {...register("pricingDollar", { valueAsNumber: true })}
                   className="w-full pl-8 pr-4 py-2.5 rounded-lg bg-[#1A2C65] text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
                 />
@@ -217,7 +217,7 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
                 </p>
               )}
             </div>
-{/* 
+            {/* 
             Token Limit */}
             {/* <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
