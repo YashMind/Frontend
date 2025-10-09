@@ -65,7 +65,7 @@ async function fetchPermissions(
     if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
       return cached.permissions;
     }
-    console.log("calling middle ware:", `${process.env.NEXT_PUBLIC_API_URL}/admin/roles_permissions`, accessToken)
+    // console.log("calling middle ware:", `${process.env.NEXT_PUBLIC_API_URL}/admin/roles_permissions`, accessToken)
     // Fetch fresh permissions
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/admin/roles_permissions`,
@@ -78,7 +78,7 @@ async function fetchPermissions(
     );
 
 
-    console.log("api fetched", response)
+    // console.log("api fetched", response)
 
     if (!response.ok) {
       const error = await response.json();
@@ -87,7 +87,7 @@ async function fetchPermissions(
     }
 
     const { permissions } = await response.json();
-    console.log("----------------------------111", permissionCache)
+    // console.log("----------------------------111", permissionCache)
     // Update cache
     permissionCache[role] = {
       permissions: permissions || [],
@@ -138,7 +138,7 @@ export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const accessToken = request.cookies.get("access_token")?.value;
 
-  console.log("Access token:", accessToken)
+  // console.log("Access token:", accessToken)
 
   // Check public routes first
   if (DYNAMIC_PUBLIC_ROUTE.test(pathname)) return NextResponse.next();
