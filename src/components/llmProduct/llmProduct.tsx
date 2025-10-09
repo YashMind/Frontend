@@ -11,8 +11,6 @@ import LlmFaqs from "./llmFaqs/llmFaqs";
 const LlmProduct = () => {
   return (
     <div className="">
-      {/* header */}
-      <ChatbotHeader fix={false} addBgColor={false} />
 
       {/* banner sec */}
       <LlmBanner />
@@ -21,21 +19,21 @@ const LlmProduct = () => {
       <WorkFlowAi />
 
       {/* ai area */}
-      <AiArea />
+      {/* <AiArea /> */}
 
       {/* cornor of ai */}
-      <CornerAi />
+      {/* <CornerAi /> */}
       {/* chat gpt sec */}
       <ChatgptSection />
 
       {/* slider */}
-      <LlmSlider />
+      {/* <LlmSlider /> */}
 
       {/* price sec */}
-      <LlmPriceSection />
+      {/* <LlmPriceSection /> */}
 
       {/* faq */}
-      <LlmFaqs />
+      {/* <LlmFaqs /> */}
 
 
     </div>

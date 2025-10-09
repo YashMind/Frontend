@@ -69,7 +69,7 @@ const HomeBanner = () => {
   return (
     <div className="relative h-screen w-full overflow-hidden">
       {/* Background with overlay */}
-      <div className="absolute inset-0 bg-[url('/images/home-banner.png')] bg-cover bg-center bg-no-repeat">
+      <div className="absolute opacity-75 inset-0 bg-[url('/images/home-banner.png')] bg-cover bg-center bg-no-repeat">
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30"></div>
       </div>
 

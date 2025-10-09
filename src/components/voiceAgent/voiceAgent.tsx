@@ -9,25 +9,28 @@ import SubFooter from "./subFooter/subFooter";
 
 const VoiceAgent = () => {
   return (
-    <div className="bg-gradient-to-b from-[#2B255D] to-[#110FB9]">
-      {/* banner sec */}
+    <main className="bg-gradient-to-b from-[#2B255D] to-[#110FB9] min-h-screen">
+      {/* Banner section */}
       <VoiceAgentBanner />
+      
       {/* Voice Companion */}
       <VoiceCompanion />
-      {/* task management */}
+      
+      {/* Task Management */}
       <TaskManagement />
 
       {/* How it Works */}
       <HowWorks />
 
-      {/* 30apps-sec */}
+      {/* Apps Integration */}
       <AppsSection />
 
-      {/* faq */}
+      {/* FAQ Section */}
       <Faqs />
-      {/* sub-footer */}
+      
+      {/* Footer */}
       <SubFooter />
-    </div>
+    </main>
   );
 };
 

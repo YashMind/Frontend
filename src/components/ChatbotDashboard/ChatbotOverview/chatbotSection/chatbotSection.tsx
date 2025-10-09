@@ -288,7 +288,13 @@ console.log(item)
 
         <div ref={messagesEndRef} />
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}
+      onKeyDown={(e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(onSubmit)();
+    }
+  }}>
         <div className="flex flex-wrap gap-1 m-1 mx-2">
           {chatbotSetting?.suggestions_is_active &&
             chatbotSetting?.suggestions_value
