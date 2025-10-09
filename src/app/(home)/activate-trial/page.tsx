@@ -78,7 +78,7 @@ const TrialActivationPage = () => {
   }
 
   return (
-    <div className="min-h-screen   bg-gradient-to-br from-purple-900 to-blue-900  p-4">
+    <div className="min-h-screen pt-20 bg-gradient-to-br from-purple-900 to-blue-900  p-4">
       <div className="flex items-center gap-5 justify-center">
         <div className="bg-gray-800 bg-opacity-50 rounded-xl p-8 max-w-md w-full backdrop-blur-sm">
           <div className="text-center mb-6">
@@ -175,11 +175,10 @@ const TrialActivationPage = () => {
           <button
             onClick={handleActivateTrial}
             disabled={isLoading}
-            className={`w-full py-3 px-4 rounded-lg text-white font-medium transition duration-200 ${
-              isLoading
-                ? "bg-purple-700 cursor-not-allowed"
-                : "bg-purple-600 hover:bg-purple-700"
-            }`}
+            className={`w-full py-3 px-4 rounded-lg text-white font-medium transition duration-200 ${isLoading
+              ? "bg-purple-700 cursor-not-allowed"
+              : "bg-purple-600 hover:bg-purple-700"
+              }`}
           >
             {isLoading ? (
               <span className="flex items-center justify-center">

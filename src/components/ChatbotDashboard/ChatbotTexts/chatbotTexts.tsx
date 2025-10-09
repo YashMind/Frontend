@@ -24,7 +24,7 @@ const ChatbotTexts = ({ botId }: { botId?: number }) => {
   const onSubmit = (data: TrainingText) => {
     data.id = botId;
     dispatch(updateChatbotWithoutRouter({ payload: data }));
-    reset();
+    // reset();
   };
 
   useEffect(() => {

@@ -167,7 +167,7 @@ export const updateChatbotWithoutRouter = createAsyncThunk<
         return rejectWithValue("failed to create chatbot!");
       }
     } catch (error: any) {
-      if (error.response && error.response.status === 400) {
+      if (error.response && error.response.status) {
         // toast.error(error?.response?.data?.detail);
         toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
@@ -279,13 +279,14 @@ export const createChatbotFaqs = createAsyncThunk<
         toasterSuccess("chatbot faqs created successfully!", 2000, "id");
         // toast.success("chatbot faqs created successfully!");
         dispatch(getChatbotsFaqs({ bot_id: payload?.bot_id }));
-        
+
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot!");
       }
     } catch (error: any) {
-      if (error.response && error.response.status === 400) {
+      console.log("Chatbot FAQ generation Error: ", error)
+      if (error.response && error.response.status) {
         // toast.error(error?.response?.data?.detail);
         toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
@@ -549,7 +550,7 @@ export const conversationMessage = createAsyncThunk<
         return rejectWithValue("failed to create chatbot!");
       }
     } catch (error: any) {
-      if (error.response && error.response.status === 400) {
+      if (error.response && error.response.status) {
         // toast.error(error?.response?.data?.detail);
         toasterError(error?.response?.data?.detail, 2000, "id");
         return rejectWithValue(error.response.data.message);
@@ -986,7 +987,7 @@ export const fetchChatMessageTokens = createAsyncThunk<
     const response = await http.get<ChatMessageTokens>("/chatbot/tokens", {
       withCredentials: true,
     });
-    console.log("response ",response.data.has_shared_bots)
+    console.log("response ", response.data.has_shared_bots)
     return response.data;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(
@@ -1009,8 +1010,8 @@ export const fetchChatMessageTokensSummary = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.detail ||
-          error.message ||
-          "Failed to fetch today's tokens"
+        error.message ||
+        "Failed to fetch today's tokens"
       );
     }
   }
@@ -1096,7 +1097,7 @@ export const updateWhatsappRegistration = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error?.response?.data?.detail ||
-          "Failed to update WhatsApp registration"
+        "Failed to update WhatsApp registration"
       );
     }
   }
@@ -1113,7 +1114,7 @@ export const deactivateWhatsappRegistration = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error?.response?.data?.detail ||
-          "Failed to deactivate WhatsApp registration"
+        "Failed to deactivate WhatsApp registration"
       );
     }
   }
@@ -1130,7 +1131,7 @@ export const deleteWhatsappRegistration = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error?.response?.data?.detail ||
-          "Failed to deactivate WhatsApp registration"
+        "Failed to deactivate WhatsApp registration"
       );
     }
   }

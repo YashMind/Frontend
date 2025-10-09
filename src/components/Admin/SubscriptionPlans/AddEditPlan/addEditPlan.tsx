@@ -238,7 +238,7 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
 
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
-                Message Limit *
+                Message Limit Per Credit*
               </label>
               <input
                 placeholder="e.g. 10000"

@@ -95,6 +95,7 @@ const SubscriptionPlans = () => {
                 <button
                   onClick={() => {
                     setModalShow(true);
+                    setPlanData(null)
                   }}
                   className="px-2 text-sm leading-1 h-7 bg-green-600 text-white rounded-md"
                 >

@@ -49,7 +49,7 @@ export default function RealTimeCount() {
           ((tokensData.credits?.credits_consumed_messages || 0) /
             (tokensData.credits?.credits_purchased || 1)) *
           100
-        ).toPrecision(1)}
+        ).toFixed(0)}
         gradientFrom="#443973"
         gradientTo="#2C1E5A"
       />
@@ -85,14 +85,14 @@ export default function RealTimeCount() {
           },
           {
             label: "Used Credits",
-            value: tokensData.credits?.credits_consumed || 0,
+            value: tokensData.credits?.credits_consumed_messages || 0,
           },
         ]}
         progressPercent={(
-          ((tokensData.credits?.credits_consumed || 0) /
+          ((tokensData.credits?.credits_consumed_messages || 0) /
             (tokensData.credits?.credits_purchased || 1)) *
           100
-        ).toPrecision(1)}
+        ).toFixed(0)}
         gradientFrom="#443973"
         gradientTo="#2C1E5A"
       />
@@ -104,7 +104,7 @@ export default function RealTimeCount() {
             label: "Balance Credits",
             value:
               tokensData.credits?.credits_purchased -
-                tokensData.credits?.credits_consumed || 0,
+              tokensData.credits?.credits_consumed_messages || 0,
           },
         ]}
         buttonText="Add Credit"
