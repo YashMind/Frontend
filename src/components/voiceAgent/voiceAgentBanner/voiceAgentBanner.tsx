@@ -1,19 +1,45 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import { useKeenSlider } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 
+const bannerData = [
+  {
+    heading: "Revolutionize the Way You Interact with Technology",
+    para: "From voice to vision, from touch to thought—step into a future where your interaction with AI feels natural, responsive, and intuitive.",
+  },
+  {
+    heading: "Speak. Understand. Respond. Effortlessly.",
+    para: "Yashraa’s AI Voice Agent understands context, adapts to tone, and delivers real-time answers—making every conversation seamless and smart.",
+  },
+  {
+    heading: "AI That Listens, Learns, and Talks Like You",
+    para: "Our voice agent goes beyond commands—it holds intelligent conversations, learns from each interaction, and evolves to serve you better every time.",
+  },
+];
 const VoiceAgentBanner = () => {
   const router = useRouter();
   const userData = useSelector((state: RootState) => state.auth.loggedInUser);
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+    loop: true,
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel);
+    },
+  });
+  const slideCount = instanceRef.current?.track.details.slides.length || 0;
 
   return (
     <div>
       <div
         ref={sliderRef}
-        className="keen-slider intract-banner w-full  text-center h-screen pt-48"
+        className="keen-slider intract-banner w-full  text-center h-screen pt-0"
       >
         {bannerData.map((item, index) => {
           return (
@@ -26,16 +52,20 @@ const VoiceAgentBanner = () => {
                   width={1770}
                 />
               </div>
-              <h1
+              <h1   style={{ fontFamily: "'Audiowide', sans-serif" }} className="text-transparent bg-[linear-gradient(90deg,_#271F6A_-3.02%,_#FFFFFF_47.85%,_#261E6C_102.96%)] bg-clip-text text-[36px] md:text-[74px] max-w-7xl mx-auto">
+                Coming Soon
+              </h1>
+              <br/>
+              <h2
                 className="text-transparent bg-[linear-gradient(90deg,_#271F6A_-3.02%,_#FFFFFF_47.85%,_#261E6C_102.96%)] bg-clip-text text-[36px] md:text-[74px] max-w-7xl mx-auto"
                 style={{ fontFamily: "'Audiowide', sans-serif" }}
               >
                 {item.heading}
-              </h1>
+              </h2>
 
-          <p className="[font-family:'Roboto_Flex',sans-serif] font-semibold text-white text-base md:text-base my-[20px] md:my-[41px] w-full md:w-[556px] md:mx-auto">
-            We're building something extraordinary! Our advanced AI voice agent is under development and will be launching soon with groundbreaking features.
-          </p>
+              <p className="[font-family:'Roboto_Flex',sans-serif] font-semibold text-white text-base md:text-base my-[20px] md:my-[41px] w-full md:w-[556px]  md:mx-auto">
+                {item.para}
+              </p>
 
               <button
                 className="cursor-pointer bg-white text-black px-6 py-2 rounded-full text-lg font-semibold shadow-md mb-8 hover:bg-gray-100 transition-colors duration-300"
@@ -64,8 +94,21 @@ const VoiceAgentBanner = () => {
             />
           ))}
         </div>
-
-        {/* Dots removed */}
+      </div>
+      <div className="container relative">
+        {/* Arrows */}
+        <button
+          className="absolute bottom-20  p-3 "
+          onClick={() => instanceRef.current?.prev()}
+        >
+          <img src="/images/arrow-lft.png" />
+        </button>
+        <button
+          className="absolute bottom-20  p-3 text-black right-0"
+          onClick={() => instanceRef.current?.next()}
+        >
+          <img src="/images/arrow-right.png" />
+        </button>
       </div>
     </div>
   );
