@@ -8,9 +8,22 @@ import {
   FaWhatsapp,
   FaYoutube,
   FaLinkedin,
-  FaTwitterSquare,
 } from "react-icons/fa";
 
+
+
+export const FaXTwitter = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    width="1em"
+    height="1em"
+    {...props}
+  >
+    <path d="M18.244 2H21.5l-7.375 8.418L22 22h-6.184l-4.8-6.087L5.72 22H2.5l7.834-8.944L2 2h6.318l4.347 5.593L18.244 2zm-1.09 18h1.657L8.49 4H6.728l10.426 16z" />
+  </svg>
+);
 const HomeFooter = () => {
   return (
     <footer
@@ -63,7 +76,7 @@ const HomeFooter = () => {
               <Link href="/voice-agent">Voice Agent</Link>
             </li>
             <li>
-              <Link href="/chat-llm">Chat LLM</Link>
+              <Link href="/#">Chat LLM</Link>
             </li>
             <li>
               <Link href="/details/contact-us">Contact us</Link>
@@ -155,7 +168,7 @@ const HomeFooter = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaTwitterSquare />
+              <FaXTwitter />
             </a>
           </div>
         </div>

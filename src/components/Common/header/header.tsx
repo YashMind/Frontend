@@ -36,7 +36,7 @@ const HomeHeader = () => {
     if (pathname == "/") setNavItem(1);
     if (pathname == "/chatbot") setNavItem(2);
     if (pathname == "/voice-agent") setNavItem(3);
-    if (pathname == "/chat-llm") setNavItem(4);
+    if (pathname == "/chatllm") setNavItem(4);
   }, [pathname]);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -247,14 +247,14 @@ const HomeHeader = () => {
               </li>
               <li>
                 <Link
-                  href="/chat-llm"
+                  href="/chatllm"
                   className={`block py-2 px-3 rounded-full ${
                     navItem === 4
                       ? "bg-white text-purple-900"
                       : "text-white hover:bg-white/20"
                   }`}
                   onClick={() => {
-                    setNavItem(3);
+                    setNavItem(4);
                     setIsMenuOpen(false);
                   }}
                 >
@@ -265,7 +265,7 @@ const HomeHeader = () => {
                 <Link
                   href="/#pricing"
                   className={`block py-2 px-3 rounded-full ${
-                    navItem === 4
+                    navItem === 5
                       ? "bg-white text-purple-900"
                       : "text-white hover:bg-white/20"
                   }`}
@@ -299,28 +299,7 @@ const HomeHeader = () => {
           </div>
         </div>
       </div>
-      <div className="md:block right-5 hidden mr-5">
-        {/* <div className="w-32 h-8 text-sm bg-white/10 rounded-full flex items-center p-1 relative">
-          <div
-            className={`absolute top-1 left-2 h-6 w-14 bg-white rounded-full transition-all duration-300 ${currency === 'USD' ? 'translate-x-0' : 'translate-x-full'
-              }`}
-          ></div>
-          <button
-            onClick={() => toggleCurrency()}
-            className={`relative z-10 w-1/2 text-center font-medium ${currency === 'USD' ? 'text-purple-900' : 'text-white'
-              }`}
-          >
-            USD
-          </button>
-          <button
-            onClick={() => toggleCurrency()}
-            className={`relative z-10 w-1/2 text-center font-medium ${currency === 'INR' ? 'text-purple-900' : 'text-white'
-              }`}
-          >
-            INR
-          </button>
-        </div> */}
-      </div>
+     
       <ConfirmDeleteModal
         isOpen={openLogoutModal}
         onClose={() => setOpenLogoutModal(false)}

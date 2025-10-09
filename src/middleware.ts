@@ -19,7 +19,7 @@ const PUBLIC_ROUTES = new Set([
   "/auth/reset-password",
   "/chatbot",
   "/voice-agent",
-  "/llm",
+  "/chatllm",
   "/details/privacy-policy",
   "/details/about-us",
   "/details/careers",

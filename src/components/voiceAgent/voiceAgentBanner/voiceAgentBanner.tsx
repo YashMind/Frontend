@@ -39,7 +39,7 @@ const VoiceAgentBanner = () => {
     <div>
       <div
         ref={sliderRef}
-        className="keen-slider intract-banner w-full  text-center h-screen pt-48"
+        className="keen-slider intract-banner w-full  text-center h-screen pt-0"
       >
         {bannerData.map((item, index) => {
           return (
@@ -52,12 +52,16 @@ const VoiceAgentBanner = () => {
                   width={1770}
                 />
               </div>
-              <h1
+              <h1   style={{ fontFamily: "'Audiowide', sans-serif" }} className="text-transparent bg-[linear-gradient(90deg,_#271F6A_-3.02%,_#FFFFFF_47.85%,_#261E6C_102.96%)] bg-clip-text text-[36px] md:text-[74px] max-w-7xl mx-auto">
+                Coming Soon
+              </h1>
+              <br/>
+              <h2
                 className="text-transparent bg-[linear-gradient(90deg,_#271F6A_-3.02%,_#FFFFFF_47.85%,_#261E6C_102.96%)] bg-clip-text text-[36px] md:text-[74px] max-w-7xl mx-auto"
                 style={{ fontFamily: "'Audiowide', sans-serif" }}
               >
                 {item.heading}
-              </h1>
+              </h2>
 
               <p className="[font-family:'Roboto_Flex',sans-serif] font-semibold text-white text-base md:text-base my-[20px] md:my-[41px] w-full md:w-[556px]  md:mx-auto">
                 {item.para}

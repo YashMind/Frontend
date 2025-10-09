@@ -15,6 +15,11 @@ const AdminMain = () => {
   const [countryStats, setCountryStats] = useState<
     Array<{ country: string; count: number }>
   >([]);
+  
+  // Add state for local transaction pagination
+  const [transactionPage, setTransactionPage] = useState(1);
+  const transactionsPerPage = 7;
+
   const [refreshing, setRefreshing] = useState(false);
 
   const tokenCredit = useSelector((state: RootState) => state.tokenCredit);
@@ -36,6 +41,12 @@ const AdminMain = () => {
   const countryNames = countryState.countries || [];
   const countriesLoading = countryState.loading;
   const countriesError = countryState.error;
+
+  // Calculate pagination for transactions
+  const totalTransactionPages = Math.ceil(transactions.length / transactionsPerPage);
+  const startIndex = (transactionPage - 1) * transactionsPerPage;
+  const endIndex = startIndex + transactionsPerPage;
+  const paginatedTransactions = transactions.slice(startIndex, endIndex);
 
   useEffect(() => {
     const countCountries = (countryNames: string[]) => {
@@ -68,6 +79,11 @@ const AdminMain = () => {
     dispatch(fetchCountryNames());
   }, [dispatch]);
 
+  // Reset to first page when transactions data changes
+  useEffect(() => {
+    setTransactionPage(1);
+  }, [transactions.length]);
+
   const handleRefreshTransactions = async () => {
     setRefreshing(true);
     try {
@@ -91,6 +107,10 @@ const AdminMain = () => {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+  };
+
+  const handleTransactionPageChange = (newPage: number) => {
+    setTransactionPage(newPage);
   };
 
   const formatCurrency = (amount: number, currency?: string) => {
@@ -231,7 +251,7 @@ const AdminMain = () => {
           <h1 className="text-xl font-semibold">Reports overview</h1>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid  gap-6">
           {/* Users by country Section */}
           <div className="bg-[#13192f] p-6 rounded-xl">
             <div className="flex justify-between items-center mb-4">
@@ -375,8 +395,8 @@ const AdminMain = () => {
                         Loading transactions...
                       </td>
                     </tr>
-                  ) : transactions && transactions.length > 0 ? (
-                    transactions.slice(0, 6).map((transaction: any) => (
+                  ) : paginatedTransactions && paginatedTransactions.length > 0 ? (
+                    paginatedTransactions.map((transaction: any) => (
                       <tr key={transaction.id}>
                         <td className="py-1 ">
                           {transaction.order_id || `#${transaction.id}`}
@@ -410,28 +430,55 @@ const AdminMain = () => {
               </table>
             </div>
 
-            {pagination && pagination.total_pages > 1 && (
-              <div className="flex justify-between items-center mt-4 text-sm">
+            {/* Local pagination for displayed transactions */}
+            {transactions.length > transactionsPerPage && (
+              <div className="flex justify-between items-center mt-4 text-sm border-t border-gray-700 pt-4">
                 <span className="text-gray-400">
-                  Page {pagination.page} of {pagination.total_pages}(
-                  {pagination.total_transactions} total)
+                  Showing {startIndex + 1} to {Math.min(endIndex, transactions.length)} of {transactions.length} transactions
+                  (Page {transactionPage} of {totalTransactionPages})
+                </span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleTransactionPageChange(transactionPage - 1)}
+                    disabled={transactionPage === 1}
+                    className="px-3 py-1 bg-[#0d1224] border border-gray-600 rounded disabled:opacity-50 hover:bg-[#1a223c] transition-colors"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={() => handleTransactionPageChange(transactionPage + 1)}
+                    disabled={transactionPage === totalTransactionPages}
+                    className="px-3 py-1 bg-[#0d1224] border border-gray-600 rounded disabled:opacity-50 hover:bg-[#1a223c] transition-colors"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* API pagination (if needed for loading more data) */}
+            {pagination && pagination.total_pages > 1 && (
+              <div className="flex justify-between items-center mt-4 text-sm border-t border-gray-700 pt-4">
+                <span className="text-gray-400">
+                  API Page {pagination.page} of {pagination.total_pages} 
+                  ({pagination.total_transactions} total transactions)
                 </span>
                 <div className="flex gap-2">
                   <button
                     onClick={() => handlePageChange(pagination.page - 1)}
                     disabled={pagination.page === 1 || transactionLoading}
-                    className="px-3 py-1 bg-[#0d1224] border border-gray-600 rounded disabled:opacity-50"
+                    className="px-3 py-1 bg-[#0d1224] border border-gray-600 rounded disabled:opacity-50 hover:bg-[#1a223c] transition-colors"
                   >
-                    Previous
+                    Load Previous
                   </button>
                   <button
                     onClick={() => handlePageChange(pagination.page + 1)}
                     disabled={
                       pagination.page === pagination.total_pages || transactionLoading
                     }
-                    className="px-3 py-1 bg-[#0d1224] border border-gray-600 rounded disabled:opacity-50"
+                    className="px-3 py-1 bg-[#0d1224] border border-gray-600 rounded disabled:opacity-50 hover:bg-[#1a223c] transition-colors"
                   >
-                    Next
+                    Load Next
                   </button>
                 </div>
               </div>
