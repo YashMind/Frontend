@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { createChatbotFaqs, deleteChatbotsAllFaqs, deleteChatbotsFaqs, getChatbotsFaqs } from "@/store/slices/chats/chatSlice";
+import { createChatbotFaqs, deleteChatbotsAllFaqs, deleteChatbotsFaqs, getChatbotsFaqs, updateChatbotsFaqs } from "@/store/slices/chats/chatSlice";
 import { ChatbotFaqsQuesAnswer } from "@/types/chatTypes";
 
 const schema = yup.object().shape({
@@ -39,11 +39,20 @@ const ChatbotQA = ({ botId }: { botId?: number }) => {
     name: "questions",
   });
 
-  const onSubmit = (data: any) => {
-    data.bot_id = Number(botId);
-    data.questions = data.questions?.filter((item: ChatbotFaqsQuesAnswer) => !item?.faqId);
-    dispatch(createChatbotFaqs({ payload: data }));
-  };
+const onSubmit = (data: any) => {
+  data.bot_id = Number(botId);
+
+  const newFaqs = data.questions?.filter((item: any) => !item?.faqId);
+  const updatedFaqs = data.questions?.filter((item: any) => item?.faqId);
+
+  if (newFaqs.length > 0) {
+    dispatch(createChatbotFaqs({ payload: { bot_id: botId, questions: newFaqs } }));
+  }
+
+  if (updatedFaqs.length > 0) {
+    dispatch(updateChatbotsFaqs({ payload: { bot_id: botId, questions: updatedFaqs } }));
+  }
+};
 
   useEffect(() => {
     dispatch(getChatbotsFaqs({ bot_id: botId }));

@@ -148,12 +148,12 @@ const HomeHeader = () => {
                 >
                   7-Day Free Trial
                 </Link>
-                <button
+                <Link
                   className="py-2 px-4 md:py-3 md:px-6 text-white text-sm md:text-base font-medium rounded-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all cursor-pointer"
-                  onClick={() => router.push("/auth/signin")}
+                  href={ "/auth/signin"}
                 >
                   Sign In
-                </button>
+                </Link>
               </>
             )}
 

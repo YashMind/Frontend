@@ -8,6 +8,7 @@ import "./globals.css";
 import "./index.css";
 import "react-phone-input-2/lib/style.css";
 import { TimezoneProvider } from "@/context/TimeZoneContext";
+import NextTopLoader from 'nextjs-toploader';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,6 +52,7 @@ export default function RootLayout({
           suppressHydrationWarning={true}
           className={`${geistSans.variable} ${geistMono.variable} antialiased `}
         >
+         <NextTopLoader />
           <TimezoneProvider>
             <Toaster position="top-center" reverseOrder={false} />
             <StoreProvider>

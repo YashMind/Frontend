@@ -17,6 +17,8 @@ export const getAllUsers = createAsyncThunk<
     sortBy?: string;
     sortOrder?: string;
     plan?: string;
+    roleUsed?:string;
+message_used?:string;
     status?: string;
     token_used?: string;
     start_date?: string;
@@ -25,7 +27,7 @@ export const getAllUsers = createAsyncThunk<
 >(
   "admin/getAllUsers",
   async (
-    { page, limit, search, sortBy, sortOrder, plan, status, token_used, start_date, end_date },
+    { page, limit, search, sortBy, sortOrder, plan, status, token_used, start_date, end_date , roleUsed, message_used},
     { dispatch, rejectWithValue }
   ) => {
     try {
@@ -40,8 +42,9 @@ export const getAllUsers = createAsyncThunk<
         status: status,
         token_used: token_used,
         start_date: start_date,
-        end_date: end_date
-
+        end_date: end_date,
+        role: roleUsed,
+        message_used:message_used,
       };
       const response = await http.get("/admin/get-all-users", {
         params,
@@ -1030,7 +1033,6 @@ const adminSlice = createSlice({
       .addCase(getAllSubscriptionPlans.fulfilled, (state, action) => {
         state.loading = false;
         state.subscriptionPlansData = action?.payload;
-        console.log(action.payload)
       })
       .addCase(getAllSubscriptionPlans.rejected, (state, action) => {
         state.loading = false;

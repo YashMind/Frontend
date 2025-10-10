@@ -298,6 +298,44 @@ export const createChatbotFaqs = createAsyncThunk<
   }
 );
 
+export const updateChatbotsFaqs = createAsyncThunk<
+  any,
+  { payload: { bot_id: number; questions: any[] } }
+>(
+  "chat/updateChatbotsFaqs",
+  async ({ payload }, { dispatch, rejectWithValue }) => {
+    try {
+           // Map frontend keys to backend expected keys
+      const formattedQuestions = payload.questions.map((q) => ({
+        faq_id: q.faqId, // 👈 convert to snake_case
+        question: q.question,
+        answer: q.answer,
+      }));
+
+      dispatch(startLoadingActivity());
+      const response = await http.put("/chatbot/update-bot-faqs", {bot_id:payload.bot_id, questions:formattedQuestions});
+
+      if (response.status === 200) {
+        toasterSuccess("chatbot faqs updated successfully!", 2000, "id");
+        dispatch(getChatbotsFaqs({ bot_id: payload.bot_id }));
+        return response.data;
+      } else {
+        return rejectWithValue("Failed to update chatbot FAQs!");
+      }
+    } catch (error: any) {
+      console.log("Chatbot FAQ update Error: ", error);
+      if (error.response && error.response.status) {
+        toasterError(error?.response?.data?.detail, 2000, "id");
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred during FAQ update");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+
 export const uploadDocument = createAsyncThunk<any, { payload: FormData }>(
   "chat/uploadDocument",
   async ({ payload }, { dispatch, rejectWithValue }) => {

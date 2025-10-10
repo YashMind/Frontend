@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from "@/store/store";
 import {
   updateUserByAdmin,
   getAllUsers,
+  getAllSubscriptionPlans,
 } from "@/store/slices/admin/adminSlice";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import { MdEdit } from "react-icons/md";
@@ -49,19 +50,28 @@ const UserManagement = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { allUsersData } = useSelector((state: RootState) => state.admin);
   const { invitedUsers, loading, error } = useSelector((state: RootState) => state.invitations);
+  const { subscriptionPlansData } = useSelector(
+    (state: RootState) => state.admin
+  );
+
 
   // Fetch users when filters or pagination changes
   useEffect(() => {
-  dispatch(getInvitedUsers());
-}, [dispatch]);
+    dispatch(getAllSubscriptionPlans());
+    dispatch(getInvitedUsers());
+  }, [dispatch]);
+
+
   useEffect(() => {
     const filters = {
       ...(planFilter && { plan: planFilter }),
       ...(statusFilter && { status: statusFilter }),
       ...(roleFilter && { roleUsed: roleFilter }),
-      ...(dateFilter.start && { startDate: dateFilter.start }),
-      ...(dateFilter.end && { endDate: dateFilter.end }),
+      ...(messageFilter && { message_used: messageFilter }),
+      ...(dateFilter.start && { start_date: dateFilter.start }),
+      ...(dateFilter.end && { end_date: dateFilter.end }),
     };
+
 
 
     dispatch(
@@ -84,6 +94,7 @@ const UserManagement = () => {
     planFilter,
     statusFilter,
     roleFilter,
+    messageFilter,
     dateFilter.start,
     dateFilter.end,
   ]);
@@ -211,15 +222,9 @@ const UserManagement = () => {
                     }}
                   >
                      <option value="">All Plans</option> 
-                    <option value="1">Basic plan</option>
-                    <option value="2">Pro plan</option>
-                    <option value="3">Enterprise plan</option>
-                    <option value="4">Free Plan</option>
-                    <option value="5">Team User</option>
-                    <option value="6">All Clients</option>
-
-                    
-
+                     <option value="invited">Invited User</option> 
+                       {/* Dynamically add unique plans */}
+                    {subscriptionPlansData.data.map((plan)=><option value={plan.id}>{plan.name} | {plan.duration_days} days</option>)}
                   </select>
                 </div>
 
@@ -255,9 +260,11 @@ const UserManagement = () => {
                     }}
                   >
                     <option value="">All</option>
-                    <option value="0-1000">0 - 1000</option>
-                    <option value="1001-5000">1001 - 5000</option>
-                    <option value="5001+">5001+</option>
+                    <option value="super admin">Super Admin</option>
+                    <option value="support admin">Support Admin</option>
+                    <option value="billing admin">Billing Admin</option>
+                    <option value="product admin">Product Admin</option>
+                    
                   </select>
                 </div>
 
@@ -427,15 +434,12 @@ const UserManagement = () => {
                           {item?.email}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
-                          {item?.plan == 1 && "Basic"}
-                          {item?.plan == 2 && "Pro"}
-                          {item?.plan == 3 && "Enterprise"}
-                          {item?.plan == 4 && "Free"}
-                          {item?.plan == 5 && "Team Member"}
-                          {item?.plan ==6 && " all cilent"}
+                       {item.plan}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
-                          {item?.role}
+                          <div className="bg-white/10 rounded-full py-1 text-center">
+                          {(item?.role as string).toLowerCase()}
+                          </div>
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
                           {item?.messageUsed}
