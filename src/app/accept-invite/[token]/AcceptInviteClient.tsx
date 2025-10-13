@@ -7,6 +7,8 @@ import { AppDispatch, RootState } from "@/store/store";
 import { acceptInvitation } from "@/store/slices/invitations/invitationSlice";
 import Link from "next/link";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
+import { getMeData } from "@/store/slices/auth/authSlice";
+import http from "@/services/http/baseUrl";
 
 interface AcceptInviteClientProps {
   token: string;
@@ -26,15 +28,14 @@ export default function AcceptInviteClient({ token }: AcceptInviteClientProps) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('/api/auth/check', {
-          credentials: 'include'
-        });
-        setIsAuthenticated(response.ok);
+        dispatch(getMeData({ router })).unwrap().then((res) => {
+          setIsAuthenticated(res.status == 200);
+        }).catch((err) => { throw new Error(err) });
       } catch (error) {
         setIsAuthenticated(false);
       }
     };
-    
+
     checkAuth();
   }, []);
 
@@ -45,37 +46,33 @@ export default function AcceptInviteClient({ token }: AcceptInviteClientProps) {
       const acceptInvite = async () => {
         try {
           console.log("Making API call to accept invitation");
-          const response = await fetch(`/api/chatbot/accept-invite/${token}`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+          dispatch(acceptInvitation(token)).unwrap().then((response) => {
+            console.log("API Response status:", response.status);
+            console.log("API Response data:", response);
 
-          console.log("API Response status:", response.status);
-          const data = await response.json();
-          console.log("API Response data:", data);
+            if (response) {
+              setInviteDetails(response);
+              toasterSuccess(
+                "Invitation accepted successfully!",
+                3000,
+                "accept-invite"
+              );
 
-          if (response.ok) {
-            setInviteDetails(data);
-            toasterSuccess(
-              "Invitation accepted successfully!",
-              3000,
-              "accept-invite"
-            );
-            
-            // Redirect to dashboard after successful acceptance
-            setTimeout(() => {
-              router.push("/dashboard");
-            }, 2000);
-          } else {
+              // Redirect to dashboard after successful acceptance
+              setTimeout(() => {
+                router.push("/dashboard");
+              }, 2000);
+            }
+
+          }).catch((err) => {
+
             toasterError(
-              data.detail || "Failed to accept invitation",
+              err || "Failed to accept invitation",
               3000,
               "accept-invite"
             );
-          }
+
+          })
         } catch (error) {
           console.error("API call error:", error);
           toasterError("Error connecting to the server", 3000, "accept-invite");

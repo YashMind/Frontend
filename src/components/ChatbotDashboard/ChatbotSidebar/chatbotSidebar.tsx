@@ -179,8 +179,27 @@ const ChatbotSidebar = ({
           <>
             <span>{link.label}</span>
             {isActive && (
-              <BiSolidRightArrow className="ml-auto animate-pulse text-[#01BEED]" />
+              <div className="relative group flex items-center justify-end">
+                {/* Arrow Icon */}
+                <BiSolidRightArrow className="ml-auto animate-pulse text-[#01BEED] cursor-pointer" />
+
+                {/* Tooltip / Cloud */}
+                <div
+                  onClick={(e) => { e.preventDefault() }}
+                  className="absolute bottom-full mb-2 right-0 
+                 hidden group-hover:flex 
+                 items-center justify-center 
+                 px-3 py-1.5 text-sm text-white 
+                 bg-[#01BEED] rounded-xl shadow-lg 
+                 before:content-[''] before:absolute before:top-full before:right-3
+                 before:border-8 before:border-transparent before:border-t-[#01BEED] 
+                 transition-opacity duration-200 opacity-0 group-hover:opacity-100"
+                >
+                  Watch the demo
+                </div>
+              </div>
             )}
+
           </>
         )}
       </Link>

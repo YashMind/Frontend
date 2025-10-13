@@ -7,11 +7,11 @@ const features = [
     description:
       "Enhance your chatbot’s capabilities by connecting it to Zapier & AI actions.",
   },
-  {
-    title: "Automated Translations for Global Engagement",
-    description:
-      "If your chatbot serves users worldwide, language barriers could make communication challenging.",
-  },
+  // {
+  //   title: "Automated Translations for Global Engagement",
+  //   description:
+  //     "If your chatbot serves users worldwide, language barriers could make communication challenging.",
+  // },
   {
     title: "Turn Conversations into Leads Automatically",
     description:

@@ -20,6 +20,7 @@ import ChatbotLinksDocs from "@/components/ChatbotDashboard/ChatbotLinksDocs/cha
 import ChatbotAppearence from "@/components/ChatbotDashboard/ChatbotAppearence/chatbotAppearence";
 import ChatbotIntegration from "@/components/ChatbotDashboard/ChatbotIntegration/chatbotIntegration";
 import { fetchChatMessageTokens, getChatbots, getSingleChatbot } from "@/store/slices/chats/chatSlice";
+import { getSubscriptionPlan } from "@/store/slices/admin/adminSlice";
 
 type ChatbotMainProps = {
   botPage?: string;
@@ -31,6 +32,7 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { chatbotData: activeChatbot, loading: chatbotLoading, error: chatbotError } = useSelector((state: RootState) => state.chat);
   const [modalShow, setModalShow] = useState(false);
+  const [planName, setPlanName] = useState("");
 
   useEffect(() => {
     if (botId !== undefined) {
@@ -40,6 +42,7 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
 
   useEffect(() => {
     dispatch(getChatbots());
+    dispatch(getSubscriptionPlan()).unwrap().then((res) => { setPlanName(res.data.name) });
     dispatch(fetchChatMessageTokens());
   }, [dispatch]);
 
@@ -109,11 +112,17 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
             <div className="overflow-y-auto no-scrollbar">
               {renderPageContent()}
             </div>
-            {botPage !== "main" && (
-              <div className="absolute top-5 right-5 text-right text-gray-200 text-base font-semibold uppercase">
-                {activeChatbot.chatbot_name}
-              </div>
-            )}
+            <div className="absolute top-5 right-5 flex items-center gap-10">
+              {botPage !== "main" && (
+                <div className="text-gray-200 text-base font-semibold uppercase">
+                  {activeChatbot.chatbot_name}
+                </div>
+              )}
+              {planName && <div className="text-gray-200 text-base font-semibold uppercase">
+                {planName}
+              </div>}
+            </div>
+
           </div>
 
           {/* Right section */}

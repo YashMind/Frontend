@@ -17,8 +17,8 @@ export const getAllUsers = createAsyncThunk<
     sortBy?: string;
     sortOrder?: string;
     plan?: string;
-    roleUsed?:string;
-message_used?:string;
+    roleUsed?: string;
+    message_used?: string;
     status?: string;
     token_used?: string;
     start_date?: string;
@@ -27,7 +27,7 @@ message_used?:string;
 >(
   "admin/getAllUsers",
   async (
-    { page, limit, search, sortBy, sortOrder, plan, status, token_used, start_date, end_date , roleUsed, message_used},
+    { page, limit, search, sortBy, sortOrder, plan, status, token_used, start_date, end_date, roleUsed, message_used },
     { dispatch, rejectWithValue }
   ) => {
     try {
@@ -44,7 +44,7 @@ message_used?:string;
         start_date: start_date,
         end_date: end_date,
         role: roleUsed,
-        message_used:message_used,
+        message_used: message_used,
       };
       const response = await http.get("/admin/get-all-users", {
         params,
@@ -100,7 +100,7 @@ export const getPublicSubscriptionPlans = createAsyncThunk<any, void>(
       dispatch(startLoadingActivity());
 
       const response = await http.get("/admin/subscription-plans/public");
-      console.log("response",response)
+      console.log("response", response)
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         console.log(response.data)
@@ -247,6 +247,41 @@ export const deleteSubscriptionsPlan = createAsyncThunk<
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const getSubscriptionPlan = createAsyncThunk<
+  any
+>(
+  "admin/getSubscriptionPlan",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+
+      const response: any = await http.get(
+        `/admin/get-subscription-plan`
+      );
+
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("Failed to fetch subscription plan!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 404) {
+        toasterError("Subscription plan not found!", 2000, "id");
+        return rejectWithValue(error.response.data.detail);
+      } else if (error.response && error.response.data?.detail) {
+        toasterError(error.response.data.detail, 2000, "id");
+        return rejectWithValue(error.response.data.detail);
+      } else {
+        toasterError("An unexpected error occurred!", 2000, "id");
+        return rejectWithValue("An unexpected error occurred");
+      }
     } finally {
       dispatch(stopLoadingActivity());
     }
@@ -908,7 +943,6 @@ export const getAllPaymentGateway = createAsyncThunk<any>(
       const response = await http.get("/admin/get-payments-gateway");
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        console.log("@@@@@@@@@@@",response)
         return response.data;
       } else {
         return rejectWithValue("failed to get token bots!");

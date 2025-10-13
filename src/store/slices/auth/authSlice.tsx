@@ -106,9 +106,10 @@ export const signUpAdmin = createAsyncThunk<any, { payload: AdminSignUpForm }>(
   }
 );
 
-export const getMeData = createAsyncThunk<any, { router: AppRouterInstance }>(
+export const getMeData = createAsyncThunk<any, { router: AppRouterInstance, returnPath?: string }>(
   "auth/getMeData",
-  async ({ router }, { dispatch, rejectWithValue }) => {
+  async ({ router, returnPath }, { dispatch, rejectWithValue }) => {
+    console.log("With Return path")
     try {
       dispatch(startLoadingActivity());
       const response = await http.get("/auth/me");
@@ -120,10 +121,22 @@ export const getMeData = createAsyncThunk<any, { router: AppRouterInstance }>(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        router.push("/auth/signin");
+        if (returnPath) {
+          console.log("Returning path:")
+          router.push(`/auth/signin?from=${encodeURIComponent(returnPath)}`);
+        } else {
+
+          router.push("/auth/signin");
+        }
         return rejectWithValue(error.response.data.message);
       }
-      router.push("/auth/signin");
+      if (returnPath) {
+        console.log("Returning path:")
+        router.push(`/auth/signin?from=${encodeURIComponent(returnPath)}`);
+      } else {
+
+        router.push("/auth/signin");
+      }
       return rejectWithValue("An error occurred during auth");
     } finally {
       dispatch(stopLoadingActivity());

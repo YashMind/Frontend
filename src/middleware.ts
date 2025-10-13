@@ -15,6 +15,7 @@ const PUBLIC_ROUTES = new Set([
   "/payment/paypal",
   "/auth/signin",
   "/auth/signup",
+  "/activate-trial",
   "/auth/forgot-password",
   "/auth/reset-password",
   "/chatbot",
@@ -109,7 +110,7 @@ async function handleAdminRoutes(
   pathname: string,
   role: string | null
 ) {
-  console.log("ROLE of user:",role)
+  console.log("ROLE of user:", role)
   if (!role || !ADMIN_ROLES.has(role)) {
     console.log("Inside redirect", role, ADMIN_ROLES)
     return NextResponse.redirect(

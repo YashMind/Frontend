@@ -29,7 +29,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
   const tokensData = useSelector((state: RootState) => state.chat.tokens);
   const chatbotError = useSelector((state: RootState) => state.chat.error);
   const userData = useSelector((state: RootState) => state.auth.userData);
-  
+
   // Determine if the current user is invited
   // const isInvited = Boolean(
   //   userData?.email &&
@@ -41,9 +41,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
   useEffect(() => {
     dispatch(fetchChatMessageTokens());
   }, [dispatch]);
- console.log("user data",userData)
- console.log("token",tokensData.has_shared_bots)
- 
+
   return (
     <div className="flex gap-6 w-full">
       <div className="bg-[#2a2561]  py-2 rounded-3xl w-full px-6">
@@ -74,7 +72,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                       width:
                         (tokensData.token_usage[0].combined_token_consumption /
                           tokensData.token_usage[0].token_limit) *
-                          100 +
+                        100 +
                         "%",
                     }}
                   />
@@ -87,7 +85,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
             onClick={() => showModal()}
           >
             <span className="font-semibold text-lg text-white text-center">
-              Create New Bot <br></br> 
+              Create New Bot <br></br>
             </span>
           </div>
 
@@ -178,11 +176,10 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                           </span>
                         </div>
                         <span
-                          className={`px-1.5 py-0.5 rounded text-xs ${
-                            item.public
-                              ? "text-green-700 bg-green-50"
-                              : "text-blue-700 bg-blue-50"
-                          }`}
+                          className={`px-1.5 py-0.5 rounded text-xs ${item.public
+                            ? "text-green-700 bg-green-50"
+                            : "text-blue-700 bg-blue-50"
+                            }`}
                         >
                           {item.public ? "Public" : "Private"}
                         </span>
@@ -221,30 +218,30 @@ const LowBalanceReminder = ({ currentBalance, threshold = 10, onAddCredits = () 
       >
         <FaTimes />
       </button>
-        {!tokensData?.has_shared_bots && (
-          <div className="flex gap-4  flex-col sm:flex-row justify-between items-start sm:items-center pr-6">
-        <div className="flex items-center mb-2 sm:mb-0">
-          <FaExclamationTriangle className="text-red-500 text-xl mr-3" />
-          <div>
-            <h3 className="text-lg font-semibold text-red-800">
-              Low Credit Balance
-            </h3>
-            <p className="text-red-600">
-              Only {currentBalance} credits remaining
-            </p>
+      {!tokensData?.has_shared_bots && (
+        <div className="flex gap-4  flex-col sm:flex-row justify-between items-start sm:items-center pr-6">
+          <div className="flex items-center mb-2 sm:mb-0">
+            <FaExclamationTriangle className="text-red-500 text-xl mr-3" />
+            <div>
+              <h3 className="text-lg font-semibold text-red-800">
+                Low Credit Balance
+              </h3>
+              <p className="text-red-600">
+                Only {currentBalance} credits remaining
+              </p>
+            </div>
           </div>
+          {onAddCredits && (
+            <button
+              onClick={onAddCredits}
+              className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
+            >
+              Add Credits Now
+            </button>
+          )}
         </div>
-        {onAddCredits && (
-          <button
-            onClick={onAddCredits}
-            className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
-          >
-            Add Credits Now
-          </button>
-        )}
-      </div>
-        )      }
-      
+      )}
+
     </div>
   );
 };

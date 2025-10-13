@@ -379,7 +379,7 @@ const Table = ({
             <td className="py-4 text-xs font-medium text-black px-2">
               {item?.chars}
             </td>
-            <td className="py-4 text-xs font-medium text-black max-w-48 overflow-ellipsis">
+            <td className="py-4 text-xs font-medium text-black max-w-fit overflow-ellipsis">
               {item?.target_link && <a href={item?.target_link}>{item?.target_link}</a>}
               {item?.document_link}
             </td>

@@ -221,10 +221,10 @@ const UserManagement = () => {
                       setPage(1);
                     }}
                   >
-                     <option value="">All Plans</option> 
-                     <option value="invited">Invited User</option> 
-                       {/* Dynamically add unique plans */}
-                    {subscriptionPlansData.data.map((plan)=><option value={plan.id}>{plan.name} | {plan.duration_days} days</option>)}
+                    <option value="">All Plans</option>
+                    <option value="invited">Invited User</option>
+                    {/* Dynamically add unique plans */}
+                    {subscriptionPlansData.data.map((plan) => <option key={plan.id} value={plan.id}>{plan.name} | {plan.duration_days} days</option>)}
                   </select>
                 </div>
 
@@ -264,7 +264,7 @@ const UserManagement = () => {
                     <option value="support admin">Support Admin</option>
                     <option value="billing admin">Billing Admin</option>
                     <option value="product admin">Product Admin</option>
-                    
+
                   </select>
                 </div>
 
@@ -434,11 +434,11 @@ const UserManagement = () => {
                           {item?.email}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
-                       {item.plan}
+                          {item.plan}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
                           <div className="bg-white/10 rounded-full py-1 text-center">
-                          {(item?.role as string).toLowerCase()}
+                            {(item?.role as string).toLowerCase()}
                           </div>
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
@@ -500,12 +500,12 @@ const UserManagement = () => {
                   <FaTrash className="text-red-400 text-xl" />
                   <h3 className="text-lg font-semibold text-white">Delete User</h3>
                 </div>
-                
+
                 <p className="text-gray-300 mb-6">
-                  Are you sure you want to delete user "{userToDelete?.fullName}"? 
+                  Are you sure you want to delete user "{userToDelete?.fullName}"?
                   This action cannot be undone.
                 </p>
-                
+
                 <div className="flex gap-3 justify-end">
                   <button
                     onClick={cancelDelete}
@@ -550,9 +550,8 @@ const UserManagement = () => {
             </button>
             {allUsersData?.total_pages >= 1 && (
               <button
-                className={`w-6 h-6 ${
-                  page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
-                } text-black rounded-[7px] text-sm`}
+                className={`w-6 h-6 ${page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
+                  } text-black rounded-[7px] text-sm`}
                 onClick={() => setPage(1)}
               >
                 1
@@ -588,11 +587,10 @@ const UserManagement = () => {
               )}
             {allUsersData?.total_pages > 1 && (
               <button
-                className={`w-6 h-6 ${
-                  page === allUsersData?.total_pages
-                    ? "bg-[#624DE3]"
-                    : "bg-gray-200"
-                } text-black rounded-[7px] text-sm`}
+                className={`w-6 h-6 ${page === allUsersData?.total_pages
+                  ? "bg-[#624DE3]"
+                  : "bg-gray-200"
+                  } text-black rounded-[7px] text-sm`}
                 onClick={() => setPage(allUsersData?.total_pages)}
               >
                 {allUsersData?.total_pages}

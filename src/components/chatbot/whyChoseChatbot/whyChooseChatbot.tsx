@@ -22,7 +22,7 @@ const features = [
     id: "04",
     title: "Import Your Data",
     description:
-      "Import PDFs, TXT, DOCX, CSV, XLS files, Google Sheets, Websites, and YouTube Videos into your chatbot .",
+      "Import PDFs, TXT, DOCX, CSV, XLS files, Google Sheets, and Websites into your chatbot .",
     icon: "/images/import-icon.png",
     iconSize: { width: 35, height: 33 },
   },

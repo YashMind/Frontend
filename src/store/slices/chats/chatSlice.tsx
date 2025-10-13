@@ -305,7 +305,7 @@ export const updateChatbotsFaqs = createAsyncThunk<
   "chat/updateChatbotsFaqs",
   async ({ payload }, { dispatch, rejectWithValue }) => {
     try {
-           // Map frontend keys to backend expected keys
+      // Map frontend keys to backend expected keys
       const formattedQuestions = payload.questions.map((q) => ({
         faq_id: q.faqId, // 👈 convert to snake_case
         question: q.question,
@@ -313,7 +313,7 @@ export const updateChatbotsFaqs = createAsyncThunk<
       }));
 
       dispatch(startLoadingActivity());
-      const response = await http.put("/chatbot/update-bot-faqs", {bot_id:payload.bot_id, questions:formattedQuestions});
+      const response = await http.put("/chatbot/update-bot-faqs", { bot_id: payload.bot_id, questions: formattedQuestions });
 
       if (response.status === 200) {
         toasterSuccess("chatbot faqs updated successfully!", 2000, "id");
@@ -1025,7 +1025,6 @@ export const fetchChatMessageTokens = createAsyncThunk<
     const response = await http.get<ChatMessageTokens>("/chatbot/tokens", {
       withCredentials: true,
     });
-    console.log("response ", response.data.has_shared_bots)
     return response.data;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(

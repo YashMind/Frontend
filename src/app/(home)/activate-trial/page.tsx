@@ -16,7 +16,7 @@ const TrialActivationPage = () => {
   const [error, setError] = useState();
 
   useEffect(() => {
-    dispatch(getMeData({ router }));
+    dispatch(getMeData({ router, returnPath: "/activate-trial" }));
   }, [dispatch]);
 
   const handleActivateTrial = () => {
