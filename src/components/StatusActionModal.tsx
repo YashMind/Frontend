@@ -40,9 +40,9 @@ const StatusActionModal: React.FC<Props> = ({ isOpen, onClose, onUpdateStatus, i
             >
               Activate
             </li>
-            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+            {/* <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
               Reset token quota
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

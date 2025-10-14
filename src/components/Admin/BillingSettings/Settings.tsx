@@ -1,14 +1,14 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   getPushNotificationSettings,
   updatePushNotificationSettings,
   patchPushNotificationSettings,
-} from '@/store/slices/payments/slice'; 
+} from '@/store/slices/payments/slice';
 import { useDispatch, useSelector } from "react-redux";
 
 const Settings = () => {
   const dispatch = useDispatch();
-const settingsData = useSelector((state) => state.payment.data);
+  const settingsData = useSelector((state) => state.payment.data);
 
   const [isToggleOn, setIsToggleOn] = useState(false);
   const [emailInput, setEmailInput] = useState('');
@@ -99,10 +99,11 @@ const settingsData = useSelector((state) => state.payment.data);
   return (
     <div className="px-[13px] py-[34px] border border-[#343B4F] rounded-[12px] bg-[#0A1330] shadow-[1px_1px_1px_0px_rgba(16,25,52,0.4)]">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-base">
+        <h3 className="font-semibold text-base ">
           Failed Payment Notifications
         </h3>
-        <div className="relative inline-block w-10 align-middle select-none">
+
+        <div className="relative inline-block w-11 align-middle select-none">
           <input
             type="checkbox"
             id="toggle1"
@@ -110,17 +111,23 @@ const settingsData = useSelector((state) => state.payment.data);
             checked={isToggleOn}
             onChange={handleToggle}
           />
+
+          {/* Track */}
           <label
             htmlFor="toggle1"
-            className={`block overflow-hidden h-5 rounded-full cursor-pointer ${isToggleOn ? 'bg-green-500' : 'bg-[#AEE5B1]'}`}
+            className={`block h-6 rounded-full cursor-pointer transition-colors duration-300 ${isToggleOn ? 'bg-green-500' : 'bg-gray-300'
+              }`}
           >
+            {/* Thumb */}
             <div
-              className={`absolute left-0.5 top-0.5 w-4 h-4 bg-[#18B91F] rounded-full transition-transform ${isToggleOn ? 'transform translate-x-5' : ''}`}
+              className={`absolute left-0.5 top-0.5 w-5 h-5 rounded-full bg-white shadow-sm transform transition-transform duration-300 ${isToggleOn ? 'translate-x-5' : 'translate-x-0'
+                }`}
             ></div>
           </label>
         </div>
       </div>
-      
+
+
       <div className="bg-[#081028] p-3 mt-3">
         <p className="text-sm font-semibold text-white my-3">
           Receive alerts when client payment methods fail and require action
@@ -128,7 +135,7 @@ const settingsData = useSelector((state) => state.payment.data);
         <p className="text-white text-sm mb-3">
           Notification Recipients:
         </p>
-        
+
         {/* Display saved emails */}
         {savedEmails.length > 0 && (
           <div className="mb-4">
@@ -143,13 +150,13 @@ const settingsData = useSelector((state) => state.payment.data);
                       className="flex-1 p-1 text-sm bg-[#F0F0F0] border border-gray-600 rounded-md text-[#716B6B]"
                     />
                     <div className="flex space-x-2 ml-2">
-                      <button 
+                      <button
                         onClick={() => handleSaveEdit(index)}
                         className="text-xs bg-green-600 hover:bg-green-700 px-2 py-1 rounded"
                       >
                         Save
                       </button>
-                      <button 
+                      <button
                         onClick={handleCancelEdit}
                         className="text-xs bg-gray-600 hover:bg-gray-700 px-2 py-1 rounded"
                       >
@@ -161,13 +168,13 @@ const settingsData = useSelector((state) => state.payment.data);
                   <>
                     <span className="text-sm">{email}</span>
                     <div className="flex space-x-2">
-                      <button 
+                      <button
                         onClick={() => handleEditEmail(index)}
                         className="text-xs bg-blue-600 hover:bg-blue-700 px-2 py-1 rounded"
                       >
                         Edit
                       </button>
-                      <button 
+                      <button
                         onClick={() => handleDeleteEmail(index)}
                         className="text-xs bg-red-600 hover:bg-red-700 px-2 py-1 rounded"
                       >
@@ -181,7 +188,7 @@ const settingsData = useSelector((state) => state.payment.data);
           </div>
         )}
       </div>
-      
+
       <div className="bg-[#081028] p-3">
         <form onSubmit={handleEmailSubmit}>
           <label className="font-semibold text-sm">
@@ -195,7 +202,7 @@ const settingsData = useSelector((state) => state.payment.data);
               placeholder="Add email address"
               className="flex-1 p-2 text-sm bg-[#F0F0F0] border border-gray-600 rounded-md text-[#716B6B]"
             />
-            <button 
+            <button
               type="submit"
               disabled={!validateEmail(emailInput)}
               className="ml-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 disabled:cursor-not-allowed rounded-md text-sm"

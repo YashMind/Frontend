@@ -38,16 +38,16 @@ const SubscriptionPlans = () => {
   }, [dispatch]);
 
   const getMenuItems = (item: any): MenuItem[] => [
-    {
-      label: "View Details",
-      onClick: () => alert("Edit"),
-      color: "black",
-    },
-    {
-      label: "List of Invoices",
-      onClick: () => alert("List of Invoices"),
-      color: "black",
-    },
+    // {
+    //   label: "View Details",
+    //   onClick: () => alert("Edit"),
+    //   color: "black",
+    // },
+    // {
+    //   label: "List of Invoices",
+    //   onClick: () => alert("List of Invoices"),
+    //   color: "black",
+    // },
     {
       label: item.is_active ? "Deactivate" : "Activate",
       onClick: () => {
@@ -60,11 +60,11 @@ const SubscriptionPlans = () => {
       },
       color: item.is_active ? "red" : "green",
     },
-    {
-      label: "Failed Payment Retry",
-      onClick: () => alert("Failed Payment Retry"),
-      color: "red",
-    },
+    // {
+    //   label: "Failed Payment Retry",
+    //   onClick: () => alert("Failed Payment Retry"),
+    //   color: "red",
+    // },
   ];
 
   const handleDeleteClick = (item: any) => {

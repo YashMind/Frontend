@@ -6,8 +6,11 @@ import { fetchCountryNames } from "@/store/slices/auth/country";
 import GraphChart from "./GraphChart";
 import UserByPlanGaph from "./UserByPlanGaph";
 import { AppDispatch } from "@/store/store";
+import { formatDateOrTimeAgo, formatDateTimeWithTz } from "@/components/utils/formatDateTime";
+import { useTimezone } from "@/context/TimeZoneContext";
 
 const AdminMain = () => {
+  const { timezone, isLoading } = useTimezone();
   const dispatch = useDispatch<AppDispatch>();
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(100);
@@ -15,7 +18,7 @@ const AdminMain = () => {
   const [countryStats, setCountryStats] = useState<
     Array<{ country: string; count: number }>
   >([]);
-  
+
   // Add state for local transaction pagination
   const [transactionPage, setTransactionPage] = useState(1);
   const transactionsPerPage = 7;
@@ -160,7 +163,7 @@ const AdminMain = () => {
         <header className="flex m-3 justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">Admin Dashboard</h1>
           <div className="flex items-center space-x-4">
-            <button 
+            <button
               className="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
               onClick={() => {
                 handleRefreshTransactions();
@@ -323,11 +326,10 @@ const AdminMain = () => {
                         <div
                           className="bg-[#14CA74] h-1 rounded-full"
                           style={{
-                            width: `${
-                              (stat.count /
-                                Math.max(...countryStats.map((s) => s.count))) *
+                            width: `${(stat.count /
+                              Math.max(...countryStats.map((s) => s.count))) *
                               100
-                            }%`,
+                              }%`,
                           }}
                         ></div>
                       </div>
@@ -407,7 +409,7 @@ const AdminMain = () => {
                             "N/A"}
                         </td>
                         <td className="py-1 ">
-                          {formatDate(transaction.created_at)}
+                          {formatDateOrTimeAgo(transaction.created_at, timezone)}
                         </td>
                         <td className="py-1 ">
                           <span className={getStatusBadge(transaction.status)}>
@@ -460,7 +462,7 @@ const AdminMain = () => {
             {pagination && pagination.total_pages > 1 && (
               <div className="flex justify-between items-center mt-4 text-sm border-t border-gray-700 pt-4">
                 <span className="text-gray-400">
-                  API Page {pagination.page} of {pagination.total_pages} 
+                  API Page {pagination.page} of {pagination.total_pages}
                   ({pagination.total_transactions} total transactions)
                 </span>
                 <div className="flex gap-2">

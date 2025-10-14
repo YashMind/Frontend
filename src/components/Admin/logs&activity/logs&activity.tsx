@@ -12,15 +12,15 @@ import { ErrorLogsModal } from "@/components/Errormessage";
 const ITEMS_PER_PAGE = 5;
 
 const cardsData = [
-  {
-    title: "API Calls",
-    icon: "/images/iconlogs.png",
-    items: [
-      "User: user@example.com",
-      "Product: 98%",
-      "Time: 1234"
-    ],
-  },
+  // {
+  //   title: "API Calls",
+  //   icon: "/images/iconlogs.png",
+  //   items: [
+  //     "User: user@example.com",
+  //     "Product: 98%",
+  //     "Time: 1234"
+  //   ],
+  // },
   {
     title: "Error",
     icon: "/images/comment.png",
@@ -37,15 +37,15 @@ const cardsData = [
       "When:"
     ],
   },
-  {
-    title: "AI",
-    icon: "/images/ai-line.png",
-    items: [
-      "Accuracy: 120 ms",
-      "Fallback: ___",
-      "Latency: 2.2ms"
-    ],
-  },
+  // {
+  //   title: "AI",
+  //   icon: "/images/ai-line.png",
+  //   items: [
+  //     "Accuracy: 120 ms",
+  //     "Fallback: ___",
+  //     "Latency: 2.2ms"
+  //   ],
+  // },
 ];
 
 const LogsActivity = () => {
@@ -59,17 +59,17 @@ const LogsActivity = () => {
 
   useEffect(() => {
     if (modalFor === "Admin") {
-    dispatch(getAdminsLogsActivity({ date_filter: "", page, limit: ITEMS_PER_PAGE }));
-  }
-  if (modalFor === "Error") {
-    dispatch(fetchAllTickets());
-  }
-  if (modalFor === "API Calls") {
-    dispatch(getApiLogs({ date_filter: "", page, limit: ITEMS_PER_PAGE }));
-  }
-  if (modalFor === "AI") {
-    dispatch(getAILogs({ date_filter: "", page, limit: ITEMS_PER_PAGE }));
-  }
+      dispatch(getAdminsLogsActivity({ date_filter: "", page, limit: ITEMS_PER_PAGE }));
+    }
+    if (modalFor === "Error") {
+      dispatch(fetchAllTickets());
+    }
+    // if (modalFor === "API Calls") {
+    //   dispatch(getApiLogs({ date_filter: "", page, limit: ITEMS_PER_PAGE }));
+    // }
+    // if (modalFor === "AI") {
+    //   dispatch(getAILogs({ date_filter: "", page, limit: ITEMS_PER_PAGE }));
+    // }
   }, [dispatch, page, modalFor]);
 
   const closeModal = () => {
@@ -101,29 +101,29 @@ const LogsActivity = () => {
                     ))}
                   </div>
                   <div className="flex justify-end mt-4">
-                   <button
-  className="text-sm cursor-pointer p-2 font-medium rounded-md text-white bg-[#9d34da]"
-  onClick={() => {
-    if (title === "Admin") {
-      setModalFor("Admin");
-      setPage(1);
-    }
-    if (title === "Error") {
-      setModalFor("Error");
-      setPage(1);
-    }
-    if (title === "API Calls") {
-      setModalFor("API Calls");
-      setPage(1);
-    }
-    if (title === "AI") {
-      setModalFor("AI");
-      setPage(1);
-    }
-  }}
->
-  More Information
-</button>
+                    <button
+                      className="text-sm cursor-pointer p-2 font-medium rounded-md text-white bg-[#9d34da]"
+                      onClick={() => {
+                        // if (title === "Admin") {
+                        //   setModalFor("Admin");
+                        //   setPage(1);
+                        // }
+                        if (title === "Error") {
+                          setModalFor("Error");
+                          setPage(1);
+                        }
+                        if (title === "API Calls") {
+                          setModalFor("API Calls");
+                          setPage(1);
+                        }
+                        // if (title === "AI") {
+                        //   setModalFor("AI");
+                        //   setPage(1);
+                        // }
+                      }}
+                    >
+                      More Information
+                    </button>
 
                   </div>
                 </div>
@@ -147,22 +147,22 @@ const LogsActivity = () => {
 
 
 
-            
- {modalFor === "Error" && (
-  <ErrorLogsModal
-    isOpen={true}
-    onClose={closeModal}
-    logs={Array.isArray(tickets) ? tickets : []}
-    total={tickets.length} 
-    currentPage={page}
-    onPageChange={(newPage) => {
-      const totalPages = Math.ceil(tickets.length / ITEMS_PER_PAGE);
-      if (newPage >= 1 && newPage <= totalPages) {
-        setPage(newPage);
-      }
-    }}
-  />
-)} 
+
+            {modalFor === "Error" && (
+              <ErrorLogsModal
+                isOpen={true}
+                onClose={closeModal}
+                logs={Array.isArray(tickets) ? tickets : []}
+                total={tickets.length}
+                currentPage={page}
+                onPageChange={(newPage) => {
+                  const totalPages = Math.ceil(tickets.length / ITEMS_PER_PAGE);
+                  if (newPage >= 1 && newPage <= totalPages) {
+                    setPage(newPage);
+                  }
+                }}
+              />
+            )}
 
 
 

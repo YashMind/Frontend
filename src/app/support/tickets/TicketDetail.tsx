@@ -118,8 +118,9 @@ const TicketDetail = ({ ticketId, onClose }: TicketDetailProps) => {
                                 placeholder="Type your response here..."
                             />
                             <button
+                                disabled={!currentTicket.user?.email}
                                 onClick={handleSendReply}
-                                className="mt-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                                className="mt-2 bg-blue-600 disabled:bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
                             >
                                 Send Response
                             </button>

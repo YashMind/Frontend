@@ -107,14 +107,16 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
             <select
               {...register("role")}
               className="cursor-pointer w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
-              defaultValue=""
+              defaultValue={userData.role?.toLowerCase() || ""}
             >
               <option value="" disabled>
                 Select role
               </option>
-              <option value="Super Admin">Super Admin</option>
-              <option value="Billing Admin">Billing Admin</option>
-              <option value="User">User</option>
+              <option value="super admin">Super Admin</option>
+              <option value="billing admin">Billing Admin</option>
+              <option value="product admin">Product Admin</option>
+              <option value="support admin">Support Admin</option>
+              <option value="user">User</option>
             </select>
             {errors.role && (
               <p className="text-red-500 text-sm mt-1">

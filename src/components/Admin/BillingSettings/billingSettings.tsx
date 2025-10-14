@@ -37,10 +37,7 @@ const BillingSettings = () => {
   const transactionsState = useSelector(
     (state: RootState) => state.tokens.transactions
   );
-  console.log("🔍 Full transactions state:", transactionsState);
-  console.log("Transactions:", transactions);
-  console.log("TransactionsLoading:", transactionsLoading);
-  console.log("TransactionsError:", transactionsError);
+
 
   // Get transactions array
   const transactionsList = transactions?.transactions || [];
@@ -52,7 +49,6 @@ const BillingSettings = () => {
   const paginatedTransactions = transactionsList.slice(startIndex, endIndex);
 
   useEffect(() => {
-    console.log("Component: Dispatching thunk");
 
     dispatch(getAllPaymentGateway());
 
@@ -160,13 +156,12 @@ const BillingSettings = () => {
                               </td>
                               <td className="py-[20px] px-[28px]">
                                 <span
-                                  className={`${
-                                    item?.status === "Active"
-                                      ? "bg-[#18B91F]"
-                                      : "bg-[#C38F00]"
-                                  } text-xs font-medium text-[#FBEDED] px-2 py-0.5 rounded-full`}
+                                  className={`${item?.status.toLowerCase() === "active"
+                                    ? "bg-[#18B91F]"
+                                    : "bg-[#C38F00]"
+                                    } text-xs font-medium text-[#FBEDED] px-2 py-0.5 rounded-full`}
                                 >
-                                  {item?.status}
+                                  {item?.status.toUpperCase()}
                                 </span>
                               </td>
                               <td className="flex gap-2 py-[20px] px-[28px]">
@@ -314,7 +309,7 @@ const BillingSettings = () => {
                           <td colSpan={8} className="text-center py-4">
                             <h2 className="text-white/90">
                               {typeof transactionsError === "object" &&
-                              "msg" in transactionsError
+                                "msg" in transactionsError
                                 ? transactionsError.msg
                                 : String(transactionsError)}
                             </h2>
@@ -348,36 +343,30 @@ const BillingSettings = () => {
                               <span
                                 className={`
                               text-xs px-2 py-0.5 rounded-full
-                              ${
-                                transaction.status === "created"
-                                  ? "bg-blue-100 text-blue-800"
-                                  : ""
-                              }
-                              ${
-                                transaction.status === "pending"
-                                  ? "bg-yellow-100 text-yellow-800"
-                                  : ""
-                              }
-                              ${
-                                transaction.status === "success"
-                                  ? "bg-green-500 text-white"
-                                  : ""
-                              }
-                              ${
-                                transaction.status === "failed"
-                                  ? "bg-red-100 text-red-800"
-                                  : ""
-                              }
-                              ${
-                                transaction.status === "refunded"
-                                  ? "bg-purple-100 text-purple-800"
-                                  : ""
-                              }
-                              ${
-                                transaction.status === "cancelled"
-                                  ? "bg-gray-200 text-gray-700"
-                                  : ""
-                              }
+                              ${transaction.status === "created"
+                                    ? "bg-blue-100 text-blue-800"
+                                    : ""
+                                  }
+                              ${transaction.status === "pending"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : ""
+                                  }
+                              ${transaction.status === "success"
+                                    ? "bg-green-500 text-white"
+                                    : ""
+                                  }
+                              ${transaction.status === "failed"
+                                    ? "bg-red-100 text-red-800"
+                                    : ""
+                                  }
+                              ${transaction.status === "refunded"
+                                    ? "bg-purple-100 text-purple-800"
+                                    : ""
+                                  }
+                              ${transaction.status === "cancelled"
+                                    ? "bg-gray-200 text-gray-700"
+                                    : ""
+                                  }
                             `}
                               >
                                 {transaction.status}
@@ -422,8 +411,8 @@ const BillingSettings = () => {
                   {transactionsList.length > transactionsPerPage && (
                     <div className="flex justify-between items-center p-[28px] border-t border-[#343B4F]">
                       <span className="text-sm text-gray-400">
-                        
-                       
+
+
                         {transactionsList.length} transactions (Page{" "}
                         {currentPage} of {totalPages})
                       </span>
@@ -456,7 +445,7 @@ const BillingSettings = () => {
                   <Settings />
 
                   {/* Usage Threshold Alerts */}
-                  <div className="px-[13px] py-[34px] border border-[#343B4F] rounded-[12px] bg-[#0A1330] shadow-[1px_1px_1px_0px_rgba(16,25,52,0.4)]">
+                  {/* <div className="px-[13px] py-[34px] border border-[#343B4F] rounded-[12px] bg-[#0A1330] shadow-[1px_1px_1px_0px_rgba(16,25,52,0.4)]">
                     <div className="flex items-center justify-between">
                       <h3 className="font-semibold text-base ">
                         Usage Threshold Alerts
@@ -497,7 +486,7 @@ const BillingSettings = () => {
                         </label>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </section>
             </div>

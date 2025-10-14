@@ -117,7 +117,7 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
         <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {/* Bot Name */}
-           <div>
+            <div>
               <label className="block mb-2 text-sm font-medium text-gray-300">
                 Bot Name *
               </label>
@@ -144,9 +144,10 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
               </label>
               <select
                 {...register("duration_days", { valueAsNumber: true })}
+                defaultValue={""}
                 className="w-full px-4 py-2.5 rounded-lg bg-[#1A2C65] text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
               >
-                <option value="" disabled selected>
+                <option value="" disabled >
                   Select Duration
                 </option>
                 {[

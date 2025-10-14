@@ -21,6 +21,8 @@ import EditPermissionModal from "@/components/EditPermissionsModal";
 import { getAllUsers } from "@/store/slices/admin/adminSlice";
 import moment from "moment";
 import { accessPoints } from "../AdminSidebar/adminSidebar";
+import { useTimezone } from "@/context/TimeZoneContext";
+import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
 
 
 interface RoleWithPermissions {
@@ -63,7 +65,7 @@ const AdminUsersRoles = () => {
       permissions: [],
     },
   ];
-
+  const { timezone, isLoading } = useTimezone();
   const today = new Date().toISOString().split("T")[0];
 
   const dispatch = useDispatch<AppDispatch>();
@@ -191,9 +193,7 @@ const AdminUsersRoles = () => {
                     {adminUsers && adminUsers.length > 0 ? (
                       adminUsers?.map((item, index) => {
                         const timeAgo = item?.last_active
-                          ? formatDistanceToNow(new Date(item.last_active), {
-                            addSuffix: true,
-                          })
+                          ? formatDateOrTimeAgo(item.last_active, timezone)
                           : null;
                         return (
                           <tr
@@ -359,12 +359,7 @@ const AdminUsersRoles = () => {
                         className="bg-[#0F1A3D] border border-[#2A3553] rounded-lg p-2"
                       >
                         <div className="text-sm text-gray-400 mb-2">
-                          {moment(log.created_at).calendar(null, {
-                            sameDay: '[Today], h:mm A',
-                            lastDay: '[Yesterday], h:mm A',
-                            lastWeek: 'dddd, h:mm A',
-                            sameElse: 'MMM D, YYYY, h:mm A',
-                          })}
+                          {formatDateOrTimeAgo(log.created_at, timezone)}
                         </div>
                         <div className="flex justify-between items-start">
                           <div>
