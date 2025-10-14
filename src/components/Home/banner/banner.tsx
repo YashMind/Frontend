@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { getMeData, isLoggedin } from "@/store/slices/auth/authSlice";
 import { FaArrowRight } from "react-icons/fa";
+import Link from "next/link";
 
 const slideData = [
   {
@@ -23,17 +24,16 @@ const slideData = [
   },
 ];
 
-const CTAButton = ({ onClick, children }: { onClick?: () => void; children: React.ReactNode }) => (
-  <button
-    className="group relative flex items-center justify-center py-3 px-8 md:py-4 md:px-10 text-white text-base md:text-lg font-medium rounded-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all duration-300 overflow-hidden"
-    onClick={onClick}
+const CTAButton = ({ link, children }: { link: string; children: React.ReactNode }) => (
+  <Link href={link}
+    className=" w-fit group relative flex items-center justify-center py-3 px-8 md:py-4 md:px-10 text-white text-base md:text-lg font-medium rounded-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all duration-300 overflow-hidden"
   >
     <span className="relative z-10 flex items-center gap-2">
       {children}
       <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
     </span>
     <span className="absolute inset-0 bg-gradient-to-r from-purple-700 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-  </button>
+  </Link>
 );
 
 const HomeBanner = () => {
@@ -87,11 +87,11 @@ const HomeBanner = () => {
                 </p>
                 <div className="mt-8">
                   {userData ? (
-                    <CTAButton onClick={() => router.push("/chat-dashboard/main")}>
+                    <CTAButton link={"/chat-dashboard/main"}>
                       Go to Dashboard
                     </CTAButton>
                   ) : (
-                    <CTAButton onClick={() => router.push("/auth/signup")}>
+                    <CTAButton link={"/auth/signup"}>
                       Get Started
                     </CTAButton>
                   )}

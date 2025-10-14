@@ -11,8 +11,11 @@ import {
 } from "@/store/slices/admin/adminSlice";
 import { fetchAdminTransactions } from "@/store/slices/admin/tokenAnalytic";
 import Settings from "./Settings";
+import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
+import { useTimezone } from "@/context/TimeZoneContext";
 
 const BillingSettings = () => {
+  const { timezone } = useTimezone()
   const [modalShow, setModalShow] = useState<boolean>(false);
   const [userData, setUserData] = useState<any>({});
   const dispatch = useDispatch<AppDispatch>();
@@ -331,7 +334,7 @@ const BillingSettings = () => {
                               {transaction.user?.name}
                             </td>
                             <td className=" py-[20px] px-[28px] text-[#AEB9E1]">
-                              {transaction.created_at}
+                              {formatDateOrTimeAgo(transaction.created_at, timezone)}
                             </td>
                             <td className="py-[20px] px-[28px] text-[#AEB9E1] ">
                               {transaction.amount} {transaction.currency}

@@ -10,7 +10,7 @@ const steps = [
     number: "1",
     title: "Import Data",
     description:
-      "Add any Website, DOCX, TXT, PDF, CSV files, or even YouTube videos securely into your chatbot in minutes.",
+      "Add any Website, DOCX, TXT, PDF, CSV files securely into your chatbot in minutes.",
     image: "/images/laptop2.png",
     imagePosition: "left",
   },
@@ -53,9 +53,8 @@ const Step = ({ number, title, description, image, imagePosition }: any) => {
 
   return (
     <div
-      className={`flex flex-col lg:flex-row items-start gap-10 ${
-        number === "2" ? "my-[76px]" : ""
-      }`}
+      className={`flex flex-col lg:flex-row items-start gap-10 ${number === "2" ? "my-[76px]" : ""
+        }`}
     >
       {imagePosition === "left" ? (
         <>

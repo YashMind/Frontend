@@ -67,7 +67,7 @@ const TurnConversation = () => {
           {/* Right Features */}
           <div className="flex flex-col gap-16">
             <FeatureCard {...features[2]} />
-            <FeatureCard {...features[3]} />
+            {/* <FeatureCard {...features[3]} /> */}
           </div>
         </div>
       </div>

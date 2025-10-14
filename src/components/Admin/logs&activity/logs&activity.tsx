@@ -104,18 +104,18 @@ const LogsActivity = () => {
                     <button
                       className="text-sm cursor-pointer p-2 font-medium rounded-md text-white bg-[#9d34da]"
                       onClick={() => {
-                        // if (title === "Admin") {
-                        //   setModalFor("Admin");
-                        //   setPage(1);
-                        // }
+                        if (title === "Admin") {
+                          setModalFor("Admin");
+                          setPage(1);
+                        }
                         if (title === "Error") {
                           setModalFor("Error");
                           setPage(1);
                         }
-                        if (title === "API Calls") {
-                          setModalFor("API Calls");
-                          setPage(1);
-                        }
+                        // if (title === "API Calls") {
+                        //   setModalFor("API Calls");
+                        //   setPage(1);
+                        // }
                         // if (title === "AI") {
                         //   setModalFor("AI");
                         //   setPage(1);
