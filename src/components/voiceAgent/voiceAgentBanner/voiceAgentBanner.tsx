@@ -52,10 +52,10 @@ const VoiceAgentBanner = () => {
                   width={1770}
                 />
               </div>
-              <h1   style={{ fontFamily: "'Audiowide', sans-serif" }} className="text-transparent bg-[linear-gradient(90deg,_#271F6A_-3.02%,_#FFFFFF_47.85%,_#261E6C_102.96%)] bg-clip-text text-[36px] md:text-[74px] max-w-7xl mx-auto">
+              <h1 style={{ fontFamily: "'Audiowide', sans-serif" }} className="text-transparent bg-[linear-gradient(90deg,_#271F6A_-3.02%,_#FFFFFF_47.85%,_#261E6C_102.96%)] bg-clip-text text-[36px] md:text-[74px] max-w-7xl mx-auto">
                 Coming Soon
               </h1>
-              <br/>
+              <br />
               <h2
                 className="text-transparent bg-[linear-gradient(90deg,_#271F6A_-3.02%,_#FFFFFF_47.85%,_#261E6C_102.96%)] bg-clip-text text-[36px] md:text-[74px] max-w-7xl mx-auto"
                 style={{ fontFamily: "'Audiowide', sans-serif" }}
@@ -75,7 +75,7 @@ const VoiceAgentBanner = () => {
                   )
                 }
               >
-                {userData ? "Dashboard" : "Sing In"}
+                {userData ? "Dashboard" : "Sign In"}
               </button>
             </div>
           );
@@ -88,8 +88,8 @@ const VoiceAgentBanner = () => {
               key={idx}
               onClick={() => instanceRef.current?.moveToIdx(idx)}
               className={`w-[16px] h-[16px] rounded-full ${currentSlide === idx
-                  ? "bg-[#01BEED]"
-                  : "bg-transparent border  border-[#01BEED]"
+                ? "bg-[#01BEED]"
+                : "bg-transparent border  border-[#01BEED]"
                 }`}
             />
           ))}

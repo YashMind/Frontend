@@ -84,7 +84,7 @@ const EmailComposeModal = ({
 
         switch (modalType) {
             case "email":
-                endpoint = `${process.env.NEXT_PUBLIC_API_URL}/admin/send-emails`;
+                endpoint = `${process.env.NEXT_PUBLIC_API_URL}/admin/send-email`;
                 payload = {
                     title: data.title,
                     description: data.description,

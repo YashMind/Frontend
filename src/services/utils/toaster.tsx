@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 // You can customize global styles using className or custom renderers if needed
 export const toasterSuccess = (
   message: string,
-  time: number = 3000,
+  time: number = 7000,
   customId?: string | number
 ) => {
   toast.success(message || "Process completed successfully", {
@@ -17,7 +17,7 @@ export const toasterSuccess = (
 
 export const toasterError = (
   message: string,
-  time: number = 3000,
+  time: number = 7000,
   customId?: string | number
 ) => {
   toast.error(message || "An error has been encountered", {
@@ -31,7 +31,7 @@ export const toasterError = (
 
 export const toasterInfo = (
   message: string,
-  time: number = 3000,
+  time: number = 7000,
   customId?: string | number
 ) => {
   toast(message || "Here's some information", {
@@ -44,7 +44,7 @@ export const toasterInfo = (
 
 export const toasterWarning = (
   message: string,
-  time: number = 3000,
+  time: number = 7000,
   customId?: string | number
 ) => {
   toast(message || "Warning issued", {
