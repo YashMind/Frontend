@@ -28,11 +28,11 @@ const AddYourBot = () => {
           </div>
 
           {/* Right Platform Cards */}
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-10">
             {platforms.map((platform, idx) => (
               <div
                 key={idx}
-                className="cursor-pointer border border-[#2D2095] rounded-full px-2 pt-[33px] pb-[18px] flex items-center justify-center relative shadow-sm"
+                className="border border-[#2D2095] rounded-full px-2 pt-[33px] pb-[18px] flex items-center justify-center relative shadow-sm"
               >
                 <Image
                   alt={platform.name}

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 
 const steps = [
   {
@@ -108,16 +109,15 @@ const CustomGpt = () => {
               your business or chosen data.
             </p>
             <div className="text-right">
-              <button
+              <Link
                 className="cursor-pointer bg-white text-black px-6 py-2 rounded-full text-lg font-semibold shadow-md mb-8 hover:bg-gray-100 transition-colors duration-300"
-                onClick={() =>
-                  router.push(
-                    userData ? "/chat-dashboard/main" : "/auth/signin"
-                  )
+                href={
+                  userData ? "/chat-dashboard/main" : "/auth/signin"
+
                 }
               >
                 {userData ? "Try Now" : "Try Now"}
-              </button>
+              </Link>
             </div>
           </div>
         </div>

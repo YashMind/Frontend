@@ -122,7 +122,7 @@ const ChatbotFaqs = () => {
                 {/* Show More/Less button if there are more than 5 FAQs */}
                 {faqsData?.length > 5 && (
                   <button
-                    className="mt-4 text-gray-200 font-extralight text-sm hover:underline focus:outline-none"
+                    className="cursor-pointer mt-4 text-gray-200 font-extralight text-sm hover:underline focus:outline-none"
                     onClick={() => setShowAll(!showAll)}
                   >
                     {showAll ? 'Show Less' : 'Show More'}

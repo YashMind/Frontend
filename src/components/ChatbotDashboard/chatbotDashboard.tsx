@@ -132,7 +132,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                             alt="Chatbot avatar"
                             src={imgUrl}
                             fill
-                            className="object-cover"
+                            className="object-cover rounded-full"
                           />
                           <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border border-white"></span>
                         </div>

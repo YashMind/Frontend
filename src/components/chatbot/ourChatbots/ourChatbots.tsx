@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import React from "react";
+import Link from "next/link";
 
 const cardData = [
   // {
@@ -122,14 +123,13 @@ const OurChatbots = () => {
             social media channels at once
           </p>
           <div className=" text-center lg:text-right">
-            <button
+            <Link
               className="cursor-pointer bg-white text-black px-6 py-2 rounded-full text-lg font-semibold shadow-md mb-8 hover:bg-gray-100 transition-colors duration-300"
-              onClick={() =>
-                router.push(userData ? "/chat-dashboard/main" : "/auth/signin")
+              href={(userData ? "/chat-dashboard/main" : "/auth/signin")
               }
             >
               {userData ? "Try Now" : "Try Now"}
-            </button>
+            </Link>
           </div>
         </div>
       </div>

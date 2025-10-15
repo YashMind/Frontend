@@ -75,13 +75,23 @@ const ChatbotSection = ({
 
   };
 
+  const getImageUrl = (imageUrl: string) => {
+    if (!imageUrl) return "/images/bot2.png";
+
+    if (typeof imageUrl === 'string') {
+      if (imageUrl.startsWith('http')) {
+        return imageUrl;
+      }
+      return `${process.env.NEXT_PUBLIC_BACKEND_URL}${imageUrl}`;
+    }
+
+    return "/images/bot2.png";
+  };
+
+
   const chatbotImage =
     chatbotSetting &&
-      chatbotSetting?.image &&
-      typeof chatbotSetting.image === "string" &&
-      chatbotSetting.image.trim() !== ""
-      ? chatbotSetting.image
-      : "/images/face2.webp";
+    getImageUrl(chatbotSetting?.image)
 
   const messagesEndRef: any = useRef(null);
 
@@ -288,12 +298,12 @@ const ChatbotSection = ({
         <div ref={messagesEndRef} />
       </div>
       <form onSubmit={handleSubmit(onSubmit)}
-      onKeyDown={(e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit(onSubmit)();
-    }
-  }}>
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSubmit(onSubmit)();
+          }
+        }}>
         <div className="flex flex-wrap gap-1 m-1 mx-2">
           {chatbotSetting?.suggestions_is_active &&
             chatbotSetting?.suggestions_value

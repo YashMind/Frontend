@@ -12,10 +12,10 @@ const VoiceAgent = () => {
     <main className="bg-gradient-to-b from-[#2B255D] to-[#110FB9] min-h-screen">
       {/* Banner section */}
       <VoiceAgentBanner />
-      
+
       {/* Voice Companion */}
       <VoiceCompanion />
-      
+
       {/* Task Management */}
       <TaskManagement />
 
@@ -26,8 +26,8 @@ const VoiceAgent = () => {
       <AppsSection />
 
       {/* FAQ Section */}
-      <Faqs />
-      
+      {/* <Faqs /> */}
+
       {/* Footer */}
       <SubFooter />
     </main>

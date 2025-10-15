@@ -8,20 +8,14 @@ export default function AboutUs() {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="relative pb-8 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-            <div className="pt-10 sm:pt-16 lg:pt-8 lg:pb-14 lg:overflow-hidden">
-              <div className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-                <div className="sm:text-center lg:text-left">
-                  <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                    <span className="block">Welcome to</span>
-                    <span className="block text-indigo-600">YASHRAA</span>
-                  </h1>
-                  <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                    Your All-in-One AI Tools Platform
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div className="text-center  mt-28 mb-12">
+            <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+              <span className="">Welcome to</span>
+              <span className="text-indigo-600">YASHRAA</span>
+            </h1>
+            <p className="text-center mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg md:mt-5 md:text-xl lg:mx-0">
+              Your All-in-One AI Tools Platform
+            </p>
           </div>
         </div>
       </div>
@@ -155,7 +149,7 @@ export default function AboutUs() {
           </div>
 
           <div className="mt-10">
-            <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
+            <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-4 md:gap-x-8 md:gap-y-10">
               {[
                 {
                   icon: <FiLayers className="h-8 w-8 text-white" />,

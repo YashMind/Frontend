@@ -76,7 +76,7 @@ const HomeFooter = () => {
               <Link href="/voice-agent">Voice Agent</Link>
             </li>
             <li>
-              <Link href="/#">Chat LLM</Link>
+              <Link href="/chatllm">Chat LLM</Link>
             </li>
             <li>
               <Link href="/details/contact-us">Contact us</Link>

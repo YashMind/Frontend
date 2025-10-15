@@ -19,6 +19,15 @@ const ContactUs = () => {
     success: false
   });
 
+  const resetFormData = () => {
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      message: ""
+    })
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -36,7 +45,7 @@ const ContactUs = () => {
     });
     // Prepare the email data
     const emailData = {
-       title: `Contact from ${formData.name}`,       // Required by API
+      title: `Contact from ${formData.name}`,       // Required by API
       description: formData.message.substring(0, 50),
       subject: `Contact Form Submission from ${formData.name}`,
       html_content: `
@@ -54,11 +63,14 @@ const ContactUs = () => {
       recipients: ["support@yashraa.ai"] // Your support email
     };
 
-    dispatch(sendEmail(emailData)).unwrap().then((res) => setEmailState({
-      loading: false,
-      error: null,
-      success: true
-    })).catch((error) => {
+    dispatch(sendEmail(emailData)).unwrap().then((res) => {
+      setEmailState({
+        loading: false,
+        error: null,
+        success: true
+      }); resetFormData()
+    }
+    ).catch((error) => {
       // Handle errors
       const errorMessage = error.response?.data?.message || error.message || 'Failed to send email';
 
@@ -108,13 +120,7 @@ const ContactUs = () => {
                 <div className="ml-3">
                   <h3 className="text-lg font-medium text-gray-900">Phone</h3>
                   <p className="mt-1 text-gray-600">
-                    <a
-                      href="tel:+919529786418 "
-                      className="hover:text-indigo-500"
-                    >
-                      +91-8623893563
-
-                    </a>
+                    +91-8623893563
                   </p>
                 </div>
               </div>
@@ -230,7 +236,7 @@ const ContactUs = () => {
               </div>
             )}
 
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            {!emailState.success && <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="name"
@@ -280,6 +286,8 @@ const ContactUs = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
@@ -312,7 +320,7 @@ const ContactUs = () => {
                   {emailState.loading ? "Sending..." : "Send Message"}
                 </button>
               </div>
-            </form>
+            </form>}
           </div>
         </div>
 

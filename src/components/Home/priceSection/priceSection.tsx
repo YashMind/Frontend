@@ -36,45 +36,45 @@ const PriceSection = () => {
 
   // Filter plans based on duration_days
   const filteredPlans = Object.values(publicSubscriptionPlansData).filter((item: SubscriptionPlan) => {
-    switch(selectedPlan) {
+    switch (selectedPlan) {
       case 'Weekly':
         return item.duration_days == 7;
       case '15 Days':
-        return item.duration_days ==15;
+        return item.duration_days == 15;
       case 'monthly':
-        return item.duration_days ==30;
+        return item.duration_days == 30;
       case 'quarterly':
-        return item.duration_days ==90;
+        return item.duration_days == 90;
       case 'biannual':
-        return item.duration_days ==180;
+        return item.duration_days == 180;
       case 'annual':
-        return item.duration_days ==365;
+        return item.duration_days == 365;
       default:
         return false;
     }
   });
 
   //  check if the plan exist 
-const hasPlansOfType = (type: string) => {
-  return Object.values(publicSubscriptionPlansData).some((plan: SubscriptionPlan) => {
-    switch (type) {
-      case 'Weekly':
-        return plan.duration_days == 7;
-      case '15 Days':
-        return plan.duration_days == 15;
-      case 'monthly':
-        return plan.duration_days == 30;
-      case 'quarterly':
-        return plan.duration_days == 90;
-      case 'biannual':
-        return plan.duration_days == 180;
-      case 'annual':
-        return plan.duration_days ==365;
-      default:
-        return false;
-    }
-  });
-};
+  const hasPlansOfType = (type: string) => {
+    return Object.values(publicSubscriptionPlansData).some((plan: SubscriptionPlan) => {
+      switch (type) {
+        case 'Weekly':
+          return plan.duration_days == 7;
+        case '15 Days':
+          return plan.duration_days == 15;
+        case 'monthly':
+          return plan.duration_days == 30;
+        case 'quarterly':
+          return plan.duration_days == 90;
+        case 'biannual':
+          return plan.duration_days == 180;
+        case 'annual':
+          return plan.duration_days == 365;
+        default:
+          return false;
+      }
+    });
+  };
 
 
   const getDurationText = (days: number) => {
@@ -94,25 +94,24 @@ const hasPlansOfType = (type: string) => {
           Pricing & Plans
         </h1>
         <img src="/images/heading.png" className="mx-auto sm:mx-0 mt-2" alt="Heading" />
-        
+
         {/* Plan Selection Buttons - Always visible */}
         <div className="flex justify-center mt-8 mb-6">
           <div className="bg-[#1B1441] border border-[#FFFFFF33] rounded-full p-1 flex">
-           {['Weekly','15 Days','monthly', 'quarterly', 'biannual', 'annual'].map((planType) =>
-  hasPlansOfType(planType) ? (
-    <button
-      key={planType}
-      onClick={() => setSelectedPlan(planType as any)}
-      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-        selectedPlan === planType
-          ? 'bg-gradient-to-r from-[#501794] to-[#40659F] text-white'
-          : 'text-[#FFFFFFA1] hover:text-white'
-      }`}
-    >
-      {planType.charAt(0).toUpperCase() + planType.slice(1)} Plan
-    </button> 
-  ) : null
-)}
+            {['Weekly', '15 Days', 'monthly', 'quarterly', 'biannual', 'annual'].map((planType) =>
+              hasPlansOfType(planType) ? (
+                <button
+                  key={planType}
+                  onClick={() => setSelectedPlan(planType as any)}
+                  className={`px-4 cursor-pointer py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedPlan === planType
+                    ? 'bg-gradient-to-r from-[#501794] to-[#40659F] text-white'
+                    : 'text-[#FFFFFFA1] hover:text-white'
+                    }`}
+                >
+                  {planType.charAt(0).toUpperCase() + planType.slice(1)} Plan
+                </button>
+              ) : null
+            )}
 
           </div>
         </div>
@@ -156,10 +155,10 @@ const hasPlansOfType = (type: string) => {
                             {item.name === "Basic"
                               ? "Ideal for small teams starting with AI-powered chatbots and limited crawling."
                               : item.name === "Pro"
-                              ? "For growing teams needing more power, integrations, and access."
-                              : "Ultimate access with high limits, all features, and max scalability."}
+                                ? "For growing teams needing more power, integrations, and access."
+                                : "Ultimate access with high limits, all features, and max scalability."}
                           </p>
-                          
+
                           <h2 className="text-[28px] font-semibold pb-[20px]">
                             {item.currency === "USD" ? "$" : "₹"}
                             {item.pricing}{" "}
@@ -175,11 +174,11 @@ const hasPlansOfType = (type: string) => {
                           </h2>
 
                           {item.is_active ? (
-                            <button
-                              onClick={() => router.push(`/gateways/${item.id}`)}
-                              className="w-full rounded-full bg-gradient-to-r from-[#501794] to-[#40659F] py-2 mb-6 text-white font-medium text-[17px]">
+                            <Link
+                              href={`/gateways/${item.id}`}
+                              className="block w-full text-center rounded-full bg-gradient-to-r from-[#501794] to-[#40659F] py-2 mb-6 text-white font-medium text-[17px]">
                               Choose This Plan
-                            </button>
+                            </Link>
                           ) : (
                             <p className="text-red-500 font-semibold mb-4">
                               This Plan is Not Active Right Now
@@ -189,7 +188,7 @@ const hasPlansOfType = (type: string) => {
                           <ul className="space-y-2 text-sm">
                             {item.features?.split(",").map((feature: string, idx: number) => (
                               <li className="flex gap-2" key={idx}>
-                                <img src="/images/star.png" alt="Feature icon" /> 
+                                <img src="/images/star.png" alt="Feature icon" />
                                 {feature.trim()}
                               </li>
                             ))}

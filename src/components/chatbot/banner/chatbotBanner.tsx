@@ -5,6 +5,7 @@ import "keen-slider/keen-slider.min.css";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import Link from "next/link";
 
 const ChatbotBanner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -52,14 +53,12 @@ const ChatbotBanner = () => {
               workflow.
             </p>
 
-            <button
+            <Link
               className="cursor-pointer bg-white text-black px-6 py-2 rounded-full text-lg font-semibold shadow-md mb-8 hover:bg-gray-100 transition-colors duration-300"
-              onClick={() =>
-                router.push(userData ? "/chat-dashboard/main" : "/auth/signin")
-              }
+              href={userData ? "/chat-dashboard/main" : "/auth/signin"}
             >
               {userData ? "Dashboard" : "Sign In"}
-            </button>
+            </Link>
           </div>
           {/* <div className="lg:w-1/2 flex justify-center " >
             <img
@@ -83,14 +82,12 @@ const ChatbotBanner = () => {
               Revolutionize repetitive tasks with intelligent systems that learn
               and adapt to your business needs.
             </p>
-            <button
+            <Link
               className="cursor-pointer bg-white text-black px-6 py-2 rounded-full text-lg font-semibold shadow-md mb-8 hover:bg-gray-100 transition-colors duration-300"
-              onClick={() =>
-                router.push(userData ? "/chat-dashboard/main" : "/auth/signin")
-              }
+              href={userData ? "/chat-dashboard/main" : "/auth/signin"}
             >
               {userData ? "Dashboard" : "Sign In"}
-            </button>
+            </Link>
           </div>
           {/* <div className="lg:w-1/2 flex justify-center">
             <img
@@ -114,14 +111,13 @@ const ChatbotBanner = () => {
               Enhance user satisfaction with 24/7 virtual assistants that
               provide instant, accurate responses.
             </p>
-            <button
+            <Link
               className="cursor-pointer bg-white text-black px-6 py-2 rounded-full text-lg font-semibold shadow-md mb-8 hover:bg-gray-100 transition-colors duration-300"
-              onClick={() =>
-                router.push(userData ? "/chat-dashboard/main" : "/auth/signin")
-              }
+              href={userData ? "/chat-dashboard/main" : "/auth/signin"}
+
             >
               {userData ? "Dashboard" : "Sign In"}
-            </button>
+            </Link>
           </div>
           {/* <div className="lg:w-1/2 flex justify-center">
             <img
@@ -165,11 +161,10 @@ const ChatbotBanner = () => {
           <button
             key={idx}
             onClick={() => instanceRef.current?.moveToIdx(idx)}
-            className={`cursor-pointer w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-colors ${
-              currentSlide === idx
-                ? "bg-[#01BEED]"
-                : "bg-transparent border border-[#01BEED]"
-            }`}
+            className={`cursor-pointer w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-colors ${currentSlide === idx
+              ? "bg-[#01BEED]"
+              : "bg-transparent border border-[#01BEED]"
+              }`}
             aria-label={`Go to slide ${idx + 1}`}
           />
         ))}

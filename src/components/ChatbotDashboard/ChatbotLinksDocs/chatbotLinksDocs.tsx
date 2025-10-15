@@ -102,11 +102,11 @@ const ChatbotLinksDocs = ({
           <div className="flex flex-wrap bg-[#9592AE] justify-evenly rounded-xl p-3 gap-4 items-center w-full mt-8">
             <StatCard
               title=" All Bots Crawled Links"
-              value={ChatbotDocLinksData?.user_target_links}
+              value={ChatbotDocLinksData?.user_target_links > ChatbotDocLinksData?.user_pending_count + ChatbotDocLinksData.user_failed_count ? ChatbotDocLinksData?.user_target_links - ChatbotDocLinksData?.user_pending_count - ChatbotDocLinksData.user_failed_count : 0}
             />
             <StatCard
               title="All Bots Trained"
-              value={ChatbotDocLinksData?.user_target_links > ChatbotDocLinksData?.user_pending_count ? ChatbotDocLinksData?.user_target_links - ChatbotDocLinksData?.user_pending_count : 0}
+              value={ChatbotDocLinksData?.user_target_links > ChatbotDocLinksData?.user_pending_count + ChatbotDocLinksData.user_failed_count ? ChatbotDocLinksData?.user_target_links - ChatbotDocLinksData?.user_pending_count - ChatbotDocLinksData.user_failed_count : 0}
             />
             <CharStatCard
               title="All Bots Chars"
@@ -148,11 +148,11 @@ const ChatbotLinksDocs = ({
               <div className="bg-gray-200 justify-evenly p-4 flex flex-wrap gap-4 items-center w-full ">
                 <StatCard
                   title="Crawled Links"
-                  value={activeSource?.total_target_links}
+                  value={activeSource?.total_target_links - activeSource?.pending_count - activeSource.failed_count}
                 />
                 <StatCard
                   title="Trained"
-                  value={activeSource?.total_target_links - activeSource?.pending_count}
+                  value={activeSource?.total_target_links - activeSource?.pending_count - activeSource.failed_count}
                 />
                 <CharStatCard
                   title="Chars"

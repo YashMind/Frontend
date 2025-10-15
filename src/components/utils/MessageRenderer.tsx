@@ -58,14 +58,14 @@ const ChatMessages = ({
     }
     return (
         <div >
-            <p style={{
+            <div style={{
                 backgroundColor: chatbotSetting?.message_bg ?? "lightslategray",
                 color: chatbotSetting?.message_color ?? "black",
             }}
                 className="rounded-xl p-4"
             >
                 <ContentRenderer content={content?.message} />
-            </p>
+            </div>
             {content?.buttons?.map((btn: string, i: number) => (
                 <button
                     key={i}

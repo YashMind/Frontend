@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import React from "react";
+import Link from "next/link";
 const WhyChooseUs = () => {
   const router = useRouter();
   const userData = useSelector((state: RootState) => state.auth.loggedInUser);
@@ -29,14 +30,12 @@ const WhyChooseUs = () => {
             >
               Sign In
             </a> */}
-            <button
+            <Link
               className="inline-block bg-[#292362] text-lg font-semibold py-[7px] px-[40px] md:px-[49px] rounded-[22px] text-white"
-              onClick={() =>
-                router.push(userData ? "/chat-dashboard/main" : "/auth/signin")
-              }
+              href={userData ? "/chat-dashboard/main" : "/auth/signin"}
             >
               {userData ? "Dashboard" : "Sign In"}
-            </button>
+            </Link>
           </div>
           <div className="w-full md:w-1/2">
             <img
