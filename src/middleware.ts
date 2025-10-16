@@ -11,6 +11,7 @@ const ADMIN_ROLES = new Set([
 ]);
 const PUBLIC_ROUTES = new Set([
   "/",
+  "/demo",
   "/payment",
   "/payment/paypal",
   "/auth/signin",

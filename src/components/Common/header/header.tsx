@@ -11,7 +11,7 @@ import {
   logoutUser,
 } from "@/store/slices/auth/authSlice";
 import { FaArrowRightLong } from "react-icons/fa6";
-import { FaUser } from "react-icons/fa";
+import { FaUser, FaYoutube } from "react-icons/fa";
 import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
 
 const HomeHeader = () => {
@@ -150,7 +150,7 @@ const HomeHeader = () => {
                 </Link>
                 <Link
                   className="py-2 px-4 md:py-3 md:px-6 text-white text-sm md:text-base font-medium rounded-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all cursor-pointer"
-                  href={ "/auth/signin"}
+                  href={"/auth/signin"}
                 >
                   Sign In
                 </Link>
@@ -199,9 +199,8 @@ const HomeHeader = () => {
 
           {/* Navigation Links */}
           <div
-            className={`${
-              isMenuOpen ? "flex" : "hidden"
-            } w-full md:flex md:w-auto md:order-1`}
+            className={`${isMenuOpen ? "flex" : "hidden"
+              } w-full md:flex md:w-auto md:order-1`}
             id="navbar-sticky"
           >
             <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium rounded-lg md:flex-row md:space-x-2 lg:space-x-6 md:mt-0">
@@ -216,11 +215,10 @@ const HomeHeader = () => {
               <li>
                 <Link
                   href="/chatbot"
-                  className={`block py-2 px-3 rounded-full ${
-                    navItem === 2
-                      ? "bg-white text-purple-900"
-                      : "text-white hover:bg-white/20"
-                  }`}
+                  className={`block py-2 px-3 rounded-full ${navItem === 2
+                    ? "bg-white text-purple-900"
+                    : "text-white hover:bg-white/20"
+                    }`}
                   onClick={() => {
                     setNavItem(2);
                     setIsMenuOpen(false);
@@ -232,11 +230,10 @@ const HomeHeader = () => {
               <li>
                 <Link
                   href="/voice-agent"
-                  className={`block py-2 px-3 rounded-full ${
-                    navItem === 3
-                      ? "bg-white text-purple-900"
-                      : "text-white hover:bg-white/20"
-                  }`}
+                  className={`block py-2 px-3 rounded-full ${navItem === 3
+                    ? "bg-white text-purple-900"
+                    : "text-white hover:bg-white/20"
+                    }`}
                   onClick={() => {
                     setNavItem(3);
                     setIsMenuOpen(false);
@@ -248,11 +245,10 @@ const HomeHeader = () => {
               <li>
                 <Link
                   href="/chatllm"
-                  className={`block py-2 px-3 rounded-full ${
-                    navItem === 4
-                      ? "bg-white text-purple-900"
-                      : "text-white hover:bg-white/20"
-                  }`}
+                  className={`block py-2 px-3 rounded-full ${navItem === 4
+                    ? "bg-white text-purple-900"
+                    : "text-white hover:bg-white/20"
+                    }`}
                   onClick={() => {
                     setNavItem(4);
                     setIsMenuOpen(false);
@@ -264,13 +260,21 @@ const HomeHeader = () => {
               <li>
                 <Link
                   href="/#pricing"
-                  className={`block py-2 px-3 rounded-full ${
-                    navItem === 5
-                      ? "bg-white text-purple-900"
-                      : "text-white hover:bg-white/20"
-                  }`}
+                  className={`block py-2 px-3 rounded-full ${navItem === 5
+                    ? "bg-white text-purple-900"
+                    : "text-white hover:bg-white/20"
+                    }`}
                 >
                   Pricing Plan
+                </Link>
+              </li>
+              <li>
+                <Link href={"/demo"}
+                  className={`block align-middle rounded-full ${navItem === 5
+                    ? "bg-white text-purple-900"
+                    : "text-white hover:bg-white/20"
+                    }`}>
+                  <FaYoutube className="w-12 h-8 align-text-bottom" />
                 </Link>
               </li>
 
@@ -299,7 +303,7 @@ const HomeHeader = () => {
           </div>
         </div>
       </div>
-     
+
       <ConfirmDeleteModal
         isOpen={openLogoutModal}
         onClose={() => setOpenLogoutModal(false)}
