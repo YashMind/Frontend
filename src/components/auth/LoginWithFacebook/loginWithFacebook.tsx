@@ -12,16 +12,16 @@ const LoginWithFacebook = () => {
   const handleFacebookResponse = async (response: any) => {
     try {
       const res = await http.post("auth/facebook-login", { token: response.accessToken });
-      if (res.status===200) {
-        toasterSuccess("Logged with facebook successfully!",2000,"id")
+      if (res.status === 200) {
+        toasterSuccess("Logged with facebook successfully!", 10000, "id")
         // toast.success("Logged with facebook successfully!")
         router.push("/chatbot");
       } else {
-        toasterError("Logged with facebook failed!",2000,"id")
+        toasterError("Logged with facebook failed!", 10000, "id")
         // toast.error("Logged with facebook failed!")
       }
     } catch (err) {
-      toasterError("Something went wrong!",2000,"id")
+      toasterError("Something went wrong!", 10000, "id")
 
       // toast.error("Something went wrong!")
     }
@@ -33,12 +33,12 @@ const LoginWithFacebook = () => {
       autoLoad={false}
       fields="name,email, picture"
       callback={handleFacebookResponse}
-       scope="public_profile,email"
+      scope="public_profile,email"
       render={(renderProps: any) => (
-      <button className="flex items-center justify-center gap-2 bg-[#3B2063] text-[15px] font-medium  text-white px-4 py-3 rounded-[11px] w-full hover:shadow-lg" onClick={renderProps.onClick}>
-      <img src="/images/facebook.png" />
-      Facebook
-    </button>
+        <button className="flex items-center justify-center gap-2 bg-[#3B2063] text-[15px] font-medium  text-white px-4 py-3 rounded-[11px] w-full hover:shadow-lg" onClick={renderProps.onClick}>
+          <img src="/images/facebook.png" />
+          Facebook
+        </button>
       )}
     />
   );

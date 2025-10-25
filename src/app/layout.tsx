@@ -3,12 +3,12 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import StoreProvider from "@/app/StoreProvider";
 import ScrollToTop from "@/services/scroolToTop/scroolToTop";
-import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import "./index.css";
 import "react-phone-input-2/lib/style.css";
 import { TimezoneProvider } from "@/context/TimeZoneContext";
 import NextTopLoader from 'nextjs-toploader';
+import ToastProvider from "./ToastProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,24 +37,24 @@ export default function RootLayout({
         <head>
           <meta property="og:image" content="https://yashraa.ai/images/yashraa_header.svg"></meta>
 
-          <link rel="icon" href="./favicon.ico"  />
+          <link rel="icon" href="./favicon.ico" />
           <script async src="https://www.googletagmanager.com/gtag/js?id=G-FMTKQ1Z2FB"></script>
-        <script dangerouslySetInnerHTML={{
-          __html: `
+          <script dangerouslySetInnerHTML={{
+            __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-FMTKQ1Z2FB');
           `
-        }} />
+          }} />
         </head>
         <body
           suppressHydrationWarning={true}
           className={`${geistSans.variable} ${geistMono.variable} antialiased `}
         >
-         <NextTopLoader />
+          <NextTopLoader />
           <TimezoneProvider>
-            <Toaster position="top-center" reverseOrder={false} />
+            <ToastProvider />
             <StoreProvider>
               {children}
               <ScrollToTop />

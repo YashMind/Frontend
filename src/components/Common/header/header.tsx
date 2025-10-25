@@ -117,12 +117,12 @@ const HomeHeader = () => {
                         >
                           Profile
                         </Link>
-                        <Link
+                        {/* <Link
                           href="/settings/profile"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         >
                           Settings
-                        </Link>
+                        </Link> */}
                         <Link
                           href="/settings/teams"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -227,7 +227,7 @@ const HomeHeader = () => {
                   Chat Bot
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/voice-agent"
                   className={`block py-2 px-3 rounded-full ${navItem === 3
@@ -256,7 +256,7 @@ const HomeHeader = () => {
                 >
                   Chat LLM
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   href="/#pricing"

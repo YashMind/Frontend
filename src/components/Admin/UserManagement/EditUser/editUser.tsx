@@ -66,7 +66,7 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
         </button>
 
         <h2 className="text-xl font-semibold mb-1">
-          {userData?.id ? "Edit" : "Add"} Admin
+          {userData?.id ? "Edit" : "Add"}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>

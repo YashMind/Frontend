@@ -41,7 +41,7 @@ const UserManagement = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [planFilter, setPlanFilter] = useState<string>("");
   const [statusFilter, setStatusFilter] = useState<string>("");
-  const [roleFilter, setroleFilter] = useState<string>("");
+  const [roleFilter, setroleFilter] = useState<string>("user");
   const [dateFilter, setDateFilter] = useState<{
     start?: string;
     end?: string;
@@ -81,6 +81,7 @@ const UserManagement = () => {
         search,
         sortBy,
         sortOrder,
+        ...(roleFilter && { roleUsed: roleFilter }),
         ...filters,
       })
     );
@@ -260,6 +261,7 @@ const UserManagement = () => {
                     }}
                   >
                     <option value="">All</option>
+                    <option value="user">User</option>
                     <option value="super admin">Super Admin</option>
                     <option value="support admin">Support Admin</option>
                     <option value="billing admin">Billing Admin</option>

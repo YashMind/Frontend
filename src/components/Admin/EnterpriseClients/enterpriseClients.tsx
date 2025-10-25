@@ -105,15 +105,15 @@ const EnterpriseClients = () => {
     }
   };
 
-const handleSaveDiscount = (id: number) => {
-  const val = parseFloat(editedDiscounts[id]);
-  if (isNaN(val) || val < 0 || val > 100) {
-    toasterError("Discount must be between 0 and 100 %", 2000, "id");
-    return;
-  }
-  dispatch(updateDiscount({ id, discount: val }));
-  setEditDiscountId(null);
-};
+  const handleSaveDiscount = (id: number) => {
+    const val = parseFloat(editedDiscounts[id]);
+    if (isNaN(val) || val < 0 || val > 100) {
+      toasterError("Discount must be between 0 and 100 %", 10000, "id");
+      return;
+    }
+    dispatch(updateDiscount({ id, discount: val }));
+    setEditDiscountId(null);
+  };
 
 
   return (
@@ -311,7 +311,7 @@ const handleSaveDiscount = (id: number) => {
                                 type="number"
                                 min={0}
                                 max={100}
-                                step={0.1}                
+                                step={0.1}
                                 value={editedDiscounts[item.id] ?? ""}
                                 onChange={(e) => {
                                   const val = parseFloat(e.target.value);

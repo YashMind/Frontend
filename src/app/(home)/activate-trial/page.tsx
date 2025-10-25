@@ -26,7 +26,9 @@ const TrialActivationPage = () => {
         router.push("/chatbot-dashboard/main");
       })
       .catch((e) => {
-        toast.error(e.message);
+        toast.error(e.message, {
+          duration: 10000,
+        });
         setError(e.message);
       });
   };
@@ -268,9 +270,9 @@ const TrialActivationPage = () => {
 
               <h3 className="text-lg font-medium text-gray-900 ml-6">Phone</h3>
               <p className="text-lg font-medium text-gray-900 ml-6">
-                <a href="tel:+919529786418 " className="hover:text-indigo-500">
+                <p className="hover:text-indigo-500">
                   +91-8623893563
-                </a>
+                </p>
               </p>
               <p className="text-lg font-medium text-gray-900 ml-3">:</p>
 

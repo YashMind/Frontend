@@ -191,6 +191,7 @@ export interface ChatbotDocLinksData {
   user_indexed_count: number;
   user_total_chars: number;
   allowed_total_chars: number;
+  allowed_total_webpages: number;
 }
 
 export interface ChatbotCustomSettings {

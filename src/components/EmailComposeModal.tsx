@@ -121,7 +121,7 @@ const EmailComposeModal = ({
 
         try {
             await axios.post(endpoint, payload);
-            toasterSuccess(successMessage, 2000, "id");
+            toasterSuccess(successMessage, 10000, "id");
             reset();
             onHide();
         } catch (error: any) {

@@ -30,11 +30,11 @@ const ChatbotDeploy = () => {
     if (inputRef.current) {
       navigator.clipboard.writeText(inputRef.current.value)
         .then(() => {
-          toasterSuccess("Copied to clipboard!", 2000, "id")
+          toasterSuccess("Copied to clipboard!", 10000, "id")
           // toast.success("Copied to clipboard!")
         })
         .catch((err) => {
-          toasterError("Failed to Copy!", 2000, "id")
+          toasterError("Failed to Copy!", 10000, "id")
           // toast.error("Failed to copy!")
         });
     }

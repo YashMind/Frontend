@@ -78,7 +78,7 @@ const InvitationModal = ({
   // Handle form submission
   const handleSubmit = () => {
     if (!selectedChatbot) {
-      toasterError("Please select a chatbot", 2000, "id");
+      toasterError("Please select a chatbot", 10000, "id");
       return;
     }
 
@@ -94,7 +94,7 @@ const InvitationModal = ({
     }
 
     if (usersToSend.length === 0) {
-      toasterError("Please select at least one user", 2000, "id");
+      toasterError("Please select at least one user", 10000, "id");
       return;
     }
 
@@ -118,7 +118,7 @@ const InvitationModal = ({
   // Handle successful invitation
   useEffect(() => {
     if (invitationSuccess) {
-      toasterSuccess("Invitations sent successfully!", 3000, "invite-user");
+      toasterSuccess("Invitations sent successfully!", 10000, "invite-user");
 
       // Reset form
       setSelectedChatbot(null);

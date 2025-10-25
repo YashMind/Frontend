@@ -76,7 +76,7 @@ const ChatbotDashboardHeader = ({
   return (
     <nav
       className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${fix ? "fixed" : ""
-        } w-full z-90 max-h-[8%] py-2 md:py-4`}
+        } w-full z-90 md:max-h-[8%] py-2 md:py-4`}
     >
       <div className="container mx-auto px-4 flex flex-wrap items-center justify-between">
         {/* Logo Section */}
@@ -153,7 +153,7 @@ const ChatbotDashboardHeader = ({
                   Chat Bot
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/voice-agent"
                   className={`block py-2 px-4 text-white ${bot === 2 ? "bg-[#434343]" : ""
@@ -165,8 +165,8 @@ const ChatbotDashboardHeader = ({
                 >
                   Voice Agent
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <Link
                   href="/chatllm"
                   className={`block py-2 px-4 text-white ${bot === 3 ? "bg-[#434343]" : ""
@@ -178,7 +178,7 @@ const ChatbotDashboardHeader = ({
                 >
                   Chat LLM
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         )}
@@ -231,12 +231,12 @@ const ChatbotDashboardHeader = ({
                     >
                       Profile
                     </Link>
-                    <Link
+                    {/* <Link
                       href="/settings/profile"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Settings
-                    </Link>
+                    </Link> */}
                     <Link
                       href="/settings/teams"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -295,13 +295,13 @@ const ChatbotDashboardHeader = ({
               >
                 Profile
               </Link>
-              <Link
+              {/* <Link
                 href="/settings/profile"
                 className="block py-2 text-sm"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Settings
-              </Link>
+              </Link> */}
               <Link
                 href="/settings/teams"
                 className="block py-2 text-sm"

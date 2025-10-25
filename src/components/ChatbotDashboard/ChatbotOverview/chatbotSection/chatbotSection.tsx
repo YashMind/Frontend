@@ -34,6 +34,7 @@ const ChatbotSection = ({
 }) => {
   const [isBotTyping, setIsBotTyping] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [chatbotImage, setChatbotImage] = useState('/images/bot2.png')
 
   const chatbotSetting = useSelector(
     (state: RootState) => state.appearance.settings
@@ -63,10 +64,10 @@ const ChatbotSection = ({
     (state: RootState) => state.chat.chatMessages
   );
   useEffect(() => {
-    if (botId && !chatbotSetting) {
+    if (botId) {
       dispatch(fetchChatbotSettings(botId));
     }
-  }, []);
+  }, [botId]);
   const onSubmit = (data: TextMessage) => {
     setIsBotTyping(true);
     dispatch(conversationMessage({ payload: data })).unwrap().then(() => { reset(); }).finally(() => {
@@ -88,10 +89,17 @@ const ChatbotSection = ({
     return "/images/bot2.png";
   };
 
+  useEffect(() => {
+    if (chatbotSetting) {
+      setChatbotImage(
+        getImageUrl(chatbotSetting?.image))
+    }
+    else {
+      setChatbotImage("/images/bot2.png")
+    }
+  }, [botId, chatbotSetting])
 
-  const chatbotImage =
-    chatbotSetting &&
-    getImageUrl(chatbotSetting?.image)
+
 
   const messagesEndRef: any = useRef(null);
 

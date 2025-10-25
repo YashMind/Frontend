@@ -33,13 +33,13 @@ export const deleteUser = createAsyncThunk(
       const response = await http.delete(`/auth/${userId}`);
 
       if (response.status === 200) {
-        toasterSuccess("User deleted successfully!", 2000, "id");
+        toasterSuccess("User deleted successfully!", 10000, "id");
         return userId;
       }
       return rejectWithValue("Failed to delete user");
     } catch (error: any) {
       const errorMessage = error.response?.data?.detail || "Failed to delete user";
-      toasterError(errorMessage, 2000, "id");
+      toasterError(errorMessage, 10000, "id");
       return rejectWithValue(errorMessage);
     } finally {
       dispatch(stopLoadingActivity());
@@ -59,7 +59,7 @@ export const signUpUser = createAsyncThunk<
       const response = await http.post("/auth/signup", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("user created successfully!", 2000, "id");
+        toasterSuccess("user created successfully!", 10000, "id");
         // toast.success("user created successfully!");
         router.push("/auth/signin");
         return response.data;
@@ -182,7 +182,7 @@ export const getRecentSignups = createAsyncThunk<any, void>(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id");
+        toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred while fetching recent signups.");
@@ -204,7 +204,7 @@ export const signInUser = createAsyncThunk<
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         dispatch(getMeData({ router }));
-        toasterSuccess("user logged in successfully!", 2000, "id");
+        toasterSuccess("user logged in successfully!", 10000, "id");
         // toast.success("user logged in successfully!");
         // router.push("/chatbot-dashboard/main");
         return response.data;
@@ -213,7 +213,7 @@ export const signInUser = createAsyncThunk<
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id");
+        toasterError(error?.response?.data?.detail, 10000, "id");
         // toast.error(error?.response?.data?.detail);
         return rejectWithValue(error.response.data.message);
       }
@@ -234,7 +234,7 @@ export const logoutUser = createAsyncThunk<
     if (response.status === 200) {
       dispatch(stopLoadingActivity());
       // toast.success("user logout successfully!");
-      toasterSuccess("user logout successfully!", 2000, "id");
+      toasterSuccess("user logout successfully!", 10000, "id");
       router.push("/auth/signin");
       return response.data;
     } else {
@@ -262,7 +262,7 @@ export const updateUserProfile = createAsyncThunk<
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         dispatch(getMeData({ router }));
-        toasterSuccess("Profile updated successfully!", 2000, "id");
+        toasterSuccess("Profile updated successfully!", 10000, "id");
         return response.data;
       } else {
         return rejectWithValue("Profile update failed");
@@ -299,7 +299,7 @@ export const changePassword = createAsyncThunk<
         const response = await http.post("/auth/change-password", data, { withCredentials: true });
         if (response.status === 200) {
           dispatch(stopLoadingActivity());
-          toasterSuccess("Password changed successfully!", 2000, "id");
+          toasterSuccess("Password changed successfully!", 10000, "id");
           return response.data;
         } else {
           return rejectWithValue("Password change failed");

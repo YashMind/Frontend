@@ -180,15 +180,15 @@ const AdminMain = () => {
         <div className="total-revenu mt-4">
           <div className="text-white space-y-6">
             <div className="p-6 rounded-lg border border-[#343B4F] shadow-lg bg-[#1E2130]">
-              <div className="flex justify-between items-center mb-6">
+              {/* <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-semibold text-white">Total Revenue</h2>
                 <div className="flex space-x-2">
                   <span className="px-3 py-1 text-xs font-medium rounded-full bg-[#343B4F] text-[#8A92B2]">INR</span>
                   <span className="px-3 py-1 text-xs font-medium rounded-full bg-[#343B4F] text-[#8A92B2]">USD</span>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div className="p-5 rounded-lg border border-[#343B4F] bg-[#252A41]">
                   {countriesLoading ? (
                     <div className="flex items-center justify-center h-20">
@@ -236,7 +236,7 @@ const AdminMain = () => {
                     </div>
                   )}
                 </div>
-              </div>
+              </div> */}
 
               <div className="p-5 rounded-lg border border-[#343B4F] bg-[#252A41]">
                 <GraphChart />

@@ -80,7 +80,7 @@ const ChatbotHeader = () => {
                 Chat Bot
               </a>
             </li>
-            <li>
+            {/* <li>
               <a
                 className="block py-2 px-3 text-white rounded-[26px] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 href="/voice-agent"
@@ -95,7 +95,7 @@ const ChatbotHeader = () => {
               >
                 Chat LLM
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

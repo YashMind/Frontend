@@ -67,56 +67,56 @@ const AddBotData = ({
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "application/vnd.ms-excel",
     "application/vnd.ms-excel.sheet.macroEnabled.12", // .xlsm (official MIME type)
-  "application/vnd.ms-excel.sheet.macroenabled.12", // some browsers lowercase 'enabled'
-  // Excel Templates
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.template", // .xltx
-  "application/vnd.ms-excel.template.macroEnabled.12", // .xltm
+    "application/vnd.ms-excel.sheet.macroenabled.12", // some browsers lowercase 'enabled'
+    // Excel Templates
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.template", // .xltx
+    "application/vnd.ms-excel.template.macroEnabled.12", // .xltm
 
-  // Excel Add-ins
-  "application/vnd.ms-excel.addin.macroEnabled.12", // .xlam
+    // Excel Add-ins
+    "application/vnd.ms-excel.addin.macroEnabled.12", // .xlam
 
-  // Excel Binary Workbook
-  "application/vnd.ms-excel.sheet.binary.macroEnabled.12", // .xlsb
+    // Excel Binary Workbook
+    "application/vnd.ms-excel.sheet.binary.macroEnabled.12", // .xlsb
 
   ];
 
   const target_link = watch('target_link')
 
 
- useEffect(() => {
-  if (target_link) {
-    try {
-      const url = new URL(target_link);
-      const lowerHref = url.href.toLowerCase();
+  useEffect(() => {
+    if (target_link) {
+      try {
+        const url = new URL(target_link);
+        const lowerHref = url.href.toLowerCase();
 
-      // File type checks
-      if (lowerHref.endsWith(".pdf")) {
-        setValue("train_from", "Pdf");
-        setActiveTrainFrom("Pdf");
-        return;
-      }
+        // File type checks
+        if (lowerHref.endsWith(".pdf")) {
+          setValue("train_from", "Pdf");
+          setActiveTrainFrom("Pdf");
+          return;
+        }
 
-      if (lowerHref.endsWith(".docx") || lowerHref.endsWith(".doc")) {
-        setValue("train_from", "WordDoc");
-        setActiveTrainFrom("WordDoc");
-        return;
-      }
+        if (lowerHref.endsWith(".docx") || lowerHref.endsWith(".doc")) {
+          setValue("train_from", "WordDoc");
+          setActiveTrainFrom("WordDoc");
+          return;
+        }
 
-      // Check if it's a base homepage link
-      const isBaseLink =
-        url.pathname === "/" && !url.search && !url.hash;
+        // Check if it's a base homepage link
+        const isBaseLink =
+          url.pathname === "/" && !url.search && !url.hash;
 
-      if (!isBaseLink) {
+        if (!isBaseLink) {
+          setValue("train_from", "Webpage");
+          setActiveTrainFrom("Webpage");
+        }
+      } catch (e) {
+        // Invalid URL fallback
         setValue("train_from", "Webpage");
         setActiveTrainFrom("Webpage");
       }
-    } catch (e) {
-      // Invalid URL fallback
-      setValue("train_from", "Webpage");
-      setActiveTrainFrom("Webpage");
     }
-  }
-}, [target_link]);
+  }, [target_link]);
 
 
 
@@ -169,10 +169,10 @@ const AddBotData = ({
       data.bot_id = botId;
       data.chatbot_name = chatbotData?.chatbot_name;
       if (formType === "form1" && data.target_link === "") {
-        toasterError("Please add a Link!", 2000, "id")
+        toasterError("Please add a Link!", 10000, "id")
       }
       else if (formType === "form2" && data.document_link === "") {
-        toasterError("Please upload a File!", 2000, "id")
+        toasterError("Please upload a File!", 10000, "id")
       } else {
         if (data.document_link) {
           data.train_from = "Document Upload"

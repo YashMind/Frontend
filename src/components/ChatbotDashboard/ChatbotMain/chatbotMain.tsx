@@ -21,6 +21,9 @@ import ChatbotAppearence from "@/components/ChatbotDashboard/ChatbotAppearence/c
 import ChatbotIntegration from "@/components/ChatbotDashboard/ChatbotIntegration/chatbotIntegration";
 import { fetchChatMessageTokens, getChatbots, getSingleChatbot } from "@/store/slices/chats/chatSlice";
 import { getSubscriptionPlan } from "@/store/slices/admin/adminSlice";
+import { getMeData } from "@/store/slices/auth/authSlice";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type ChatbotMainProps = {
   botPage?: string;
@@ -30,9 +33,11 @@ type ChatbotMainProps = {
 
 const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
   const { chatbotData: activeChatbot, loading: chatbotLoading, error: chatbotError } = useSelector((state: RootState) => state.chat);
   const [modalShow, setModalShow] = useState(false);
   const [planName, setPlanName] = useState("");
+  const [isPlanActive, setIsPlanActive] = useState(true)
 
   useEffect(() => {
     if (botId !== undefined) {
@@ -44,10 +49,17 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
     dispatch(getChatbots());
     dispatch(getSubscriptionPlan()).unwrap().then((res) => { setPlanName(res.data.name) });
     dispatch(fetchChatMessageTokens());
+    dispatch(getMeData({ router })).unwrap().then((res) => {
+      if (!res || res.status != 200) {
+        setIsPlanActive(false)
+      }
+    });
   }, [dispatch]);
 
   const showModal = () => setModalShow(true);
   const hideModal = () => setModalShow(false);
+
+
 
   const renderPageContent = () => {
     switch (botPage) {
@@ -136,6 +148,36 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
     );
   }, [botPage, botId, chatbotError, modalShow, activeChatbot]);
 
+
+  // if Plan is expired
+  if (!isPlanActive) {
+    return <div className="flex flex-col h-screen">
+      {/* Fixed header - outside the scrollable area */}
+      <ChatbotDashboardHeader
+        fix={true}
+        addBgColor={true}
+        role={role}
+        chatbotError={chatbotError}
+      />
+
+      <div className="h-screen w-screen bg-gradient-to-r from-[#002B58] to-[#3B0459] flex flex-col items-center justify-center text-center space-y-6 overflow-hidden">
+        <h2 className="text-white text-5xl md:text-6xl font-bold uppercase tracking-wider drop-shadow-lg">
+          Plan Expired
+        </h2>
+        <p className="text-gray-200 text-lg md:text-xl max-w-md">
+          Your current subscription has ended. Renew your plan to continue enjoying all features.
+        </p>
+        <Link
+          href="/#pricing"
+          className="bg-[#05BDFD] text-white text-base md:text-lg rounded-full font-semibold px-6 py-3 hover:bg-[#04a9e0] transition-all duration-300 shadow-lg hover:shadow-xl"
+        >
+          Upgrade Plan
+        </Link>
+      </div>
+
+
+    </div>
+  }
 
   return (
     <div className="flex flex-col h-screen">

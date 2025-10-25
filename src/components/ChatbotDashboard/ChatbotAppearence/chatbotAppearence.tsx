@@ -20,14 +20,21 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
   const chatbotSetting = useSelector(
     (state: RootState) => state.appearance.settings
   );
-  console.log("2222222222222222222222",chatbotSetting)
+  const [initialValues, setInitialValues] = useState<IFormInput | null>(null);
 
 
   useEffect(() => {
     if (botId && !chatbotSetting) dispatch(fetchChatbotSettings(botId));
-  }, []);
+  }, [botId, chatbotSetting, dispatch]);
 
-  const { register, handleSubmit, setValue, watch ,reset} = useForm<IFormInput>({
+  useEffect(() => {
+    if (chatbotSetting) {
+      // Initialize form values when chatbotSetting is fetched
+      setInitialValues(chatbotSetting);
+    }
+  }, [chatbotSetting]);
+
+  const { register, handleSubmit, setValue, watch, reset } = useForm<IFormInput>({
     defaultValues: {
       title_value: chatbotSetting?.title_value || "",
       welcome_message_value: chatbotSetting?.welcome_message_value || "",
@@ -50,8 +57,8 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       live_message_bg: chatbotSetting?.live_message_bg,
       message_color: chatbotSetting?.message_color || "",
       live_message_color: chatbotSetting?.live_message_color,
-      chat_icon: chatbotSetting?.chat_icon ?  pathToImage( chatbotSetting?.chat_icon) : undefined,
-      image: chatbotSetting?.image ?  pathToImage( chatbotSetting?.image) : undefined,
+      chat_icon: chatbotSetting?.chat_icon ? pathToImage(chatbotSetting?.chat_icon) : undefined,
+      image: chatbotSetting?.image ? pathToImage(chatbotSetting?.image) : undefined,
       // Lead collection
       lead_collection: chatbotSetting?.lead_collection || false,
       name_lead_gen: chatbotSetting?.name_lead_gen || "Name",
@@ -117,13 +124,11 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
         chat_icon
           ? setValue("chat_icon", chat_icon)
           : setValue("chat_icon", "");
-          console.log("1111111111111111111",chat_icon)
-          console.log(typeof(chat_icon))
+
       }
       if (chatbotSetting?.image !== undefined) {
         const image = pathToImage(chatbotSetting.image);
         image ? setValue("image", image) : setValue("image", "");
-        console.log("1111111111111111111",image)
       }
       if (chatbotSetting?.lead_collection !== undefined) {
         setValue("lead_collection", chatbotSetting.lead_collection);
@@ -218,56 +223,76 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       }
     }
   }, [chatbotSetting, setValue]);
-console.log("-------------------------")
+
+  const hasChanges = () => {
+    if (!initialValues) return false;
+
+    const currentValues = watch();
+    // Compare current values with initial values
+    return JSON.stringify(currentValues) !== JSON.stringify(initialValues);
+  };
+
+
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    console.log("44444444444444444")
+    if (!hasChanges()) {
+      toast.error("No changes to save. Please make some changes before saving.");
+      return;
+    }
+
     const action = chatbotSetting
       ? updateChatbotSettings
       : createChatbotSettings;
 
-    if (typeof data.chat_icon === "object") {
+    // if (typeof data.chat_icon === "object") {
+    //   const chatIcon = new FormData();
+    //   if (data.chat_icon[0]) {
+    //     chatIcon.append("file", data.chat_icon[0]);
+    //     await dispatch(uploadDocument({ payload: chatIcon }))
+    //       .unwrap()
+    //       .then((res) => {
+    //         setValue("chat_icon", res?.url);
+    //         data.chat_icon = res?.url;
+    //       });
+    //   }
+    // }
+
+    if (typeof data.chat_icon === "object" && data.chat_icon && data.chat_icon[0]) {
       const chatIcon = new FormData();
-      if (data.chat_icon[0]) {
-        chatIcon.append("file", data.chat_icon[0]);
-        await dispatch(uploadDocument({ payload: chatIcon }))
-          .unwrap()
-          .then((res) => {
-            setValue("chat_icon", res?.url);
-            data.chat_icon = res?.url;
-          });
-      }
+      chatIcon.append("file", data.chat_icon[0]);
+      await dispatch(uploadDocument({ payload: chatIcon }))
+        .unwrap()
+        .then((res) => {
+          setValue("chat_icon", res?.url);
+          data.chat_icon = res?.url;
+        });
     }
-    if (typeof data.image === "object") {
+
+    if (typeof data.image === "object" && data.image && data.image[0]) {
       const image = new FormData();
-
-      console.log("IMAGE: ", data.image)
-      if (data.image[0]) {
-        image.append("file", data.image[0]);
-        await dispatch(uploadDocument({ payload: image }))
-          .unwrap()
-          .then((res) => {
-            setValue("image", res?.url);
-
-            data.image = res?.url;
-          });
-      }
+      image.append("file", data.image[0]);
+      await dispatch(uploadDocument({ payload: image }))
+        .unwrap()
+        .then((res) => {
+          setValue("image", res?.url);
+          data.image = res?.url;
+        });
     }
+
     console.log("typeof data.popup_sound", typeof data.popup_sound, data.popup_sound);
-    if (typeof data.popup_sound === "object") {
-        console.log("popup sound upload triggered");
 
+    if (typeof data.popup_sound === "object" && data.popup_sound && data.popup_sound[0]) {
       const popup_sound = new FormData();
-      if (data.popup_sound) {
-        popup_sound.append("file", data.popup_sound);
-        await dispatch(uploadDocument({ payload: popup_sound }))
-          .unwrap()
-          .then((res) => {
-            setValue("popup_sound", res?.url);
-
-            data.popup_sound = res?.url;
-          });
-      }
+      popup_sound.append("file", data.popup_sound[0]);
+      await dispatch(uploadDocument({ payload: popup_sound }))
+        .unwrap()
+        .then((res) => {
+          setValue("popup_sound", res?.url);
+          data.popup_sound = res?.url;
+        });
     }
+
+
     await dispatch(
       action({
         id: botId!,
@@ -318,7 +343,7 @@ console.log("-------------------------")
     )
       .unwrap()
       .then(() => {
-        toasterSuccess("Chatbot updated successfully", 2000, "id");
+        toasterSuccess("Chatbot updated successfully", 10000, "id");
         // toast.success("Chatbot updated successfully");
       })
       .catch((e) => {
@@ -326,20 +351,20 @@ console.log("-------------------------")
       });
   };
   useEffect(() => {
-  if (chatbotSetting) {
-    reset(chatbotSetting); // this updates the form fields with new data
-  }
-}, [chatbotSetting, reset]);
+    if (chatbotSetting) {
+      reset(chatbotSetting); // this updates the form fields with new data
+    }
+  }, [chatbotSetting, reset]);
 
 
-console.log("Parent image value (watch):", watch("image"));
+  console.log("Parent image value (watch):", watch("image"));
 
   const handleResetAppearance = async () => {
-  const settings = await dispatch(fetchChatbotSettings(botId!)).unwrap();
+    const settings = await dispatch(fetchChatbotSettings(botId!)).unwrap();
     console.log(settings)
-  reset(settings);
+    reset(settings);
 
-};
+  };
 
 
   return (
@@ -417,14 +442,14 @@ console.log("Parent image value (watch):", watch("image"));
               <div className="flex flex-col gap-5 h-full">
                 <div className="basis-1/2 space-y-2">
 
-                {JSON.stringify(watch('image'))}
+                  {JSON.stringify(watch('image'))}
                   <ImageField
                     label="Chatbot avatar"
                     name="image"
                     value={pathToImage(watch("image")) || "/images/face2.webp"}
                     register={register}
                   />
-                  
+
                   <ColorPickerField
                     name="message_bg"
                     label="Bot message background"
@@ -460,7 +485,7 @@ console.log("Parent image value (watch):", watch("image"));
                   <ImageField
                     label="Start chat icon"
                     name="chat_icon"
-                    value={pathToImage(watch("chat_icon"))|| "/images/face2.webp"}
+                    value={pathToImage(watch("chat_icon")) || "/images/face2.webp"}
                     register={register}
                     setValue={setValue}
                   />

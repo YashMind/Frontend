@@ -106,13 +106,13 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
       dispatch(createPrompt({ prompts: [{ ...data }], bot_id: botId }))
         .unwrap()
         .then(() => {
-          toasterSuccess("Prompt Updated Successfully", 2000, "id");
+          toasterSuccess("Prompt Updated Successfully", 5000, "id");
           // toast.success("Prompt Updated Successfully");
           dispatch(fetchBotPrompts(botId));
           setSaved(true);
         })
         .catch((e) => {
-          toasterError(e, 2000, "id");
+          toasterError(e, 10000, "id");
           // toast.error(e);
         });
     }
@@ -128,7 +128,7 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
       )
         .unwrap()
         .then(() => {
-          toasterSuccess("Prompt Deleted Successfully", 2000, "id");
+          toasterSuccess("Prompt Deleted Successfully", 10000, "id");
           // toast.success("Prompt Deleted Successfully");
           setValue("prompt", "");
           dispatch(fetchBotPrompts(botId));

@@ -54,7 +54,7 @@ export default function AcceptInviteClient({ token }: AcceptInviteClientProps) {
               setInviteDetails(response);
               toasterSuccess(
                 "Invitation accepted successfully!",
-                3000,
+                10000,
                 "accept-invite"
               );
 
@@ -68,14 +68,14 @@ export default function AcceptInviteClient({ token }: AcceptInviteClientProps) {
 
             toasterError(
               err || "Failed to accept invitation",
-              3000,
+              10000,
               "accept-invite"
             );
 
           })
         } catch (error) {
           console.error("API call error:", error);
-          toasterError("Error connecting to the server", 3000, "accept-invite");
+          toasterError("Error connecting to the server", 10000, "accept-invite");
         }
       };
 

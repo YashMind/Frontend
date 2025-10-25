@@ -211,9 +211,7 @@ const HomeFooter = () => {
               <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
                 <path d="..." stroke="white" />
               </svg>
-              <p>
-                <a href="tel:+91-8623893563">+91-8623893563</a>
-              </p>
+              <p >+91-8623893563</p>
             </div>
           </div>
         </div>

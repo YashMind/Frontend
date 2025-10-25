@@ -100,9 +100,10 @@ const ChatbotLinksDocs = ({
         <>
           {/* Overall Bot Statistics */}
           <div className="flex flex-wrap bg-[#9592AE] justify-evenly rounded-xl p-3 gap-4 items-center w-full mt-8">
-            <StatCard
+            <CharStatCard
               title=" All Bots Crawled Links"
               value={ChatbotDocLinksData?.user_target_links > ChatbotDocLinksData?.user_pending_count + ChatbotDocLinksData.user_failed_count ? ChatbotDocLinksData?.user_target_links - ChatbotDocLinksData?.user_pending_count - ChatbotDocLinksData.user_failed_count : 0}
+              total={ChatbotDocLinksData?.allowed_total_webpages ? formatLargeNumber(ChatbotDocLinksData?.allowed_total_webpages) : 0}
             />
             <StatCard
               title="All Bots Trained"
@@ -124,13 +125,13 @@ const ChatbotLinksDocs = ({
           </div>
 
           {/* Source Tabs */}
-          <div className="flex mt-4 ">
+          <div className="flex  mt-4 ">
             {ChatbotDocLinksData.data?.map((source, index) => (
               <button
                 key={index}
                 className={`px-4 py-2 max-w-40 rounded-t-lg font-medium truncate ${!(activeSourceIndex === index)
-                  ? "bg-[#624DE3] text-white"
-                  : "bg-gray-200 text-gray-700"
+                  ? " bg-gray-200 text-gray-700"
+                  : "   bg-[#624DE3]/70 text-white"
                   }`}
                 onClick={() => {
                   setActiveSourceIndex(index);
@@ -142,13 +143,14 @@ const ChatbotLinksDocs = ({
             ))}
           </div>
 
-          <div className="bg-white ">
+          <div className=" ">
             {/* Active Source Statistics */}
             {activeSource && (
-              <div className="bg-gray-200 justify-evenly p-4 flex flex-wrap gap-4 items-center w-full ">
-                <StatCard
+              <div className="bg-[#624DE3]/70 justify-evenly p-4 flex flex-wrap gap-4 items-center w-full ">
+                <CharStatCard
                   title="Crawled Links"
                   value={activeSource?.total_target_links - activeSource?.pending_count - activeSource.failed_count}
+                  total={ChatbotDocLinksData?.allowed_total_webpages ? formatLargeNumber(ChatbotDocLinksData?.allowed_total_webpages) : 0}
                 />
                 <StatCard
                   title="Trained"

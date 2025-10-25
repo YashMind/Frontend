@@ -63,7 +63,7 @@ export const sendInvitations = createAsyncThunk<
     } catch (error: any) {
       console.error("Invitation error:", error);
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id");
+        toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(
           error.response.data.detail || "Error sending invitations"
         );
@@ -96,7 +96,7 @@ export const getAvailableUsers = createAsyncThunk<any, void>(
     } catch (error: any) {
       console.error("Error fetching available users:", error);
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 2000, "id");
+        toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(
           error.response.data.detail || "Error fetching users"
         );
@@ -138,14 +138,13 @@ export const getUninvitedUsers = createAsyncThunk<any, number>(
           error.response.data?.detail ||
           `Error ${status}: ${error.response.statusText}`;
 
-        toasterError(errorMessage, 3000, "id");
+        toasterError(errorMessage, 10000, "id");
 
         return rejectWithValue(errorMessage);
       }
 
       return rejectWithValue(
-        `Network error: ${
-          error.message || "An error occurred while fetching uninvited users"
+        `Network error: ${error.message || "An error occurred while fetching uninvited users"
         }`
       );
     } finally {
@@ -167,7 +166,7 @@ export const acceptInvitation = createAsyncThunk<any, string>(
 
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("Invitation accepted successfully!", 2000, "id");
+        toasterSuccess("Invitation accepted successfully!", 10000, "id");
         return response.data;
       } else {
         return rejectWithValue("Failed to accept invitation");
@@ -188,7 +187,7 @@ export const acceptInvitation = createAsyncThunk<any, string>(
           errorMessage = error.response.data.detail;
         }
 
-        toasterError(errorMessage, 2000, "id");
+        toasterError(errorMessage, 10000, "id");
         return rejectWithValue(errorMessage);
       }
       return rejectWithValue(
@@ -250,7 +249,7 @@ export const getInvitedUsers = createAsyncThunk<
 
       const errorMessage =
         error.response?.data?.detail || "Failed to fetch invited users";
-      toasterError(errorMessage, 3000, "id");
+      toasterError(errorMessage, 10000, "id");
 
       return rejectWithValue(errorMessage);
     } finally {
@@ -271,7 +270,7 @@ export const revokeAccess = createAsyncThunk<any, number>(
 
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("Access revoked successfully!", 3000, "revoke-access");
+        toasterSuccess("Access revoked successfully!", 10000, "revoke-access");
         return response.data;
       } else {
         return rejectWithValue("Failed to revoke access");
@@ -281,7 +280,7 @@ export const revokeAccess = createAsyncThunk<any, number>(
 
       const errorMessage =
         error.response?.data?.detail || "Failed to revoke access";
-      toasterError(errorMessage, 3000, "id");
+      toasterError(errorMessage, 10000, "id");
 
       return rejectWithValue(errorMessage);
     } finally {

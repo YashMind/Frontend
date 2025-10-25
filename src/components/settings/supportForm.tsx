@@ -16,7 +16,7 @@ const SupportForm = ({ onSuccess }: { onSuccess: () => void }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [subjectError, setSubjectError] = useState('');
     const [messageError, setMessageError] = useState('');
-    const userData: UserProfileData = useSelector(
+    const userData = useSelector(
         (state: RootState) => state.auth.userData
     );
 

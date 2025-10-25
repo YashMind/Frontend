@@ -202,7 +202,6 @@ const Gateways = ({
   // Check if any payment gateway is active
   const activeGateways =
     paymentGatewayData?.filter((item) => item.status === "active") || [];
-  console.log("-----------------------",activeGateways);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -273,41 +272,41 @@ const Gateways = ({
           </div>
 
           <div className="space-y-4">
-            {/* Cashfree Option */}
-            {activeGateways.some((g) => g.payment_name === "Cashfree") && (
-              <div
-                onClick={() => handleGatewaySelect("cashfree")}
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
-                  selectedGateway === "cashfree"
+
+            {activeGateways.some(
+              (g) => g.payment_name.toLowerCase() === "razorpay"
+            ) && (
+                <div
+                  onClick={() => handleGatewaySelect("razorpay")}
+                  className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${selectedGateway === "razorpay"
                     ? "border-indigo-500 bg-indigo-50"
                     : "border-gray-200 hover:border-indigo-300"
-                }`}
-              >
-                <div className="flex items-center">
-                  <div className="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                    <FaRupeeSign className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <div className="ml-4">
-                    <h3 className="text-lg font-medium text-gray-800">
-                      Cashfree
-                    </h3>
-                    <p className="text-gray-600">
-                      Pay with UPI, Cards, Net Banking
-                    </p>
+                    }`}
+                >
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                      <FaRupeeSign className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div className="ml-4">
+                      <h3 className="text-lg font-medium text-gray-800">
+                        RazorPay
+                      </h3>
+                      <p className="text-gray-600">
+                        Pay with UPI, Cards, Net Banking
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
             {/* PayPal Option */}
-            {activeGateways.some((g) => g.payment_name === "PayPal") && (
+            {activeGateways.some((g) => g.payment_name.toLowerCase() === "paypal") && (
               <div
                 onClick={() => handleGatewaySelect("paypal")}
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
-                  selectedGateway === "paypal"
-                    ? "border-indigo-500 bg-indigo-50"
-                    : "border-gray-200 hover:border-indigo-300"
-                }`}
+                className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${selectedGateway === "paypal"
+                  ? "border-indigo-500 bg-indigo-50"
+                  : "border-gray-200 hover:border-indigo-300"
+                  }`}
               >
                 <div className="flex items-center">
                   <div className="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
@@ -324,16 +323,14 @@ const Gateways = ({
                 </div>
               </div>
             )}
-            {activeGateways.some(
-              (g) => g.payment_name.toLowerCase() === "razorpay"
-            ) && (
+            {/* Cashfree Option */}
+            {activeGateways.some((g) => g.payment_name.toLowerCase() === "cashfree") && (
               <div
-                onClick={() => handleGatewaySelect("razorpay")}
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
-                  selectedGateway === "razorpay"
-                    ? "border-indigo-500 bg-indigo-50"
-                    : "border-gray-200 hover:border-indigo-300"
-                }`}
+                onClick={() => handleGatewaySelect("cashfree")}
+                className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${selectedGateway === "cashfree"
+                  ? "border-indigo-500 bg-indigo-50"
+                  : "border-gray-200 hover:border-indigo-300"
+                  }`}
               >
                 <div className="flex items-center">
                   <div className="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
@@ -341,7 +338,7 @@ const Gateways = ({
                   </div>
                   <div className="ml-4">
                     <h3 className="text-lg font-medium text-gray-800">
-                      RazorPay
+                      Cashfree
                     </h3>
                     <p className="text-gray-600">
                       Pay with UPI, Cards, Net Banking
@@ -358,11 +355,10 @@ const Gateways = ({
                 <button
                   onClick={handlePaymentRequest}
                   disabled={!selectedGateway || isProcessing}
-                  className={`w-full flex justify-center items-center py-3 px-4 rounded-md shadow-sm text-white font-medium ${
-                    !selectedGateway
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-indigo-600 hover:bg-indigo-700"
-                  } ${isProcessing ? "opacity-75" : ""}`}
+                  className={`w-full flex justify-center items-center py-3 px-4 rounded-md shadow-sm text-white font-medium ${!selectedGateway
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-indigo-600 hover:bg-indigo-700"
+                    } ${isProcessing ? "opacity-75" : ""}`}
                 >
                   {isProcessing ? (
                     "Processing..."
