@@ -11,14 +11,13 @@ const ChatbotDummy = ({
 }: {
   chatbotSettings: Partial<Omit<ChatbotSettings, "id">>;
 }) => {
-  console.log(chatbotSettings.image);
   const messagesEndRef: any = useRef(null);
   const [inputvalue, setInputvalue] = useState("");
 
   const chatbotAvatar = useMemo(() => {
 
     console.log("memo called", chatbotSettings.image)
-    const imageValue = chatbotSettings&& chatbotSettings.image ? typeof chatbotSettings.image=='string'?chatbotSettings.image:chatbotSettings.image[0]:null;
+    const imageValue = chatbotSettings && chatbotSettings.image ? typeof chatbotSettings.image == 'string' ? chatbotSettings.image : chatbotSettings.image[0] : null;
 
     if (imageValue instanceof File || imageValue instanceof Blob) {
       console.log("file found")

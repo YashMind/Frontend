@@ -48,7 +48,7 @@ const UserManagement = () => {
   }>({});
   const [messageFilter, setMessageFilter] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
-  const { allUsersData } = useSelector((state: RootState) => state.admin);
+  const [allUsersData, setAllUsersData] = useState();
   const { invitedUsers, loading, error } = useSelector((state: RootState) => state.invitations);
   const { subscriptionPlansData } = useSelector(
     (state: RootState) => state.admin
@@ -84,7 +84,9 @@ const UserManagement = () => {
         ...(roleFilter && { roleUsed: roleFilter }),
         ...filters,
       })
-    );
+    ).unwrap().then((res) => {
+      setAllUsersData(res)
+    });
   }, [
     dispatch,
     page,

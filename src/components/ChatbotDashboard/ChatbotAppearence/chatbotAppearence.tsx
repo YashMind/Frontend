@@ -22,9 +22,14 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
   );
   const [initialValues, setInitialValues] = useState<IFormInput | null>(null);
 
-
   useEffect(() => {
-    if (botId && !chatbotSetting) dispatch(fetchChatbotSettings(botId));
+    if (!botId) return;
+
+    // Fetch if chatbotSetting is missing or for a different bot
+    if (!chatbotSetting || chatbotSetting.bot_id != botId) {
+      console.log("Fetching chatbot settings for bot:", botId);
+      dispatch(fetchChatbotSettings(botId));
+    }
   }, [botId, chatbotSetting, dispatch]);
 
   useEffect(() => {
@@ -225,10 +230,9 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
   }, [chatbotSetting, setValue]);
 
   const hasChanges = () => {
-    if (!initialValues) return false;
+    if (!initialValues) return true;
 
     const currentValues = watch();
-    // Compare current values with initial values
     return JSON.stringify(currentValues) !== JSON.stringify(initialValues);
   };
 
@@ -239,7 +243,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       toast.error("No changes to save. Please make some changes before saving.");
       return;
     }
-
+    console.log("chatbot settings", !!chatbotSetting)
     const action = chatbotSetting
       ? updateChatbotSettings
       : createChatbotSettings;
@@ -357,7 +361,6 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
   }, [chatbotSetting, reset]);
 
 
-  console.log("Parent image value (watch):", watch("image"));
 
   const handleResetAppearance = async () => {
     const settings = await dispatch(fetchChatbotSettings(botId!)).unwrap();

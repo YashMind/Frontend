@@ -43,7 +43,7 @@ export interface IFormInput {
   submission_message_heading_lead_gen: string;
   sumbission_message_lead_gen: string;
   popup_sound: string;
-  chat_icon_url: string; 
+  chat_icon_url: string;
 }
 
 export type ImageFieldProps = {
@@ -52,7 +52,7 @@ export type ImageFieldProps = {
   value?: any;
   description?: string;
   register?: any;
-  setValue?:any;
+  setValue?: any;
 };
 
 export type FieldProps = {
@@ -100,7 +100,7 @@ export const Field = ({
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
-              
+
               {...register(checkbox_name)}
               checked={checkbox_value as boolean}
               className="sr-only peer"
@@ -296,18 +296,16 @@ export const ImageField = ({
   value,
   register,
   setValue,
-  
+
 }: ImageFieldProps) => {
-  console.log(value)
-    console.log(name)
-  console.log(label)
- 
+
+
 
   const [preview, setPreview] = useState<string>("/images/face2.webp");
   const fileInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    console.log("value",value)
-    
+    console.log("value", value)
+
     if (value && (value instanceof File || value instanceof Blob)) {
       const imageUrl = URL.createObjectURL(value);
       setPreview(imageUrl);
@@ -318,7 +316,7 @@ export const ImageField = ({
       console.log('value as string')
       setPreview(value);
 
-    }else {
+    } else {
       console.log("else")
       setPreview("/images/face2.webp"); // Default fallback
     }
@@ -329,23 +327,23 @@ export const ImageField = ({
     const file = e.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      
+
       setPreview(imageUrl);
-       if (setValue) {
+      if (setValue) {
         setValue(name, file);
       }
-          if (fileInputRef.current) {
+      if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
 
-      
+
     }
   };
 
   return (
     <div>
       <div className="relative w-24 h-24 mx-auto  ">
-       
+
         {/* File input - hidden but clickable */}
         <input
           type="file"
@@ -355,8 +353,8 @@ export const ImageField = ({
           })}
           className="peer absolute w-full h-full opacity-0 z-10 cursor-pointer image"
           key={preview}
-        /> 
-        
+        />
+
         {/* Image Preview */}
         <div className="w-full h-full rounded-full overflow-hidden border-2 border-gray-300">
           <Image
