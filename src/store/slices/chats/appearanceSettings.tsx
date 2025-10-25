@@ -97,6 +97,7 @@ const chatbotSettingsSlice = createSlice({
       .addCase(fetchChatbotSettings.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.settings = null;
       })
 
       // Create
