@@ -22,10 +22,10 @@ const HomePage = () => {
       <ChatbotSection />
 
       {/* Voice Agent section */}
-      <VoiceAgent />
+      {/* <VoiceAgent /> */}
 
       {/* Chat LLM section */}
-      <ChatLLM />
+      {/* <ChatLLM /> */}
 
       {/* price section */}
       <PriceSection />

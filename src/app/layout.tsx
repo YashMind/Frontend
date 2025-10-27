@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "YASHRAA",
-  description: "YASHRAA is a powerful All-in-one AI Tools Platform offering subscription-based tools like Chatbots, Voice Agents, LLM APIs, and more — all in one place. Subscribe, and deploy AI solutions tailored to your business needs. Build your AI stack with YASHRAA today!",
+  description: "YASHRAA is a powerful All-in-one AI Tools Platform offering subscription-based tools like Chatbots, and more — all in one place. Subscribe, and deploy AI solutions tailored to your business needs. Build your AI stack with YASHRAA today!",
 
 };
 

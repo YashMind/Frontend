@@ -47,21 +47,21 @@ const faqsData = [
     paragraph:
       "You can reach Yashraa’s support team via email, live chat on our website, or through your client dashboard. We offer 24/7 assistance to ensure your chatbot runs smoothly and your questions are promptly answered.",
   },
-  {
-    title: "What is VoiceAgent?",
-    paragraph:
-      "VoiceAgent by Yashraa is an AI-powered conversational assistant that uses natural language to interact with users via voice. It can be trained on your business content—like websites, documents, or FAQs—and deployed to offer 24/7 multilingual support and task automation.",
-  },
+  // {
+  //   title: "What is VoiceAgent?",
+  //   paragraph:
+  //     "VoiceAgent by Yashraa is an AI-powered conversational assistant that uses natural language to interact with users via voice. It can be trained on your business content—like websites, documents, or FAQs—and deployed to offer 24/7 multilingual support and task automation.",
+  // },
   {
     title: "How is this more cost-effective for my organization?",
     paragraph:
       "Yashraa’s VoiceAgent reduces the need for large support teams by handling repetitive inquiries, booking, and updates autonomously. This improves response time, lowers operational costs, and increases customer satisfaction—all while scaling effortlessly.",
   },
-  {
-    title: "What is the difference from other AI voice competitors?",
-    paragraph:
-      "Unlike generic voice tools, Yashraa’s VoiceAgent is tailored to your brand and data. It offers deeper customization, better accuracy, multilingual capabilities, and integrates with your workflows—delivering not just answers, but smart actions.",
-  },
+  // {
+  //   title: "What is the difference from other AI voice competitors?",
+  //   paragraph:
+  //     "Unlike generic voice tools, Yashraa’s VoiceAgent is tailored to your brand and data. It offers deeper customization, better accuracy, multilingual capabilities, and integrates with your workflows—delivering not just answers, but smart actions.",
+  // },
   {
     title:
       "I need holistic customization, what types of support does your platform offer?",

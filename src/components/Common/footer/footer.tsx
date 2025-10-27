@@ -72,12 +72,12 @@ const HomeFooter = () => {
             <li>
               <Link href="/chatbot">Chat Bot</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/voice-agent">Voice Agent</Link>
             </li>
             <li>
               <Link href="/chatllm">Chat LLM</Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/details/contact-us">Contact us</Link>
             </li>

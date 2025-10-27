@@ -102,16 +102,16 @@ export default function AboutUs() {
                   title: "AI-Powered Chatbots",
                   description: "Engage customers, automate support, and drive conversions with intelligent chatbots trained for your industry."
                 },
-                {
-                  icon: <FiCheckCircle className="h-6 w-6 text-indigo-500" />,
-                  title: "AI Voice Agents",
-                  description: "Deploy natural-sounding voice agents for inbound and outbound calls, voice support, and conversational experiences."
-                },
-                {
-                  icon: <FiCheckCircle className="h-6 w-6 text-indigo-500" />,
-                  title: "Advanced LLM Chat APIs",
-                  description: "Access multiple large language models (LLMs) through our unified API — compare results, choose your preferred model, and pay-as-you-go."
-                },
+                // {
+                //   icon: <FiCheckCircle className="h-6 w-6 text-indigo-500" />,
+                //   title: "AI Voice Agents",
+                //   description: "Deploy natural-sounding voice agents for inbound and outbound calls, voice support, and conversational experiences."
+                // },
+                // {
+                //   icon: <FiCheckCircle className="h-6 w-6 text-indigo-500" />,
+                //   title: "Advanced LLM Chat APIs",
+                //   description: "Access multiple large language models (LLMs) through our unified API — compare results, choose your preferred model, and pay-as-you-go."
+                // },
                 {
                   icon: <FiCheckCircle className="h-6 w-6 text-indigo-500" />,
                   title: "AI Automation Tools",
