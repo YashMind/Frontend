@@ -30,7 +30,7 @@ const ChatbotDashboardHeader = ({
   const menuRef = useRef(null);
   const dispatch = useDispatch<AppDispatch>();
 
-  const userData: UserProfileData = useSelector(
+  const userData = useSelector(
     (state: RootState) => state.auth.userData
   );
 
@@ -84,27 +84,8 @@ const ChatbotDashboardHeader = ({
   return (
     <nav
       className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${fix ? "fixed" : ""
-        } w-full z-90 ${announcements?.length > 0 ? "md:max-h-[12%]" : "md:max-h-[8%]"} `}
+        } w-full z-90 ${announcements?.length > 0 ? "md:max-h-[12%] py-2" : "md:max-h-[8%] py-4"} `}
     >
-      {/* 🔸 Announcement Bar */}
-      {announcements?.length > 0 && (
-        <div className="bg-[oklch(var(--warning-bg))] text-[oklch(var(--warning-text))] dark:bg-[oklch(var(--warning-bg-dark))] dark:text-[oklch(var(--warning-text-dark))] border-b border-[oklch(var(--border-muted))]">
-          <div className="overflow-hidden whitespace-nowrap py-0.5">
-            <div className="animate-scroll inline-block">
-              {announcements.map((item, index) => (
-                <span
-                  key={item.id || index}
-                  className="mx-8 font-medium tracking-wide text-sm "
-                >
-                  {item.content}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-
       {/* 🔹 Main Navbar Content */}
       <div
         className={`container mx-auto  flex flex-wrap items-center justify-between ${announcements?.length > 0 ? "py-4 md:py-5" : "py-2 md:py-4"

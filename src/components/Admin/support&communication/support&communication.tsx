@@ -3,6 +3,7 @@ import EmailComposeModal from "@/components/EmailComposeModal";
 import Link from "next/link";
 import React, { useState } from "react";
 import AnnouncementModal from "./announcementModal";
+import NoticeModal from "./noticesModal";
 
 const SupportCard = ({
   title,
@@ -61,6 +62,7 @@ const SupportCommunications = () => {
           <div className="min-h-screen p-6 text-white font-sans space-y-10">
             <section>
               <h2 className="text-xl font-semibold mb-4">
+                {modalType}
                 Support & Communication
               </h2>
 
@@ -94,7 +96,8 @@ const SupportCommunications = () => {
             </section>
           </div>
           {modalType == "announcement" && <AnnouncementModal onHide={() => setModalShow(false)} show={modalShow} />}
-          {modalType !== 'announcement' && <EmailComposeModal
+          {modalType == "notice" && <NoticeModal onHide={() => setModalShow(false)} show={modalShow} />}
+          {!['announcement', 'notice'].includes(modalType) && <EmailComposeModal
             show={modalShow}
             onHide={() => setModalShow(false)}
             modalTitle={modalTitle}

@@ -164,7 +164,7 @@ const ProfileSettings = () => {
   };
 
   return (
-    <div className="p-4 h-full md:pt-18">
+    <div className="p-4 h-full">
       <div className="max-w-4xl mx-auto ">
         <div className="flex justify-between items-center mt-4 mb-6 ">
           <h1 className="text-4xl font-bold text-white">User Profile</h1>

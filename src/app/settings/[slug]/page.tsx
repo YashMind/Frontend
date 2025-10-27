@@ -9,6 +9,7 @@ import HelpAndSupport from "@/components/settings/helpAndSupport";
 import ChatbotDashboardHeader from "@/components/ChatbotDashboard/ChatbotHeader/chatbotHeader";
 import InviteUserClient from "@/components/invite-user/InviteUserClient";
 import Chats from "@/components/settings/chats";
+import NoticesAndAnnouncements from "@/components/settings/notices";
 
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
@@ -40,6 +41,16 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               <span className="text-sm lg:text-base">Team</span>
             </Link>
             <Link
+              className={`p-2 flex gap-2 items-center justify-center lg:justify-start lg:mx-4 whitespace-nowrap ${slug === "notice"
+                ? " bg-white rounded-lg text-black shadow-md"
+                : ""
+                }`}
+              href={"/settings/notice"}
+            >
+              <IoIosPeople size={20} className="lg:size-[25px]" />
+              <span className="text-sm lg:text-base">Notice and Announcements</span>
+            </Link>
+            <Link
               className={`p-2 flex gap-2 items-center justify-center lg:justify-start lg:mx-4 whitespace-nowrap ${slug === "help"
                 ? " bg-white rounded-lg text-black shadow-md"
                 : ""
@@ -63,8 +74,9 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
         </div>
 
         {/* Main Content Area */}
-        <div className="lg:basis-4/5 rounded-xl lg:ml-4">
+        <div className="lg:basis-4/5 rounded-xl lg:ml-4 mt-16">
           {slug == "profile" && <ProfileSettings />}
+          {slug == "notice" && <NoticesAndAnnouncements />}
           {slug == "help" && <HelpAndSupport />}
           {slug == "teams" && <InviteUserClient />}
           {slug == "chats" && <Chats />}

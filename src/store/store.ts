@@ -12,6 +12,7 @@ import countrySlice from "@/store/slices/auth/country";
 import paymentSlice from "@/store/slices/payments/slice";
 import messageSlice from "./slices/admin/messageSlice";
 import announcementSlice from "./slices/admin/announcementSlice";
+import noticeSlice from "./slices/admin/noticesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -27,7 +28,8 @@ export const store = configureStore({
     countries: countrySlice,
     payment: paymentSlice,
     messages: messageSlice,
-    announcements: announcementSlice
+    announcements: announcementSlice,
+    notice: noticeSlice,
   },
 });
 
