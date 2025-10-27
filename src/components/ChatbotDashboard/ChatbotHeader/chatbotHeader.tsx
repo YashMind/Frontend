@@ -9,6 +9,7 @@ import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 import React, { useEffect, useState, useRef } from "react";
 import { getMeData, logoutUser } from "@/store/slices/auth/authSlice";
 import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
+import { fetchAnnouncements } from "@/store/slices/admin/announcementSlice";
 
 const ChatbotDashboardHeader = ({
   fix,
@@ -34,6 +35,9 @@ const ChatbotDashboardHeader = ({
   );
 
   const pathname = usePathname();
+  useEffect(() => {
+    dispatch(fetchAnnouncements())
+  }, []);
 
   useEffect(() => {
     if (pathname.includes("/voice-agent")) {
@@ -44,6 +48,10 @@ const ChatbotDashboardHeader = ({
       setBot(1);
     }
   }, [pathname]);
+
+  const { loading, data: announcements } = useSelector(
+    (state: RootState) => state.announcements
+  )
 
   const handleToggle = () => {
     setIsMenuOpen((prev) => !prev);
@@ -76,9 +84,32 @@ const ChatbotDashboardHeader = ({
   return (
     <nav
       className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${fix ? "fixed" : ""
-        } w-full z-90 md:max-h-[8%] py-2 md:py-4`}
+        } w-full z-90 ${announcements?.length > 0 ? "md:max-h-[12%]" : "md:max-h-[8%]"} `}
     >
-      <div className="container mx-auto px-4 flex flex-wrap items-center justify-between">
+      {/* 🔸 Announcement Bar */}
+      {announcements?.length > 0 && (
+        <div className="bg-[oklch(var(--warning-bg))] text-[oklch(var(--warning-text))] dark:bg-[oklch(var(--warning-bg-dark))] dark:text-[oklch(var(--warning-text-dark))] border-b border-[oklch(var(--border-muted))]">
+          <div className="overflow-hidden whitespace-nowrap py-0.5">
+            <div className="animate-scroll inline-block">
+              {announcements.map((item, index) => (
+                <span
+                  key={item.id || index}
+                  className="mx-8 font-medium tracking-wide text-sm "
+                >
+                  {item.content}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+
+      {/* 🔹 Main Navbar Content */}
+      <div
+        className={`container mx-auto  flex flex-wrap items-center justify-between ${announcements?.length > 0 ? "py-4 md:py-5" : "py-2 md:py-4"
+          }`}
+      >
         {/* Logo Section */}
         <div className="flex items-center justify-between w-full md:w-auto">
           <Link href="/" className="flex items-center">

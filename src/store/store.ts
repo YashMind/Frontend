@@ -10,8 +10,9 @@ import ticketSlice from "@/store/slices/supportTicket/slice";
 import tokenAnalyticSlice from "@/store/slices/admin/tokenAnalytic";
 import countrySlice from "@/store/slices/auth/country";
 import paymentSlice from "@/store/slices/payments/slice";
+import messageSlice from "./slices/admin/messageSlice";
+import announcementSlice from "./slices/admin/announcementSlice";
 
-import messageSlice from "./slices/admin/messageSlice"; 
 export const store = configureStore({
   reducer: {
     auth: signUpSlice,
@@ -25,7 +26,8 @@ export const store = configureStore({
     tokens: tokenAnalyticSlice,
     countries: countrySlice,
     payment: paymentSlice,
-    messages: messageSlice  
+    messages: messageSlice,
+    announcements: announcementSlice
   },
 });
 

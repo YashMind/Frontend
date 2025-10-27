@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-import { subscribe } from "node:diagnostics_channel";
-import SubscriptionPlans from "@/components/Admin/SubscriptionPlans/subscriptionPlans";
 
 interface SubscriptionPlan {
   id: number;
@@ -21,7 +19,7 @@ interface SubscriptionPlan {
 const PriceSection = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const [selectedPlan, setSelectedPlan] = useState<'Weekly' | '15 Days' | 'monthly' | 'quarterly' | 'biannual' | 'annual'>('monthly');
+  const [selectedPlan, setSelectedPlan] = useState<string>("monthly");
 
   const { publicSubscriptionPlansData, loading, error } = useSelector(
     (state: RootState) => state.admin
@@ -29,97 +27,106 @@ const PriceSection = () => {
 
   useEffect(() => {
     dispatch(getPublicSubscriptionPlans());
-    console.log("+++++++++++++++++++")
   }, [dispatch]);
 
-  console.log(publicSubscriptionPlansData)
-
-  // Filter plans based on duration_days
-  const filteredPlans = Object.values(publicSubscriptionPlansData).filter((item: SubscriptionPlan) => {
-    switch (selectedPlan) {
-      case 'Weekly':
-        return item.duration_days == 7;
-      case '15 Days':
-        return item.duration_days == 15;
-      case 'monthly':
-        return item.duration_days == 30;
-      case 'quarterly':
-        return item.duration_days == 90;
-      case 'biannual':
-        return item.duration_days == 180;
-      case 'annual':
-        return item.duration_days == 365;
-      default:
-        return false;
-    }
-  });
-
-  //  check if the plan exist 
-  const hasPlansOfType = (type: string) => {
-    return Object.values(publicSubscriptionPlansData).some((plan: SubscriptionPlan) => {
-      switch (type) {
-        case 'Weekly':
-          return plan.duration_days == 7;
-        case '15 Days':
-          return plan.duration_days == 15;
-        case 'monthly':
-          return plan.duration_days == 30;
-        case 'quarterly':
-          return plan.duration_days == 90;
-        case 'biannual':
-          return plan.duration_days == 180;
-        case 'annual':
-          return plan.duration_days == 365;
-        default:
-          return false;
-      }
-    });
+  // Define standard plan durations
+  const standardDurations: Record<string, number> = {
+    Weekly: 7,
+    "15 Days": 15,
+    monthly: 30,
+    quarterly: 90,
+    biannual: 180,
+    annual: 365,
   };
 
+  // Get all unique non-standard durations from plans
+  const otherDurations = Array.from(
+    new Set(
+      Object.values(publicSubscriptionPlansData)
+        .map((p: any) => p.duration_days)
+        .filter(
+          (days) =>
+            !Object.values(standardDurations).includes(days) && typeof days === "number"
+        )
+    )
+  );
+
+  // Filter plans based on selected type
+  const filteredPlans = Object.values(publicSubscriptionPlansData).filter(
+    (item: SubscriptionPlan) => {
+      const standardMatch = Object.entries(standardDurations).find(
+        ([key, value]) => key === selectedPlan && item.duration_days === value
+      );
+      const otherMatch =
+        selectedPlan.endsWith("days") &&
+        parseInt(selectedPlan) === item.duration_days;
+      return !!standardMatch || !!otherMatch;
+    }
+  );
+
+  // Check if plans exist for type
+  const hasPlansOfType = (type: string) => {
+    const duration = standardDurations[type];
+    if (duration) {
+      return Object.values(publicSubscriptionPlansData).some(
+        (plan: SubscriptionPlan) => plan.duration_days === duration
+      );
+    } else if (type.endsWith("days")) {
+      return Object.values(publicSubscriptionPlansData).some(
+        (plan: SubscriptionPlan) => plan.duration_days === parseInt(type)
+      );
+    }
+    return false;
+  };
 
   const getDurationText = (days: number) => {
-    if (days <= 7) return 'Weekly';
-    if (days <= 15) return '15 Days';
-    if (days <= 31) return 'month';
-    if (days <= 93) return '3 months';
-    if (days <= 183) return '6 months';
-    return 'year';
+    if (days === 7) return "Weekly";
+    if (days === 15) return "15 Days";
+    if (days === 30) return "Month";
+    if (days === 90) return "3 Months";
+    if (days === 180) return "6 Months";
+    if (days === 365) return "Year";
+    return `${days} Days`;
   };
 
   return (
     <div className="price mt-[81px]" id="pricing">
       <div className="container px-4">
-        <h1 className="font-normal text-[24px] sm:text-[30px] text-white text-center sm:text-left"
-          style={{ fontFamily: "'Audiowide', sans-serif" }}>
+        <h1
+          className="font-normal text-[24px] sm:text-[30px] text-white text-center sm:text-left"
+          style={{ fontFamily: "'Audiowide', sans-serif" }}
+        >
           Pricing & Plans
         </h1>
         <img src="/images/heading.png" className="mx-auto sm:mx-0 mt-2" alt="Heading" />
 
-        {/* Plan Selection Buttons - Always visible */}
+        {/* Plan Selection Buttons */}
         <div className="flex justify-center mt-8 mb-6">
-          <div className="bg-[#1B1441] border border-[#FFFFFF33] rounded-full p-1 flex">
-            {['Weekly', '15 Days', 'monthly', 'quarterly', 'biannual', 'annual'].map((planType) =>
+          <div className="bg-[#1B1441] border border-[#FFFFFF33] rounded-full p-1 flex flex-wrap gap-1 justify-center">
+            {[
+              ...Object.keys(standardDurations),
+              ...otherDurations.map((days) => `${days}days`),
+            ].map((planType) =>
               hasPlansOfType(planType) ? (
                 <button
                   key={planType}
-                  onClick={() => setSelectedPlan(planType as any)}
-                  className={`px-4 cursor-pointer py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedPlan === planType
-                    ? 'bg-gradient-to-r from-[#501794] to-[#40659F] text-white'
-                    : 'text-[#FFFFFFA1] hover:text-white'
+                  onClick={() => setSelectedPlan(planType)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedPlan === planType
+                      ? "bg-gradient-to-r from-[#501794] to-[#40659F] text-white"
+                      : "text-[#FFFFFFA1] hover:text-white"
                     }`}
                 >
-                  {planType.charAt(0).toUpperCase() + planType.slice(1)} Plan
+                  {planType.endsWith("days")
+                    ? `${parseInt(planType)} Days Plan`
+                    : `${planType.charAt(0).toUpperCase() + planType.slice(1)} Plan`}
                 </button>
               ) : null
             )}
-
           </div>
         </div>
 
-        {/* Loading State */}
+        {/* Loading / Error States */}
         {loading && <div className="text-white text-center py-8">Loading plans...</div>}
-
-        {/* Error State */}
         {error && <div className="text-red-500 text-center py-8">Error: {error}</div>}
 
         {/* Plans Display */}
@@ -144,9 +151,11 @@ const PriceSection = () => {
                   return (
                     <div key={item.id} className={wrapperClass}>
                       <div className={innerClass}>
-                        {/* ... rest of your plan card JSX ... */}
                         <div>
-                          <h3 className="text-lg font-bold" style={{ fontFamily: "'Audiowide', sans-serif" }}>
+                          <h3
+                            className="text-lg font-bold"
+                            style={{ fontFamily: "'Audiowide', sans-serif" }}
+                          >
                             {item.name}
                           </h3>
                           <img src="/images/Line.png" alt="Divider" />
@@ -165,9 +174,11 @@ const PriceSection = () => {
                             <span className="text-xs font-normal text-[#FFFFFFA1] mr-3.5">
                               /{getDurationText(item.duration_days)}
                             </span>
-                            {item.name === "Basic" && selectedPlan === 'monthly' && (
-                              <Link href="/activate-trial"
-                                className="inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-green-500 to-teal-400 text-white text-sm font-medium rounded-full hover:from-green-600 hover:to-teal-500 transition-colors ml-2">
+                            {item.name === "Basic" && item.duration_days === 30 && (
+                              <Link
+                                href="/activate-trial"
+                                className="inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-green-500 to-teal-400 text-white text-sm font-medium rounded-full hover:from-green-600 hover:to-teal-500 transition-colors ml-2"
+                              >
                                 7-Day Free Trial
                               </Link>
                             )}
@@ -176,7 +187,8 @@ const PriceSection = () => {
                           {item.is_active ? (
                             <Link
                               href={`/gateways/${item.id}`}
-                              className="block w-full text-center rounded-full bg-gradient-to-r from-[#501794] to-[#40659F] py-2 mb-6 text-white font-medium text-[17px]">
+                              className="block w-full text-center rounded-full bg-gradient-to-r from-[#501794] to-[#40659F] py-2 mb-6 text-white font-medium text-[17px]"
+                            >
                               Choose This Plan
                             </Link>
                           ) : (
@@ -186,12 +198,14 @@ const PriceSection = () => {
                           )}
 
                           <ul className="space-y-2 text-sm">
-                            {item.features?.split(",").map((feature: string, idx: number) => (
-                              <li className="flex gap-2" key={idx}>
-                                <img src="/images/star.png" alt="Feature icon" />
-                                {feature.trim()}
-                              </li>
-                            ))}
+                            {item.features
+                              ?.split(",")
+                              .map((feature: string, idx: number) => (
+                                <li className="flex gap-2" key={idx}>
+                                  <img src="/images/star.png" alt="Feature icon" />
+                                  {feature.trim()}
+                                </li>
+                              ))}
                           </ul>
                         </div>
 

@@ -85,7 +85,7 @@ const OurChatbots = () => {
   const router = useRouter();
   const userData = useSelector((state: RootState) => state.auth.loggedInUser);
   return (
-    <div className="relative h-screen z-80">
+    <div className="relative h-screen z-70">
       {/* Background Image */}
       <div
         className="absolute -z-10 inset-0 bg-cover bg-center"

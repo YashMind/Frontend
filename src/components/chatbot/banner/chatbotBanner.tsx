@@ -28,7 +28,7 @@ const ChatbotBanner = () => {
   const router = useRouter();
   const userData = useSelector((state: RootState) => state.auth.loggedInUser);
   return (
-    <div className="relative h-screen z-80">
+    <div className="relative h-screen z-70">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url('/images/ai-generated.png')" }}

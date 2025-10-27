@@ -1,1 +1,26 @@
+@keyframes scroll {
+    0% {
+        transform: translateX(100%);
+    }
 
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.animate-scroll {
+    display: inline-block;
+    animation: scroll 25s linear infinite;
+}
+
+:root {
+    --warning-bg: 92.5% 0.1 85;
+    /* Soft yellow */
+    --warning-text: 30% 0.1 85;
+    /* Deep brownish text */
+    --warning-bg-dark: 70% 0.13 85;
+    /* Warm amber for dark mode */
+    --warning-text-dark: 95% 0.05 85;
+    /* Near-white text */
+    --border-muted: 80% 0.03 250;
+}
