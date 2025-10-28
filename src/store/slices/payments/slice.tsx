@@ -175,7 +175,7 @@ export const getPushNotificationSettings = createAsyncThunk(
   "settings/getPushNotificationSettings",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await http.get("admin/settings");
+      const response = await http.get("admin/settings/");
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.data) {
@@ -223,7 +223,7 @@ export const patchPushNotificationSettings = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await http.patch("admin/settings", data);
+      const response = await http.patch("admin/settings/", data);
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.data) {
