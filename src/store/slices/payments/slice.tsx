@@ -199,7 +199,7 @@ export const upsertPushNotificationSettings = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await http.post("admin/settings", data);
+      const response = await http.post("admin/settings/", data);
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.data) {
