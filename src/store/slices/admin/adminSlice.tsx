@@ -6,7 +6,10 @@ import {
 } from "../activity/activitySlice";
 import toast from "react-hot-toast";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
-import { AdminAllUsers, AdminLogsActivity, AdminUsersData, ClientLogsActivity, ClientUsersData, PaymentsGateway, ProductMonitoringData, RolePermissions, SubscriptionPlansData, SubscriptionPlansPublic, SubscriptionPlansPublicData, TokenBotsData, ToolsDataType } from "@/types/adminType";
+import { AdminAllUsers, AdminLogsActivity, UserData, ClientLogsActivity, PaymentsGateway, ProductMonitoringData, RolePermissions, SubscriptionPlansData, SubscriptionPlansPublicData, ToolsDataType, EnterpriseUserType } from "@/types/adminType";
+import { getAllSubscriptionPlans, getPublicSubscriptionPlans, createSubscriptionPlan, deleteSubscriptionsPlan, getSubscriptionPlan, toggleSubscriptionPlanStatus, } from "./subscriptionPlanThunk";
+import { getAllPaymentGateway, AddUpdatePaymentGateway } from "./paymentGatewayThunks";
+import { getEnterpriseUsers } from "./enterpriseThunks";
 
 export const getAllUsers = createAsyncThunk<
   any,
@@ -67,58 +70,7 @@ export const getAllUsers = createAsyncThunk<
   }
 );
 
-export const getAllSubscriptionPlans = createAsyncThunk<any, void>(
-  "admin/getAllSubscriptionPlans",
-  async (_, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoadingActivity());
 
-      const response = await http.get("/admin/subscription-plans");
-
-      if (response.status === 200) {
-        dispatch(stopLoadingActivity());
-        return response.data;
-      } else {
-        return rejectWithValue("Failed to fetch subscription plans!");
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 10000, "id");
-        return rejectWithValue(error.response.data.message);
-      }
-      return rejectWithValue("An error occurred while fetching subscription plans.");
-    } finally {
-      dispatch(stopLoadingActivity());
-    }
-  }
-);
-
-export const getPublicSubscriptionPlans = createAsyncThunk<any, void>(
-  "admin/getPublicSubscriptionPlans",
-  async (_, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoadingActivity());
-
-      const response = await http.get("/admin/subscription-plans/public");
-      console.log("response", response)
-      if (response.status === 200) {
-        dispatch(stopLoadingActivity());
-        console.log(response.data)
-        return response.data.data;
-      } else {
-        return rejectWithValue("Failed to fetch subscription plans!");
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 10000, "id");
-        return rejectWithValue(error.response.data.message);
-      }
-      return rejectWithValue("An error occurred while fetching subscription plans.");
-    } finally {
-      dispatch(stopLoadingActivity());
-    }
-  }
-);
 
 export const getAllVolumnDiscounts = createAsyncThunk<any, void>(
   "admin/getAllVoulmnDiscounts",
@@ -146,147 +98,7 @@ export const getAllVolumnDiscounts = createAsyncThunk<any, void>(
   }
 );
 
-export const createSubscriptionPlan = createAsyncThunk<any, { payload: any }>(
-  "admin/createSubscriptionPlan",
-  async ({ payload }, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoadingActivity());
-      const response = await http.post(
-        "/admin/create-subscription-plans",
-        payload
-      );
-      if (response.status === 200) {
-        dispatch(stopLoadingActivity());
-        toasterSuccess("Plan created successfully!", 10000, "id")
-        dispatch(
-          getAllSubscriptionPlans()
-        );
-        return response.data;
-      } else {
-        return rejectWithValue("failed to create chatbot!");
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 10000, "id")
-        return rejectWithValue(error.response.data.message);
-      }
-      return rejectWithValue("An error occurred during chatbot");
-    } finally {
-      dispatch(stopLoadingActivity());
-    }
-  }
-);
 
-
-export const toggleSubscriptionPlanStatus = createAsyncThunk<
-  any,
-  { plan_id: number; is_active: boolean }
->("admin/toggleSubscriptionPlanStatus", async ({ plan_id, is_active }, { dispatch, rejectWithValue }) => {
-  try {
-    const response = await http.post(`/admin/subscription-plans/${plan_id}/status`, {
-      is_active,
-    });
-
-    if (response.status === 200) {
-      toasterSuccess(response.data.message, 10000, "id");
-      dispatch(getAllSubscriptionPlans());
-      return response.data;
-    }
-  } catch (error: any) {
-    toasterError(error?.response?.data?.detail || "Failed to update status", 10000, "id");
-    return rejectWithValue(error.response?.data);
-  }
-});
-
-
-export const saveApiKey = createAsyncThunk<any, { tool: string; apiKey: string }>(
-  "admin/saveApiKey",
-  async ({ tool, apiKey }, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await http.post(`/admin/save-key`, {
-        tool,
-        api_key: apiKey,
-      });
-
-      if (response.status === 200) {
-        toasterSuccess(response.data.message, 10000, "id");
-        return response.data;
-      }
-    } catch (error: any) {
-      toasterError(error?.response?.data?.detail || "Failed to save API key", 10000, "id");
-      return rejectWithValue(error.response?.data);
-    }
-  }
-);
-
-
-export const deleteSubscriptionsPlan = createAsyncThunk<
-  any,
-  { plan_id?: number }
->(
-  "admin/deleteSubscriptioPlans",
-  async ({ plan_id }, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoadingActivity());
-      const response: any = await http.delete(
-        `/admin/delete-subscription-plan/${plan_id}`
-      );
-      if (response.status === 200) {
-        dispatch(stopLoadingActivity());
-        dispatch(
-          getAllSubscriptionPlans()
-        );
-        toasterSuccess("Plan deleted successfully!", 10000, "id")
-        return response.data;
-      } else {
-        return rejectWithValue("failed to get chats!");
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 10000, "id")
-        return rejectWithValue(error.response.data.message);
-      }
-      return rejectWithValue("An error occurred during fetching chats");
-    } finally {
-      dispatch(stopLoadingActivity());
-    }
-  }
-);
-
-export const getSubscriptionPlan = createAsyncThunk<
-  any
->(
-  "admin/getSubscriptionPlan",
-  async (_, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoadingActivity());
-
-      const response: any = await http.get(
-        `/admin/get-subscription-plan`
-      );
-
-      if (response.status === 200) {
-        dispatch(stopLoadingActivity());
-        return response.data;
-      } else {
-        return rejectWithValue("Failed to fetch subscription plan!");
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 404) {
-        toasterError("Subscription plan not found!", 10000, "id");
-        return rejectWithValue(error.response.data.detail);
-      } else if (error.response && error.response.data?.detail) {
-        toasterError(error.response.data.detail, 10000, "id");
-        return rejectWithValue(error.response.data.detail);
-      } else {
-        toasterError("An unexpected error occurred!", 10000, "id");
-        return rejectWithValue("An unexpected error occurred");
-      }
-    } finally {
-      dispatch(stopLoadingActivity());
-    }
-  }
-);
 
 export const getAllTools = createAsyncThunk<
   any,
@@ -631,15 +443,15 @@ export const updateToolsStatus = createAsyncThunk<any, { id: number; status: boo
 );
 
 
-export const updateTokenStatus = createAsyncThunk<
+export const updateMessageRate = createAsyncThunk<
   any,
-  { id: number; base_rate_per_token: number }
+  { id: string; base_rate_per_message: number }
 >(
-  "admin/updateTokenStatus",
-  async ({ id, base_rate_per_token }, { dispatch, rejectWithValue }) => {
+  "admin/updateMessageRate",
+  async ({ id, base_rate_per_message }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await http.put(`/admin/users/${id}/base-rate`, { base_rate_per_token });
+      const response = await http.put(`/admin/users/${id}/base-rate`, { base_rate_per_message });
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         toasterSuccess("Token Status updated successfully!", 10000, "id")
@@ -899,93 +711,6 @@ export const deleteClientUser = createAsyncThunk<any, { id?: number }>(
   }
 );
 
-export const AddUpdatePaymentGateway = createAsyncThunk<
-  any,
-  {
-    payload: any;
-  }
->(
-  "admin/AddUpdatePaymentGateway",
-  async ({ payload }, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoadingActivity());
-      const response = await http.post(
-        "/admin/create-update-payment-gateway",
-        payload
-      );
-      if (response.status === 200) {
-        dispatch(stopLoadingActivity());
-        dispatch(getAllPaymentGateway());
-        toast.success(
-          `Payment ${payload?.id ? "updated" : "added"} successfully!`
-        );
-        return response.data;
-      } else {
-        return rejectWithValue("failed to create chatbot!");
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
-        return rejectWithValue(error.response.data.message);
-      }
-      return rejectWithValue("An error occurred during chatbot");
-    } finally {
-      dispatch(stopLoadingActivity());
-    }
-  }
-);
-
-export const getAllPaymentGateway = createAsyncThunk<any>(
-  "admin/getAllPaymentGateway",
-  async (_, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoadingActivity());
-      const response = await http.get("/admin/get-payments-gateway");
-      if (response.status === 200) {
-        dispatch(stopLoadingActivity());
-        return response.data;
-      } else {
-        return rejectWithValue("failed to get token bots!");
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
-        return rejectWithValue(error.response.data.message);
-      }
-      return rejectWithValue("An error occurred during fetching chats");
-    } finally {
-      dispatch(stopLoadingActivity());
-    }
-  }
-);
-
-export const deletePaymentsGateway = createAsyncThunk<any, { id?: number }>(
-  "admin/deletePaymentsGateway",
-  async ({ id }, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoadingActivity());
-      const response: any = await http.delete(
-        `/admin/delete-payments-gateway/${id}`
-      );
-      if (response.status === 200) {
-        dispatch(stopLoadingActivity());
-        dispatch(getAllPaymentGateway());
-        toast.success("Payment deleted successfully!");
-        return response.data;
-      } else {
-        return rejectWithValue("failed to get chats!");
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        toast.error(error?.response?.data?.detail);
-        return rejectWithValue(error.response.data.message);
-      }
-      return rejectWithValue("An error occurred during fetching chats");
-    } finally {
-      dispatch(stopLoadingActivity());
-    }
-  }
-);
 
 export const getMyPermissions = createAsyncThunk<any, void>(
   "admin/rolesPermissions",
@@ -1016,20 +741,21 @@ export const getMyPermissions = createAsyncThunk<any, void>(
 const initialState = {
   loading: false,
   data: [],
-  myPermissions: [] as string[],
-  permissionsLoading: false,
   allUsersData: {} as AdminAllUsers,
+  adminUsers: [] as UserData[],
+  clientUsers: [] as UserData[],
+  enterpriseUsers: {} as EnterpriseUserType,
   subscriptionPlansData: {} as SubscriptionPlansData,
   publicSubscriptionPlansData: {} as SubscriptionPlansPublicData,
   toolsData: [] as ToolsDataType[],
   topTokenUsersData: [] as UserProfileData[],
+  paymentGatewayData: [] as PaymentsGateway[],
   productMonitoringData: {} as ProductMonitoringData,
-  adminUsers: [] as AdminUsersData[],
-  clientUsers: [] as ClientUsersData[],
   adminsLogsActivityData: {} as AdminLogsActivity[],
   adminsLogsActivityTotal: 0,
   clientLogsActivityData: {} as ClientLogsActivity,
-  paymentGatewayData: [] as PaymentsGateway[],
+  permissionsLoading: false,
+  myPermissions: [] as string[],
   rolePermissions: [] as RolePermissions[]
 };
 
@@ -1129,6 +855,15 @@ const adminSlice = createSlice({
       .addCase(getClientUsers.pending, (state) => {
         state.loading = true;
       })
+      .addCase(getEnterpriseUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.enterpriseUsers = action?.payload;
+      })
+      .addCase(getEnterpriseUsers.rejected, (state, action) => {
+        state.loading = false;
+      }).addCase(getEnterpriseUsers.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(getClientUsers.fulfilled, (state, action) => {
         state.loading = false;
         state.clientUsers = action?.payload;
@@ -1188,3 +923,5 @@ const adminSlice = createSlice({
 });
 
 export default adminSlice.reducer;
+export { getAllSubscriptionPlans, getPublicSubscriptionPlans, createSubscriptionPlan, deleteSubscriptionsPlan, getSubscriptionPlan, toggleSubscriptionPlanStatus }
+export { getAllPaymentGateway, AddUpdatePaymentGateway }

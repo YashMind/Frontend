@@ -24,18 +24,12 @@ const cardsData = [
   {
     title: "Error",
     icon: "/images/comment.png",
-    items: [
-      "Chat failures: 3",
-      "Voice Disconnect: 2"
-    ],
+
   },
   {
     title: "Admin",
     icon: "/images/shape.png",
-    items: [
-      "Who did What:",
-      "When:"
-    ],
+
   },
   // {
   //   title: "AI",
@@ -94,7 +88,7 @@ const LogsActivity = () => {
                       <h3 className="text-base font-medium">{title}</h3>
                       <Image alt={`${title} icon`} src={icon} height={24} width={24} />
                     </div>
-                    {items.map((item, idx) => (
+                    {items?.map((item, idx) => (
                       <p key={idx} className="text-xs font-medium text-white my-2">
                         {item}
                       </p>

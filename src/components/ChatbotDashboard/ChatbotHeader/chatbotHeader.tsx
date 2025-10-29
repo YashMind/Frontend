@@ -219,10 +219,10 @@ const ChatbotDashboardHeader = ({
             Upgrade Plan
           </Link>
           <Link
-            href="/"
+            href="/chatbot-dashboard/main"
             className="text-white bg-[#05BDFD] text-sm rounded-[18px] font-semibold hover:bg-[#04a9e0] px-3 py-2 md:px-4 transition-colors"
           >
-            Home
+            Dashboard
           </Link>
 
           <div className="flex items-center space-x-2">

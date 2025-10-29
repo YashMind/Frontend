@@ -22,10 +22,10 @@ type TokenCreditState = {
         error: string | null;
     };
     usersByPlan: {
-    data: UserPlanData[];
-    loading: boolean;
-    error: string | null;
-  };
+        data: UserPlanData[];
+        loading: boolean;
+        error: string | null;
+    };
 };
 
 const initialState: TokenCreditState = {
@@ -45,20 +45,20 @@ const initialState: TokenCreditState = {
         error: null,
     },
     usersByPlan: {
-    data: [],
-    loading: false,
-    error: null,
-  },
-    
+        data: [],
+        loading: false,
+        error: null,
+    },
+
 };
 
 type UserPlanData = {
-  plan: string;
-  user_count: number;
+    plan: string;
+    user_count: number;
 };
 
 type Params = {
-  filter?: 'daily' | 'monthly' | 'yearly';
+    filter?: 'daily' | 'monthly' | 'yearly';
 };
 
 export const fetchUserCreditsAndTokens = createAsyncThunk<
@@ -81,66 +81,64 @@ export const fetchAdminTokenCreditReport = createAsyncThunk<
 >('tokenCredit/fetchAdminTokenCreditReport', async ({ page = 1, perPage = 100 }, { rejectWithValue }) => {
     try {
         const response = await http.get(`/admin/token-credit-report?page=${page}&per_page=${perPage}`);
-    console.log('API Response:', response.data); 
+        console.log('API Response:', response.data);
 
         return response.data;
     } catch (err: any) {
-            console.error('API Error:', err.response?.data); 
-
         return rejectWithValue(err.response?.data?.detail || 'Failed to fetch admin token report');
     }
 });
 
 export const fetchAdminTransactions = createAsyncThunk<
     AdminTransactionsType,
-    { page?: number; perPage?: number; groupBy?:string },
+    { page?: number; perPage?: number; groupBy?: string },
     { rejectValue: string }
->('tokenCredit/fetchAdminTransactions', async ({ page = 1, perPage = 100,groupBy = 'monthly' }, { rejectWithValue }) => {
+>('tokenCredit/fetchAdminTransactions', async ({ page = 1, perPage = 100, groupBy = 'monthly' }, { rejectWithValue }) => {
     console.log("thunk started")
     try {
         console.log("make api call")
-           let url = `/admin/transactions?page=${page}&per_page=${perPage}`;
-      if (groupBy) {
-        url += `&group_by=${groupBy}`;
-      }
+        let url = `/admin/transactions?page=${page}&per_page=${perPage}`;
+        if (groupBy) {
+            url += `&group_by=${groupBy}`;
+        }
 
-      const response = await http.get(url);
-        console.log("response",response)
+        const response = await http.get(url);
+        console.log("response", response)
         return response.data;
-    }    
+    }
 
     catch (err: any) {
         console.log("error occur", err)
         return rejectWithValue(err.response?.data?.detail || 'Failed to fetch admin token report');
     }
-}    
+}
 );
 export const fetchUsersByPlan = createAsyncThunk<
-  UserPlanData[],
-  Params,
-  { rejectValue: string }
+    UserPlanData[],
+    Params,
+    { rejectValue: string }
 >(
-  'users/fetchUsersByPlan',
-  async ({ filter = '' }, { rejectWithValue }) => {
-    try {
-      let url = '/admin/usersPlans';
-      if (filter) {
-        url += `?filter=${filter}`;
-      }
+    'users/fetchUsersByPlan',
+    async ({ filter = '' }, { rejectWithValue }) => {
+        try {
+            let url = '/admin/usersPlans';
+            if (filter) {
+                url += `?filter=${filter}`;
+            }
 
-      const response = await http.get(url);
-      console.log("Complete API response:", response);
-      console.log("Response data:", response.data);
-      
-      // Try different possible response structures
-      return response.data.data || response.data || [];
-    } catch (err: any) {
-      console.error('Error in fetchUsersByPlan thunk:', err);
-      return rejectWithValue(
-        err.response?.data?.detail || 'Failed to fetch users by plan'
-      );
+            const response = await http.get(url);
+            console.log("Complete API response:", response);
+            console.log("Response data:", response.data);
+
+            // Try different possible response structures
+            return response.data.data || response.data || [];
+        } catch (err: any) {
+            console.error('Error in fetchUsersByPlan thunk:', err);
+            return rejectWithValue(
+                err.response?.data?.detail || 'Failed to fetch users by plan'
+            );
+        }
     }
-  }
 );
 
 const tokenCreditSlice = createSlice({
@@ -192,18 +190,18 @@ const tokenCreditSlice = createSlice({
                 state.transactions.error = action.payload || 'Unknown error';
             })
             .addCase(fetchUsersByPlan.pending, (state) => {
-        state.usersByPlan.loading = true;
-        state.usersByPlan.error = null;
-      })
-      .addCase(fetchUsersByPlan.fulfilled, (state, action) => {
-        state.usersByPlan.loading = false;
-        state.usersByPlan.data = action.payload;
-        console.log("-----",action.payload)
-      })
-      .addCase(fetchUsersByPlan.rejected, (state, action) => {
-        state.usersByPlan.loading = false;
-        state.usersByPlan.error = action.payload || 'Unknown error';
-      });
+                state.usersByPlan.loading = true;
+                state.usersByPlan.error = null;
+            })
+            .addCase(fetchUsersByPlan.fulfilled, (state, action) => {
+                state.usersByPlan.loading = false;
+                state.usersByPlan.data = action.payload;
+                console.log("-----", action.payload)
+            })
+            .addCase(fetchUsersByPlan.rejected, (state, action) => {
+                state.usersByPlan.loading = false;
+                state.usersByPlan.error = action.payload || 'Unknown error';
+            });
     },
 });
 

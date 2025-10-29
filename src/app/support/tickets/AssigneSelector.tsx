@@ -8,6 +8,7 @@ interface AssigneeSelectorProps {
     currentAssignee: string;
     onAssign: (assignee: string) => void;
 }
+const admins = ['super admin', 'billing admin', 'product admin', 'support admin']
 
 const AssigneeSelector = ({ currentAssignee, onAssign }: AssigneeSelectorProps) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +18,7 @@ const AssigneeSelector = ({ currentAssignee, onAssign }: AssigneeSelectorProps) 
     const { adminUsers } = useSelector((state: RootState) => state.admin)
 
     const filteredAdmins = adminUsers.filter(admin =>
-        admin.role === "Support Admin" && admin.email.toLowerCase().includes(searchTerm.toLowerCase())
+        admins.includes(admin.role.toLowerCase()) && admin.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     useEffect(() => {
@@ -33,7 +34,7 @@ const AssigneeSelector = ({ currentAssignee, onAssign }: AssigneeSelectorProps) 
             </button>
 
             {isOpen && (
-                <div className="z-20 origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                <div className="z-20 origin-top-right absolute right-0 mt-2 min-w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                     <div className="p-2">
                         <input
                             type="text"

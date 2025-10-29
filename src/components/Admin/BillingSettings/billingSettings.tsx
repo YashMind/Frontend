@@ -6,7 +6,6 @@ import { AppDispatch, RootState } from "@/store/store";
 import AddEditPaymentWayModal from "./AddEditPaymentWay/addEditPaymentWay";
 import {
   AddUpdatePaymentGateway,
-  deletePaymentsGateway,
   getAllPaymentGateway,
 } from "@/store/slices/admin/adminSlice";
 import { fetchAdminTransactions } from "@/store/slices/admin/tokenAnalytic";
@@ -62,10 +61,6 @@ const BillingSettings = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [transactionsList.length]);
-
-  const deletePaymentGateway = ({ id }: { id?: number }) => {
-    dispatch(deletePaymentsGateway({ id: id }));
-  };
 
   function downloadTransaction(transactionData: any, order_id: string) {
     const jsonStr = JSON.stringify(transactionData, null, 2);

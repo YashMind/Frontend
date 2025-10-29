@@ -120,6 +120,7 @@ const SubscriptionPlans = () => {
                     <th className="p-4 text-xs font-medium">Team Strength</th>
                     <th className="p-4 text-xs font-medium">Features</th>
                     <th className="p-4 text-xs font-medium">Status</th>
+                    <th className="p-4 text-xs font-medium">Enterprise Plan</th>
                     <th className="p-4 text-xs font-medium">Actions</th>
                   </tr>
                 </thead>
@@ -160,6 +161,9 @@ const SubscriptionPlans = () => {
 
                           <td className="p-4 text-[#AEB9E1] text-xs">
                             {item?.is_active ? "Active" : "Inactive"}
+                          </td>
+                          <td className="p-4 text-[#AEB9E1] text-xs">
+                            {item?.is_enterprise ? "Yes" : "-"}
                           </td>
                           <td className="p-4 relative">
                             <div className="flex gap-2 items-center">

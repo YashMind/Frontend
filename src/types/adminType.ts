@@ -22,6 +22,7 @@ export interface SubscriptionPlans {
   webpages_allowed: number;
   team_strength: number;
   duration_days: number;
+  is_enterprise: boolean;
   features: string;
   users_active?: number;
   created_at?: string;
@@ -98,16 +99,15 @@ export interface ProductMonitoringData {
   data: ProductMonitoringRes[];
 }
 
-export interface AdminUsersData {
-  id?: number;
-  fullName: string;
-  email: string;
-  status?: string;
-  role: string;
-  last_active?: string;
-  plan?: string;
-  permissions?: string[];
-  created_at?: string;
+export type UserData = UserProfileData;
+
+
+export interface EnterpriseUserType {
+  data: (UserProfileData & { base_rate_per_message: number })[],
+  total: number,
+  page: number,
+  limit: number,
+  message: string,
 }
 
 export interface RolePermissions {
@@ -115,23 +115,13 @@ export interface RolePermissions {
   permissions: string[];
 }
 
-export interface ClientUsersData {
-  id?: number;
-  fullName: string;
-  email: string;
-  status?: string;
-  role: string;
-  last_active?: string;
-  plan?: string;
-  role_permissions?: [];
-  created_at?: string;
-}
 
 // interface AdminLogsActivity {
-//   last_added_admin: AdminUsersData;
-//   last_role_updated: AdminUsersData;
-//   last_suspended_admin: AdminUsersData;
+//   last_added_admin: UserData;
+//   last_role_updated: UserData;
+//   last_suspended_admin: UserData;
 // }
+
 export interface AdminLogsActivity {
   id: number;
   user_id: number;
@@ -144,9 +134,9 @@ export interface AdminLogsActivity {
 }
 
 export interface ClientLogsActivity {
-  last_added_admin: AdminUsersData;
-  last_role_updated: AdminUsersData;
-  last_suspended_admin: AdminUsersData;
+  last_added_admin: UserData;
+  last_role_updated: UserData;
+  last_suspended_admin: UserData;
 }
 
 export interface PaymentsGateway {

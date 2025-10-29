@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
-import AddEditToken from "./AddEditToken/addEditToken";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { MdDeleteForever, MdEdit } from "react-icons/md";
 import {
-  deleteTokenBots,
   getTopConsumptionUsers,
 } from "@/store/slices/admin/adminSlice";
 import Image from "next/image";
 import { fetchAdminTokenCreditReport } from "@/store/slices/admin/tokenAnalytic";
-
-import { fetchMessageStats  } from "@/store/slices/admin/messageSlice";
+import { fetchMessageStats } from "@/store/slices/admin/messageSlice";
 import { MessageGraph } from "./MessageGraph";
 
 
@@ -90,42 +86,17 @@ interface TokenCreditReportResponse {
 
 const TokenAnalytics = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [sortBy, setSortBy] = useState("created_at");
-  const [sortOrder, setSortOrder] = useState("asc");
-  const [tokenData, setTokenData] = useState<any>({});
   const dispatch = useDispatch<AppDispatch>();
   const { topTokenUsersData } = useSelector((state: RootState) => state.admin);
 
-
-  // const { total:totalMessages, loading:messagesLoading, error } = useSelector((state: RootState) => state.messages);
- const { total: totalMessages, loading: messagesLoading, error } = useSelector(
-    (state: RootState) => state.messages
-  );
-
-
-  const {
-    data: tokensCredits,
-    loading: tokensCreditsLoading,
-    error: tokensCreditsError,
-  } = useSelector((state: RootState) => state.tokens.admin);
   useEffect(() => {
     dispatch(getTopConsumptionUsers());
     dispatch(fetchAdminTokenCreditReport({}));
-  }, [dispatch, search, page, limit, sortBy, sortOrder]);
-
-  const deleteTokenBot = ({ id }: { id?: number }) => {
-    dispatch(deleteTokenBots({ token_bot_id: id }));
-  };
-
-   useEffect(() => {
-    dispatch(fetchMessageStats());
   }, [dispatch]);
 
-  
-
+  useEffect(() => {
+    dispatch(fetchMessageStats());
+  }, [dispatch]);
 
   return (
     <div>
@@ -155,7 +126,7 @@ const TokenAnalytics = () => {
                             d="m16.49 12 3.75 3.75m0 0-3.75 3.75m3.75-3.75H3.74V4.499"
                           />
                         </svg>
-                        Token Usage Trends
+                        Message Usage Trends
                       </h3>
                     </div>
                     {/* <div className="flex justify-center gap-2 items-center text-[#AEB9E1] text-sm">
@@ -166,50 +137,8 @@ const TokenAnalytics = () => {
                       <div className="p-1 bg-[#00C2FF] rounded-full"></div>
                       <h6>Expenses</h6>
                     </div> */}
-                    
-
-
                   </div>
-                 
-
-                  <MessageGraph/>
-
-
-
-
-
- {/* Total Messages Card
-                //  <div className="bg-[#0E1A47] rounded-xl p-4 shadow-lg flex flex-col items-center justify-center mt-4">
-                //   <h3 className="text-white/80 font-semibold text-base mb-2">
-                //     Total Messages by Month
-                //   </h3>
-                //   {messagesLoading ? (
-                //     <p className="text-white">Loading...</p>
-                //   ) : error ? (
-                //     <p className="text-red-500">{error}</p>
-                //   ) : totalMessages.length === 0 ? (
-                //     <p className="text-white">No messages found</p>
-                //   ) : (
-                //     <ul className="text-white">
-                //       {totalMessages.map((item) => (
-                //         <li key={item.month} className="text-white text-lg">
-                //           {item.month}: {item.totalMessages}
-                //         </li>
-                //       ))}
-                //     </ul>
-                //   )}
-                // </div>  */}
-
-
-                
-
-
-
-
-
-
-
-
+                  <MessageGraph />
                 </div>
 
                 {/* Breakdown by Product */}
@@ -248,28 +177,17 @@ const TokenAnalytics = () => {
                 </div> */}
               </div>
             </div>
-            {/* token price start */}
-            {/* products wise division */}
-        
 
-            {/* user list start */}
-            {/* user list start */}
             <div className="max-w-full overflow-x-auto mt-5 bg-[#0B1739] p-5">
               <div className="flex justify-between border-b border-[#1f355c]">
                 <h1 className="text-white text-lg font-semibold mb-4 ">
-                  Top 10 Users by Token Consumption
+                  Top 10 Users by Message Consumption
                 </h1>
               </div>
               <table className="min-w-full overflow-hidden text-sm">
                 <thead>
                   <tr className="text-left text-gray-300 ">
-                    <th className="p-4">
-                      <input
-                        type="checkbox"
-                        className="appearance-none w-4 h-4 bg-[#CB3CFF] form-checkbox rounded-sm focus:outline-none"
-                        readOnly
-                      />
-                    </th>
+
                     <th className="p-4 text-xs font-medium flex items-center gap-1">
                       <Image
                         alt="alt"
@@ -282,7 +200,6 @@ const TokenAnalytics = () => {
                     <th className="p-4 text-xs font-medium">Email</th>
                     <th className="p-4 text-xs font-medium">Plan</th>
                     <th className="p-4 text-xs font-medium">Message Consumed</th>
-                    <th className="p-4 text-xs font-medium">Status</th>
                   </tr>
                 </thead>
                 <tbody className="text-white">
@@ -292,12 +209,7 @@ const TokenAnalytics = () => {
                         className="bg-[#0A1330] hover:bg-[#1A2C56]"
                         key={index}
                       >
-                        <td className="p-4">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox appearance-none w-4 h-4  rounded-sm bg-[#CB3CFF]"
-                          />
-                        </td>
+
                         <td className="p-4 flex items-center text-xs gap-2">
                           <img src="/images/Avatar Circle.png" alt="" />
                           {item?.fullName}
@@ -325,11 +237,6 @@ const TokenAnalytics = () => {
                 </tbody>
               </table>
             </div>
-            <AddEditToken
-              show={modalShow}
-              onHide={() => setModalShow(false)}
-              tokenData={tokenData}
-            />
           </div>
         </div>
       </div>

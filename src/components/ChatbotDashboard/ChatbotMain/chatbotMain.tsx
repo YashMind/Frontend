@@ -37,7 +37,7 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
   const { chatbotData: activeChatbot, loading: chatbotLoading, error: chatbotError } = useSelector((state: RootState) => state.chat);
   const [modalShow, setModalShow] = useState(false);
   const [planName, setPlanName] = useState("");
-  const [isPlanActive, setIsPlanActive] = useState(true)
+  const [isPlanActive, setIsPlanActive] = useState<"not_found" | "expired" | "active">('active')
 
   useEffect(() => {
     if (botId !== undefined) {
@@ -47,11 +47,15 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
 
   useEffect(() => {
     dispatch(getChatbots());
-    dispatch(getSubscriptionPlan()).unwrap().then((res) => { setPlanName(res.data.name) });
+    dispatch(getSubscriptionPlan()).unwrap().then((res) => { setPlanName(res.data.name) }).catch((e) => { console.log(e) });
     dispatch(fetchChatMessageTokens());
     dispatch(getMeData({ router })).unwrap().then((res) => {
-      if (!res || res.status != 200) {
-        setIsPlanActive(false)
+      if (!res || res.status == 200) {
+        setIsPlanActive('active')
+      } if (res.status == 404) {
+        setIsPlanActive('not_found')
+      } if (res.status == 410) {
+        setIsPlanActive('expired')
       }
     });
   }, [dispatch]);
@@ -150,7 +154,7 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
 
 
   // if Plan is expired
-  if (!isPlanActive) {
+  if (isPlanActive == 'expired') {
     return <div className="flex flex-col h-screen">
       {/* Fixed header - outside the scrollable area */}
       <ChatbotDashboardHeader
@@ -178,6 +182,34 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
 
     </div>
   }
+  if (isPlanActive === 'not_found') {
+    return (
+      <div className="flex flex-col h-screen">
+        <ChatbotDashboardHeader
+          fix={true}
+          addBgColor={true}
+          role={role}
+          chatbotError={chatbotError}
+        />
+
+        <div className="h-screen w-screen bg-gradient-to-r from-[#002B58] to-[#3B0459] flex flex-col items-center justify-center text-center space-y-6 overflow-hidden">
+          <h2 className="text-white text-5xl md:text-6xl font-bold uppercase tracking-wider drop-shadow-lg">
+            Welcome aboard!
+          </h2>
+          <p className="text-gray-200 text-lg md:text-xl mx-10">
+            It looks like you don’t have a plan yet. Choose one to start using our chatbot features.
+          </p>
+          <Link
+            href="/#pricing"
+            className="bg-[#05BDFD] text-white text-base md:text-lg rounded-full font-semibold px-6 py-3 hover:bg-[#04a9e0] transition-all duration-300 shadow-lg hover:shadow-xl"
+          >
+            View Plans
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="flex flex-col h-screen">

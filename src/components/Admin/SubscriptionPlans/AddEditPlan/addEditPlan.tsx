@@ -19,10 +19,12 @@ const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
   pricingInr: yup
     .number()
+    .min(1, "INR pricing should be greater than 0")
     .typeError("INR Pricing must be a number")
     .required("INR Pricing is required "),
   pricingDollar: yup
     .number()
+    .min(1, "Dollar Pricing should be greater than 0")
     .typeError("Dollar Pricing must be a number")
     .required("Dollar Pricing is required "),
   // token_per_unit: yup
@@ -31,28 +33,37 @@ const schema = yup.object().shape({
   //   .required("Token limit is required"),
   message_per_unit: yup
     .number()
+    .min(1, "Message per unit should be greater than 0")
     .typeError("Message limit must be a number")
     .required("Message limit is required"),
   chatbots_allowed: yup
     .number()
+    .min(1, "Chatbots Allowed should be greater than 0")
     .typeError("Chatbots allowed must be a number")
     .required("Chatbots is required"),
   chars_allowed: yup
     .number()
+    .min(1, "Chars Allowed should be greater than 0")
     .typeError("Characters allowed must be a number")
     .required("Chars Allowed is required"),
   webpages_allowed: yup
     .number()
+    .min(1, "Webpages should be greater than 0")
     .typeError("Webpages allowed must be a number")
     .required("Webpages Allowed is required"),
   team_strength: yup
     .number()
+    .min(1, "Team Strength should be greater than 0")
     .typeError("Team strength must be a number")
     .required("Chatbots is required"),
   duration_days: yup
     .number()
+    .min(1, "Duration Days should be greater than 0")
     .typeError("Duration must be a number")
     .required("Duration is required"),
+  is_enterprise: yup
+    .boolean()
+    .typeError("Duration must true or false"),
   features: yup.string().trim().nullable(),
 });
 
@@ -81,20 +92,20 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
   };
 
   const onError = (errors: any) => {
-    console.error("❌ Validation Errors:", errors);
   };
 
   useEffect(() => {
     setValue("name", planData?.name);
     setValue("pricingInr", planData?.pricingInr);
     setValue("pricingDollar", planData?.pricingDollar);
-    setValue("token_per_unit", planData?.token_per_unit);
+    // setValue("token_per_unit", planData?.token_per_unit);
     setValue("message_per_unit", planData?.message_per_unit);
     setValue("chatbots_allowed", planData?.chatbots_allowed);
     setValue("chars_allowed", planData?.chars_allowed);
     setValue("webpages_allowed", planData?.webpages_allowed);
     setValue("team_strength", planData?.team_strength);
     setValue("duration_days", planData?.duration_days);
+    setValue("is_enterprise", planData?.is_enterprise);
     setValue("features", planData?.features);
     setValue("id", planData?.id);
   }, [reset, planData?.id, show]);
@@ -103,7 +114,7 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-[#0E1A47] text-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl border border-[#1E3A8A] relative">
         <button
-          onClick={onHide}
+          onClick={() => { onHide(); reset() }}
           className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10"
           aria-label="Close modal"
         >
@@ -326,6 +337,29 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
             </div>
           </div>
 
+          {/* Enterprise Plan */}
+          <div className="flex flex-col space-y-2">
+            <label className="text-sm font-medium text-gray-300">Enterprise Plan</label>
+
+            <div className="flex items-center space-x-3">
+              <input
+                id="is_enterprise"
+                type="checkbox"
+                {...register("is_enterprise")}
+                className="w-5 h-5 accent-blue-500 bg-[#1A2C65] border border-gray-600 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+              />
+              <label htmlFor="is_enterprise" className="text-gray-200 text-sm cursor-pointer">
+                Enable Enterprise Features
+              </label>
+            </div>
+
+            {errors.is_enterprise && (
+              <p className="text-red-400 text-xs mt-1">
+                {errors.is_enterprise.message}
+              </p>
+            )}
+          </div>
+
           {/* Features */}
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-300">
@@ -351,7 +385,7 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
           <div className="flex justify-end gap-3 pt-4 border-t border-[#1E3A8A]">
             <button
               type="button"
-              onClick={onHide}
+              onClick={() => { onHide(); reset() }}
               className="px-6 py-2.5 rounded-lg border border-gray-500 text-white hover:bg-white/10 transition-colors duration-200"
             >
               Cancel
@@ -364,8 +398,8 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </div >
+    </div >
   ) : null;
 };
 

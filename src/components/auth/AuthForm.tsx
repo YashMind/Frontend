@@ -329,13 +329,17 @@ const AuthForm = ({ formType }: { formType: "signin" | "signup" }) => {
                 </span>
               </div>
 
-              <div className="flex gap-4 justify-center">
-                <LoginWithGoogle />
-              </div>
-              <hr className="border border-[#727272] my-[20px]" />
+              <div className="flex justify-center items-center">
 
-              <div className="flex gap-4 justify-center">
-                <LoginWithFacebook />
+
+                <div className="flex flex-1 gap-4 justify-center">
+                  <LoginWithGoogle />
+                </div>
+                <hr className="border border-[#727272] mx-2 h-10" />
+
+                <div className="flex flex-1 gap-4 justify-center">
+                  <LoginWithFacebook />
+                </div>
               </div>
 
               <p className="text-xs text-[#B6B6B6] font-medium my-[20px] text-center lg:text-left">

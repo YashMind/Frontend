@@ -10,12 +10,15 @@ import ChatbotDashboardHeader from "@/components/ChatbotDashboard/ChatbotHeader/
 import InviteUserClient from "@/components/invite-user/InviteUserClient";
 import Chats from "@/components/settings/chats";
 import NoticesAndAnnouncements from "@/components/settings/notices";
+import { cookies } from "next/headers";
 
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
+  const cookieStore = await cookies();
+  const role = cookieStore.get("role")?.value;
   return (
     <div className="h-full min-h-screen">
-      <ChatbotDashboardHeader addBgColor={true} fix={true} />
+      <ChatbotDashboardHeader addBgColor={true} fix={true} role={role} />
       <div className="flex flex-col lg:flex-row items-stretch p-2 sm:p-4 bg-gradient-to-br from-[#1a1440] to-[#2a0e61] min-h-screen">
         {/* Sidebar - becomes horizontal on small screens */}
         <div className="lg:basis-1/5 mt-18 rounded-xl bg-white/30 text-white py-2 lg:py-4 space-y-1 lg:space-y-3 mb-4 lg:mb-0 lg:sticky lg:top-16 overflow-y-auto">

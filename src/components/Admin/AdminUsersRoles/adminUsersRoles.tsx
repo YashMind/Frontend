@@ -171,13 +171,6 @@ const AdminUsersRoles = () => {
                 <table className="w-full text-left mx-8 my-4">
                   <thead className="text-xs uppercase text-gray-400 border-b border-[#0B1739]">
                     <tr>
-                      <th className="p-6">
-                        <input
-                          type="checkbox"
-                          className="cursor-pointer form-checkbox accent-purple-500"
-                          readOnly
-                        />
-                      </th>
                       <th className="p-6 flex gap-2 justify-start items-center text-white">
                         <FaUser className="text-white w-4 h-4" />
                         <span>Name</span>
@@ -200,15 +193,7 @@ const AdminUsersRoles = () => {
                             className="border-b border-[#0B1739] hover:bg-[#1A1F3C] "
                             key={index}
                           >
-                            <td className="p-6">
-                              <input
-                                type="checkbox"
-                                className="cursor-pointer form-checkbox accent-purple-500"
-                                // checked={item?.status === "Active"}
-                                checked={false}
-                                readOnly
-                              />
-                            </td>
+
                             <td className="p-6 font-medium text-xs">
                               {item?.fullName}
                             </td>
