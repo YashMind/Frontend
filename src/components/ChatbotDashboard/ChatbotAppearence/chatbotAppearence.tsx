@@ -261,7 +261,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
     //   }
     // }
 
-    // console.log("typeof data.chat_icon", typeof data.chat_icon, data.chat_icon);
+    console.log("typeof data.chat_icon", typeof data.chat_icon, data.chat_icon);
 
     if (typeof data.chat_icon === "object" && data.chat_icon && data.chat_icon) {
       const chatIcon = new FormData();
@@ -269,12 +269,12 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       await dispatch(uploadDocument({ payload: chatIcon }))
         .unwrap()
         .then((res) => {
-          // console.log("Setting chat_icon", res)
+          console.log("Setting chat_icon", res)
           setValue("chat_icon", res?.url);
           data.chat_icon = res?.url;
         });
     }
-    // console.log("typeof data.image", typeof data.image, data.image);
+    console.log("typeof data.image", typeof data.image, data.image);
 
     if (typeof data.image === "object" && data.image && data.image) {
       const image = new FormData();
@@ -282,13 +282,13 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       await dispatch(uploadDocument({ payload: image }))
         .unwrap()
         .then((res) => {
-          // console.log("Setting image", res)
+          console.log("Setting image", res)
           setValue("image", res?.url);
           data.image = res?.url;
         });
     }
 
-    // console.log("typeof data.popup_sound", typeof data.popup_sound, data.popup_sound);
+    console.log("typeof data.popup_sound", typeof data.popup_sound, data.popup_sound);
 
     if (typeof data.popup_sound === "object" && data.popup_sound && data.popup_sound) {
       const popup_sound = new FormData();
@@ -296,7 +296,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       await dispatch(uploadDocument({ payload: popup_sound }))
         .unwrap()
         .then((res) => {
-          // console.log("Setting popup_sound", res)
+          console.log("Setting popup_sound", res)
           setValue("popup_sound", res?.url);
           data.popup_sound = res?.url;
         });

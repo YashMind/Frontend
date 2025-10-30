@@ -304,7 +304,6 @@ export const ImageField = ({
   const [preview, setPreview] = useState<string>("/images/face2.webp");
   const fileInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    console.log("value", value)
 
     if (value && (value instanceof File || value instanceof Blob)) {
       const imageUrl = URL.createObjectURL(value);
