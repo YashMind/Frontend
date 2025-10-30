@@ -84,7 +84,7 @@ const ChatbotDashboardHeader = ({
   return (
     <nav
       className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${fix ? "fixed" : ""
-        } w-full z-90 ${announcements?.length > 0 ? "md:max-h-[12%] py-2" : "md:max-h-[8%] py-4"} `}
+        } w-full z-90 pt-2 ${announcements?.length > 0 ? "md:max-h-[12%] py-2" : "md:max-h-[8%] py-4"} `}
     >
       {/* 🔹 Main Navbar Content */}
       <div
@@ -199,11 +199,11 @@ const ChatbotDashboardHeader = ({
         <div className="hidden md:flex items-center space-x-3 md:space-x-4">
           {role &&
             [
-              "Super Admin",
-              "Billing Admin",
-              "Product Admin",
-              "Support Admin",
-            ].includes(role.replace(/^"(.*)"$/, "$1").trim()) && (
+              "super admin",
+              "billing admin",
+              "product admin",
+              "support admin",
+            ].includes(role.replace(/^"(.*)"$/, "$1").trim().toLowerCase()) && (
               <Link
                 href="/admin/overview"
                 className="bg-white p-2 px-4 rounded-full font-semibold text-sm hover:bg-gray-100 transition-colors"
@@ -218,12 +218,12 @@ const ChatbotDashboardHeader = ({
           >
             Upgrade Plan
           </Link>
-          <Link
+          {!pathname.includes('/chatbot-dashboard/main') && <Link
             href="/chatbot-dashboard/main"
             className="text-white bg-[#05BDFD] text-sm rounded-[18px] font-semibold hover:bg-[#04a9e0] px-3 py-2 md:px-4 transition-colors"
           >
             Dashboard
-          </Link>
+          </Link>}
 
           <div className="flex items-center space-x-2">
             <div className="relative inline-block text-left" ref={menuRef}>

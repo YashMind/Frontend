@@ -166,7 +166,7 @@ const ChatbotSidebar = ({
     return (
       <Link
         key={link.key}
-        href={`/chatbot-dashboard/${link.path}/${botId}`}
+        href={link.path == 'main' ? `/chatbot-dashboard/${link.path}` : `/chatbot-dashboard/${link.path}/${botId}`}
         onClick={() => setMobileMenuOpen(false)} // Close sidebar when a link is clicked
         className={`flex items-center gap-3 text-sm font-medium py-2 px-3 rounded-lg transition-all
           ${isActive
