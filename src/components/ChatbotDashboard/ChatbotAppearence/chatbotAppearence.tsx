@@ -93,6 +93,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
   });
 
   useEffect(() => {
+    console.log("CHATBOT SETTING CHANGED")
     if (chatbotSetting) {
       // Conditionally set each value if the property exists in chatbotSetting
       if (chatbotSetting?.title_value)
@@ -243,7 +244,10 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       toast.error("No changes to save. Please make some changes before saving.");
       return;
     }
-    console.log("chatbot settings", !!chatbotSetting)
+
+
+
+    console.log("chatbot appearace settings:", data)
     const action = chatbotSetting
       ? updateChatbotSettings
       : createChatbotSettings;
@@ -261,11 +265,23 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
     //   }
     // }
 
+    if (!data.chat_icon || (data.chat_icon as any instanceof FileList && data.chat_icon.length === 0)) {
+      data.chat_icon = "";
+    }
+    if (!data.image || (data.image as any instanceof FileList && data.image.length === 0)) {
+      data.image = "";
+    }
+
     console.log("typeof data.chat_icon", typeof data.chat_icon, data.chat_icon);
 
-    if (typeof data.chat_icon === "object" && data.chat_icon && data.chat_icon) {
+    if (typeof data.chat_icon === "object" && data.chat_icon) {
       const chatIcon = new FormData();
-      chatIcon.append("file", data.chat_icon);
+      if (data.chat_icon[0]) {
+        chatIcon.append("file", data.chat_icon[0]);
+      }
+      else {
+        chatIcon.append('file', data.chat_icon)
+      }
       await dispatch(uploadDocument({ payload: chatIcon }))
         .unwrap()
         .then((res) => {
@@ -376,6 +392,11 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
   };
 
 
+  console.log("CHAT ICON", watch('chat_icon'))
+  console.log("Image", watch('image'))
+  console.log("Popup sound", watch('popup_sound'))
+
+
   return (
     <div className="m-4">
       {" "}
@@ -451,7 +472,6 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
               <div className="flex flex-col gap-5 h-full">
                 <div className="basis-1/2 space-y-2">
 
-                  {JSON.stringify(watch('image'))}
                   <ImageField
                     label="Chatbot avatar"
                     name="image"
@@ -529,13 +549,13 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
 
             <SoundUploadField
               initialSound={watch('popup_sound') || null}
-              onSoundChange={(file) => setValue('popup_sound', file)}
+              onSoundChange={(file) => setValue('popup_sound', file as any)}
             />
 
             <div className="mt-[23] flex gap-3">
               <button
                 type="button"
-                onClick={(e: any) => handleResetAppearance(e)}
+                onClick={async (e: any) => await handleResetAppearance()}
                 className=" cursor-pointer bg-[#340555] text-white px-4 py-2 text-base  font-semibold rounded-[10px]"
               >
                 Reset Appearence

@@ -43,7 +43,6 @@ export interface IFormInput {
   submission_message_heading_lead_gen: string;
   sumbission_message_lead_gen: string;
   popup_sound: string;
-  chat_icon_url: string;
 }
 
 export type ImageFieldProps = {
@@ -331,11 +330,9 @@ export const ImageField = ({
       if (setValue) {
         setValue(name, file);
       }
-      if (fileInputRef.current) {
+      if (fileInputRef.current?.value) {
         fileInputRef.current.value = '';
       }
-
-
     }
   };
 
@@ -382,182 +379,6 @@ export const ImageField = ({
     </div>
   );
 };
-
-// interface SoundUploadFieldProps {
-//   initialSound?: File | string | null;
-//   onSoundChange?: (file: File | null) => void;
-// }
-
-// export const SoundUploadField = ({ initialSound = null, onSoundChange }: SoundUploadFieldProps) => {
-//   const [soundFile, setSoundFile] = useState<File | string | null>(initialSound);
-//   const [isPlaying, setIsPlaying] = useState(false);
-//   const [uploadProgress, setUploadProgress] = useState(0);
-//   const audioRef = useRef<HTMLAudioElement>(null);
-//   const fileInputRef = useRef<HTMLInputElement>(null);
-
-//   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-//     const files = e.target.files;
-//     if (!files || files.length === 0) return;
-
-//     const file = files[0];
-//     if (!file.type.match('audio.*')) {
-//       alert('Please select an audio file');
-//       return;
-//     }
-
-//     // Simulate upload progress
-//     let progress = 0;
-//     const interval = setInterval(() => {
-//       progress += 10;
-//       setUploadProgress(progress);
-//       if (progress >= 100) {
-//         clearInterval(interval);
-//         setSoundFile(file);
-//         if (onSoundChange) onSoundChange(file);
-//       }
-//     }, 100);
-//   };
-
-//   const handlePlayPause = () => {
-//     if (!soundFile || !audioRef.current) return;
-
-//     if (isPlaying) {
-//       audioRef.current.pause();
-//     } else {
-//       // Create object URL if needed
-//       if (typeof soundFile === 'string') {
-//         audioRef.current.src = soundFile;
-//       } else {
-//         audioRef.current.src = URL.createObjectURL(soundFile);
-//       }
-//       audioRef.current.play().catch(e => console.error('Playback failed:', e));
-//     }
-//     setIsPlaying(!isPlaying);
-//   };
-
-//   const handleReplaceSound = () => {
-//     if (fileInputRef.current) {
-//       fileInputRef.current.value = ''; // Reset to allow selecting same file again
-//       fileInputRef.current.click();
-//     }
-//   };
-
-//   const handleRemoveSound = () => {
-//     setSoundFile(null);
-//     if (onSoundChange) onSoundChange(null);
-//     if (isPlaying && audioRef.current) {
-//       audioRef.current.pause();
-//       setIsPlaying(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     const audio = audioRef.current;
-//     const handleEnded = () => setIsPlaying(false);
-
-//     if (audio) {
-//       audio.addEventListener('ended', handleEnded);
-//     }
-
-//     return () => {
-//       if (audio) {
-//         audio.removeEventListener('ended', handleEnded);
-//         // Clean up object URLs
-//         if (audio.src.startsWith('blob:')) {
-//           URL.revokeObjectURL(audio.src);
-//         }
-//       }
-//     };
-//   }, []);
-
-//   return (
-//     <div className="space-y-3 p-4 border border-gray-200 rounded-lg bg-white">
-//       <audio ref={audioRef} className="hidden" />
-
-//       <div className="flex items-center justify-between">
-//         <h3 className="font-medium text-gray-700">Notification Sound</h3>
-//         {soundFile && (
-//           <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full">
-//             {typeof soundFile === 'string' ? "Uploaded Sound" : soundFile.name}
-//           </span>
-//         )}
-//       </div>
-
-//       {uploadProgress > 0 && uploadProgress < 100 ? (
-//         <div className="w-full bg-gray-200 rounded-full h-2.5">
-//           <div
-//             className="bg-blue-600 h-2.5 rounded-full"
-//             style={{ width: `${uploadProgress}%` }}
-//           ></div>
-//         </div>
-//       ) : soundFile ? (
-//         <div className="flex items-center gap-3">
-//           <button
-//             type="button"
-//             onClick={handlePlayPause}
-//             className={`flex items-center justify-center w-10 h-10 rounded-full ${isPlaying ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'
-//               }`}
-//             aria-label={isPlaying ? 'Pause sound' : 'Play sound'}
-//           >
-//             {isPlaying ? (
-//               <IoPauseCircleOutline className="w-5 h-5" />
-//             ) : (
-//               <IoPlayCircleOutline className="w-5 h-5" />
-//             )}
-//           </button>
-
-//           <div className="flex-1 min-w-0">
-//             <p className="text-sm font-medium text-gray-700 truncate">
-//               {typeof soundFile === 'string' ? "Custom Sound" : soundFile.name}
-//             </p>
-//             <p className="text-xs text-gray-500">
-//               {typeof soundFile === 'string' ? "Ready" : `${(soundFile.size / 1024).toFixed(1)} KB`}
-//             </p>
-//           </div>
-
-//           <div className="flex gap-2">
-//             <button
-//               type="button"
-//               onClick={handleReplaceSound}
-//               className="text-sm text-blue-600 hover:text-blue-800"
-//             >
-//               Replace
-//             </button>
-//             <button
-//               type="button"
-//               onClick={handleRemoveSound}
-//               className="text-sm text-red-600 hover:text-red-800"
-//             >
-//               Remove
-//             </button>
-//           </div>
-//         </div>
-//       ) : (
-//         <div className="flex flex-col items-center justify-center py-6 border-2 border-dashed border-gray-300 rounded-lg">
-//           <FaUpload className="w-8 h-8 text-gray-400 mb-2" />
-//           <p className="text-sm text-gray-500 mb-2">No sound selected</p>
-//           <button
-//             type="button"
-//             onClick={() => fileInputRef.current?.click()}
-//             className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
-//           >
-//             Add Sound
-//           </button>
-//         </div>
-//       )}
-
-//       <input
-//         type="file"
-//         ref={fileInputRef}
-//         onChange={handleFileChange}
-//         accept="audio/*"
-//         className="hidden"
-//       />
-//     </div>
-//   );
-// };
-
-
 
 
 interface SoundUploadFieldProps {
