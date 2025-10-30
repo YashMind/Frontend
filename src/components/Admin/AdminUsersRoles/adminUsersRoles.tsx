@@ -10,7 +10,6 @@ import {
   getRolePermissions,
   updateUserByAdmin,
 } from "@/store/slices/admin/adminSlice";
-import { formatDistanceToNow } from "date-fns";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
@@ -19,7 +18,6 @@ import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
 import { FaUser } from "react-icons/fa";
 import EditPermissionModal from "@/components/EditPermissionsModal";
 import { getAllUsers } from "@/store/slices/admin/adminSlice";
-import moment from "moment";
 import { accessPoints } from "../AdminSidebar/adminSidebar";
 import { useTimezone } from "@/context/TimeZoneContext";
 import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
@@ -65,7 +63,7 @@ const AdminUsersRoles = () => {
       permissions: [],
     },
   ];
-  const { timezone, isLoading } = useTimezone();
+  const { timezone } = useTimezone();
   const today = new Date().toISOString().split("T")[0];
 
   const dispatch = useDispatch<AppDispatch>();

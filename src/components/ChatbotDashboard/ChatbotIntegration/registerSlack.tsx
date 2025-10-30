@@ -15,7 +15,6 @@ import {
     FiTrash2,
     FiX,
     FiRefreshCw,
-    FiExternalLink,
     FiCheckSquare,
 } from "react-icons/fi";
 import { FaSlack } from "react-icons/fa";
@@ -43,7 +42,6 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
     const [isConnecting, setIsConnecting] = useState(false);
     const [showClientSecret, setShowClientSecret] = useState(false);
     const [showSigningSecret, setShowSigningSecret] = useState(false);
-    const [redirectURI, setRedirectURI] = useState(null)
     const [activeManifestTab, setActiveManifestTab] = useState('yaml')
     const [expandedDoc, setExpandedDoc] = useState()
 
@@ -69,7 +67,7 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
 
                     setHasCredentials(true);
                 }
-            } catch (error) {
+            } catch (_error) {
                 setIsRegistered(false);
                 setHasCredentials(false);
             }
@@ -143,35 +141,6 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
         }
     };
 
-    const startOAuthFlow = async () => {
-        if (!formData.client_id) {
-            setError("Client ID is required to start OAuth");
-            return;
-        }
-
-        setIsConnecting(true);
-        try {
-            const redirectUrl = await dispatch(startSlackOAuth({
-                bot_id: botId,
-                client_id: formData.client_id
-            })).unwrap();
-
-
-
-            // if (redirectUrl) {
-            //     window.location.href = redirectUrl
-            //     // router.push(redirectUrl);
-            // }
-
-        } catch (e: any) {
-            console.error("OAuth initiation failed:", e);
-            toast.error(e || "Failed to start OAuth flow");
-            setError(e || "OAuth initiation failed");
-            setIsConnecting(false);
-        } finally {
-            setIsConnecting(false)
-        }
-    };
 
 
     return (

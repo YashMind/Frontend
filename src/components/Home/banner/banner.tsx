@@ -5,9 +5,10 @@ import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { getMeData, isLoggedin } from "@/store/slices/auth/authSlice";
+import { isLoggedin } from "@/store/slices/auth/authSlice";
 import { FaArrowRight } from "react-icons/fa";
 import Link from "next/link";
+import { UserProfileData } from "@/types/authType";
 
 const slideData = [
   {
@@ -37,7 +38,6 @@ const CTAButton = ({ link, children }: { link: string; children: React.ReactNode
 );
 
 const HomeBanner = () => {
-  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);

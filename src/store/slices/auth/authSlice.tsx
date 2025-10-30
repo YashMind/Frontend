@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
 import { getAdminUsers, getClientUsers } from "../admin/adminSlice";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { AdminSignUpForm, SignUpForm, UserProfileData } from "@/types/authType";
 
 const UserData = {
   id: 0,
@@ -109,7 +110,6 @@ export const signUpAdmin = createAsyncThunk<any, { payload: AdminSignUpForm }>(
 export const getMeData = createAsyncThunk<any, { router: AppRouterInstance, returnPath?: string }>(
   "auth/getMeData",
   async ({ router, returnPath }, { dispatch, rejectWithValue }) => {
-    console.log("With Return path")
     try {
       dispatch(startLoadingActivity());
       const response = await http.get("/auth/me");
@@ -156,7 +156,7 @@ export const isLoggedin = createAsyncThunk<any>(
       } else {
         return rejectWithValue("auth failed");
       }
-    } catch (error: any) {
+    } catch (_err) {
 
       return rejectWithValue("An error occurred during auth");
     } finally {
@@ -335,7 +335,7 @@ export const forgetPassword = createAsyncThunk(
 // Thunk for reset password
 export const resetPassword = createAsyncThunk(
   'password/resetPassword',
-  async ({ token, password }, { rejectWithValue }) => {
+  async ({ token, password }: { token: string, password: string }, { rejectWithValue }) => {
     try {
       const new_password = password;
       console.log(new_password)
@@ -357,6 +357,7 @@ const initialState: AuthState = {
   userData: UserData as UserProfileData,
   userDetails: {},
   recentSignups: null,
+  loggedInUser: null
 };
 
 const authSlice = createSlice({
@@ -372,7 +373,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.data = action?.payload?.data;
       })
-      .addCase(signUpUser.rejected, (state, action) => {
+      .addCase(signUpUser.rejected, (state) => {
         state.loading = false;
       })
 
@@ -383,17 +384,17 @@ const authSlice = createSlice({
         state.loading = false;
         state.userData = action.payload.data;
       })
-      .addCase(signInUser.rejected, (state, action) => {
+      .addCase(signInUser.rejected, (state) => {
         state.loading = false;
       })
       .addCase(logoutUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(logoutUser.fulfilled, (state, action) => {
+      .addCase(logoutUser.fulfilled, (state) => {
         state.loading = false;
         state.loggedInUser = null;
       })
-      .addCase(logoutUser.rejected, (state, action) => {
+      .addCase(logoutUser.rejected, (state) => {
         state.loading = false;
       })
 
@@ -416,7 +417,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.userData = action.payload.data || action.payload.user;
       })
-      .addCase(getMeData.rejected, (state, action) => {
+      .addCase(getMeData.rejected, (state) => {
         state.loading = false;
       })
       .addCase(isLoggedin.pending, (state) => {
@@ -426,7 +427,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.loggedInUser = action.payload.data || action.payload.user;
       })
-      .addCase(isLoggedin.rejected, (state, action) => {
+      .addCase(isLoggedin.rejected, (state,) => {
         state.loading = false;
       })
       .addCase(forgetPassword.pending, (state) => {
@@ -437,7 +438,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.data = action.payload;
       })
-      .addCase(forgetPassword.rejected, (state, action) => {
+      .addCase(forgetPassword.rejected, (state,) => {
         state.loading = false;
 
       })
@@ -451,7 +452,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.data = action.payload;
       })
-      .addCase(resetPassword.rejected, (state, action) => {
+      .addCase(resetPassword.rejected, (state,) => {
         state.loading = false;
       });
   },

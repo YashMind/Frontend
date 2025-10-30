@@ -14,7 +14,7 @@ interface TicketDetailProps {
 
 const TicketDetail = ({ ticketId, onClose }: TicketDetailProps) => {
     const dispatch = useDispatch<AppDispatch>();
-    const { currentTicket, loading, error } = useSelector((state: RootState) => state.tickets);
+    const { currentTicket, } = useSelector((state: RootState) => state.tickets);
     const [replyMessage, setReplyMessage] = useState('');
 
     useEffect(() => {

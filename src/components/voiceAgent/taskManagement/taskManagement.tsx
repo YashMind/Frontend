@@ -37,7 +37,7 @@ const TaskManagement = () => {
         <div className="w-full md:w-[40%] bg-[#0C0A30] p-6 md:p-[40px] rounded-[16px]">
           <h3 className="text-white text-2xl font-bold">24/7 Voice Support</h3>
           <p className="text-[#6F6C90] text-[16px] md:text-[17px] py-3">
-            Whether it's late night or early morning, Yashraa’s voice assistant
+            Whether it&apos;s late night or early morning, Yashraa’s voice assistant
             is always available. It offers consistent customer support, captures
             lead queries, and ensures users are never left unanswered.
           </p>

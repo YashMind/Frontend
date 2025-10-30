@@ -1,9 +1,7 @@
 "use client";
-import axios from "axios";
-import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter, useSearchParams } from "next/navigation";
 import http from "@/services/http/baseUrl";
-import toast from "react-hot-toast";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
 
 const LoginWithGoogle = () => {

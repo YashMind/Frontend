@@ -1,8 +1,8 @@
 'use client'
 import { sendEmail } from "@/store/slices/chats/chatSlice";
-import { AppDispatch, RootState } from "@/store/store";
+import { AppDispatch } from "@/store/store";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const ContactUs = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -63,7 +63,7 @@ const ContactUs = () => {
       recipients: ["support@yashraa.ai"] // Your support email
     };
 
-    dispatch(sendEmail(emailData)).unwrap().then((res) => {
+    dispatch(sendEmail(emailData)).unwrap().then(() => {
       setEmailState({
         loading: false,
         error: null,
@@ -89,7 +89,7 @@ const ContactUs = () => {
             Contact Us
           </h1>
           <p className="mt-3 text-xl text-gray-500">
-            We'd love to hear from you
+            We&apos;d love to hear from you
           </p>
         </div>
 
@@ -225,7 +225,7 @@ const ContactUs = () => {
             {/* Success message */}
             {emailState.success && (
               <div className="mb-6 p-4 bg-green-100 text-green-700 rounded">
-                Thank you for your message! We'll get back to you soon.
+                Thank you for your message! We&apos;ll get back to you soon.
               </div>
             )}
 

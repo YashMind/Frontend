@@ -14,7 +14,7 @@ interface PayPalPaymentResponse {
 
 export default function PayPalReturn() {
   const searchParams = useSearchParams();
-  const { isLoading, timezone } = useTimezone()
+  const { timezone } = useTimezone()
   const [status, setStatus] = useState('Verifying payment...');
   const [paymentDetails, setPaymentDetails] = useState<PayPalPaymentResponse | null>(null);
   const [error, setError] = useState<string | null>(null);

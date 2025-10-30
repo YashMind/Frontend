@@ -1,7 +1,6 @@
 // features/countries/countriesSlice.ts
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { CountriesResponse, CountriesState } from "../../../types/country";
+import { CountriesState } from "../../../types/country";
 import http from "@/services/http/baseUrl";
 
 const initialState: CountriesState = {

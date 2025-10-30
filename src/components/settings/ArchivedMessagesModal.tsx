@@ -19,11 +19,6 @@ interface ChatSession {
   messages: ChatMessage[];
 }
 
-interface ChatBot {
-  chatBotId: string;
-  chatBotName: string;
-  sessions: Record<string, ChatSession>;
-}
 
 interface ArchivedMessageModalProps {
   isOpen: boolean;

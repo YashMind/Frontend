@@ -18,7 +18,6 @@ interface SubscriptionPlan {
 
 const PriceSection = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
   const [selectedPlan, setSelectedPlan] = useState<string>("monthly");
 
   const { publicSubscriptionPlansData, loading, error } = useSelector(
@@ -112,8 +111,8 @@ const PriceSection = () => {
                   key={planType}
                   onClick={() => setSelectedPlan(planType)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedPlan === planType
-                      ? "bg-gradient-to-r from-[#501794] to-[#40659F] text-white"
-                      : "text-[#FFFFFFA1] hover:text-white"
+                    ? "bg-gradient-to-r from-[#501794] to-[#40659F] text-white"
+                    : "text-[#FFFFFFA1] hover:text-white"
                     }`}
                 >
                   {planType.endsWith("days")

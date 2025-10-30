@@ -9,6 +9,7 @@ import * as yup from "yup";
 import { useForm, Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
+import { ProfileForm } from "@/types/authType";
 
 
 const schema = yup.object().shape({
@@ -29,7 +30,7 @@ const schema = yup.object().shape({
     ),
 });
 const ProfileProducts = () => {
-  const router=useRouter()
+  const router = useRouter()
   const [edit, setEdit] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const { userData } = useSelector((state: RootState) => state.auth);
@@ -49,7 +50,7 @@ const ProfileProducts = () => {
   });
 
   useEffect(() => {
-    dispatch(getMeData({router}));
+    dispatch(getMeData({ router }));
     if (userData) {
       reset({
         fullName: userData.fullName || "",
@@ -59,7 +60,7 @@ const ProfileProducts = () => {
     }
   }, [reset, userData?.fullName]);
   const onSubmit = (data: ProfileForm) => {
-    dispatch(updateUserProfile({payload: data,router}))
+    dispatch(updateUserProfile({ payload: data, router }))
     reset();
   };
   return (

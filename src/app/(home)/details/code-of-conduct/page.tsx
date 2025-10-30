@@ -18,7 +18,7 @@ export default function CodeOfConduct() {
           {/* Introduction */}
           <section className="space-y-4">
             <p className="text-lg">
-              At YASHRAA, we're committed to fostering a responsible AI community. This Code of Conduct outlines the standards we expect all users to uphold when accessing our platform and services.
+              At YASHRAA, we&apos;re committed to fostering a responsible AI community. This Code of Conduct outlines the standards we expect all users to uphold when accessing our platform and services.
             </p>
             <div className="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-500">
               <p className="font-semibold text-indigo-700">

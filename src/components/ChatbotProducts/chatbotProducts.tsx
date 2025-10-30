@@ -6,7 +6,7 @@ import PreferenceProducts from "@/components/ChatbotProducts/PreferenceProducts/
 import HelpProducts from "@/components/ChatbotProducts/HelpProducts/helpProducts";
 import TeamProducts from "@/components/ChatbotProducts/TeamProducts/teamProducts";
 import SettingProducts from "@/components/ChatbotProducts/SettingProducts/settingProducts";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 
 import { AppDispatch } from "@/store/store";

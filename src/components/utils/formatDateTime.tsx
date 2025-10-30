@@ -2,7 +2,6 @@ import {
     formatDistanceToNowStrict,
     isAfter,
     subDays,
-    addMinutes,
     parseISO,
     isValid as isValidDate,
 } from 'date-fns';
@@ -62,16 +61,6 @@ export const getUserTimezone = async (): Promise<string> => {
     }
 };
 
-// Calculate offset in minutes between UTC and user's timezone
-const getTimezoneOffset = (date: Date, timeZone: string): number => {
-    try {
-        const utcDate = new Date(date.toISOString());
-        const tzDate = new Date(date.toLocaleString('en-US', { timeZone }));
-        return (utcDate.getTime() - tzDate.getTime()) / (1000 * 60);
-    } catch {
-        return 0;
-    }
-};
 
 // Synchronous formatting functions
 export const formatDate = (dateString: string, timeZone: string): string => {

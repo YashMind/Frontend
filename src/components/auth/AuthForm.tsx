@@ -11,23 +11,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import {
   signInUser,
   signUpUser,
-  forgetPassword,
 } from "@/store/slices/auth/authSlice";
 import LoginWithGoogle from "@/components/auth/LoginWithGoogle/loginWithGoogle";
 import Link from "next/link";
 import LoginWithFacebook from "@/components/auth/LoginWithFacebook/loginWithFacebook";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
-import { BsEye } from "react-icons/bs";
 import HomeHeader from "@/components/Common/header/header";
-interface SignInForm {
-  email: string;
-  password: string;
-}
+import { SignInForm, SignUpForm } from "@/types/authType";
 
-interface SignUpForm extends SignInForm {
-  fullName: string;
-  confirmPassword: string;
-}
+
 
 type AuthFormInput = {
   email: string;

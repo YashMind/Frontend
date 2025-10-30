@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { startLoadingActivity, stopLoadingActivity } from "../activity/activitySlice";
-import { toasterError, toasterSuccess } from "@/services/utils/toaster";
+import { toasterError } from "@/services/utils/toaster";
 import http from "@/services/http/baseUrl";
 
 export const getEnterpriseUsers = createAsyncThunk<

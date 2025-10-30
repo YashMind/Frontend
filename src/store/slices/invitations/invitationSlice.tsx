@@ -6,13 +6,6 @@ import {
 } from "../activity/activitySlice";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
 
-// Define types for invitation
-interface InvitationPayload {
-  chatbotId: number; // Frontend naming convention
-  userEmails: string[]; // Frontend naming convention
-}
-
-// The API payload will be transformed in the thunk
 
 interface InvitationState {
   loading: boolean;

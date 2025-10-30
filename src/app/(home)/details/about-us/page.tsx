@@ -29,7 +29,7 @@ export default function AboutUs() {
               We are a next-generation AI tools platform offering a wide range of subscription-based AI products and services — all under one roof.
             </p>
             <p className="mt-6 max-w-3xl text-xl text-gray-500 lg:mx-auto">
-              Our platform connects businesses, entrepreneurs, developers, and creators with cutting-edge AI technologies that drive innovation and efficiency. Whether you're looking to streamline operations, enhance customer experiences, or automate complex processes — YASHRAA has you covered.
+              Our platform connects businesses, entrepreneurs, developers, and creators with cutting-edge AI technologies that drive innovation and efficiency. Whether you&apos;re looking to streamline operations, enhance customer experiences, or automate complex processes — YASHRAA has you covered.
             </p>
           </div>
         </div>
@@ -206,7 +206,7 @@ export default function AboutUs() {
               <div className="bg-indigo-50 p-6 rounded-lg">
                 <h3 className="text-lg leading-6 font-medium text-gray-900">Our Vision</h3>
                 <p className="mt-2 text-base text-gray-500">
-                  To become the world's leading All-in-One AI Tools Platform — empowering every business with the tools to thrive in the AI-driven future.
+                  To become the world&apos;s leading All-in-One AI Tools Platform — empowering every business with the tools to thrive in the AI-driven future.
                 </p>
               </div>
             </div>

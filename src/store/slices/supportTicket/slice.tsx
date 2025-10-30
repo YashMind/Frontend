@@ -1,7 +1,6 @@
 import http from '@/services/http/baseUrl';
 import { EmailRequest, SupportTicket, TicketAssign, TicketCreateData, TicketsState, TicketStatusUpdate } from '@/types/supportTickets';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
 
 
 const initialState: TicketsState = {
@@ -225,7 +224,7 @@ const ticketsSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(sendTicketReply.fulfilled, (state, action) => {
+            .addCase(sendTicketReply.fulfilled, (state) => {
                 state.loading = false;
                 // You might want to update the ticket with the thread link here
             })

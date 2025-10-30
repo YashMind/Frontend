@@ -1,5 +1,5 @@
 // components/FacebookLoginButton.tsx
-import FacebookLogin, { ReactFacebookLoginInfo } from "react-facebook-login/dist/facebook-login-render-props";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { useRouter } from "next/navigation";
 import http from "@/services/http/baseUrl";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";

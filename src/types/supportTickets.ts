@@ -1,3 +1,5 @@
+import { UserProfileData } from "./authType";
+
 export interface SupportTicket {
     id: number;
     subject: string;

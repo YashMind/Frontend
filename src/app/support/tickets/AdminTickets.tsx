@@ -15,7 +15,7 @@ interface AdminTicketsProps {
 
 const AdminTickets = ({ onSelectTicket }: AdminTicketsProps) => {
     const dispatch = useDispatch<AppDispatch>();
-    const { isLoading, timezone } = useTimezone()
+    const { isLoading } = useTimezone()
     const { tickets, loading, error } = useSelector((state: RootState) => state.tickets);
 
     useEffect(() => {
@@ -95,7 +95,7 @@ const AdminTickets = ({ onSelectTicket }: AdminTicketsProps) => {
                                     {ticket.user?.fullName || 'No user assigned'}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-{!isLoading ? format(new Date(ticket.created_at), "dd MMM yyyy 'at' hh:mm a") : "-"}
+                                    {!isLoading ? format(new Date(ticket.created_at), "dd MMM yyyy 'at' hh:mm a") : "-"}
                                 </td>
                             </tr>
                         ))}

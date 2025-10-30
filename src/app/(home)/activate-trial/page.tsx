@@ -163,7 +163,7 @@ const TrialActivationPage = () => {
 
           <div className="bg-purple-900 bg-opacity-30 rounded-lg p-4 mb-6 border border-purple-400">
             <p className="text-white text-center">
-              After 7 days, you'll need to choose a plan to continue using our
+              After 7 days, you&apos;ll need to choose a plan to continue using our
               services.
             </p>
           </div>
@@ -212,7 +212,7 @@ const TrialActivationPage = () => {
           </button>
 
           <p className="mt-4 text-center text-gray-300 text-sm">
-            By clicking "Activate Free Trial", you agree to our{" "}
+            By clicking &quot;Activate Free Trial&quot;, you agree to our{" "}
             <a href="/terms" className="text-purple-300 hover:underline">
               Terms of Service
             </a>
@@ -241,7 +241,7 @@ const TrialActivationPage = () => {
           >
             Contact Us
           </h1>
-          <p className="mt-3 text-xl text-white">We'd love to hear from you</p>
+          <p className="mt-3 text-xl text-white">We&apos;d love to hear from you</p>
         </div>
 
         {/* Contact Information */}

@@ -1,7 +1,6 @@
 // promptsSlice.ts
 import http from "@/services/http/baseUrl";
-import { RootState } from "@/store/store";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 interface PromptState {
   promptsByBotId: { [botId: number]: InstructionPrompt[] };

@@ -3,14 +3,13 @@ interface MetricDetailsModalProps {
   metricLabel: string;
   metricValue: number;
   onClose: () => void;
-  children?: React.ReactNode; 
-  count:any
+  children?: React.ReactNode;
+  count: any
 }
 
 const MetricDetailsModal = ({
   isOpen,
   metricLabel,
-  metricValue,
   onClose,
   children,
   count

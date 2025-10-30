@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import {
   conversationMessage,
-  createChatsId,
   createChatsIdToken,
   deleteChatsMessagesToken,
 } from "@/store/slices/chats/chatSlice";
@@ -22,6 +21,7 @@ import MicrophoneRecorder from "../ChatbotDashboard/ChatbotOverview/chatbotSecti
 import { isLoggedin } from "@/store/slices/auth/authSlice";
 import toast from "react-hot-toast";
 import { redirect } from "next/navigation";
+import { UserProfileData } from "@/types/authType";
 
 const schema = yup.object().shape({
   message: yup.string().required("Message is required"),

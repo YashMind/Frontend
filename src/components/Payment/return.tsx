@@ -7,7 +7,7 @@ import { useTimezone } from '@/context/TimeZoneContext';
 
 export default function PaymentReturn() {
   const router = useRouter();
-  const { isLoading, timezone } = useTimezone()
+  const { timezone } = useTimezone()
   const [status, setStatus] = useState('Verifying payment...');
   const [orderDetails, setOrderDetails] = useState<PaymentVerificationResponse | null>(null);
   const [error, setError] = useState<string | null>(null);

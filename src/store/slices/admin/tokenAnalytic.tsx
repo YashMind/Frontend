@@ -3,7 +3,6 @@
 import http from '@/services/http/baseUrl';
 import { AdminTokenCreditReport, AdminTransactionsType, UserCreditsAndTokenUsageResponse } from '@/types/adminType';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
 
 type TokenCreditState = {
     user: {

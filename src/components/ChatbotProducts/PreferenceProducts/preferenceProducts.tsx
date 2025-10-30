@@ -3,6 +3,7 @@ import React from "react";
 import * as yup from "yup";
 import { useForm, Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { PreferenceForm } from "@/types/authType";
 
 const schema = yup.object().shape({
   preferedAiModel: yup.string().required("Prefered ai model is required field"),
@@ -19,7 +20,7 @@ const PreferenceProducts = () => {
     resolver: yupResolver(schema) as Resolver<PreferenceForm>,
   });
 
-  const onSubmit = (data: PreferenceForm) => {
+  const onSubmit = () => {
     reset();
   };
   return (
@@ -68,7 +69,7 @@ const PreferenceProducts = () => {
             </span>
           </label>
           <p className="text-xs font-light mt-[8px]">
-            Use your previous conversation's model for new chats.
+            Use your previous conversation&apos;s model for new chats.
           </p>
 
           <button

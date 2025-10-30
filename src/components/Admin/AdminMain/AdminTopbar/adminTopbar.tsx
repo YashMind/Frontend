@@ -6,13 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaUser, FaPlusCircle, FaStar } from "react-icons/fa";
 import { TiEye } from "react-icons/ti";
 import { GoArrowUpRight } from "react-icons/go";
-import { HiArrowDownRight } from "react-icons/hi2";
 import MetricDetailsModal from "@/components/DetailsModal";
 import { getRecentSignups } from "@/store/slices/auth/authSlice";
 import { useRouter } from "next/navigation";
 import { useTimezone } from "@/context/TimeZoneContext";
 import { formatDate } from "@/components/utils/formatDateTime";
 import { AdminAllUsers } from "@/types/adminType";
+import { UserProfileData } from "@/types/authType";
 
 interface AdminTopbarProps {
   allUsersData: AdminAllUsers;
@@ -30,7 +30,7 @@ interface MetricCardProps {
   openDropdownIndex: number | null;
   toggleDropdown: (index: number) => void;
   onMoreDetails: () => void;
-  route?: string; 
+  route?: string;
 
 }
 
@@ -44,7 +44,6 @@ const MetricCard = ({
   borderColor,
   index,
   openDropdownIndex,
-  toggleDropdown,
   onMoreDetails,
   route
 }: MetricCardProps) => {
@@ -57,7 +56,7 @@ const MetricCard = ({
   };
 
   return (
-    <div 
+    <div
       className={`relative bg-[#0B1739] p-4 rounded-lg shadow-md border border-[#343B4F] ${route ? 'cursor-pointer hover:border-[#4a5568]' : ''}`}
       onClick={route ? handleCardClick : undefined}
     >
@@ -78,7 +77,7 @@ const MetricCard = ({
 
       <div className="flex items-center gap-2">
         <div className="text-2xl font-semibold">{value.toLocaleString()}</div>
-       {changeIcon && <div
+        {changeIcon && <div
           className="text-sm flex items-center px-[4px] py-[2px] rounded-[2px]"
           style={{
             color: changeColor,
@@ -88,7 +87,7 @@ const MetricCard = ({
         >
           {changeIcon}
         </div>
-}
+        }
       </div>
     </div>
   );
@@ -135,7 +134,7 @@ const AdminTopbar = ({ allUsersData }: AdminTopbarProps) => {
       changeColor: "#14CA74",
       bgColor: "#05C16833",
       borderColor: "#05C16833",
-      route:"/admin/users-management",
+      route: "/admin/users-management",
     },
     // {
     //   label: "Total Tokens Consumed",
@@ -154,7 +153,7 @@ const AdminTopbar = ({ allUsersData }: AdminTopbarProps) => {
       changeColor: "#14CA74", // Changed to green
       bgColor: "#05C16833", // Changed to green background
       borderColor: "#05C16833", // Changed to green border
-      route:"/admin/token-analytics"
+      route: "/admin/token-analytics"
     },
     {
       label: "New sign ups",

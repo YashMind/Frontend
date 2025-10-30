@@ -6,11 +6,11 @@ import { fetchCountryNames } from "@/store/slices/auth/country";
 import GraphChart from "./GraphChart";
 import UserByPlanGaph from "./UserByPlanGaph";
 import { AppDispatch } from "@/store/store";
-import { formatDateOrTimeAgo, formatDateTimeWithTz } from "@/components/utils/formatDateTime";
+import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
 import { useTimezone } from "@/context/TimeZoneContext";
 
 const AdminMain = () => {
-  const { timezone, isLoading } = useTimezone();
+  const { timezone, } = useTimezone();
   const dispatch = useDispatch<AppDispatch>();
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(100);
@@ -25,19 +25,14 @@ const AdminMain = () => {
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const tokenCredit = useSelector((state: RootState) => state.tokenCredit);
   const transactionsState = useSelector(
     (state: RootState) => state.tokens.transactions
   );
   const transactionsData = transactionsState?.data;
 
   const transactions = transactionsData?.transactions || [];
-  const revenueByCurrency = transactionsData?.revenue_by_currency || {
-    INR: 0,
-    USD: 0,
-  };
+
   const transactionLoading = transactionsState?.loading || false;
-  const transactionError = transactionsState?.error;
   const pagination = transactionsData?.pagination || {};
 
   const countryState = useSelector((state: RootState) => state.countries);
@@ -126,20 +121,11 @@ const AdminMain = () => {
         style: "currency",
         currency,
       }).format(amount);
-    } catch (e) {
+    } catch (_err) {
       return `${currency} ${new Intl.NumberFormat("en-US").format(amount)}`;
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
 
   const getStatusBadge = (status: string) => {
     const statusLower = status.toLowerCase();

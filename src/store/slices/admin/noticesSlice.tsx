@@ -1,6 +1,5 @@
 import http from "@/services/http/baseUrl";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
 
 export interface Notice {
     id: number;
@@ -38,7 +37,6 @@ const initialState: NoticeState = {
     selectedNotice: null,
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001"; // adjust your backend port
 
 // 🟢 CREATE
 export const createNotice = createAsyncThunk(

@@ -21,7 +21,7 @@ export default function Disclaimer() {
             <h2 className="text-2xl font-bold text-indigo-700">Disclaimer</h2>
             <p className="text-lg">
               The services and content provided by YASHRAA are for informational
-              and operational purposes only and are provided "as is," without
+              and operational purposes only and are provided &quot;as is,&quot; without
               warranty of any kind, express or implied.
             </p>
 

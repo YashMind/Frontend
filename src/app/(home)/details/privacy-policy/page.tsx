@@ -210,8 +210,8 @@ export default function PrivacyPolicy() {
               <li>The right to access the personal data we hold about you</li>
               <li>The right to correct inaccurate or incomplete data</li>
               <li>
-                The right to request deletion of your data ("right to be
-                forgotten")
+                The right to request deletion of your data (&quot;right to be
+                forgotten&quot;)
               </li>
               <li>The right to object to or restrict processing</li>
               <li>The right to data portability</li>
@@ -248,7 +248,7 @@ export default function PrivacyPolicy() {
           {/* Section 10 */}
           <section className="space-y-4">
             <h2 className="text-2xl font-bold text-indigo-700">
-              10. Children's Privacy
+              10. Children&apos;s Privacy
             </h2>
             <p>
               Our services are not intended for individuals under the age of 18.

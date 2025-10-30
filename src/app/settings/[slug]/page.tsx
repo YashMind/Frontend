@@ -1,9 +1,8 @@
 import Link from "next/link";
 import React from "react";
-import { IoIosPeople, IoIosStar } from "react-icons/io";
+import { IoIosPeople } from "react-icons/io";
 import { IoPerson } from "react-icons/io5";
 import { BsQuestionCircleFill } from "react-icons/bs";
-import { FaGear } from "react-icons/fa6";
 import ProfileSettings from "@/components/settings/profile";
 import HelpAndSupport from "@/components/settings/helpAndSupport";
 import ChatbotDashboardHeader from "@/components/ChatbotDashboard/ChatbotHeader/chatbotHeader";

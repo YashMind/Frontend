@@ -19,7 +19,6 @@ interface PayPalOrderResponse {
 }
 
 export default function PayPalPayment() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [responseData, setResponseData] = useState<PayPalOrderResponse | null>(null);

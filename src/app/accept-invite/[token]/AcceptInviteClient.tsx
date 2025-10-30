@@ -8,7 +8,6 @@ import { acceptInvitation } from "@/store/slices/invitations/invitationSlice";
 import Link from "next/link";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
 import { getMeData } from "@/store/slices/auth/authSlice";
-import http from "@/services/http/baseUrl";
 
 interface AcceptInviteClientProps {
   token: string;
@@ -22,7 +21,7 @@ export default function AcceptInviteClient({ token }: AcceptInviteClientProps) {
   const error = useSelector((state: RootState) => state.invitations.error);
   const success = useSelector((state: RootState) => state.invitations.success);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [inviteDetails, setInviteDetails] = useState<any>(null);
+  const [_inviteDetails, setInviteDetails] = useState<any>(null);
 
   // Check if user is authenticated
   useEffect(() => {
@@ -31,7 +30,7 @@ export default function AcceptInviteClient({ token }: AcceptInviteClientProps) {
         dispatch(getMeData({ router })).unwrap().then((res) => {
           setIsAuthenticated(res.status == 200);
         }).catch((err) => { throw new Error(err) });
-      } catch (error) {
+      } catch (_error) {
         setIsAuthenticated(false);
       }
     };

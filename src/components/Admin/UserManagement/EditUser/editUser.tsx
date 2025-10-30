@@ -3,6 +3,7 @@ import {
   updateUserByAdmin,
 } from "@/store/slices/admin/adminSlice";
 import { AppDispatch } from "@/store/store";
+import { AdminUpdateUser } from "@/types/authType";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";

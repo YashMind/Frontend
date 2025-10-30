@@ -1,5 +1,4 @@
 "use client";
-import HistoryBackButton from "@/components/utils/historyBackButton";
 import { changePassword, getMeData, updateUserProfile } from "@/store/slices/auth/authSlice";
 import {
   fetchChatMessageTokens,
@@ -12,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import ChangePasswordModal from "./changePasswordModel";
+import { UserProfileData } from "@/types/authType";
 
 const ProfileSettings = () => {
   const router = useRouter();
@@ -219,7 +219,7 @@ const ProfileSettings = () => {
                       }));
 
                       // Optional: Create preview URL (only for UI display)
-                      const previewUrl = URL.createObjectURL(file);
+                      // const previewUrl = URL.createObjectURL(file);
                       // You might want to store this in a separate state if needed for preview
                     }
                   }}

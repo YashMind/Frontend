@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getMeData, logoutUser } from "@/store/slices/auth/authSlice";
+import { logoutUser } from "@/store/slices/auth/authSlice";
 import { AppDispatch } from "@/store/store";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";

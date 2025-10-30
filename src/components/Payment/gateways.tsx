@@ -7,6 +7,7 @@ import {
   createPaymentOrderRazorPay,
 } from "@/store/slices/payments/slice";
 import { AppDispatch, RootState } from "@/store/store";
+import { UserProfileData } from "@/types/authType";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 import React, { useEffect, useState } from "react";
@@ -39,7 +40,7 @@ const Gateways = ({
   const [selectedGateway, setSelectedGateway] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [cashfreeLoaded, setCashfreeLoaded] = useState(false);
-  const [razorpayLoaded, setrazorpayLoaded] = useState(false);
+  const [_razorpayLoaded, setrazorpayLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
 
@@ -179,7 +180,7 @@ const Gateways = ({
         const res = await dispatch(
           createPaymentOrderRazorPay(payload)
         ).unwrap();
-        response = res;
+        _response = res;
 
         if (res.razorpay_order_id) {
           await openRazorpayCheckout(res);

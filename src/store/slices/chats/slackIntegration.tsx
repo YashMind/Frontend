@@ -1,6 +1,5 @@
 // slackThunks.ts
 import http from '@/services/http/baseUrl';
-import { RootState } from '@/store/store';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 
@@ -164,7 +163,7 @@ const slackSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(registerSlackCredentials.fulfilled, (state, action) => {
+            .addCase(registerSlackCredentials.fulfilled, (state) => {
                 state.loading = false;
             })
             .addCase(registerSlackCredentials.rejected, (state, action) => {
@@ -191,7 +190,7 @@ const slackSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(updateSlackCredentials.fulfilled, (state, action) => {
+            .addCase(updateSlackCredentials.fulfilled, (state) => {
                 state.loading = false;
 
             })
@@ -205,7 +204,7 @@ const slackSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(deleteSlackInstallation.fulfilled, (state, action) => {
+            .addCase(deleteSlackInstallation.fulfilled, (state) => {
                 state.loading = false;
 
             })

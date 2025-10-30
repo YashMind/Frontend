@@ -3,11 +3,9 @@ import "./style.css";
 import HomeBanner from "@/components/Home/banner/banner";
 import HomeProducts from "@/components/Home/products/products";
 import ChatbotSection from "@/components/Home/chatbotSection/chatbotSection";
-import ChatLLM from "@/components/Home/chatLLM/chatLLM";
 import PriceSection from "@/components/Home/priceSection/priceSection";
 import Testimonials from "@/components/Home/testimonials/testimonials";
 import FaqSection from "@/components/Home/faqSection/faqSection";
-import VoiceAgent from "@/components/Home/voiceAgent/voiceAgent";
 
 const HomePage = () => {
   return (

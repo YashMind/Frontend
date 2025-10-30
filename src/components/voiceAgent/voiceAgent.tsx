@@ -4,7 +4,6 @@ import VoiceCompanion from "./voiceCompanion/voiceCompanion";
 import TaskManagement from "./taskManagement/taskManagement";
 import HowWorks from "./howWorks/howWorks";
 import AppsSection from "./appsSection/appsSection";
-import Faqs from "./faqs/faqs";
 import SubFooter from "./subFooter/subFooter";
 
 const VoiceAgent = () => {

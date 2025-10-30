@@ -190,7 +190,7 @@ const HomeFooter = () => {
               <p>
                 Have questions or need assistance?
                 <br />
-                We're here to help.
+                We&apos;re here to help.
                 <br />
                 Reach out to our team for support or inquiries.
               </p>

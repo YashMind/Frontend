@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import {
   deleteChatbotLeads,
   getChatbotsLeadMessages,
@@ -7,10 +6,8 @@ import {
 } from "@/store/slices/chats/chatSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { formatDistanceToNow } from "date-fns";
 import { FaEye } from "react-icons/fa6";
 import ViewLeadChatModal from "./viewLeadChats/viewLeadChats";
-import { ChatbotLeadsArray } from "@/types/chatTypes";
 import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
 import { useTimezone } from "@/context/TimeZoneContext";
 import ConfigureMailDialog from "./configureMailDialog";

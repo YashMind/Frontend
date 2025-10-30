@@ -22,20 +22,21 @@ import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
 import { formatName } from "@/services/utils/helpers";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
 import './sidebar.css';
-const menuItems = [
-  { label: "Dashboard", path: "/admin/dashboard", icon: <RiDashboardHorizontalFill size={25} />, key: "dashboard" },
-  { label: "Overview", path: "/admin/overview", icon: <GrOverview size={25} />, key: "overview" },
-  { label: "client management", path: "/admin/users-management", icon: <HiUsers size={25} />, key: "users-management" },
-  { label: "Subscription Plans", path: "/admin/subscription-plans", icon: <MdOutlineSubscriptions size={25} />, key: "subscription-plans" },
-  { label: "Message Analytics", path: "/admin/token-analytics", icon: <IoAnalyticsSharp size={25} />, key: "token-analytics" },
-  { label: "Product Monitoring", path: "/admin/product-monitoring", icon: <FaWatchmanMonitoring size={25} />, key: "product-monitoring" },
-  { label: "Logs & Activity", path: "/admin/logs-activity", icon: <LuActivity size={25} />, key: "logs-activity" },
-  { label: "Enterprise Clients", path: "/admin/enterprise-clients", icon: <SiEnterprisedb size={25} />, key: "enterprise-clients" },
-  { label: "Billing Settings", path: "/admin/billing-settings", icon: <MdSettingsAccessibility size={25} />, key: "billing-settings" },
-  { label: "Admin Users & Roles", path: "/admin/users-roles", icon: <FaUsers size={25} />, key: "users-roles" },
-  { label: "Support & Communication", path: "/admin/support-communication", icon: <GiSatelliteCommunication size={25} />, key: "support-communication" },
-  { label: "Pricing", path: "/admin/pricing", icon: <IoMdPricetags size={25} />, key: "pricing", hasArrow: true },
-];
+import { UserProfileData } from "@/types/authType";
+// const menuItems = [
+//   { label: "Dashboard", path: "/admin/dashboard", icon: <RiDashboardHorizontalFill size={25} />, key: "dashboard" },
+//   { label: "Overview", path: "/admin/overview", icon: <GrOverview size={25} />, key: "overview" },
+//   { label: "client management", path: "/admin/users-management", icon: <HiUsers size={25} />, key: "users-management" },
+//   { label: "Subscription Plans", path: "/admin/subscription-plans", icon: <MdOutlineSubscriptions size={25} />, key: "subscription-plans" },
+//   { label: "Message Analytics", path: "/admin/token-analytics", icon: <IoAnalyticsSharp size={25} />, key: "token-analytics" },
+//   { label: "Product Monitoring", path: "/admin/product-monitoring", icon: <FaWatchmanMonitoring size={25} />, key: "product-monitoring" },
+//   { label: "Logs & Activity", path: "/admin/logs-activity", icon: <LuActivity size={25} />, key: "logs-activity" },
+//   { label: "Enterprise Clients", path: "/admin/enterprise-clients", icon: <SiEnterprisedb size={25} />, key: "enterprise-clients" },
+//   { label: "Billing Settings", path: "/admin/billing-settings", icon: <MdSettingsAccessibility size={25} />, key: "billing-settings" },
+//   { label: "Admin Users & Roles", path: "/admin/users-roles", icon: <FaUsers size={25} />, key: "users-roles" },
+//   { label: "Support & Communication", path: "/admin/support-communication", icon: <GiSatelliteCommunication size={25} />, key: "support-communication" },
+//   { label: "Pricing", path: "/admin/pricing", icon: <IoMdPricetags size={25} />, key: "pricing", hasArrow: true },
+// ];
 
 export const accessPoints = [
   {

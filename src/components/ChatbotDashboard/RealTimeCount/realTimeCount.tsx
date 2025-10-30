@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
   FaComments,
-  FaMicrophoneAlt,
-  FaRobot,
   FaWallet,
   FaBalanceScale,
-  FaExclamationTriangle,
-  FaTimes,
 } from "react-icons/fa";
 import StatCard from "./StatCard";
 import { AppDispatch, RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchChatMessageTokens } from "@/store/slices/chats/chatSlice";
-import { useRouter } from "next/navigation";
 import AddCreditModal from "./addCreditModal";
 
 export default function RealTimeCount() {

@@ -1080,21 +1080,6 @@ export const registerWhatsappPhoneNumber = createAsyncThunk(
   }
 );
 
-interface WhatsAppRegistration {
-  whatsapp_number: string;
-  phone_number_id: string;
-  business_account_id: string;
-  is_active: boolean;
-  opt_in_date: string;
-}
-
-interface WhatsAppUpdateData {
-  access_token?: string;
-  phone_number_id?: string;
-  business_account_id?: string;
-  webhook_secret?: string;
-  is_active?: boolean;
-}
 
 export const fetchWhatsappRegistration = createAsyncThunk(
   "integration/fetchWhatsappRegistration",
@@ -1253,7 +1238,7 @@ const chatSlice = createSlice({
         state.loading = false;
         state.botData = action?.payload?.data;
       })
-      .addCase(createChatbot.rejected, (state, action) => {
+      .addCase(createChatbot.rejected, (state) => {
         state.loading = false;
       })
 
@@ -1276,7 +1261,7 @@ const chatSlice = createSlice({
         state.loading = false;
         state.chatbotData = action?.payload;
       })
-      .addCase(getSingleChatbot.rejected, (state, action) => {
+      .addCase(getSingleChatbot.rejected, (state) => {
         state.loading = false;
       })
 
@@ -1287,7 +1272,7 @@ const chatSlice = createSlice({
         state.loading = false;
         state.chatIdData = action?.payload;
       })
-      .addCase(createChatsId.rejected, (state, action) => {
+      .addCase(createChatsId.rejected, (state) => {
         state.loading = false;
       })
 
@@ -1298,7 +1283,7 @@ const chatSlice = createSlice({
         state.loading = false;
         state.chatIdData = action?.payload;
       })
-      .addCase(createChatsIdToken.rejected, (state, action) => {
+      .addCase(createChatsIdToken.rejected, (state) => {
         state.loading = false;
       })
 
@@ -1309,7 +1294,7 @@ const chatSlice = createSlice({
         state.loading = false;
         state.chatMessages = action?.payload;
       })
-      .addCase(getChatbotsMessages.rejected, (state, action) => {
+      .addCase(getChatbotsMessages.rejected, (state) => {
         state.loading = false;
       })
 
@@ -1324,7 +1309,7 @@ const chatSlice = createSlice({
         state.loading = false;
         state.chatbotHistory = action?.payload;
       })
-      .addCase(getChatbotsUserHistory.rejected, (state, action) => {
+      .addCase(getChatbotsUserHistory.rejected, (state) => {
         state.loading = false;
       })
 
@@ -1335,7 +1320,7 @@ const chatSlice = createSlice({
         state.loading = false;
         state.chatbotFaqs = action?.payload;
       })
-      .addCase(getChatbotsFaqs.rejected, (state, action) => {
+      .addCase(getChatbotsFaqs.rejected, (state) => {
         state.loading = false;
       })
       .addCase(getChatbotsDocLinks.pending, (state) => {
@@ -1345,7 +1330,7 @@ const chatSlice = createSlice({
         state.loading = false;
         state.ChatbotDocLinksData = action?.payload;
       })
-      .addCase(getChatbotsDocLinks.rejected, (state, action) => {
+      .addCase(getChatbotsDocLinks.rejected, (state) => {
         state.loading = false;
       })
 
@@ -1356,7 +1341,7 @@ const chatSlice = createSlice({
         state.loading = false;
         state.chatbotLeadsData = action?.payload;
       })
-      .addCase(getChatbotsLeads.rejected, (state, action) => {
+      .addCase(getChatbotsLeads.rejected, (state) => {
         state.loading = false;
       })
 
@@ -1367,7 +1352,7 @@ const chatSlice = createSlice({
         state.loading = false;
         state.chatbotLeadMessages = action?.payload;
       })
-      .addCase(getChatbotsLeadMessages.rejected, (state, action) => {
+      .addCase(getChatbotsLeadMessages.rejected, (state) => {
         state.loading = false;
       })
       .addCase(fetchChatMessageTokens.pending, (state) => {

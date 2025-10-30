@@ -5,7 +5,6 @@ import { FaUser } from "react-icons/fa";
 import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 import React, { useEffect, useState, useRef } from "react";
 import { getMeData, logoutUser } from "@/store/slices/auth/authSlice";
 import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";

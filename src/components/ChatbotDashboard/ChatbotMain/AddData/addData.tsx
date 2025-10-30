@@ -5,14 +5,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { useForm, Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
-  createChatbot,
   createChatbotDocLinks,
-  updateChatbot,
   uploadDocument,
 } from "@/store/slices/chats/chatSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import toast from "react-hot-toast";
 import { ChatbotDocLinksData, UpdateChatbotData } from "@/types/chatTypes";
 import { toasterError } from "@/services/utils/toaster";
 

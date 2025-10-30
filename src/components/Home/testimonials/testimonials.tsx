@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import "./testimonial.css";
-import Image from "next/image";
 import { RiDoubleQuotesL } from "react-icons/ri";
 const Testimonials = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -30,7 +29,6 @@ const Testimonials = () => {
     },
   });
 
-  const slideCount = instanceRef.current?.track.details.slides.length || 0;
 
   const testimonials = [
     {
@@ -190,8 +188,8 @@ const Testimonials = () => {
                     index === currentSlide % testimonials.length;
                   const isSecondSlide =
                     index === (currentSlide + 1) % testimonials.length;
-                  const isThirdSlide =
-                    index === (currentSlide + 2) % testimonials.length;
+                  // const isThirdSlide =
+                  // index === (currentSlide + 2) % testimonials.length;
                   return (
                     <div
                       key={index}

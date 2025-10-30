@@ -23,7 +23,7 @@ const VoiceAgentBanner = () => {
               priority
             />
           </div>
-          
+
           {/* Content */}
           <h1
             className="text-transparent bg-[linear-gradient(90deg,_#271F6A_-3.02%,_#FFFFFF_47.85%,_#261E6C_102.96%)] bg-clip-text text-[36px] md:text-[74px] max-w-7xl mx-auto"
@@ -33,7 +33,7 @@ const VoiceAgentBanner = () => {
           </h1>
 
           <p className="[font-family:'Roboto_Flex',sans-serif] font-semibold text-white text-base md:text-base my-[20px] md:my-[41px] w-full md:w-[556px] md:mx-auto">
-            We're building something extraordinary! Our advanced AI voice agent is under development and will be launching soon with groundbreaking features.
+            We&apos;re building something extraordinary! Our advanced AI voice agent is under development and will be launching soon with groundbreaking features.
           </p>
 
           <button

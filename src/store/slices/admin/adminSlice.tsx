@@ -10,6 +10,7 @@ import { AdminAllUsers, AdminLogsActivity, UserData, ClientLogsActivity, Payment
 import { getAllSubscriptionPlans, getPublicSubscriptionPlans, createSubscriptionPlan, deleteSubscriptionsPlan, getSubscriptionPlan, toggleSubscriptionPlanStatus, } from "./subscriptionPlanThunk";
 import { getAllPaymentGateway, AddUpdatePaymentGateway } from "./paymentGatewayThunks";
 import { getEnterpriseUsers } from "./enterpriseThunks";
+import { UserProfileData } from "@/types/authType";
 
 export const getAllUsers = createAsyncThunk<
   any,
@@ -278,7 +279,7 @@ export const getAdminsLogsActivity = createAsyncThunk<
       } else {
         return rejectWithValue("Failed to fetch activity logs");
       }
-    } catch (error: any) {
+    } catch (_error: any) {
       return rejectWithValue("An error occurred while fetching activity logs");
     } finally {
       dispatch(stopLoadingActivity());
@@ -541,7 +542,7 @@ export const updateBotProductStatus = createAsyncThunk<
   }
 );
 
-export const getAllBotProducts = createAsyncThunk<any, {}>(
+export const getAllBotProducts = createAsyncThunk<any>(
   "admin/getAllBotProducts",
   async (_, { dispatch, rejectWithValue }) => {
     try {
@@ -773,7 +774,7 @@ const adminSlice = createSlice({
         state.data = action.payload?.data || []; // assuming response = { success, message, data }
         state.loading = false;
       })
-      .addCase(getAllVolumnDiscounts.rejected, (state, action) => {
+      .addCase(getAllVolumnDiscounts.rejected, (state) => {
         state.loading = false;
       })
       .addCase(getAllUsers.pending, (state) => {
@@ -783,7 +784,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.allUsersData = action?.payload;
       })
-      .addCase(getAllUsers.rejected, (state, action) => {
+      .addCase(getAllUsers.rejected, (state) => {
         state.loading = false;
       })
 
@@ -794,7 +795,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.subscriptionPlansData = action?.payload;
       })
-      .addCase(getAllSubscriptionPlans.rejected, (state, action) => {
+      .addCase(getAllSubscriptionPlans.rejected, (state) => {
         state.loading = false;
       })
       .addCase(getPublicSubscriptionPlans.pending, (state) => {
@@ -804,7 +805,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.publicSubscriptionPlansData = action?.payload;
       })
-      .addCase(getPublicSubscriptionPlans.rejected, (state, action) => {
+      .addCase(getPublicSubscriptionPlans.rejected, (state) => {
         state.loading = false;
       })
 
@@ -815,7 +816,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.toolsData = action?.payload.data;
       })
-      .addCase(getAllTools.rejected, (state, action) => {
+      .addCase(getAllTools.rejected, (state) => {
         state.loading = false;
       })
 
@@ -826,7 +827,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.topTokenUsersData = action?.payload;
       })
-      .addCase(getTopConsumptionUsers.rejected, (state, action) => {
+      .addCase(getTopConsumptionUsers.rejected, (state,) => {
         state.loading = false;
       })
 
@@ -837,7 +838,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.productMonitoringData = action?.payload;
       })
-      .addCase(getAllBotProducts.rejected, (state, action) => {
+      .addCase(getAllBotProducts.rejected, (state) => {
         state.loading = false;
       })
 
@@ -848,7 +849,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.adminUsers = action?.payload;
       })
-      .addCase(getAdminUsers.rejected, (state, action) => {
+      .addCase(getAdminUsers.rejected, (state) => {
         state.loading = false;
       })
 
@@ -859,7 +860,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.enterpriseUsers = action?.payload;
       })
-      .addCase(getEnterpriseUsers.rejected, (state, action) => {
+      .addCase(getEnterpriseUsers.rejected, (state) => {
         state.loading = false;
       }).addCase(getEnterpriseUsers.pending, (state) => {
         state.loading = true;
@@ -868,11 +869,11 @@ const adminSlice = createSlice({
         state.loading = false;
         state.clientUsers = action?.payload;
       })
-      .addCase(getClientUsers.rejected, (state, action) => {
+      .addCase(getClientUsers.rejected, (state) => {
         state.loading = false;
       })
 
-      .addCase(getRolePermissions.rejected, (state, action) => {
+      .addCase(getRolePermissions.rejected, (state) => {
         state.loading = false;
       })
       .addCase(getRolePermissions.fulfilled, (state, action) => {
@@ -895,7 +896,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.clientLogsActivityData = action?.payload;
       })
-      .addCase(getAdminsLogsActivity.rejected, (state, action) => {
+      .addCase(getAdminsLogsActivity.rejected, (state) => {
         state.loading = false;
       })
 
@@ -906,7 +907,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.paymentGatewayData = action?.payload;
       })
-      .addCase(getAllPaymentGateway.rejected, (state, action) => {
+      .addCase(getAllPaymentGateway.rejected, (state) => {
         state.loading = false;
       })
       .addCase(getMyPermissions.pending, (state) => {

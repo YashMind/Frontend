@@ -1,9 +1,7 @@
 "use client";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { BiMessageRounded } from "react-icons/bi";
 import { IoPersonSharp } from "react-icons/io5";
 import { VscLightbulbSparkle } from "react-icons/vsc";
 import { LuAlarmClock } from "react-icons/lu";

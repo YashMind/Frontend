@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
 import { updateChatbotWithoutRouter } from "@/store/slices/chats/chatSlice";
+import { TrainingText } from "@/types/authType";
 // yup schema
 const schema = yup.object().shape({
   text_content: yup.string().required("Text is a required field"),

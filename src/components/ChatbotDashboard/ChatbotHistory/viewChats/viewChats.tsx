@@ -1,15 +1,12 @@
 "use client";
 import React, { useEffect } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { formatDistanceToNow } from "date-fns";
 import ChatMessages from "@/components/utils/MessageRenderer";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { fetchChatbotSettings } from "@/store/slices/chats/appearanceSettings";
 import { useTimezone } from "@/context/TimeZoneContext";
 import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
-import { pathToImage } from "@/services/utils/helpers";
 
 interface ChatUserModalProps {
   botId?: number;

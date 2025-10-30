@@ -6,7 +6,7 @@ import React, {
   SetStateAction,
 } from "react";
 import toast from "react-hot-toast";
-import { FaMicrophone, FaRegStopCircle, FaSpinner } from "react-icons/fa";
+import { FaMicrophone, FaSpinner } from "react-icons/fa";
 
 interface MicrophoneRecorderProps {
   setTranscript: (text: string) => void;

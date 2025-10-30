@@ -175,7 +175,7 @@ const InvitedUsersTable = ({ invitedUsers }: InvitedUsersTableProps) => {
         <div className="text-center py-8">
           <p className="text-gray-500">No users have been invited yet.</p>
           <p className="text-sm text-gray-400 mt-2">
-            Click "Add Invitation" to invite users to your chatbots.
+            Click &quot;Add Invitation&quot; to invite users to your chatbots.
           </p>
         </div>
       </div>

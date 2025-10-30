@@ -6,7 +6,6 @@ import { AppDispatch, RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchChatMessageTokens,
-  getChatbots,
 } from "@/store/slices/chats/chatSlice";
 import { ChatbotsData } from "@/types/chatTypes";
 import { formatDate, formatTime } from "../utils/formatDateTime";

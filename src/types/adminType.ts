@@ -1,3 +1,5 @@
+import { UserProfileData } from "./authType";
+
 export interface AdminAllUsers {
   current_page: number;
   data: UserProfileData[];

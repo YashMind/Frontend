@@ -38,10 +38,10 @@ const DropdownActionMenu: React.FC<DropdownActionMenuProps> = ({
         >
             <ul className="z-1 text-sm rounded min-w-max">
                 {items.map((item, index) => {
-                    let colorClass = "text-gray-800 hover:bg-gray-100";
-                    if (item.color === "red") colorClass = "text-red-600 hover:bg-red-50";
-                    else if (item.color === "green") colorClass = "text-green-600 hover:bg-green-50";
-                    else if (item.color === "orange") colorClass = "text-orange-500 hover:bg-orange-50";
+                    // let colorClass = "text-gray-800 hover:bg-gray-100";
+                    // if (item.color === "red") colorClass = "text-red-600 hover:bg-red-50";
+                    // else if (item.color === "green") colorClass = "text-green-600 hover:bg-green-50";
+                    // else if (item.color === "orange") colorClass = "text-orange-500 hover:bg-orange-50";
 
                     return (
                         <li

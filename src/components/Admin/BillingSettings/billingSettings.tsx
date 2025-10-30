@@ -36,9 +36,6 @@ const BillingSettings = () => {
         error: null,
       }
   );
-  const transactionsState = useSelector(
-    (state: RootState) => state.tokens.transactions
-  );
 
 
   // Get transactions array

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { ZapierDialog } from "./ZapierDialog";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { ChatbotsData } from "@/types/chatTypes";
 import { RootState } from "@/store/store";
-import AccessDownloadDialog, { DownloadButton } from "./downloadWordpress";
+import AccessDownloadDialog from "./downloadWordpress";
 import Link from "next/link";
 
 const ChatbotIntegration = ({ botId }: { botId?: number }) => {

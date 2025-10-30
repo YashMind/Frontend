@@ -11,7 +11,7 @@ import {
 } from "@/store/slices/auth/authSlice";
 import { FaUser, FaYoutube } from "react-icons/fa";
 import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
-import { fetchAnnouncements } from "@/store/slices/admin/announcementSlice";
+import { UserProfileData } from "@/types/authType";
 
 const HomeHeader = () => {
   const router = useRouter();

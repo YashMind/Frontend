@@ -2,9 +2,7 @@
 import http from '@/services/http/baseUrl';
 import { toasterError } from '@/services/utils/toaster';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-import toast from 'react-hot-toast';
-import { boolean } from 'yup';
+
 
 interface PaymentState {
   orderId: string | null;

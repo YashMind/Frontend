@@ -1,23 +1,23 @@
-type FormType = "signin" | "signup";
-type AuthFormInput = SignInForm | SignUpForm;
+export type FormType = "signin" | "signup";
+export type AuthFormInput = SignInForm | SignUpForm;
 
-interface SignUpForm {
+export interface SignUpForm {
   fullName: string;
   email: string;
   password: string;
   confirmPassword: string;
 }
 
-interface SignInForm {
+export interface SignInForm {
   email: string;
   password: string;
 }
 
-interface SignUpResponse {
+export interface SignUpResponse {
   message: string;
 }
 
-interface UserProfileData {
+export interface UserProfileData {
   id?: number;
   email?: string;
   fullName?: string;
@@ -38,27 +38,27 @@ interface UserProfileData {
   messageUsed?: number;
 }
 
-interface TrainingText {
+export interface TrainingText {
   id?: number;
   text_content: string;
 }
 
-interface ProfileForm {
+export interface ProfileForm {
   fullName: string;
   email: string;
   password?: string;
 }
-interface PreferenceForm {
+export interface PreferenceForm {
   preferedAiModel: string;
   lastUsedModel?: boolean;
 }
 
-interface HelpSupportForm {
+export interface HelpSupportForm {
   subject: string;
   message: string;
 }
 
-interface AdminSignUpForm {
+export interface AdminSignUpForm {
   id?: number;
   fullName: string;
   email: string;
@@ -68,14 +68,14 @@ interface AdminSignUpForm {
   plan?: string;
 }
 
-interface AdminUpdateUser {
+export interface AdminUpdateUser {
   id?: number;
   fullName: string;
   role?: string;
   plan?: string;
 }
 
-interface AdminPaymentGateway {
+export interface AdminPaymentGateway {
   id?: number;
   payment_name: string;
   status: string;

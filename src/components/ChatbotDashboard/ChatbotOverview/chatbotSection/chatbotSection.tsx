@@ -11,7 +11,6 @@ import {
 } from "@/store/slices/chats/chatSlice";
 import Image from "next/image";
 import { fetchChatbotSettings } from "@/store/slices/chats/appearanceSettings";
-import { pathToImage } from "@/services/utils/helpers";
 import LeadGenForm from "./LeadGenForm";
 import { VscClearAll } from "react-icons/vsc";
 import { ChatbotsData, chatsIdData, TextMessage } from "@/types/chatTypes";

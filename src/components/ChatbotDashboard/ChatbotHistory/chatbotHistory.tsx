@@ -6,17 +6,14 @@ import {
   deleteChats,
   getChatbotsUserHistory,
 } from "@/store/slices/chats/chatSlice";
-import { formatDistanceToNow } from "date-fns";
 import { FaEye } from "react-icons/fa6";
 import { MdSimCardDownload } from "react-icons/md";
 import ViewChatModal from "./viewChats/viewChats";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { format } from "date-fns";
 import { ChatbotsData } from "@/types/chatTypes";
 import {
   formatDateOrTimeAgo,
-  formatDateTimeWithTz,
 } from "@/components/utils/formatDateTime";
 import { useTimezone } from "@/context/TimeZoneContext";
 

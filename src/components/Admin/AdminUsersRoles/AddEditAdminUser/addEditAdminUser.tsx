@@ -4,8 +4,9 @@ import {
   updateAdminUser,
   updateClientUser,
 } from "@/store/slices/admin/adminSlice";
-import { signUpAdmin, signUpUser } from "@/store/slices/auth/authSlice";
+import { signUpAdmin } from "@/store/slices/auth/authSlice";
 import { AppDispatch } from "@/store/store";
+import { AdminSignUpForm } from "@/types/authType";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -62,24 +63,24 @@ const roleArray = [
   "Product Admin",
   "Support Admin",
 ];
-const permissionsArray = [
-  "Full system access",
-  "Manage all admin accounts",
-  "Configure roles & permissions",
-  "View all activity logs",
-  "Manage payment gateways",
-  "View and issue invoices",
-  "Configure tax settings",
-  "Process refunds",
-  "Configure API settings",
-  "Manage model deployments",
-  "View usage analytics",
-  "Access developer tools",
-  "Access support tickets",
-  "View client accounts",
-  "Basic troubleshooting",
-  "Escalate issues",
-];
+// const permissionsArray = [
+//   "Full system access",
+//   "Manage all admin accounts",
+//   "Configure roles & permissions",
+//   "View all activity logs",
+//   "Manage payment gateways",
+//   "View and issue invoices",
+//   "Configure tax settings",
+//   "Process refunds",
+//   "Configure API settings",
+//   "Manage model deployments",
+//   "View usage analytics",
+//   "Access developer tools",
+//   "Access support tickets",
+//   "View client accounts",
+//   "Basic troubleshooting",
+//   "Escalate issues",
+// ];
 
 const AddEditAdminUserModal = ({
   show,
@@ -93,7 +94,6 @@ const AddEditAdminUserModal = ({
     handleSubmit,
     reset,
     setValue,
-    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema(isEdit, roleData)),
@@ -107,26 +107,26 @@ const AddEditAdminUserModal = ({
 
   const dispatch = useDispatch<AppDispatch>();
 
-const onSubmit = async (data: AdminSignUpForm) => {
+  const onSubmit = async (data: AdminSignUpForm) => {
 
-  try {
-    if (data.id) {
-      if (roleData === "admin") {
-        await dispatch(updateAdminUser({ payload: data }));
+    try {
+      if (data.id) {
+        if (roleData === "admin") {
+          await dispatch(updateAdminUser({ payload: data }));
+        } else {
+          await dispatch(updateClientUser({ payload: data }));
+        }
       } else {
-        await dispatch(updateClientUser({ payload: data }));
+        await dispatch(signUpAdmin({ payload: data }));
       }
-    } else {
-      await dispatch(signUpAdmin({ payload: data }));
-    }
-    dispatch(getAllUsers({ page: 1, limit: 10 }));
+      dispatch(getAllUsers({ page: 1, limit: 10 }));
 
-    reset();
-    onHide();
-  } catch (error) {
-    console.error("Failed to submit:", error);
-  }
-};
+      reset();
+      onHide();
+    } catch (error) {
+      console.error("Failed to submit:", error);
+    }
+  };
 
 
   useEffect(() => {

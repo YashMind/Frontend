@@ -13,7 +13,7 @@ export default function TermsConditions() {
         <div className="prose prose-indigo max-w-none text-gray-700">
           <p>
             These Terms of Service govern your use of the website located at{" "}
-            <a href="https://yashraa.ai" className="text-indigo-600 underline">https://yashraa.ai</a> and any related services or products provided by YASHRAA ("we", "our", "us").
+            <a href="https://yashraa.ai" className="text-indigo-600 underline">https://yashraa.ai</a> and any related services or products provided by YASHRAA (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;).
           </p>
 
           <p>

@@ -83,7 +83,7 @@ const InvitationModal = ({
     }
 
     // Add inputValue as email if valid and not already in selectedUsers
-    let usersToSend = [...selectedUsers];
+    const usersToSend = [...selectedUsers];
     const trimmedInput = inputValue.trim();
     if (
       trimmedInput &&
