@@ -91,7 +91,7 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
             toast.success("Slack integration deactivated successfully!");
             router.push(`/chatbot-dashboard/integration/${botId}`);
         } catch (e: any) {
-            console.error("Deactivation failed:", e);
+            console.log("Deactivation failed:", e);
             toast.error(e || "Failed to deactivate Slack integration");
         } finally {
             setIsDeleting(false);
@@ -137,7 +137,7 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
                 setHasCredentials(true);
             }
         } catch (e: any) {
-            console.error("Failed to save credentials:", e);
+            console.log("Failed to save credentials:", e);
             toast.error(e || "Failed to save Slack credentials");
             setError(e || "Operation failed. Please check your credentials.");
         }
@@ -164,7 +164,7 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
             // }
 
         } catch (e: any) {
-            console.error("OAuth initiation failed:", e);
+            console.log("OAuth initiation failed:", e);
             toast.error(e || "Failed to start OAuth flow");
             setError(e || "OAuth initiation failed");
             setIsConnecting(false);

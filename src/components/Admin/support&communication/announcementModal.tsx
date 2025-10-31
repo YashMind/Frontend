@@ -68,7 +68,7 @@ const AnnouncementModal = ({ show, onHide }: AnnouncementModalProps) => {
             reset();
             setEditingId(null);
         } catch (error: any) {
-            console.error("Error submitting announcement:", error);
+            console.log("Error submitting announcement:", error);
         }
     };
 
@@ -79,7 +79,7 @@ const AnnouncementModal = ({ show, onHide }: AnnouncementModalProps) => {
             await dispatch(deleteAnnouncement(id)).unwrap();
             toasterSuccess("Announcement deleted successfully!", 4000, "id");
         } catch (error: any) {
-            console.error("Error deleting announcement:", error);
+            console.log("Error deleting announcement:", error);
         }
     };
 

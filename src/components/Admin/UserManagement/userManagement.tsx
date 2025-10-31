@@ -169,7 +169,7 @@ const UserManagement = () => {
           })
         );
       } catch (error) {
-        console.error("Failed to delete user:", error);
+        console.log("Failed to delete user:", error);
       } finally {
         setShowDeleteModal(false);
         setUserToDelete(null);

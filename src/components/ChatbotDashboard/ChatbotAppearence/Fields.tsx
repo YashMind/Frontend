@@ -431,7 +431,7 @@ export const SoundUploadField = ({
       } else {
         audioRef.current.src = URL.createObjectURL(soundFile);
       }
-      audioRef.current.play().catch(e => console.error('Playback failed:', e));
+      audioRef.current.play().catch(e => console.log('Playback failed:', e));
     }
     setIsPlaying(!isPlaying);
   };

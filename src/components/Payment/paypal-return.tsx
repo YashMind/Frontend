@@ -45,7 +45,7 @@ export default function PayPalReturn() {
           setStatus(`Payment status: ${response.data.status}`);
         }
       } catch (err) {
-        console.error('Error verifying payment:', err);
+        console.log('Error verifying payment:', err);
         setError(
           axios.isAxiosError(err)
             ? err.response?.data?.detail || 'Failed to verify payment'

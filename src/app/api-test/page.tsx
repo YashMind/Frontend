@@ -42,7 +42,7 @@ export default function ApiTestPage() {
         toasterError(data.detail || "API call failed", 10000, "api-test");
       }
     } catch (err: any) {
-      console.error("API call error:", err);
+      console.log("API call error:", err);
       setError(err.message || "An error occurred");
       toasterError(err.message || "An error occurred", 10000, "api-test");
     } finally {

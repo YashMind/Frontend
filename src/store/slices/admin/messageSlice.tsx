@@ -40,7 +40,7 @@ export const fetchMessageStats = createAsyncThunk<
 >('messages/fetchMessageStats', async (_, { rejectWithValue }) => {
   try {
     const response = await http.get('admin/total-messages');
-    
+
     // Validate response structure
     if (!response.data?.data) {
       throw new Error('Invalid response structure');
@@ -61,12 +61,12 @@ export const fetchMessageStats = createAsyncThunk<
       weekly: transformData(weekly, 'week'),
       last10Days: transformData(last_10_days, 'date')
     };
-    
+
   } catch (err: any) {
-    console.error('Failed to fetch message stats:', err);
+    console.log('Failed to fetch message stats:', err);
     return rejectWithValue(
-      err.response?.data?.detail || 
-      err.message || 
+      err.response?.data?.detail ||
+      err.message ||
       'Failed to fetch message statistics'
     );
   }

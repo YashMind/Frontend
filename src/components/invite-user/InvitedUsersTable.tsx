@@ -99,7 +99,7 @@ const InvitedUsersTable = ({ invitedUsers }: InvitedUsersTableProps) => {
           })
         );
       } catch (error) {
-        console.error("Error fetching invited users:", error);
+        console.log("Error fetching invited users:", error);
       }
     },
     [dispatch, currentPage, itemsPerPage, searchTerm, selectedStatus]

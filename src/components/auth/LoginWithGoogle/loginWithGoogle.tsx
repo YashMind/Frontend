@@ -32,7 +32,7 @@ const LoginWithGoogle = () => {
       });
       return data;
     } catch (error) {
-      console.error("Google Sign-Up/Login failed:", error);
+      console.log("Google Sign-Up/Login failed:", error);
       throw error.response.data.detail;
     }
   };

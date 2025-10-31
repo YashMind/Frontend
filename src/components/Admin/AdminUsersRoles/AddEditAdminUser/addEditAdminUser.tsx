@@ -107,26 +107,26 @@ const AddEditAdminUserModal = ({
 
   const dispatch = useDispatch<AppDispatch>();
 
-const onSubmit = async (data: AdminSignUpForm) => {
+  const onSubmit = async (data: AdminSignUpForm) => {
 
-  try {
-    if (data.id) {
-      if (roleData === "admin") {
-        await dispatch(updateAdminUser({ payload: data }));
+    try {
+      if (data.id) {
+        if (roleData === "admin") {
+          await dispatch(updateAdminUser({ payload: data }));
+        } else {
+          await dispatch(updateClientUser({ payload: data }));
+        }
       } else {
-        await dispatch(updateClientUser({ payload: data }));
+        await dispatch(signUpAdmin({ payload: data }));
       }
-    } else {
-      await dispatch(signUpAdmin({ payload: data }));
-    }
-    dispatch(getAllUsers({ page: 1, limit: 10 }));
+      dispatch(getAllUsers({ page: 1, limit: 10 }));
 
-    reset();
-    onHide();
-  } catch (error) {
-    console.error("Failed to submit:", error);
-  }
-};
+      reset();
+      onHide();
+    } catch (error) {
+      console.log("Failed to submit:", error);
+    }
+  };
 
 
   useEffect(() => {

@@ -133,7 +133,7 @@ export const fetchUsersByPlan = createAsyncThunk<
             // Try different possible response structures
             return response.data.data || response.data || [];
         } catch (err: any) {
-            console.error('Error in fetchUsersByPlan thunk:', err);
+            console.log('Error in fetchUsersByPlan thunk:', err);
             return rejectWithValue(
                 err.response?.data?.detail || 'Failed to fetch users by plan'
             );

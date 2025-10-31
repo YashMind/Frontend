@@ -57,7 +57,7 @@ const SearchFilter = ({
               try {
                 onSearchChange(e.target.value);
               } catch (error) {
-                console.error("Error in search change:", error);
+                console.log("Error in search change:", error);
               }
             }}
             className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
@@ -93,9 +93,8 @@ const SearchFilter = ({
         >
           <span>{getStatusLabel(selectedStatus)}</span>
           <svg
-            className={`w-5 h-5 ml-2 transition-transform ${
-              isStatusDropdownOpen ? "rotate-180" : ""
-            }`}
+            className={`w-5 h-5 ml-2 transition-transform ${isStatusDropdownOpen ? "rotate-180" : ""
+              }`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -118,11 +117,10 @@ const SearchFilter = ({
                   onStatusFilter(option.value);
                   setIsStatusDropdownOpen(false);
                 }}
-                className={`block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${
-                  option.value === selectedStatus
-                    ? "bg-indigo-50 text-indigo-700 font-medium"
-                    : "text-gray-700"
-                }`}
+                className={`block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${option.value === selectedStatus
+                  ? "bg-indigo-50 text-indigo-700 font-medium"
+                  : "text-gray-700"
+                  }`}
               >
                 {option.label}
               </button>

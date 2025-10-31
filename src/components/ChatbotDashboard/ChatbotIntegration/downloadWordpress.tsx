@@ -48,7 +48,7 @@ const AccessDownloadDialog = ({
         window.URL.revokeObjectURL(blobUrl);
       }, 100);
     } catch (err) {
-      console.error(err);
+      console.log(err);
       setError(err instanceof Error ? err.message : "Download failed");
     } finally {
       setIsDownloading(false);

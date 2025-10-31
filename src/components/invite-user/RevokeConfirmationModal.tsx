@@ -23,7 +23,7 @@ interface RevokeConfirmationModalProps {
 
 const RevokeConfirmationModal = ({ isOpen, onClose, user }: RevokeConfirmationModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  
+
   const revokeLoading = useSelector(
     (state: RootState) => state.invitations.revokeLoading
   );
@@ -34,7 +34,7 @@ const RevokeConfirmationModal = ({ isOpen, onClose, user }: RevokeConfirmationMo
         await dispatch(revokeAccess(user.sharing_id));
         onClose();
       } catch (error) {
-        console.error("Error revoking access:", error);
+        console.log("Error revoking access:", error);
       }
     }
   };
@@ -90,10 +90,9 @@ const RevokeConfirmationModal = ({ isOpen, onClose, user }: RevokeConfirmationMo
               <p><span className="font-medium">Name:</span> {user.user_name || "Unknown User"}</p>
               <p><span className="font-medium">Email:</span> {user.shared_email}</p>
               <p><span className="font-medium">Chatbot:</span> {user.chatbot_name}</p>
-              <p><span className="font-medium">Status:</span> 
-                <span className={`ml-1 px-2 py-1 rounded-full text-xs ${
-                  user.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                }`}>
+              <p><span className="font-medium">Status:</span>
+                <span className={`ml-1 px-2 py-1 rounded-full text-xs ${user.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                  }`}>
                   {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
                 </span>
               </p>
@@ -101,10 +100,10 @@ const RevokeConfirmationModal = ({ isOpen, onClose, user }: RevokeConfirmationMo
           </div>
 
           <p className="text-gray-700">
-            Are you sure you want to revoke access for <strong>{user.user_name || user.shared_email}</strong> 
+            Are you sure you want to revoke access for <strong>{user.user_name || user.shared_email}</strong>
             to the chatbot <strong>{user.chatbot_name}</strong>?
           </p>
-          
+
           <p className="text-sm text-red-600 mt-2">
             The user will immediately lose access to this chatbot and will need to be re-invited to regain access.
           </p>
@@ -122,11 +121,10 @@ const RevokeConfirmationModal = ({ isOpen, onClose, user }: RevokeConfirmationMo
           <button
             onClick={handleConfirmRevoke}
             disabled={revokeLoading}
-            className={`px-6 py-2 rounded-md text-white font-medium transition-colors ${
-              revokeLoading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-red-600 hover:bg-red-700"
-            }`}
+            className={`px-6 py-2 rounded-md text-white font-medium transition-colors ${revokeLoading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-red-600 hover:bg-red-700"
+              }`}
           >
             {revokeLoading ? (
               <div className="flex items-center gap-2">
