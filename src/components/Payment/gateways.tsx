@@ -204,7 +204,7 @@ const Gateways = ({
     paymentGatewayData?.filter((item) => item.status === "active") || [];
 
 
-  const cashfreeUrl = process.env.NODE_ENV == 'production' ? 'https://api.cashfree.com/js/v3/cashfree.js' : 'https://sdk.cashfree.com/js/v3/cashfree.js'
+  const cashfreeUrl = process.env.CASHFREE_URL
   console.log("cashfreeUrl", cashfreeUrl)
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">

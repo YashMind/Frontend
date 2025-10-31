@@ -154,8 +154,8 @@ export default function PaymentPage() {
     }
   };
 
-  const cashfreeUrl = process.env.NODE_ENV == 'production' ? 'https://api.cashfree.com/js/v3/cashfree.js' : 'https://sdk.cashfree.com/js/v3/cashfree.js'
-
+  const cashfreeUrl = process.env.CASHFREE_URL
+  console.log("cashfreeUrl", cashfreeUrl)
 
   return (
     <>
