@@ -1,9 +1,10 @@
 "use client";
 import HistoryBackButton from "@/components/utils/historyBackButton";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { getInvitedUsers } from "@/store/slices/invitations/invitationSlice";
 
 // Import InvitedUsersTable with no SSR
 const InvitedUsersTable = dynamic(() => import("./InvitedUsersTable"), {
@@ -21,6 +22,7 @@ const ErrorBoundary = dynamic(() => import("./ErrorBoundary"), {
 });
 
 const InviteUserClient = () => {
+  const dispatch = useDispatch<AppDispatch>()
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Get invited users from Redux store
@@ -32,6 +34,13 @@ const InviteUserClient = () => {
   const handleInvitationSuccess = () => {
     // The table will automatically refresh its data
     // No need to manually refresh here since the table manages its own state
+    dispatch(
+      getInvitedUsers({
+        page: 1,
+        pageSize: 10,
+        status: status !== "all" ? status : undefined,
+      })
+    );
   };
 
   return (

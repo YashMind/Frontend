@@ -503,7 +503,7 @@ const RegisterSlackPage = ({ botId }: { botId: number }) => {
                                                     <div className="bg-gray-50 p-4 rounded-md overflow-x-auto">
                                                         <pre className="text-xs text-gray-800">
                                                             {`display_information:
-  name: yashraa test
+  name: [Your Bot name]
 features:
   bot_user:
     display_name: [Your app name]
@@ -538,7 +538,7 @@ settings:
                                                         <pre className="text-xs text-gray-800">
                                                             {`{
   "display_information": {
-    "name": "yashraa test"
+    "name": [Your Bot name]
   },
   "features": {
     "bot_user": {
@@ -560,14 +560,17 @@ settings:
       "https://yashraa.ai/api/slack/oauth/callback"
     ],
     "scopes": {
-      "bot": [
-        "app_mentions:read",
-        "channels:history",
-        "chat:write",
-        "commands",
-        "groups:history",
-        "im:history"
-      ]
+       "bot": [
+                "app_mentions:read",
+                "channels:history",
+                "channels:read",
+                "chat:write",
+                "commands",
+                "groups:history",
+                "groups:read",
+                "im:history",
+                "im:read"
+            ]
     }
   },
   "settings": {

@@ -10,6 +10,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { getMeData, logoutUser } from "@/store/slices/auth/authSlice";
 import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
 import { fetchAnnouncements } from "@/store/slices/admin/announcementSlice";
+import { pathToImage } from "@/services/utils/helpers";
 
 const ChatbotDashboardHeader = ({
   fix,
@@ -232,7 +233,7 @@ const ChatbotDashboardHeader = ({
                 className="focus:outline-none cursor-pointer"
                 aria-label="User menu"
               >
-                <FaUser size={18} color="white" />
+                {userData?.picture ? <Image alt={'profile pic'} src={pathToImage(userData.picture) as string} width={100} height={100} className="w-8 h-8 rounded-full" /> : <FaUser size={18} color="white" />}
               </button>
               {isOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">

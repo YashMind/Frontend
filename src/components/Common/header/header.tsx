@@ -12,6 +12,7 @@ import {
 import { FaUser, FaYoutube } from "react-icons/fa";
 import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
 import { fetchAnnouncements } from "@/store/slices/admin/announcementSlice";
+import { pathToImage } from "@/services/utils/helpers";
 
 const HomeHeader = () => {
   const router = useRouter();
@@ -100,20 +101,20 @@ const HomeHeader = () => {
                     Dashboard
                   </Link>
                   <div
-                    className="relative  inline-block text-left"
+                    className="relative flex justify-end items-start text-left"
                     ref={dropdownRef}
                   >
                     <button
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                       className="focus:outline-none cursor-pointer"
                     >
-                      <FaUser size={18} color="white" />
+                      {userData.picture ? <Image alt={'profile pic'} src={pathToImage(userData.picture) as string} width={100} height={100} className="w-8 h-8 rounded-full" /> : <FaUser size={18} color="white" />}
                     </button>
                     <p className="text-white font-semibold inline-block pl-1 text-sm md:text-base">
                       {userData?.fullName}
                     </p>
                     {isDropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-10">
+                      <div className="absolute right-0 mt-5 w-40 bg-white rounded-md shadow-lg z-10">
                         <div className="py-1">
                           <Link
                             href="/settings/profile"

@@ -9,7 +9,7 @@ import { IoAnalyticsSharp } from "react-icons/io5";
 import { FaWatchmanMonitoring } from "react-icons/fa6";
 import { LuActivity } from "react-icons/lu";
 import { MdSettingsAccessibility } from "react-icons/md";
-import { FaUsers } from "react-icons/fa";
+import { FaUser, FaUsers } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import { IoMdPricetags } from "react-icons/io";
 import { SiEnterprisedb } from "react-icons/si";
@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
-import { formatName } from "@/services/utils/helpers";
+import { formatName, pathToImage } from "@/services/utils/helpers";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
 import './sidebar.css';
 const menuItems = [
@@ -98,7 +98,7 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { myPermissions, permissionsLoading } = useSelector((state: RootState) => state.admin)
-  const userData: UserProfileData = useSelector(
+  const userData: UserProfileData | null = useSelector(
     (state: RootState) => state.auth.userData
   );
 
@@ -187,7 +187,7 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
             } text-white text-sm`}
         >
           <div className="flex items-center gap-3 ml-4">
-            <Image alt="User" src="/images/user1.png" height={32} width={32} />
+            {userData?.picture ? <Image alt={'profile pic'} src={pathToImage(userData.picture) as string} width={100} height={100} className="w-8 h-8 rounded-full" /> : <FaUser size={18} color="white" />}
             <span>
               {userData?.fullName ? formatName(userData.fullName) : ""} <br />
               {/* <span className="text-[#AEB9E1] text-xs">Account settings</span> */}
