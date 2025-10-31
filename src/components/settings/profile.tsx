@@ -82,7 +82,7 @@ const ProfileSettings = () => {
 
       return response.url;
     } catch (error) {
-      console.error("Profile picture upload failed:", error);
+      console.log("Profile picture upload failed:", error);
       throw error; // Re-throw to handle in the calling function
     }
   };
@@ -124,7 +124,7 @@ const ProfileSettings = () => {
       toast.success("Profile updated successfully");
       setIsEditing(false);
     } catch (error) {
-      console.error("Failed to update profile:", error);
+      console.log("Failed to update profile:", error);
       toast.error("Failed to update profile. Please try again.");
       // Consider keeping the form in edit mode on failure
     }

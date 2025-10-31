@@ -35,7 +35,7 @@ export const getUserTimezone = async (): Promise<string> => {
             const cleanedTimezone = timezone ? timezone.replace(/^"|"$/g, '') : null;
             return cleanedTimezone || process.env.TZ || 'UTC';
         } catch (error) {
-            console.error('Error fetching timezone:', error);
+            console.log('Error fetching timezone:', error);
             return process.env.TZ || 'UTC';
         }
     }
@@ -57,7 +57,7 @@ export const getUserTimezone = async (): Promise<string> => {
         document.cookie = `timezone=${encodeURIComponent(detectedTimezone)}; path=/; max-age=31536000`;
         return detectedTimezone;
     } catch (error) {
-        console.error('Error getting timezone:', error);
+        console.log('Error getting timezone:', error);
         return 'UTC';
     }
 };
@@ -81,7 +81,7 @@ export const formatDate = (dateString: string, timeZone: string): string => {
         const zonedDate = toZonedTime(date, timeZone);
         return format(zonedDate, 'MMMM d, yyyy', { timeZone });
     } catch (err) {
-        console.error("formatDate error:", err);
+        console.log("formatDate error:", err);
         return '-';
     }
 };

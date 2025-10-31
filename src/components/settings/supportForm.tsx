@@ -59,7 +59,7 @@ const SupportForm = ({ onSuccess }: { onSuccess: () => void }) => {
                 onSuccess()
             });
         } catch (error) {
-            console.error('Submission failed:', error);
+            console.log('Submission failed:', error);
         } finally {
             setIsLoading(false);
         }

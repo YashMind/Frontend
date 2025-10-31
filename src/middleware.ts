@@ -84,7 +84,7 @@ async function fetchPermissions(
 
     if (!response.ok) {
       const error = await response.json();
-      console.error("Permissions API Error:", error);
+      // console.log("Permissions API Error:", error);
       return cached?.permissions || []; // Fallback to stale cache if available
     }
 
@@ -99,7 +99,7 @@ async function fetchPermissions(
 
     return permissions || [];
   } catch (error) {
-    console.error("Network error fetching permissions:", error);
+    // console.log("Network error fetching permissions:", error);
     return permissionCache[role]?.permissions || [];
   }
 }
@@ -134,7 +134,7 @@ async function handleAdminRoutes(
       );
     }
   } catch (error) {
-    console.error("Permission check failed:", error);
+    // console.log("Permission check failed:", error);
     return NextResponse.redirect(
       new URL("/chatbot-dashboard/main", request.url)
     );
@@ -170,7 +170,7 @@ export default async function middleware(request: NextRequest) {
     }
     role = decoded.role || null;
   } catch (error) {
-    console.error("Invalid JWT:", error);
+    // console.log("Invalid JWT:", error);
     return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 

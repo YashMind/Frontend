@@ -168,7 +168,7 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
         router.push(`/chatbot-dashboard/integration/${botId}`);
       }
     } catch (e: any) {
-      console.error("Operation failed:", e);
+      console.log("Operation failed:", e);
       toast.error(e.message || "Failed to process WhatsApp integration");
       setError(e.message || "Operation failed. Please check your credentials.");
     } finally {
@@ -188,7 +188,7 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
       toast.success("WhatsApp integration deactivated successfully!");
       router.push(`/chatbot-dashboard/integration/${botId}`);
     } catch (e: any) {
-      console.error("Deactivation failed:", e);
+      console.log("Deactivation failed:", e);
       toast.error(e || "Failed to deactivate WhatsApp integration");
     } finally {
       setIsDeleting(false);
@@ -203,7 +203,7 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
       toast.success("WhatsApp integration deleting successfully!");
       router.push(`/chatbot-dashboard/integration/${botId}`);
     } catch (e: any) {
-      console.error("Deleting failed:", e);
+      console.log("Deleting failed:", e);
       toast.error(e || "Failed to delete WhatsApp integration");
     } finally {
       setIsDeleting(false);

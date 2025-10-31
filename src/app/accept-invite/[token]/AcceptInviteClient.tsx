@@ -74,7 +74,7 @@ export default function AcceptInviteClient({ token }: AcceptInviteClientProps) {
 
           })
         } catch (error) {
-          console.error("API call error:", error);
+          // console.log("API call error:", error);
           toasterError("Error connecting to the server", 10000, "accept-invite");
         }
       };

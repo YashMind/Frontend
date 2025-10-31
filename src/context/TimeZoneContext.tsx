@@ -23,7 +23,7 @@ export function TimezoneProvider({ children }: { children: React.ReactNode }) {
                 const tz = await getUserTimezone();
                 setTimezone(tz);
             } catch (error) {
-                console.error('Failed to load timezone:', error);
+                console.log('Failed to load timezone:', error);
                 setTimezone('UTC');
             } finally {
                 setIsLoading(false);

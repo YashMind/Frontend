@@ -21,7 +21,7 @@ const GraphChart = () => {
   const [groupBy, setGroupBy] = useState<"daily" | "monthly" | "yearly">("monthly");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -30,7 +30,7 @@ const GraphChart = () => {
         await dispatch(fetchAdminTransactions({ page: 1, perPage: 100, groupBy }));
       } catch (err) {
         setError("Failed to load transaction data");
-        console.error(err);
+        console.log(err);
       } finally {
         setIsLoading(false);
       }
@@ -89,7 +89,7 @@ const GraphChart = () => {
     <div className="space-y-4 p-4 bg-[#1E2130] rounded-lg border border-[#343B4F] shadow">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h3 className="text-lg font-semibold text-white">Transaction Trends</h3>
-        
+
         <div className="flex items-center gap-2">
           <label htmlFor="groupBy" className="text-sm text-gray-400">Group by:</label>
           <select
@@ -118,7 +118,7 @@ const GraphChart = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
           <span>{error}</span>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="mt-2 px-4 py-2 text-sm rounded bg-[#343B4F] hover:bg-[#3C4254] transition-colors text-white"
           >
@@ -133,16 +133,16 @@ const GraphChart = () => {
               margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#2D3748" />
-              <XAxis 
-                dataKey="period" 
+              <XAxis
+                dataKey="period"
                 tick={{ fill: '#A0AEC0' }}
                 tickMargin={10}
               />
-              <YAxis 
+              <YAxis
                 tick={{ fill: '#A0AEC0' }}
                 tickFormatter={(value) => value.toLocaleString()}
               />
-              <Tooltip 
+              <Tooltip
                 contentStyle={{
                   background: '#1A202C',
                   borderColor: '#2D3748',
@@ -150,18 +150,18 @@ const GraphChart = () => {
                   color: '#E2E8F0'
                 }}
                 formatter={(value, name) => [
-                  Number(value).toLocaleString(), 
+                  Number(value).toLocaleString(),
                   name.toString().replace('_', ' ').replace(/(^\w|\s\w)/g, m => m.toUpperCase())
                 ]}
                 labelStyle={{ color: '#CBD5E0' }}
               />
-              <Legend 
+              <Legend
                 wrapperStyle={{ paddingTop: '20px' }}
-                formatter={(value) => 
+                formatter={(value) =>
                   value.toString().replace('_', ' ').replace(/(^\w|\s\w)/g, m => m.toUpperCase())
                 }
               />
-              
+
               {formattedData.length > 0 && (
                 <>
                   {Object.keys(groupedData?.success || {}).map((currency, index) => (

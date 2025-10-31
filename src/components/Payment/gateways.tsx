@@ -70,7 +70,7 @@ const Gateways = ({
         console.log("Cashfree SDK loaded successfully in", mode, "mode");
       }
     } catch (error) {
-      console.error("Error initializing Cashfree SDK:", error);
+      console.log("Error initializing Cashfree SDK:", error);
       setError("Failed to load payment system");
     }
   };
@@ -93,7 +93,7 @@ const Gateways = ({
 
       await window.Cashfree.checkout(checkoutOptions);
     } catch (error) {
-      console.error("Error opening Cashfree checkout:", error);
+      console.log("Error opening Cashfree checkout:", error);
       setError("Failed to open payment page");
       setIsRedirecting(false);
     }
@@ -133,7 +133,7 @@ const Gateways = ({
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (error) {
-      console.error("Error opening Razorpay checkout:", error);
+      console.log("Error opening Razorpay checkout:", error);
       setError("Failed to open payment page");
       setIsRedirecting(false);
     }
@@ -193,7 +193,7 @@ const Gateways = ({
       const errorMsg = e.detail?.message || e.message || "Payment failed";
       setError(errorMsg);
       toast.error(`Payment error: ${errorMsg}`);
-      console.error("Payment error:", e);
+      console.log("Payment error:", e);
     } finally {
       setIsProcessing(false);
     }

@@ -75,7 +75,7 @@ export default function PayPalPayment() {
         // Redirect to PayPal approval URL
         window.location.href = response.data.approveUrl;
       } else {
-        console.error('Invalid PayPal response:', response.data);
+        console.log('Invalid PayPal response:', response.data);
         setError(response.data.message || 'PayPal order not created. Please try again.');
       }
     } catch (err) {
@@ -87,7 +87,7 @@ export default function PayPalPayment() {
       } else {
         setError('An unexpected error occurred');
       }
-      console.error('PayPal error:', err);
+      console.log('PayPal error:', err);
     } finally {
       setLoading(false);
     }

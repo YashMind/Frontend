@@ -125,7 +125,7 @@ const EmailComposeModal = ({
             reset();
             onHide();
         } catch (error: any) {
-            console.error(`Error submitting ${modalType}:`, error.response?.data || error.message);
+            console.log(`Error submitting ${modalType}:`, error.response?.data || error.message);
         }
     };
 

@@ -158,7 +158,7 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({
       mediaRecorder.start();
       setIsRecording(true);
     } catch (error) {
-      console.error("Error starting recording:", error);
+      console.log("Error starting recording:", error);
       toast.error(error.message);
       setIsRecording(false);
     }

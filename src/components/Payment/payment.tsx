@@ -65,7 +65,7 @@ export default function PaymentPage() {
         console.log('Cashfree SDK loaded successfully in', mode, 'mode');
       }
     } catch (error) {
-      console.error('Error initializing Cashfree SDK:', error);
+      console.log('Error initializing Cashfree SDK:', error);
       setError('Failed to load payment system');
     }
   };
@@ -90,7 +90,7 @@ export default function PaymentPage() {
       await window.Cashfree.checkout(checkoutOptions);
 
     } catch (error) {
-      console.error('Error opening Cashfree checkout:', error);
+      console.log('Error opening Cashfree checkout:', error);
       setError('Failed to open payment page');
       setIsRedirecting(false);
     }
@@ -136,7 +136,7 @@ export default function PaymentPage() {
       if (response.data.payment_session_id) {
         await openCashfreeCheckout(response.data.payment_session_id);
       } else {
-        console.error('Invalid payment session ID:', response.data);
+        console.log('Invalid payment session ID:', response.data);
         setError(response.data.message || 'Payment session not created. Please try again.');
       }
     } catch (err) {
@@ -148,7 +148,7 @@ export default function PaymentPage() {
       } else {
         setError('An unexpected error occurred');
       }
-      console.error('Payment error:', err);
+      console.log('Payment error:', err);
     } finally {
       setLoading(false);
     }

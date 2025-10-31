@@ -61,7 +61,7 @@ export const sendInvitations = createAsyncThunk<
         return rejectWithValue("Failed to send invitations");
       }
     } catch (error: any) {
-      console.error("Invitation error:", error);
+      console.log("Invitation error:", error);
       if (error.response && error.response.status === 400) {
         toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(
@@ -94,7 +94,7 @@ export const getAvailableUsers = createAsyncThunk<any, void>(
         return rejectWithValue("Failed to fetch available users");
       }
     } catch (error: any) {
-      console.error("Error fetching available users:", error);
+      console.log("Error fetching available users:", error);
       if (error.response && error.response.status === 400) {
         toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(
@@ -130,7 +130,7 @@ export const getUninvitedUsers = createAsyncThunk<any, number>(
       dispatch(stopLoadingActivity());
       return response.data;
     } catch (error: any) {
-      console.error("Error fetching uninvited users:", error);
+      console.log("Error fetching uninvited users:", error);
 
       if (error.response) {
         const status = error.response.status;
@@ -172,7 +172,7 @@ export const acceptInvitation = createAsyncThunk<any, string>(
         return rejectWithValue("Failed to accept invitation");
       }
     } catch (error: any) {
-      console.error("Error accepting invitation:", error);
+      console.log("Error accepting invitation:", error);
       if (error.response) {
         let errorMessage = "An error occurred while accepting the invitation.";
 
@@ -236,12 +236,12 @@ export const getInvitedUsers = createAsyncThunk<
         console.log("API Response:", response.data);
         return response.data;
       } else {
-        console.error("API Error - Status:", response.status);
+        console.log("API Error - Status:", response.status);
         return rejectWithValue("Failed to fetch invited users");
       }
     } catch (error: any) {
-      console.error("Error fetching invited users:", error);
-      console.error("Error details:", {
+      console.log("Error fetching invited users:", error);
+      console.log("Error details:", {
         status: error.response?.status,
         statusText: error.response?.statusText,
         data: error.response?.data,
@@ -276,7 +276,7 @@ export const revokeAccess = createAsyncThunk<any, number>(
         return rejectWithValue("Failed to revoke access");
       }
     } catch (error: any) {
-      console.error("Error revoking access:", error);
+      console.log("Error revoking access:", error);
 
       const errorMessage =
         error.response?.data?.detail || "Failed to revoke access";

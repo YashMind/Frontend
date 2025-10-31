@@ -93,7 +93,7 @@ const AdminMain = () => {
       await dispatch(fetchAdminTransactions({ page: currentPage, perPage })).unwrap();
     } catch (err) {
       setError("Failed to refresh transactions");
-      console.error("Refresh error:", err);
+      console.log("Refresh error:", err);
     } finally {
       setRefreshing(false);
     }
@@ -104,7 +104,7 @@ const AdminMain = () => {
       await dispatch(fetchCountryNames()).unwrap();
     } catch (err) {
       setError("Failed to refresh countries");
-      console.error("Refresh error:", err);
+      console.log("Refresh error:", err);
     }
   };
 
