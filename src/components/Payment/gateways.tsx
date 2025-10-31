@@ -203,10 +203,13 @@ const Gateways = ({
   const activeGateways =
     paymentGatewayData?.filter((item) => item.status === "active") || [];
 
+
+  const cashfreeUrl = process.env.NODE_ENV == 'production' ? 'https://api.cashfree.com/js/v3/cashfree.js' : 'https://sdk.cashfree.com/js/v3/cashfree.js'
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
       <Script
-        src="https://sdk.cashfree.com/js/v3/cashfree.js"
+        src={cashfreeUrl}
         onLoad={handleCashfreeLoad}
         onError={() => setError("Failed to load Cashfree SDK")}
       />

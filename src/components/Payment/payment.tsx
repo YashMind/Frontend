@@ -154,11 +154,14 @@ export default function PaymentPage() {
     }
   };
 
+  const cashfreeUrl = process.env.NODE_ENV == 'production' ? 'https://api.cashfree.com/js/v3/cashfree.js' : 'https://sdk.cashfree.com/js/v3/cashfree.js'
+
+
   return (
     <>
       {/* Load Cashfree SDK */}
       <Script
-        src="https://sdk.cashfree.com/js/v3/cashfree.js"
+        src={cashfreeUrl}
         onLoad={handleCashfreeLoad}
         onError={() => setError('Failed to load payment system')}
       />
