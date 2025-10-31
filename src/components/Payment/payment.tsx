@@ -154,7 +154,7 @@ export default function PaymentPage() {
     }
   };
 
-  const cashfreeUrl = process.env.CASHFREE_URL
+  const cashfreeUrl = process.env.NEXT_PUBLIC_CASHFREE_URL
   console.log("cashfreeUrl", cashfreeUrl)
 
   return (
