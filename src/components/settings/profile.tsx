@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import ChangePasswordModal from "./changePasswordModel";
+import { pathToImage } from "@/services/utils/helpers";
 
 const ProfileSettings = () => {
   const router = useRouter();
@@ -156,7 +157,7 @@ const ProfileSettings = () => {
     }
     // If userPic exists but is a relative path, prepend backend URL
     else if (userPic) {
-      return process.env.NEXT_PUBLIC_BACKEND_URL + userPic;
+      return pathToImage(userPic);
     }
 
     // Fallback: default user image

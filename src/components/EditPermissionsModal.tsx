@@ -8,11 +8,12 @@ import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import Select from "react-select";
 import { accessPoints } from "./Admin/AdminSidebar/adminSidebar";
+import { UserData } from "@/types/adminType";
 
 interface AddEditPlanProps {
   show: boolean;
   onHide: () => void;
-  adminUserData: AdminUsersData;
+  adminUserData: UserData;
   roleData: string;
   onUpdatePermissions: (updatedData: AdminPermissionsForm) => void;
 }
@@ -133,18 +134,23 @@ const EditPermissionModal = ({
                   )}
                   options={options}
                   onChange={(selected) => {
-                    setValue(
-                      "permissions",
-                      selected.map((s) => s.value)
-                    );
+                    // Always keep "overview" permission
+                    const selectedValues = selected.map((s) => s.value);
+                    if (!selectedValues.includes("overview")) {
+                      selectedValues.push("overview");
+                    }
+                    setValue("permissions", selectedValues);
                   }}
                   className="text-black cursor-pointer"
                   classNamePrefix="select"
                   styles={{
-                    multiValueRemove: (base) => ({
-                      ...base,
-                      cursor: "pointer",
-                    }),
+                    multiValueRemove: (base, state) => {
+                      // Disable remove button for "overview"
+                      if (state.data.value === "overview") {
+                        return { ...base, display: "none" };
+                      }
+                      return { ...base, cursor: "pointer" };
+                    },
                   }}
                 />
                 {errors.permissions && (

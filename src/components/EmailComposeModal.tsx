@@ -1,4 +1,5 @@
 "use client";
+import "react-datepicker/dist/react-datepicker.css";
 import React, { useEffect, useState } from "react";
 import { Resolver, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,7 +10,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 interface EmailComposeModalProps {
     show: boolean;

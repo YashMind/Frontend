@@ -18,6 +18,7 @@ import { useTimezone } from "@/context/TimeZoneContext";
 import { FaTrash } from "react-icons/fa";
 import { deleteUser } from "@/store/slices/auth/authSlice";
 import { getInvitedUsers } from "@/store/slices/invitations/invitationSlice";
+import { pathToImage } from "@/services/utils/helpers";
 
 
 const UserManagement = () => {
@@ -431,7 +432,9 @@ const UserManagement = () => {
                         key={index}
                       >
                         <td className="p-4 flex items-center text-xs gap-2">
-                          <img src="/images/Avatar Circle.png" alt="" />
+                          {item.picture ?
+                            <Image src={pathToImage(item?.picture) as string} alt="profile image" width={100} height={100} className="w-8 h-8 rounded-full" /> :
+                            <Image src={"/images/Avatar Circle.png"} alt="profile image" width={100} height={100} className="w-8 h-8 rounded-full" />}
                           {item?.fullName}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">

@@ -23,6 +23,8 @@ import moment from "moment";
 import { accessPoints } from "../AdminSidebar/adminSidebar";
 import { useTimezone } from "@/context/TimeZoneContext";
 import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
+import { pathToImage } from "@/services/utils/helpers";
+import Image from "next/image";
 
 
 interface RoleWithPermissions {
@@ -194,7 +196,10 @@ const AdminUsersRoles = () => {
                             key={index}
                           >
 
-                            <td className="p-6 font-medium text-xs">
+                            <td className="p-6 flex justify-start items-center gap-2 font-medium text-xs">
+                              {item.picture ?
+                                <Image src={pathToImage(item?.picture) as string} alt="profile image" width={100} height={100} className="w-8 h-8 rounded-full" /> :
+                                <Image src={"/images/Avatar Circle.png"} alt="profile image" width={100} height={100} className="w-8 h-8 rounded-full" />}
                               {item?.fullName}
                             </td>
                             <td className="p-6 text-xs text-gray-300">
