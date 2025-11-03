@@ -1,6 +1,10 @@
 "use client";
 import HistoryBackButton from "@/components/utils/historyBackButton";
-import { changePassword, getMeData, updateUserProfile } from "@/store/slices/auth/authSlice";
+import {
+  changePassword,
+  getMeData,
+  updateUserProfile,
+} from "@/store/slices/auth/authSlice";
 import {
   fetchChatMessageTokens,
   getChatbots,
@@ -13,6 +17,7 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import ChangePasswordModal from "./changePasswordModel";
 import { pathToImage } from "@/services/utils/helpers";
+import Image from "next/image";
 
 const ProfileSettings = () => {
   const router = useRouter();
@@ -48,7 +53,6 @@ const ProfileSettings = () => {
       });
     }
   }, [userData]);
-
 
   useEffect(() => {
     dispatch(getMeData({ router }));
@@ -131,37 +135,57 @@ const ProfileSettings = () => {
   };
 
   const handlePasswordChange = (currentPass: string, newPass: string) => {
-    console.log(currentPass, newPass)
+    console.log(currentPass, newPass);
 
-    dispatch(changePassword({ data: { old_password: currentPass, new_password: newPass } })).unwrap().then((res) => {
-      console.log(res)
-      setShowChangePassword(false)
-    }).catch((e) => {
-      console.log(e)
-      toast.error("Failed to change password");
-    })
-  }
-  const profileImage = ({ userPic, editedPic }: { userPic: string; editedPic: File | string | null }) => {
-    // If editedPic is a File object, convert it to a blob URL
-    if (editedPic instanceof File || editedPic instanceof Blob) {
-      return URL.createObjectURL(editedPic);
-    }
-    // If editedPic is already a URL string, return it directly
-    else if (editedPic) {
-      return editedPic;
-    }
+    dispatch(
+      changePassword({
+        data: { old_password: currentPass, new_password: newPass },
+      })
+    )
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        setShowChangePassword(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        toast.error("Failed to change password");
+      });
+  };
+  const profileImage = ({
+    userPic,
+    editedPic,
+  }: {
+    userPic?: string;
+    editedPic?: File | string | null;
+  }): string => {
+    try {
+      // ✅ 1. If a new image is uploaded (File/Blob)
+      if (
+        editedPic &&
+        typeof editedPic === "object" &&
+        (editedPic instanceof File || editedPic instanceof Blob)
+      ) {
+        return URL.createObjectURL(editedPic);
+      }
 
-    // If userPic exists and is a URL (starts with 'http'), return it
-    if (userPic?.startsWith('http')) {
-      return userPic;
-    }
-    // If userPic exists but is a relative path, prepend backend URL
-    else if (userPic) {
-      return pathToImage(userPic);
-    }
+      // ✅ 2. If there's an edited image URL string
+      if (typeof editedPic === "string" && editedPic.trim() !== "") {
+        return editedPic;
+      }
 
-    // Fallback: default user image
-    return '/images/userimg.png';
+      // ✅ 3. If there's a valid userPic (from Google or backend)
+      if (userPic && userPic.startsWith("http")) {
+        return userPic;
+      } else if (userPic && userPic.trim() !== "") {
+        return pathToImage(userPic); // if local/relative
+      }
+
+      // ✅ 4. Always return fallback
+      return "/images/userimg.png";
+    } catch {
+      return "/images/userimg.png";
+    }
   };
 
   return (
@@ -187,7 +211,7 @@ const ProfileSettings = () => {
           ) : (
             <button
               onClick={() => setIsEditing(true)}
-              className="cursor-pointer px-4 py-2 bg-white  text-[#2a0e61] rounded hover:bg-blue-700"
+              className="cursor-pointer px-4 py-2 bg-white text-[#2a0e61] rounded hover:bg-blue-700"
             >
               Edit Profile
             </button>
@@ -196,12 +220,16 @@ const ProfileSettings = () => {
 
         <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
           <div className="flex justify-center items-center mb-6">
-            <img
-              src={
-                profileImage({ userPic: userData.picture, editedPic: editedData.picture })
-              }
+            <Image
+              src={profileImage({
+                userPic: userData.picture,
+                editedPic: editedData.picture,
+              })}
               alt="Profile"
               className="w-20 h-20 rounded-full object-cover"
+              referrerPolicy="no-referrer"
+              width={100}
+              height={100}
             />
             {isEditing && (
               <div className="ml-4">
@@ -277,17 +305,17 @@ const ProfileSettings = () => {
 
               {/* <div>
                 <label className="block text-sm font-medium text-gray-500">
-                  Account Created
+                 Account Created
                 </label>
                 <p className="mt-1">{formatDate(userData.created_at)}</p>
-              </div>
+             </div>
 
-              <div>
+             <div>
                 <label className="block text-sm font-medium text-gray-500">
-                  Last Updated
+                 Last Updated
                 </label>
                 <p className="mt-1">{formatDate(userData.updated_at || "")}</p>
-              </div> */}
+             </div> */}
             </div>
 
             <div className="space-y-4">
@@ -301,22 +329,24 @@ const ProfileSettings = () => {
 
               {/* <div>
                 <label className="block text-sm font-medium text-gray-500">
-                  Tokens Used
+                 Tokens Used
                 </label>
                 <p className="mt-1">
-                  {tokensData.total_tokens?.toLocaleString() || "0"}
+                 {tokensData.total_tokens?.toLocaleString() || "0"}
                 </p>
-              </div> */}
-
+             </div> */}
 
               {isEditing && !userData.provider && (
                 <div className="pt-4 border-t border-gray-200">
                   <h3 className="text-sm font-medium text-gray-500 mb-2">
                     Security
                   </h3>
-                  <button onClick={() => {
-                    setShowChangePassword(true);
-                  }} className="text-sm text-blue-600 hover:text-blue-800">
+                  <button
+                    onClick={() => {
+                      setShowChangePassword(true);
+                    }}
+                    className="text-sm text-blue-600 hover:text-blue-800"
+                  >
                     Change Password
                   </button>
                 </div>
@@ -333,28 +363,35 @@ const ProfileSettings = () => {
             </div>
           )}
         </div>
-        <div className="flex gap-x-4 mt-4  max-w-6xl mx-auto ">
+        <div className="flex gap-x-4 mt-4 max-w-6xl mx-auto ">
           {/* Bots Quota Card */}
-          {tokensData && tokensData.credits && <div className="rounded-xl border border-gray-200 bg-white flex-1 p-6 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-xl font-semibold text-gray-800">
-                Bots Quota
-              </h2>
-              <div className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                {chatbots.length || 0}/{tokensData.credits.chatbots_allowed || 1} available
+          {tokensData && tokensData.credits && (
+            <div className="rounded-xl border border-gray-200 bg-white flex-1 p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Bots Quota
+                </h2>
+                <div className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                  {chatbots.length || 0}/
+                  {tokensData.credits.chatbots_allowed || 1} available
+                </div>
               </div>
+              <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div
+                  className="bg-blue-600 h-2.5 rounded-full"
+                  style={{
+                    width: `${((chatbots.length || 0) /
+                        (tokensData.credits.chatbots_allowed ?? 1)) *
+                      100
+                      }%`,
+                  }}
+                ></div>
+              </div>
+              <p className="mt-3 text-sm text-gray-500">
+                Upgrade plan to create more bots
+              </p>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
-              <div
-                className="bg-blue-600 h-2.5 rounded-full"
-                style={{ width: `${((chatbots.length || 0) / (tokensData.credits.chatbots_allowed ?? 1)) * 100}%` }}
-              ></div>
-            </div>
-            <p className="mt-3 text-sm text-gray-500">
-              Upgrade plan to create more bots
-            </p>
-          </div>}
-
+          )}
         </div>
       </div>
       <ChangePasswordModal

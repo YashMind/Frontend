@@ -634,6 +634,30 @@ export const getRolePermissions = createAsyncThunk<any, string>(
   }
 );
 
+export const getUserDataOverview = createAsyncThunk<any, void>(
+  "user/getDataOverview",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.get("/user/data-overview");
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        return response.data;
+      } else {
+        return rejectWithValue("Failed to fetch user data overview!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toasterError(error?.response?.data?.detail, 10000, "id");
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred while fetching user data overview.");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
 export const updateClientUser = createAsyncThunk<any, { payload: any }>(
   "auth/updateAdminUser",
   async ({ payload }, { dispatch, rejectWithValue }) => {

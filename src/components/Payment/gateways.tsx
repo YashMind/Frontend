@@ -1,5 +1,5 @@
 "use client";
-import { getAllPaymentGateway } from "@/store/slices/admin/adminSlice";
+import { getAllPaymentGateway, getPublicSubscriptionPlans, getUserDataOverview } from "@/store/slices/admin/adminSlice";
 import { getMeData } from "@/store/slices/auth/authSlice";
 import {
   createPaymentOrderCashfree,
@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { BsArrowRight } from "react-icons/bs";
 import { FaPaypal, FaRupeeSign } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { isWithinPlanLimits } from "@/lib/planUtils";
 
 interface PaymentResponse {
   payment_session_id?: string;
@@ -43,7 +44,7 @@ const Gateways = ({
   const [error, setError] = useState<string | null>(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
 
-  const userData: UserProfileData = useSelector(
+  const userData: UserProfileData | null = useSelector(
     (state: RootState) => state.auth.userData
   );
 
@@ -51,9 +52,15 @@ const Gateways = ({
     (state: RootState) => state.admin
   );
 
+  const { publicSubscriptionPlansData } = useSelector(
+    (state: RootState) => state.admin
+  );
+
   useEffect(() => {
     dispatch(getMeData({ router }));
     dispatch(getAllPaymentGateway());
+    // prefetch public plans to avoid an extra call during payment flow
+    dispatch(getPublicSubscriptionPlans());
   }, [dispatch, router]);
 
   // Initialize Cashfree SDK when script loads
@@ -150,13 +157,51 @@ const Gateways = ({
     setError(null);
 
     const payload = {
-      customer_id: userData.id,
+      customer_id: userData.id!, // userData checked above, assert non-null for TS
       plan_id: plan_id ? parseInt(plan_id) : undefined,
       credit: credit ? parseInt(credit) : undefined,
       return_url: `${window.location.origin}/payment/return`,
     };
 
     try {
+      // Downgrade / limits check flow
+      if (plan_id && userData) {
+        const selectedPlanId = parseInt(plan_id);
+
+        // fetch public plans list (returns array)
+        let plans: any[] = [];
+        try {
+          plans = await dispatch(getPublicSubscriptionPlans()).unwrap();
+        } catch (err) {
+          // fallback to state if thunk failed or already present
+          plans = publicSubscriptionPlansData?.data || [];
+        }
+
+        const selectedPlan = Array.isArray(plans)
+          ? plans.find((p) => p.id === selectedPlanId)
+          : undefined;
+
+        // If we found a plan, run overview check
+        if (selectedPlan) {
+          let overview: any = {};
+          try {
+            overview = await dispatch(getUserDataOverview()).unwrap();
+          } catch (err) {
+            // if overview fetch fails, allow payment to proceed (best-effort)
+            overview = null;
+          }
+
+          if (overview) {
+            const fits = isWithinPlanLimits(overview, selectedPlan);
+            if (!fits) {
+              toast.error("Your current data exceeds the limits of the selected plan. Redirecting to downgrade help page.");
+              router.push(`/credits-and-plans/downgrade?plan=${selectedPlanId}`);
+              return;
+            }
+          }
+        }
+      }
+
       let response: PaymentResponse;
 
       if (selectedGateway === "cashfree") {
@@ -205,7 +250,6 @@ const Gateways = ({
 
 
   const cashfreeUrl = process.env.NEXT_PUBLIC_CASHFREE_URL
-  console.log("cashfreeUrl", cashfreeUrl)
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
       <Script

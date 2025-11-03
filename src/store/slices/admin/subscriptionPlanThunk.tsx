@@ -36,10 +36,8 @@ export const getPublicSubscriptionPlans = createAsyncThunk<any, void>(
             dispatch(startLoadingActivity());
 
             const response = await http.get("/admin/subscription-plans/public");
-            console.log("response", response)
             if (response.status === 200) {
                 dispatch(stopLoadingActivity());
-                console.log(response.data)
                 return response.data.data;
             } else {
                 return rejectWithValue("Failed to fetch subscription plans!");
