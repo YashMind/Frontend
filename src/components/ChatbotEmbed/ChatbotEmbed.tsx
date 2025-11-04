@@ -131,6 +131,71 @@ const ChatbotEmbedSection = ({
     }
   }, [chatIdData?.bot_id]);
 
+
+
+
+  if (
+    chatIdData &&
+    chatbotData.allow_domains &&
+    domainUrl &&
+    chatbotData.domains
+  ) {
+    // Split allowed domains safely
+    const allowedDomains = chatbotData.domains
+      .split(',')
+      .map((d) =>
+        d.trim()
+          .replace(/\/$/, '') // remove trailing slash
+          .replace(/^https?:\/\//, '') // remove protocol
+          .toLowerCase()
+      )
+      .filter(Boolean);
+
+    // Normalize the incoming domain
+    let currentDomain = '';
+    try {
+      const domainObj =
+        domainUrl.startsWith('http://') || domainUrl.startsWith('https://')
+          ? new URL(domainUrl)
+          : new URL(`http://${domainUrl}`);
+
+      // Extract the hostname (no port, no protocol)
+      currentDomain = domainObj.hostname.toLowerCase();
+
+      // Remove www. for consistency (optional)
+      currentDomain = currentDomain.replace(/^www\./, '');
+    } catch (e) {
+      console.warn('Invalid domain URL provided:', domainUrl);
+    }
+
+    console.log('✅ Allowed:', allowedDomains);
+    console.log('🌐 Current:', currentDomain);
+
+    // Compare — allow either exact match or subdomain match
+    const isAllowed = allowedDomains.some(
+      (allowed) =>
+        allowed === currentDomain ||
+        currentDomain.endsWith(`.${allowed}`) // allow subdomains
+    );
+
+    if (!isAllowed) {
+      return (
+        <div className="w-full h-screen flex items-center justify-center p-4">
+          <div className="bg-white p-6 rounded shadow-md text-center">
+            <h2 className="text-red-600 text-2xl font-bold mb-4">
+              Access Denied
+            </h2>
+            <p className="text-red-700">
+              This chatbot is not authorized to be embedded on this domain.
+            </p>
+          </div>
+        </div>
+      );
+    }
+  }
+
+
+
   return (
     <div
       className="w-full h-screen  rounded-lg shadow-md flex flex-col justify-between "

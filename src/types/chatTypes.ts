@@ -37,6 +37,8 @@ export interface ChatbotsData {
   creativity: number;
   token: string;
   domains?: string;
+  allow_domains: boolean;
+  rate_limit_enabled: boolean;
   lead_email: string;
   limit_to?: number;
   every_minutes?: number;
