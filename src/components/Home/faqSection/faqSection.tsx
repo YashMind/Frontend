@@ -5,9 +5,9 @@ const FaqSection = () => {
   const [accordianItems, setAccordianItems] = useState<string[]>([]);
   const faqsData = [
     {
-      title: "How Yashraa's wallet credit system works ?",
+      title: "How does Yashraa's wallet credit system work?",
       paragraph:
-        " Yashraa's  wallet credit system works on 1 credit = ₹1.  For eg. In a ₹500 Basic  plan you gets 500 credits. In a  ₹2000 Pro plan you gets 2000 credits , similarly applicable for other plans. You can also Add additional credits according  your need during active plan.",
+        "Yashraa's wallet credit system operates on a simple conversion: 1 credit = ₹1 for Indian users. For example, in the ₹500 Basic Plan, you receive 500 credits; in the ₹2000 Pro Plan, you receive 2000 credits, and similarly for other plans. For overseas clients (using USD pricing), 1 credit equals 1 cent (USD 0.01). You can also add additional credits as needed during an active plan.",
     },
     {
       title: "How does AI Collective get all these AIs?",
