@@ -210,7 +210,7 @@ const ChatbotSidebar = ({
   return (
     <>
       {/* Mobile menu button */}
-      <div className={`${mobileMenuOpen ? "hidden" : "block"} md:hidden absolute top-4 left-4 z-50`}>
+      <div className={`${mobileMenuOpen ? "hidden opacity-0" : "block opacity-100"} md:hidden absolute top-4 left-4 z-50 duration-150 transition`}>
         <button
           onClick={() => setMobileMenuOpen(true)}
           className="p-2 rounded-lg bg-black text-white"
@@ -235,7 +235,7 @@ const ChatbotSidebar = ({
           </button>
         </div>
 
-        <div className="overflow-y-auto z-40">
+        <div className="overflow-y-auto z-40 no-scrollbar">
           {sidebarSections.map(({ title, links }, idx) => (
             <div key={idx} className="flex flex-col gap-2 mb-4">
               {title && (

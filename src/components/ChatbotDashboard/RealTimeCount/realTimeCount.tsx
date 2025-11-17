@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
   FaComments,
-  FaMicrophoneAlt,
-  FaRobot,
   FaWallet,
   FaBalanceScale,
-  FaExclamationTriangle,
-  FaTimes,
 } from "react-icons/fa";
 import StatCard from "./StatCard";
 import { AppDispatch, RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchChatMessageTokens } from "@/store/slices/chats/chatSlice";
-import { useRouter } from "next/navigation";
 import AddCreditModal from "./addCreditModal";
 
 export default function RealTimeCount() {
@@ -25,7 +20,7 @@ export default function RealTimeCount() {
 
   return (
     <div
-      className={`mt-[3%] flex flex-col md:flex-row gap-2 p-2 w-full justify-center items-stretch transition flex-nowrap duration-150 max-h-[8%] `}
+      className={`mt-[22%] md:mt-[4%] flex flex-col md:flex-row gap-2 p-2 w-full justify-center items-stretch transition flex-nowrap duration-150 lg:max-h-[8%] `}
     >
       <StatCard
         icon={<FaComments size={20} color="#FFB85C" />}

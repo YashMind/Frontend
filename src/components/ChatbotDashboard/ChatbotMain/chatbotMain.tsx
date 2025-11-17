@@ -115,10 +115,10 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
         </div>
 
         {/* Main content area - takes remaining space */}
-        <div className="flex gap-4 flex-1 min-h-0">
+        <div className="flex relative lg:gap-4 flex-1 min-h-0">
           {/* Sidebar */}
           {botPage !== "main" && (
-            <div className="overflow-y-auto flex-shrink-0 w-[15%] no-scrollbar rounded-3xl">
+            <div className="overflow-y-auto  flex-shrink-0  lg:w-[15%] no-scrollbar rounded-3xl">
               <ChatbotSidebar botPage={botPage} botId={botId} />
             </div>
           )}

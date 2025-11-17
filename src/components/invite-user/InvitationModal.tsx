@@ -68,7 +68,7 @@ const InvitationModal = ({
   // Fetch chatbots when modal opens
   useEffect(() => {
     if (isOpen && typeof window !== "undefined") {
-      dispatch(getChatbots());
+      dispatch(getChatbots({ include_shared: false }));
     }
   }, [isOpen, dispatch]);
 

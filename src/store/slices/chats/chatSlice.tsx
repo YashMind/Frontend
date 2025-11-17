@@ -21,13 +21,17 @@ import {
   TextMessage,
 } from "@/types/chatTypes";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
-
-export const getChatbots = createAsyncThunk<any, void>(
+type GetChatbotsArgs = {
+  include_shared?: boolean;
+};
+export const getChatbots = createAsyncThunk<any, GetChatbotsArgs | undefined>(
   "chat/getChatbots",
-  async (_, { dispatch, rejectWithValue }) => {
+  async (args: GetChatbotsArgs = {}, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await http.get("/chatbot/get-all");
+
+      const include_shared = args.include_shared ?? true;
+      const response = await http.get(`/chatbot/get-all?include_shared=${include_shared}`);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         return response.data;

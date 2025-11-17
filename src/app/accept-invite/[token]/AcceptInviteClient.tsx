@@ -29,7 +29,7 @@ export default function AcceptInviteClient({ token }: AcceptInviteClientProps) {
     const checkAuth = async () => {
       try {
         dispatch(getMeData({ router })).unwrap().then((res) => {
-          setIsAuthenticated(res.status == 200);
+          setIsAuthenticated(!!res.user)
         }).catch((err) => { throw new Error(err) });
       } catch (error) {
         setIsAuthenticated(false);
@@ -131,7 +131,7 @@ export default function AcceptInviteClient({ token }: AcceptInviteClientProps) {
             <p className="mt-4 text-gray-600">Processing your invitation...</p>
           </div>
         )}
-
+        {error}
         {error && !loading && (
           <div className="text-center py-6">
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">

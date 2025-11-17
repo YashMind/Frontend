@@ -43,6 +43,7 @@ const InviteUserClient = () => {
     );
   };
 
+
   return (
     <div className="p-4 min-h-screen bg-gradient-to-br from-[#1a1440] to-[#2a0e61] md:pt-18">
       <div className="max-w-6xl mx-auto">
