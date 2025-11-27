@@ -1,5 +1,5 @@
 export interface CreatebotForm {
-  chatbot_name: string;
+  chatbot_name: any;
   public: boolean;
   domain: string;
 }

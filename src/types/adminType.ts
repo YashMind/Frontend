@@ -1,3 +1,33 @@
+export interface DowngradeSelections {
+  target_plan_id: number;
+  selections: {
+    chatbots_to_delete: number[];
+    docs_to_delete: Record<number, number[]>;
+    team_members_to_remove: number[];
+  };
+}
+
+export interface DowngradeSelectionResponse {
+  success: boolean;
+  selection_id: string;
+  status: string;
+}
+
+export interface ProcessedDowngradeItems {
+  chatbots_deleted: number[];
+  docs_deleted: number[];
+  team_members_removed: number[];
+}
+
+export interface DowngradeProcessResponse {
+  success: boolean;
+  message: string;
+  processed_items: ProcessedDowngradeItems;
+}
+
+
+
+
 export interface AdminAllUsers {
   current_page: number;
   data: UserProfileData[];

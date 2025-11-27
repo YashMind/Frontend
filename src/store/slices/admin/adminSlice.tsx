@@ -6,10 +6,100 @@ import {
 } from "../activity/activitySlice";
 import toast from "react-hot-toast";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
-import { AdminAllUsers, AdminLogsActivity, UserData, ClientLogsActivity, PaymentsGateway, ProductMonitoringData, RolePermissions, SubscriptionPlansData, SubscriptionPlansPublicData, ToolsDataType, EnterpriseUserType } from "@/types/adminType";
-import { getAllSubscriptionPlans, getPublicSubscriptionPlans, createSubscriptionPlan, deleteSubscriptionsPlan, getSubscriptionPlan, toggleSubscriptionPlanStatus, } from "./subscriptionPlanThunk";
-import { getAllPaymentGateway, AddUpdatePaymentGateway } from "./paymentGatewayThunks";
+import {
+  AdminAllUsers,
+  AdminLogsActivity,
+  UserData,
+  ClientLogsActivity,
+  PaymentsGateway,
+  ProductMonitoringData,
+  RolePermissions,
+  SubscriptionPlansData,
+  SubscriptionPlansPublicData,
+  ToolsDataType,
+  EnterpriseUserType,
+  DowngradeSelectionResponse,
+  DowngradeProcessResponse,
+  DowngradeSelections,
+} from "@/types/adminType";
+import {
+  getAllSubscriptionPlans,
+  getPublicSubscriptionPlans,
+  createSubscriptionPlan,
+  deleteSubscriptionsPlan,
+  getSubscriptionPlan,
+  toggleSubscriptionPlanStatus,
+} from "./subscriptionPlanThunk";
+import {
+  getAllPaymentGateway,
+  AddUpdatePaymentGateway,
+} from "./paymentGatewayThunks";
 import { getEnterpriseUsers } from "./enterpriseThunks";
+
+// Add these thunks after your existing thunks
+export const saveDowngradeSelections = createAsyncThunk<
+  any,
+  { payload: DowngradeSelections }
+>(
+  "admin/saveDowngradeSelections",
+  async ({ payload }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.post("/admin/downgrade/selections", payload);
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toasterSuccess("Selections saved successfully!", 10000, "id");
+        return response.data;
+      } else {
+        return rejectWithValue("Failed to save downgrade selections!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toasterError(error?.response?.data?.detail, 10000, "id");
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue(
+        "An error occurred while saving downgrade selections"
+      );
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
+
+export const processDowngradeAfterPayment = createAsyncThunk<
+  any,
+  { selection_id: string; payment_reference: string }
+>(
+  "admin/processDowngradeAfterPayment",
+  async (
+    { selection_id, payment_reference },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      dispatch(startLoadingActivity());
+      const response = await http.post("/admin/downgrade/process", {
+        selection_id,
+        payment_reference,
+      });
+      if (response.status === 200) {
+        dispatch(stopLoadingActivity());
+        toasterSuccess("Downgrade processed successfully!", 10000, "id");
+        return response.data;
+      } else {
+        return rejectWithValue("Failed to process downgrade!");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        toasterError(error?.response?.data?.detail, 10000, "id");
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue("An error occurred while processing downgrade");
+    } finally {
+      dispatch(stopLoadingActivity());
+    }
+  }
+);
 
 export const getAllUsers = createAsyncThunk<
   any,
@@ -30,7 +120,20 @@ export const getAllUsers = createAsyncThunk<
 >(
   "admin/getAllUsers",
   async (
-    { page, limit, search, sortBy, sortOrder, plan, status, token_used, start_date, end_date, roleUsed, message_used },
+    {
+      page,
+      limit,
+      search,
+      sortBy,
+      sortOrder,
+      plan,
+      status,
+      token_used,
+      start_date,
+      end_date,
+      roleUsed,
+      message_used,
+    },
     { dispatch, rejectWithValue }
   ) => {
     try {
@@ -60,7 +163,7 @@ export const getAllUsers = createAsyncThunk<
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 10000, "id")
+        toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -69,8 +172,6 @@ export const getAllUsers = createAsyncThunk<
     }
   }
 );
-
-
 
 export const getAllVolumnDiscounts = createAsyncThunk<any, void>(
   "admin/getAllVoulmnDiscounts",
@@ -82,7 +183,7 @@ export const getAllVolumnDiscounts = createAsyncThunk<any, void>(
 
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        return response.data
+        return response.data;
       } else {
         return rejectWithValue("Failed to fetch subscription plans!");
       }
@@ -91,14 +192,14 @@ export const getAllVolumnDiscounts = createAsyncThunk<any, void>(
         toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(error.response.data.message);
       }
-      return rejectWithValue("An error occurred while fetching subscription plans.");
+      return rejectWithValue(
+        "An error occurred while fetching subscription plans."
+      );
     } finally {
       dispatch(stopLoadingActivity());
     }
   }
 );
-
-
 
 export const getAllTools = createAsyncThunk<
   any,
@@ -109,32 +210,26 @@ export const getAllTools = createAsyncThunk<
     sortBy?: string;
     sortOrder?: string;
   }
->(
-  "admin/getAllTools",
-  async (
-    { },
-    { dispatch, rejectWithValue }
-  ) => {
-    try {
-      dispatch(startLoadingActivity());
-      const response = await http.get("/admin/tools", {});
-      if (response.status === 200) {
-        dispatch(stopLoadingActivity());
-        return response.data;
-      } else {
-        return rejectWithValue("failed to get token bots!");
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 10000, "id")
-        return rejectWithValue(error.response.data.message);
-      }
-      return rejectWithValue("An error occurred during fetching chats");
-    } finally {
+>("admin/getAllTools", async ({}, { dispatch, rejectWithValue }) => {
+  try {
+    dispatch(startLoadingActivity());
+    const response = await http.get("/admin/tools", {});
+    if (response.status === 200) {
       dispatch(stopLoadingActivity());
+      return response.data;
+    } else {
+      return rejectWithValue("failed to get token bots!");
     }
+  } catch (error: any) {
+    if (error.response && error.response.status === 400) {
+      toasterError(error?.response?.data?.detail, 10000, "id");
+      return rejectWithValue(error.response.data.message);
+    }
+    return rejectWithValue("An error occurred during fetching chats");
+  } finally {
+    dispatch(stopLoadingActivity());
   }
-);
+});
 
 export const createTokenBots = createAsyncThunk<any, { payload: any }>(
   "admin/createTokenBots",
@@ -144,7 +239,7 @@ export const createTokenBots = createAsyncThunk<any, { payload: any }>(
       const response = await http.post("/admin/create-token-bots", payload);
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("Token created successfully!", 10000, "id")
+        toasterSuccess("Token created successfully!", 10000, "id");
 
         return response.data;
       } else {
@@ -152,7 +247,7 @@ export const createTokenBots = createAsyncThunk<any, { payload: any }>(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 10000, "id")
+        toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during chatbot");
@@ -172,14 +267,14 @@ export const deleteTokenBots = createAsyncThunk<any, { token_bot_id?: number }>(
       );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("Token bot deleted successfully!", 10000, "id")
+        toasterSuccess("Token bot deleted successfully!", 10000, "id");
         return response.data;
       } else {
         return rejectWithValue("failed to get chats!");
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 10000, "id")
+        toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -203,7 +298,7 @@ export const getTopConsumptionUsers = createAsyncThunk<any, void>(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 10000, "id")
+        toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during fetching chats");
@@ -266,7 +361,10 @@ export const getAdminsLogsActivity = createAsyncThunk<
   { date_filter?: string; page?: number; limit?: number }
 >(
   "admin/getAdminsLogsActivity",
-  async ({ date_filter = "", page = 1, limit = 5 }, { dispatch, rejectWithValue }) => {
+  async (
+    { date_filter = "", page = 1, limit = 5 },
+    { dispatch, rejectWithValue }
+  ) => {
     try {
       dispatch(startLoadingActivity());
       const offset = (page - 1) * limit;
@@ -285,8 +383,6 @@ export const getAdminsLogsActivity = createAsyncThunk<
     }
   }
 );
-
-
 
 export const getClientLogsActivity = createAsyncThunk<
   any,
@@ -316,7 +412,6 @@ export const getClientLogsActivity = createAsyncThunk<
     }
   }
 );
-
 
 export const updateUserByAdmin = createAsyncThunk<
   any,
@@ -414,7 +509,10 @@ export const updateClientByAdmin = createAsyncThunk<
   }
 );
 
-export const updateToolsStatus = createAsyncThunk<any, { id: number; status: boolean }>(
+export const updateToolsStatus = createAsyncThunk<
+  any,
+  { id: number; status: boolean }
+>(
   "admin/updateBotToken",
   async ({ id, status }, { dispatch, rejectWithValue }) => {
     try {
@@ -422,17 +520,15 @@ export const updateToolsStatus = createAsyncThunk<any, { id: number; status: boo
       const response = await http.put(`/admin/tool/${id}/status`, { status });
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess(response.message || "Tools Status updated successfully!", 10000, "id")
-        dispatch(
-          getAllTools({})
-        );
+        toasterSuccess("Tools Status updated successfully!", 10000, "id");
+        dispatch(getAllTools({}));
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot!");
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 10000, "id")
+        toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during chatbot");
@@ -442,7 +538,6 @@ export const updateToolsStatus = createAsyncThunk<any, { id: number; status: boo
   }
 );
 
-
 export const updateMessageRate = createAsyncThunk<
   any,
   { id: string; base_rate_per_message: number }
@@ -451,20 +546,20 @@ export const updateMessageRate = createAsyncThunk<
   async ({ id, base_rate_per_message }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await http.put(`/admin/users/${id}/base-rate`, { base_rate_per_message });
+      const response = await http.put(`/admin/users/${id}/base-rate`, {
+        base_rate_per_message,
+      });
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        toasterSuccess("Token Status updated successfully!", 10000, "id")
-        dispatch(
-          getClientUsers()
-        );
+        toasterSuccess("Token Status updated successfully!", 10000, "id");
+        dispatch(getClientUsers());
         return response.data;
       } else {
         return rejectWithValue("failed to create chatbot!");
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toasterError(error?.response?.data?.detail, 10000, "id")
+        toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(error.response.data.message);
       }
       return rejectWithValue("An error occurred during chatbot");
@@ -508,8 +603,6 @@ export const updateDiscount = createAsyncThunk<
   }
 );
 
-
-
 export const updateBotProductStatus = createAsyncThunk<
   any,
   { id: number; status: string }
@@ -518,13 +611,13 @@ export const updateBotProductStatus = createAsyncThunk<
   async ({ id, status }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response = await http.put(`/admin/products/${id}/status`, { status });
+      const response = await http.put(`/admin/products/${id}/status`, {
+        status,
+      });
 
       if (response.status === 200) {
         toasterSuccess(`Product status updated successfully!`, 10000, "id");
-        dispatch(
-          getAllBotProducts({})
-        );
+        dispatch(getAllBotProducts({}));
         return response.data;
       } else {
         return rejectWithValue("Failed to update product status!");
@@ -621,7 +714,9 @@ export const getRolePermissions = createAsyncThunk<any, string>(
   "auth/getRolePermissions",
   async (role, { rejectWithValue }) => {
     try {
-      const response = await http.get(`/admin/get?role=${encodeURIComponent(role)}`);
+      const response = await http.get(
+        `/admin/get?role=${encodeURIComponent(role)}`
+      );
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.status === 404) {
@@ -651,7 +746,9 @@ export const getUserDataOverview = createAsyncThunk<any, void>(
         toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(error.response.data.message);
       }
-      return rejectWithValue("An error occurred while fetching user data overview.");
+      return rejectWithValue(
+        "An error occurred while fetching user data overview."
+      );
     } finally {
       dispatch(stopLoadingActivity());
     }
@@ -714,7 +811,9 @@ export const deleteClientUser = createAsyncThunk<any, { id?: number }>(
   async ({ id }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      const response: any = await http.delete(`/admin/delete-client-user/${id}`);
+      const response: any = await http.delete(
+        `/admin/delete-client-user/${id}`
+      );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         dispatch(getClientUsers());
@@ -735,7 +834,6 @@ export const deleteClientUser = createAsyncThunk<any, { id?: number }>(
   }
 );
 
-
 export const getMyPermissions = createAsyncThunk<any, void>(
   "admin/rolesPermissions",
   async (_, { dispatch, rejectWithValue }) => {
@@ -755,7 +853,9 @@ export const getMyPermissions = createAsyncThunk<any, void>(
         toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(error.response.data.message);
       }
-      return rejectWithValue("An error occurred while fetching roles and permissions");
+      return rejectWithValue(
+        "An error occurred while fetching roles and permissions"
+      );
     } finally {
       dispatch(stopLoadingActivity());
     }
@@ -780,7 +880,12 @@ const initialState = {
   clientLogsActivityData: {} as ClientLogsActivity,
   permissionsLoading: false,
   myPermissions: [] as string[],
-  rolePermissions: [] as RolePermissions[]
+  rolePermissions: [] as RolePermissions[],
+
+  // ADD THESE NEW STATES:
+  downgradeSelection: null as DowngradeSelectionResponse | null,
+  downgradeProcessing: false,
+  processedDowngrade: null as DowngradeProcessResponse | null,
 };
 
 const adminSlice = createSlice({
@@ -789,12 +894,37 @@ const adminSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // ADD DOWNSGRADE CASES FIRST
+      .addCase(saveDowngradeSelections.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(saveDowngradeSelections.fulfilled, (state, action) => {
+        state.loading = false;
+        state.downgradeSelection = action.payload;
+      })
+      .addCase(saveDowngradeSelections.rejected, (state, action) => {
+        state.loading = false;
+        state.downgradeSelection = null;
+      })
+      .addCase(processDowngradeAfterPayment.pending, (state) => {
+        state.downgradeProcessing = true;
+      })
+      .addCase(processDowngradeAfterPayment.fulfilled, (state, action) => {
+        state.downgradeProcessing = false;
+        state.processedDowngrade = action.payload;
+        state.downgradeSelection = null;
+      })
+      .addCase(processDowngradeAfterPayment.rejected, (state, action) => {
+        state.downgradeProcessing = false;
+        state.processedDowngrade = null;
+      })
 
+      // ALL YOUR EXISTING CASES
       .addCase(getAllVolumnDiscounts.pending, (state) => {
         state.loading = true;
       })
       .addCase(getAllVolumnDiscounts.fulfilled, (state, action) => {
-        state.data = action.payload?.data || []; // assuming response = { success, message, data }
+        state.data = action.payload?.data || [];
         state.loading = false;
       })
       .addCase(getAllVolumnDiscounts.rejected, (state, action) => {
@@ -810,7 +940,6 @@ const adminSlice = createSlice({
       .addCase(getAllUsers.rejected, (state, action) => {
         state.loading = false;
       })
-
       .addCase(getAllSubscriptionPlans.pending, (state) => {
         state.loading = true;
       })
@@ -831,7 +960,6 @@ const adminSlice = createSlice({
       .addCase(getPublicSubscriptionPlans.rejected, (state, action) => {
         state.loading = false;
       })
-
       .addCase(getAllTools.pending, (state) => {
         state.loading = true;
       })
@@ -842,7 +970,6 @@ const adminSlice = createSlice({
       .addCase(getAllTools.rejected, (state, action) => {
         state.loading = false;
       })
-
       .addCase(getTopConsumptionUsers.pending, (state) => {
         state.loading = true;
       })
@@ -853,7 +980,6 @@ const adminSlice = createSlice({
       .addCase(getTopConsumptionUsers.rejected, (state, action) => {
         state.loading = false;
       })
-
       .addCase(getAllBotProducts.pending, (state) => {
         state.loading = true;
       })
@@ -864,7 +990,6 @@ const adminSlice = createSlice({
       .addCase(getAllBotProducts.rejected, (state, action) => {
         state.loading = false;
       })
-
       .addCase(getAdminUsers.pending, (state) => {
         state.loading = true;
       })
@@ -875,7 +1000,6 @@ const adminSlice = createSlice({
       .addCase(getAdminUsers.rejected, (state, action) => {
         state.loading = false;
       })
-
       .addCase(getClientUsers.pending, (state) => {
         state.loading = true;
       })
@@ -885,7 +1009,8 @@ const adminSlice = createSlice({
       })
       .addCase(getEnterpriseUsers.rejected, (state, action) => {
         state.loading = false;
-      }).addCase(getEnterpriseUsers.pending, (state) => {
+      })
+      .addCase(getEnterpriseUsers.pending, (state) => {
         state.loading = true;
       })
       .addCase(getClientUsers.fulfilled, (state, action) => {
@@ -895,7 +1020,6 @@ const adminSlice = createSlice({
       .addCase(getClientUsers.rejected, (state, action) => {
         state.loading = false;
       })
-
       .addCase(getRolePermissions.rejected, (state, action) => {
         state.loading = false;
       })
@@ -903,7 +1027,6 @@ const adminSlice = createSlice({
         state.loading = false;
         state.rolePermissions = action?.payload;
       })
-
       .addCase(getAdminsLogsActivity.pending, (state) => {
         state.loading = true;
       })
@@ -922,7 +1045,6 @@ const adminSlice = createSlice({
       .addCase(getAdminsLogsActivity.rejected, (state, action) => {
         state.loading = false;
       })
-
       .addCase(getAllPaymentGateway.pending, (state) => {
         state.loading = true;
       })
@@ -947,5 +1069,17 @@ const adminSlice = createSlice({
 });
 
 export default adminSlice.reducer;
-export { getAllSubscriptionPlans, getPublicSubscriptionPlans, createSubscriptionPlan, deleteSubscriptionsPlan, getSubscriptionPlan, toggleSubscriptionPlanStatus }
-export { getAllPaymentGateway, AddUpdatePaymentGateway }
+
+// EXPORT ALL THUNKS IN ONE PLACE - NO DUPLICATES
+export {
+  getAllSubscriptionPlans,
+  getPublicSubscriptionPlans,
+  createSubscriptionPlan,
+  deleteSubscriptionsPlan,
+  getSubscriptionPlan,
+  toggleSubscriptionPlanStatus,
+  getAllPaymentGateway,
+  AddUpdatePaymentGateway,
+  // saveDowngradeSelections,
+  // processDowngradeAfterPayment,
+};

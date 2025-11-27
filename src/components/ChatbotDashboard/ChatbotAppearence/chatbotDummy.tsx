@@ -6,24 +6,24 @@ import { ChatbotSettings } from "@/types/chatTypes";
 import { IoMdSend } from "react-icons/io";
 import { pathToImage } from "@/services/utils/helpers";
 
-const ChatbotDummy = ({
-  chatbotSettings,
-}: {
-  chatbotSettings: Partial<Omit<ChatbotSettings, "id">>;
-}) => {
+const ChatbotDummy = ({ chatbotSettings }: { chatbotSettings: any }) => {
   const messagesEndRef: any = useRef(null);
   const [inputvalue, setInputvalue] = useState("");
 
-  const chatbotAvatar = useMemo(() => {
-
-    console.log("memo called", chatbotSettings.image)
-    const imageValue = chatbotSettings && chatbotSettings.image ? typeof chatbotSettings.image == 'string' ? chatbotSettings.image : chatbotSettings.image[0] : null;
+  const chatbotAvatar: any = useMemo(() => {
+    console.log("memo called", chatbotSettings.image);
+    const imageValue: any =
+      chatbotSettings && chatbotSettings.image
+        ? typeof chatbotSettings.image == "string"
+          ? chatbotSettings.image
+          : chatbotSettings.image[0]
+        : null;
 
     if (imageValue instanceof File || imageValue instanceof Blob) {
-      console.log("file found")
+      console.log("file found");
       return URL.createObjectURL(imageValue);
     } else if (typeof imageValue === "string" && imageValue.trim() !== "") {
-      console.log("image string found", imageValue)
+      console.log("image string found", imageValue);
       return pathToImage(imageValue);
     }
     return "/images/face2.webp"; // Default fallback
@@ -185,17 +185,19 @@ const ChatbotDummy = ({
       <div>
         <div className="flex flex-wrap gap-1 m-1 mx-2">
           {chatbotSettings.suggestions_is_active &&
-            chatbotSettings.suggestions_value?.split(",").map((item, index) => {
-              return (
-                <button
-                  key={index + "suggestion"}
-                  className="bg-gray-300 text-gray-600 w-fit rounded-md text-sm py-0.5 px-1.5  cursor-pointer"
-                  onClick={() => handleSuggestion(item.trim())}
-                >
-                  {item.trim()}
-                </button>
-              );
-            })}
+            chatbotSettings.suggestions_value
+              ?.split(",")
+              .map((item: any, index: any) => {
+                return (
+                  <button
+                    key={index + "suggestion"}
+                    className="bg-gray-300 text-gray-600 w-fit rounded-md text-sm py-0.5 px-1.5  cursor-pointer"
+                    onClick={() => handleSuggestion(item.trim())}
+                  >
+                    {item.trim()}
+                  </button>
+                );
+              })}
         </div>
         <div className="border-t p-2 flex items-center gap-2">
           <input
