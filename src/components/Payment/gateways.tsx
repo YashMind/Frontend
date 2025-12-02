@@ -1,5 +1,10 @@
 "use client";
-import { getAllPaymentGateway, getPublicSubscriptionPlans, getUserDataOverview } from "@/store/slices/admin/adminSlice";
+import {
+  getAllPaymentGateway,
+  getPublicSubscriptionPlans,
+  getUserDataOverview,
+  processDowngradeAfterPayment,
+} from "@/store/slices/admin/adminSlice";
 import { getMeData } from "@/store/slices/auth/authSlice";
 import {
   createPaymentOrderCashfree,
@@ -84,7 +89,10 @@ const Gateways = ({
   const handleRazorPay = () => {
     setrazorpayLoaded(true);
   };
-  const openCashfreeCheckout = async (paymentSessionId: string) => {
+  const openCashfreeCheckout = async (
+    paymentSessionId: string,
+    selectionId: string | null
+  ) => {
     try {
       if (!window.Cashfree) {
         throw new Error("Cashfree SDK not loaded");
@@ -94,7 +102,9 @@ const Gateways = ({
       const checkoutOptions = {
         paymentSessionId: paymentSessionId,
         redirectTarget: "_self",
-        returnUrl: `${window.location.origin}/payment/return`,
+        returnUrl: `${window.location.origin}/payment/return?selection_id=${
+          selectionId || ""
+        }`,
         components: ["order-details", "card", "upi"],
       };
 
@@ -105,7 +115,11 @@ const Gateways = ({
       setIsRedirecting(false);
     }
   };
-  const openRazorpayCheckout = async (orderData: any) => {
+
+  const openRazorpayCheckout = async (
+    orderData: any,
+    selectionId: string | null
+  ) => {
     try {
       if (!window.Razorpay) {
         throw new Error("Razorpay SDK not loaded");
@@ -119,18 +133,42 @@ const Gateways = ({
         name: "Your Company Name",
         description: "Payment for subscription",
         order_id: orderData.razorpay_order_id,
-        handler: function (response: any) {
-          // Handle successful payment
-          console.log("Payment successful:", response);
-          router.push(`/payment/success?order_id=${orderData.order_id}`);
+        handler: async function (response: any) {
+          try {
+            // Handle successful payment
+            console.log("Payment successful:", response);
+
+            // Process downgrade if selectionId exists
+            if (selectionId) {
+              setIsProcessing(true);
+              await dispatch(
+                processDowngradeAfterPayment({
+                  selection_id: selectionId,
+                  payment_reference: orderData.order_id,
+                })
+              ).unwrap();
+              toast.success("Downgrade processed successfully");
+            }
+
+            router.push(`/payment/success?order_id=${orderData.order_id}`);
+          } catch (error: any) {
+            console.error("Downgrade processing failed:", error);
+            // Still redirect to success page but with error flag
+            router.push(
+              `/payment/success?order_id=${orderData.order_id}&downgrade_error=true`
+            );
+          } finally {
+            setIsProcessing(false);
+          }
         },
         prefill: {
           name: userData?.fullName || "",
           email: userData?.email || "",
-          contact: "9876543210", // Should use user's phone if available
+          contact: "9876543210", // Use user's phone if available
         },
         notes: {
           order_id: orderData.order_id,
+          selection_id: selectionId,
         },
         theme: {
           color: "#3399cc",
@@ -155,17 +193,22 @@ const Gateways = ({
 
     setIsProcessing(true);
     setError(null);
-
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectionId = urlParams.get("selection_id");
     const payload = {
-      customer_id: userData.id!, // userData checked above, assert non-null for TS
+      customer_id: userData.id!,
       plan_id: plan_id ? parseInt(plan_id) : undefined,
       credit: credit ? parseInt(credit) : undefined,
-      return_url: `${window.location.origin}/payment/return`,
+      return_url: `${window.location.origin}/payment/return?selection_id=${
+        selectionId || ""
+      }`,
+      selection_id: selectionId || undefined,
     };
 
     try {
-      // Downgrade / limits check flow
-      if (plan_id && userData) {
+      // SKIP downgrade/limits check if user comes from downgrade page (has selection_id)
+      if (plan_id && userData && !selectionId) {
+        // ← Added !selectionId condition
         const selectedPlanId = parseInt(plan_id);
 
         // fetch public plans list (returns array)
@@ -194,8 +237,12 @@ const Gateways = ({
           if (overview) {
             const fits = isWithinPlanLimits(overview, selectedPlan);
             if (!fits) {
-              toast.error("Your current data exceeds the limits of the selected plan. Redirecting to downgrade help page.");
-              router.push(`/credits-and-plans/downgrade?plan=${selectedPlanId}`);
+              toast.error(
+                "Your current data exceeds the limits of the selected plan. Redirecting to downgrade help page."
+              );
+              router.push(
+                `/credits-and-plans/downgrade?plan=${selectedPlanId}`
+              );
               return;
             }
           }
@@ -209,7 +256,7 @@ const Gateways = ({
           createPaymentOrderCashfree(payload)
         ).unwrap();
         response = res;
-        await openCashfreeCheckout(res.payment_session_id!);
+        await openCashfreeCheckout(res.payment_session_id!, selectionId);
       } else if (selectedGateway === "paypal") {
         const res = await dispatch(createPaymentOrderPaypal(payload)).unwrap();
         response = res;
@@ -227,7 +274,7 @@ const Gateways = ({
         response = res;
 
         if (res.razorpay_order_id) {
-          await openRazorpayCheckout(res);
+          await openRazorpayCheckout(res, selectionId);
         } else {
           throw new Error("No Razorpay order ID received");
         }
@@ -248,8 +295,7 @@ const Gateways = ({
   const activeGateways =
     paymentGatewayData?.filter((item) => item.status === "active") || [];
 
-
-  const cashfreeUrl = process.env.NEXT_PUBLIC_CASHFREE_URL
+  const cashfreeUrl = process.env.NEXT_PUBLIC_CASHFREE_URL;
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
       <Script
@@ -319,41 +365,44 @@ const Gateways = ({
           </div>
 
           <div className="space-y-4">
-
             {activeGateways.some(
               (g) => g.payment_name.toLowerCase() === "razorpay"
             ) && (
-                <div
-                  onClick={() => handleGatewaySelect("razorpay")}
-                  className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${selectedGateway === "razorpay"
+              <div
+                onClick={() => handleGatewaySelect("razorpay")}
+                className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
+                  selectedGateway === "razorpay"
                     ? "border-indigo-500 bg-indigo-50"
                     : "border-gray-200 hover:border-indigo-300"
-                    }`}
-                >
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                      <FaRupeeSign className="h-6 w-6 text-blue-600" />
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-medium text-gray-800">
-                        RazorPay
-                      </h3>
-                      <p className="text-gray-600">
-                        Pay with UPI, Cards, Net Banking
-                      </p>
-                    </div>
+                }`}
+              >
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                    <FaRupeeSign className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div className="ml-4">
+                    <h3 className="text-lg font-medium text-gray-800">
+                      RazorPay
+                    </h3>
+                    <p className="text-gray-600">
+                      Pay with UPI, Cards, Net Banking
+                    </p>
                   </div>
                 </div>
-              )}
+              </div>
+            )}
 
             {/* PayPal Option */}
-            {activeGateways.some((g) => g.payment_name.toLowerCase() === "paypal") && (
+            {activeGateways.some(
+              (g) => g.payment_name.toLowerCase() === "paypal"
+            ) && (
               <div
                 onClick={() => handleGatewaySelect("paypal")}
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${selectedGateway === "paypal"
-                  ? "border-indigo-500 bg-indigo-50"
-                  : "border-gray-200 hover:border-indigo-300"
-                  }`}
+                className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
+                  selectedGateway === "paypal"
+                    ? "border-indigo-500 bg-indigo-50"
+                    : "border-gray-200 hover:border-indigo-300"
+                }`}
               >
                 <div className="flex items-center">
                   <div className="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
@@ -371,13 +420,16 @@ const Gateways = ({
               </div>
             )}
             {/* Cashfree Option */}
-            {activeGateways.some((g) => g.payment_name.toLowerCase() === "cashfree") && (
+            {activeGateways.some(
+              (g) => g.payment_name.toLowerCase() === "cashfree"
+            ) && (
               <div
                 onClick={() => handleGatewaySelect("cashfree")}
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${selectedGateway === "cashfree"
-                  ? "border-indigo-500 bg-indigo-50"
-                  : "border-gray-200 hover:border-indigo-300"
-                  }`}
+                className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
+                  selectedGateway === "cashfree"
+                    ? "border-indigo-500 bg-indigo-50"
+                    : "border-gray-200 hover:border-indigo-300"
+                }`}
               >
                 <div className="flex items-center">
                   <div className="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
@@ -402,10 +454,11 @@ const Gateways = ({
                 <button
                   onClick={handlePaymentRequest}
                   disabled={!selectedGateway || isProcessing}
-                  className={`w-full flex justify-center items-center py-3 px-4 rounded-md shadow-sm text-white font-medium ${!selectedGateway
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-indigo-600 hover:bg-indigo-700"
-                    } ${isProcessing ? "opacity-75" : ""}`}
+                  className={`w-full flex justify-center items-center py-3 px-4 rounded-md shadow-sm text-white font-medium ${
+                    !selectedGateway
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-indigo-600 hover:bg-indigo-700"
+                  } ${isProcessing ? "opacity-75" : ""}`}
                 >
                   {isProcessing ? (
                     "Processing..."

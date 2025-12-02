@@ -4,29 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import { getUserDataOverview } from "@/store/slices/admin/adminSlice";
 import {
-  deleteDocLinks,
   getChatbotsFaqs,
-  deleteChatbotsFaqs,
-  deleteChatbotsAllFaqs,
   updateChatbotWithoutRouter,
 } from "@/store/slices/chats/chatSlice";
 import ConfirmModal from "@/components/Common/ConfirmModal";
-import {
-  computeUsageTotals,
-  isWithinPlanLimits,
-  computeNeededRemovals,
-} from "@/lib/planUtils";
-import { revokeAccess } from "@/store/slices/invitations/invitationSlice";
+import { isWithinPlanLimits, computeNeededRemovals } from "@/lib/planUtils";
 import { getPublicSubscriptionPlans } from "@/store/slices/admin/adminSlice";
-import http from "@/services/http/baseUrl";
 import toast from "react-hot-toast";
 import { RootState } from "@/store/store";
 import { useSearchParams, useRouter } from "next/navigation";
+import { saveDowngradeSelections } from "@/store/slices/admin/adminSlice";
 
 const DowngradePage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(false);
-  // small UI-only spinner state (keeps whole-page overlay behavior centralized)
   const [overview, setOverview] = useState<any>(null);
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const publicPlans = useSelector(
@@ -103,8 +94,6 @@ const DowngradePage = () => {
     </svg>
   );
 
-  // use shared helper for plan checks (computeUsageTotals, isWithinPlanLimits)
-
   useEffect(() => {
     fetchOverview();
     // ensure public plans are available
@@ -116,7 +105,6 @@ const DowngradePage = () => {
     if (isInPlanLimits && selectedPlan?.id) {
       toast.success("Within selected plan limits — continuing to payment...");
       const t = setTimeout(() => {
-        // router.push(`/gateways/${selectedPlan.id}`);
         setIsInPlanLimits(true);
       }, 700);
       return () => clearTimeout(t);
@@ -162,285 +150,60 @@ const DowngradePage = () => {
   const nextStep = () => setStep((s) => Math.min(3, s + 1));
   const prevStep = () => setStep((s) => Math.max(1, s - 1));
 
-  const handleDeleteSelectedLinks = async () => {
-    // group by botId and call deleteDocLinks thunk for each
-    const groups = Object.entries(selectedDocsByBot).filter(
-      ([, arr]) => (arr as number[]).length > 0
-    );
-    if (groups.length === 0) {
-      toast("No links selected");
-      return;
+  // NEW: Save downgrade selections and proceed to payment
+  const handleSaveDowngradeSelections = async () => {
+    try {
+      setLoading(true);
+
+      // Prepare selections payload (NO DELETION HERE)
+      const selections = {
+        chatbots_to_delete: selectedBots,
+        docs_to_delete: selectedDocsByBot,
+        team_members_to_remove: selectedTeamShares,
+      };
+
+      // Save selections to database with status="pending"
+      const result = await dispatch(
+        saveDowngradeSelections({
+          payload: {
+            target_plan_id: selectedPlan.id,
+            selections: selections,
+          },
+        })
+      ).unwrap();
+
+      const selectionId = result.selection_id;
+
+      toast.success("Selections saved! Proceeding to payment...");
+
+      // Redirect to payment page with selection_id
+      router.push(`/gateways/${selectedPlan.id}?selection_id=${selectionId}`);
+    } catch (error: any) {
+      console.error("Failed to save downgrade selections:", error);
+      toast.error(error?.message || "Failed to save selections");
+    } finally {
+      setLoading(false);
     }
-
-    const doDelete = async () => {
-      try {
-        setLoading(true);
-        await Promise.all(
-          groups.map(async ([botIdStr, docIds]) => {
-            const botId = parseInt(botIdStr, 10);
-            // use thunk to keep behaviour consistent
-            await dispatch(
-              deleteDocLinks({ bot_id: botId, doc_ids: docIds as number[] })
-            ).unwrap();
-          })
-        );
-        toast.success("Selected links deleted");
-        setSelectedDocsByBot({});
-        const updated = await fetchOverview();
-        if (
-          selectedPlan &&
-          updated &&
-          isWithinPlanLimits(updated, selectedPlan)
-        ) {
-          toast.success(
-            "You're within the selected plan limits — continuing to payment"
-          );
-          setIsInPlanLimits(true);
-          // router.push(`/gateways/${selectedPlan.id}`);
-        }
-      } catch (err: any) {
-        console.error(err);
-        toast.error(err?.message || "Failed to delete links");
-      } finally {
-        setLoading(false);
-        setConfirmState({ open: false });
-      }
-    };
-
-    setConfirmState({
-      open: true,
-      title: "Delete selected links",
-      content: "Delete selected links? This action is irreversible.",
-      onConfirm: doDelete,
-      confirmLabel: "Delete",
-    });
   };
 
-  const handleRevokeSelectedTeam = async () => {
-    if (selectedTeamShares.length === 0) {
-      toast("No team members selected");
-      return;
-    }
-
-    const doRevoke = async () => {
-      try {
-        setLoading(true);
-        await Promise.all(
-          selectedTeamShares.map((sharingId) =>
-            dispatch(revokeAccess(sharingId)).unwrap()
-          )
-        );
-        toast.success("Selected team shares revoked");
-        setSelectedTeamShares([]);
-        const updated = await fetchOverview();
-        if (
-          selectedPlan &&
-          updated &&
-          isWithinPlanLimits(updated, selectedPlan)
-        ) {
-          toast.success(
-            "You're within the selected plan limits — continuing to payment"
-          );
-          // router.push(`/gateways/${selectedPlan.id}`);
-          setIsInPlanLimits(true);
-        }
-      } catch (err: any) {
-        console.error(err);
-        toast.error(err?.message || "Failed to revoke access");
-      } finally {
-        setLoading(false);
-        setConfirmState({ open: false });
-      }
-    };
-
-    setConfirmState({
-      open: true,
-      title: "Revoke access",
-      content: "Revoke access for selected team members?",
-      onConfirm: doRevoke,
-      confirmLabel: "Revoke",
-    });
-  };
-
-  const handleDeleteSelectedBots = async () => {
-    if (selectedBots.length === 0) {
-      toast("No bots selected");
-      return;
-    }
-
-    const doDeleteBots = async () => {
-      try {
-        setLoading(true);
-        // call API directly to avoid thunk redirect
-        await Promise.all(
-          selectedBots.map((botId) =>
-            http.delete(`/chatbot/delete-bot/${botId}`)
-          )
-        );
-        toast.success("Selected chatbots deleted");
-        setSelectedBots([]);
-        // refresh overview
-        const updated = await fetchOverview();
-        if (
-          selectedPlan &&
-          updated &&
-          isWithinPlanLimits(updated, selectedPlan)
-        ) {
-          toast.success(
-            "You're within the selected plan limits — continuing to payment"
-          );
-          // router.push(`/gateways/${selectedPlan.id}`);
-          setIsInPlanLimits(true);
-        }
-      } catch (err: any) {
-        console.error(err);
-        toast.error(
-          err?.response?.data?.detail || err?.message || "Failed to delete bots"
-        );
-      } finally {
-        setLoading(false);
-        setConfirmState({ open: false });
-      }
-    };
-
-    setConfirmState({
-      open: true,
-      title: "Delete selected chatbots",
-      content:
-        "Delete selected chatbots and all their data? This cannot be undone.",
-      onConfirm: doDeleteBots,
-      confirmLabel: "Delete",
-    });
-  };
-
-  const autoTrimToPlan = async () => {
+  // NEW: Main handler for proceeding to payment
+  const handleProceedToPayment = async () => {
     if (!selectedPlan) {
-      toast.error("No target plan selected");
-      return;
-    }
-    if (!overview) {
-      toast.error("Overview not loaded");
+      toast.error("Please select a plan first");
       return;
     }
 
-    const planChars =
-      selectedPlan.chars_allowed ?? selectedPlan.allowed_total_chars ?? null;
-    if (!planChars) {
-      toast.error("Selected plan has no chars limit to trim to");
-      return;
+    // Check if within plan limits
+    if (isWithinPlanLimits(overview, selectedPlan)) {
+      // Direct to payment if already within limits
+      router.push(`/gateways/${selectedPlan.id}`);
+    } else {
+      // Save selections and then proceed to payment
+      await handleSaveDowngradeSelections();
     }
-
-    const owned = Array.isArray(overview.owned_bots) ? overview.owned_bots : [];
-    const totalChars =
-      owned.reduce((s: number, b: any) => s + (b?.total_chars ?? 0), 0) ||
-      (overview.total_chars ?? 0);
-    const need = totalChars - planChars;
-    if (need <= 0) {
-      toast.success("Already within chars limit");
-      const updated = await fetchOverview();
-      if (
-        selectedPlan &&
-        updated &&
-        isWithinPlanLimits(updated, selectedPlan)
-      ) {
-        // router.push(`/gateways/${selectedPlan.id}`);
-        setIsInPlanLimits(true);
-      }
-      return;
-    }
-
-    // collect all doc links across bots and sort by chars desc to remove fewer links
-    const allLinks: { botId: number; docId: number; chars: number }[] = [];
-    owned.forEach((bot: any) => {
-      (bot.doc_links || []).forEach((doc: any) => {
-        allLinks.push({ botId: bot.id, docId: doc.id, chars: doc.chars ?? 0 });
-      });
-    });
-    if (allLinks.length === 0) {
-      toast.error("No links/docs available to delete for trimming chars.");
-      return;
-    }
-
-    allLinks.sort((a, b) => b.chars - a.chars);
-    const toDeleteByBot: Record<number, number[]> = {};
-    let acc = 0;
-    for (const item of allLinks) {
-      if (acc >= need) break;
-      toDeleteByBot[item.botId] = toDeleteByBot[item.botId] || [];
-      toDeleteByBot[item.botId].push(item.docId);
-      acc += item.chars;
-    }
-
-    const count = Object.values(toDeleteByBot).flat().length;
-    if (count === 0) {
-      toast.error("Could not determine links to delete to meet char limit");
-      return;
-    }
-
-    const previewContent = (
-      <div>
-        <div className="text-sm mb-2">
-          This will auto-delete <strong>{count}</strong> links across bots to
-          free ~{acc.toLocaleString()} chars:
-        </div>
-        <ul className="text-sm list-disc ml-5 max-h-36 overflow-auto">
-          {Object.entries(toDeleteByBot).map(([botIdStr, ids]) => (
-            <li key={botIdStr}>
-              Bot {botIdStr}: {ids.length} link(s)
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-
-    const doAuto = async () => {
-      try {
-        setLoading(true);
-        await Promise.all(
-          Object.entries(toDeleteByBot).map(async ([botIdStr, ids]) => {
-            const botId = parseInt(botIdStr, 10);
-            await dispatch(
-              deleteDocLinks({ bot_id: botId, doc_ids: ids as number[] })
-            ).unwrap();
-          })
-        );
-        toast.success(
-          `Auto-trim deleted ${count} links (~${acc.toLocaleString()} chars)`
-        );
-        const updated = await fetchOverview();
-        if (
-          selectedPlan &&
-          updated &&
-          isWithinPlanLimits(updated, selectedPlan)
-        ) {
-          toast.success(
-            "You're within the selected plan limits — continuing to payment"
-          );
-          // router.push(`/gateways/${selectedPlan.id}`);
-          setIsInPlanLimits(true);
-        }
-      } catch (err: any) {
-        console.error(err);
-        toast.error(err?.message || "Auto-trim failed");
-      } finally {
-        setLoading(false);
-        setConfirmState({ open: false });
-      }
-    };
-
-    setConfirmState({
-      open: true,
-      title: `Auto-trim ${count} links`,
-      content: previewContent,
-      onConfirm: doAuto,
-      confirmLabel: "Auto-delete",
-    });
   };
 
-  // Confirm modal helpers
-  const openConfirm = (opts: any) => setConfirmState({ open: true, ...opts });
-
-  // FAQ modal helpers
+  // FAQ modal helpers (KEEP THESE - they're just for viewing)
   const openFaqModal = async (bot: any) => {
     setFaqModal({ open: true, botId: bot.id, loading: true, faqs: [] });
     try {
@@ -458,60 +221,7 @@ const DowngradePage = () => {
   const closeFaqModal = () =>
     setFaqModal({ open: false, botId: null, faqs: [] });
 
-  const handleDeleteFaq = (botId: number, faqId: number) => {
-    const doDelete = async () => {
-      try {
-        setLoading(true);
-        await dispatch(
-          deleteChatbotsFaqs({ bot_id: botId, faq_id: faqId })
-        ).unwrap();
-        // refresh faqs list
-        const res = await dispatch(getChatbotsFaqs({ bot_id: botId })).unwrap();
-        const faqs = res?.data ?? res ?? [];
-        setFaqModal({ open: true, botId, loading: false, faqs });
-      } catch (err: any) {
-        console.error(err);
-        toast.error(err?.message || "Failed to delete faq");
-      } finally {
-        setLoading(false);
-        setConfirmState({ open: false });
-      }
-    };
-    setConfirmState({
-      open: true,
-      title: "Delete FAQ",
-      content: "Delete this FAQ?",
-      onConfirm: doDelete,
-      confirmLabel: "Delete",
-    });
-  };
-
-  const handleDeleteAllFaqsForBot = (botId: number) => {
-    const doDeleteAll = async () => {
-      try {
-        setLoading(true);
-        await dispatch(deleteChatbotsAllFaqs({ bot_id: botId })).unwrap();
-        // refresh overview and close modal
-        await fetchOverview();
-        setFaqModal({ open: false, botId: null, faqs: [] });
-        toast.success("Deleted all FAQs for bot");
-      } catch (err: any) {
-        console.error(err);
-        toast.error(err?.message || "Failed to delete all faqs");
-      } finally {
-        setLoading(false);
-        setConfirmState({ open: false });
-      }
-    };
-    setConfirmState({
-      open: true,
-      title: "Delete all FAQs",
-      content: "Delete all FAQs for this bot? This cannot be undone.",
-      onConfirm: doDeleteAll,
-      confirmLabel: "Delete all",
-    });
-  };
-
+  // Text modal helpers (KEEP THESE - they're just for viewing)
   const openTextModal = async (bot: any) => {
     // try to use bot's text content if present, otherwise fetch single bot? Rely on overview
     const currentText = bot?.text_content ?? bot?.text ?? "";
@@ -547,7 +257,6 @@ const DowngradePage = () => {
         toast.success(
           "You're within the selected plan limits — continuing to payment"
         );
-        // router.push(`/gateways/${selectedPlan.id}`);
         setIsInPlanLimits(true);
       }
       closeTextModal();
@@ -557,48 +266,6 @@ const DowngradePage = () => {
     } finally {
       setTextModal((s: any) => ({ ...s, loading: false }));
     }
-  };
-
-  const handleDeleteTextContent = async () => {
-    const botId = textModal.botId;
-    const doDelete = async () => {
-      try {
-        setTextModal((s: any) => ({ ...s, loading: true }));
-        await dispatch(
-          updateChatbotWithoutRouter({
-            payload: { id: botId, text_content: "" },
-          })
-        ).unwrap();
-        toast.success("Bot text deleted");
-        await fetchOverview();
-        const updated = await fetchOverview();
-        if (
-          selectedPlan &&
-          updated &&
-          isWithinPlanLimits(updated, selectedPlan)
-        ) {
-          toast.success(
-            "You're within the selected plan limits — continuing to payment"
-          );
-          // router.push(`/gateways/${selectedPlan.id}`);
-          setIsInPlanLimits(true);
-        }
-        closeTextModal();
-      } catch (err: any) {
-        console.error(err);
-        toast.error(err?.message || "Failed to delete bot text");
-      } finally {
-        setTextModal((s: any) => ({ ...s, loading: false }));
-        setConfirmState({ open: false });
-      }
-    };
-    setConfirmState({
-      open: true,
-      title: "Delete bot text",
-      content: "Delete this bot's training text? This cannot be undone.",
-      onConfirm: doDelete,
-      confirmLabel: "Delete",
-    });
   };
 
   if (!overview) {
@@ -636,7 +303,8 @@ const DowngradePage = () => {
           Downgrade Helper
         </h1>
         <p className="text-white text-center mb-8 text-lg">
-          Clean up your account to fit your new plan
+          Select resources to remove and proceed to payment. Changes will be
+          applied after successful payment.
         </p>
 
         {/* Plan limits summary (if selected plan provided via ?plan=) */}
@@ -738,13 +406,12 @@ const DowngradePage = () => {
             </div>
           ) : (
             <div className="text-sm text-white/70">
-              No target plan selected — the page will still allow deleting
-              resources manually.
+              No target plan selected — please select a plan to continue.
             </div>
           )}
         </div>
 
-        {/* Multi-step: Step 1 = Chatbots, Step 2 = Bot content (links/docs + auto-trim), Step 3 = Team members */}
+        {/* Multi-step: Step 1 = Chatbots, Step 2 = Bot content (links/docs), Step 3 = Team members */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-4 justify-center">
             <div
@@ -785,7 +452,8 @@ const DowngradePage = () => {
                 Chatbots ({ownedBots.length})
               </h2>
               <p className="text-sm text-white/70 mb-4">
-                Select chatbots you want to permanently delete.
+                Select chatbots you want to remove. Changes will be applied
+                after successful payment.
               </p>
               <div className="grid gap-3">
                 {ownedBots.map((bot: any) => (
@@ -815,14 +483,9 @@ const DowngradePage = () => {
                 ))}
               </div>
               <div className="mt-6 flex items-center gap-3">
-                <button
-                  onClick={handleDeleteSelectedBots}
-                  className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg disabled:opacity-50 flex items-center gap-2 transition-colors"
-                  disabled={selectedBots.length === 0 || loading}
-                >
-                  {loading ? <Spinner /> : null}
-                  <span>Delete selected chatbots</span>
-                </button>
+                <div className="text-sm text-white/70">
+                  {selectedBots.length} chatbot(s) selected for removal
+                </div>
                 <div className="ml-auto">
                   <button
                     onClick={nextStep}
@@ -850,87 +513,16 @@ const DowngradePage = () => {
                 </div>
               </div>
               <p className="text-sm text-white/70 mb-4">
-                Select individual links (per bot) to delete and reclaim
-                characters / webpages, or use Auto-trim to remove links until
-                the selected plan's char limit is met.
+                Select individual links (per bot) to remove and reclaim
+                characters / webpages.
               </p>
 
-              <div className="mb-4 flex gap-3">
-                <button
-                  onClick={handleDeleteSelectedLinks}
-                  className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg disabled:opacity-50 flex items-center gap-2 transition-colors"
-                  disabled={
-                    Object.values(selectedDocsByBot).every(
-                      (arr) => (arr || []).length === 0
-                    ) || loading
-                  }
-                >
-                  {loading ? <Spinner /> : null}
-                  <span>Delete selected links</span>
-                </button>
-                <button
-                  onClick={autoTrimToPlan}
-                  className="px-6 py-3 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg flex items-center gap-2 transition-colors"
-                  disabled={!selectedPlan || loading}
-                >
-                  {loading ? <Spinner /> : null}
-                  <span>Auto-trim to fit plan</span>
-                </button>
-              </div>
-
-              {/* {ownedBots.map((bot: any) => (
-                <div
-                  key={`links-${bot.id}`}
-                  className="mb-4 border border-[#FFFFFF33] p-4 rounded bg-[#1B1441]"
-                >
-                  <div className="flex justify-between items-center mb-3">
-                    <div className="font-medium flex items-center gap-3 text-white">
-                      <span>{bot.chatbot_name || `Bot ${bot.id}`}</span>
-                      <button
-                        onClick={() => openFaqModal(bot)}
-                        className="text-xs text-blue-400 hover:text-blue-300 underline"
-                      >
-                        Manage FAQs
-                      </button>
-                      <button
-                        onClick={() => openTextModal(bot)}
-                        className="text-xs text-purple-400 hover:text-purple-300 underline"
-                      >
-                        Edit Text
-                      </button>
-                    </div>
-                    <div className="text-sm text-white/70">
-                      {(bot.doc_links || []).length} links • Chars:{" "}
-                      {bot.total_chars ?? 0}
-                    </div>
-                  </div>
-                  <div className="grid gap-2">
-                    {(bot.doc_links || []).map((doc: any) => (
-                      <label
-                        key={doc.id}
-                        className="flex items-center gap-3 p-2 border border-[#FFFFFF33] rounded bg-[#1B1441]"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={(selectedDocsByBot[bot.id] || []).includes(
-                            doc.id
-                          )}
-                          onChange={() => toggleDoc(bot.id, doc.id)}
-                          className="accent-purple-500"
-                        />
-                        <div className="text-sm flex-1">
-                          <div className="truncate max-w-2xl text-white">
-                            {doc.document_link || doc.target_link || doc.id}
-                          </div>
-                          <div className="text-xs text-white/70">
-                            Chars: {doc.chars ?? 0}
-                          </div>
-                        </div>
-                      </label>
-                    ))}
-                  </div>
+              <div className="mb-4">
+                <div className="text-sm text-white/70">
+                  {Object.values(selectedDocsByBot).flat().length} link(s)
+                  selected for removal
                 </div>
-              ))} */}
+              </div>
 
               {ownedBots.map((bot: any) => {
                 const isOpen = openBotId === bot.id;
@@ -956,7 +548,7 @@ const DowngradePage = () => {
                           }}
                           className="text-xs text-blue-400 hover:text-blue-300 underline"
                         >
-                          Manage FAQs
+                          View FAQs
                         </button>
                         <button
                           onClick={(e) => {
@@ -1053,7 +645,8 @@ const DowngradePage = () => {
                 Team members / Shares ({teamMembers.length})
               </h2>
               <p className="text-sm text-white/70 mb-4">
-                Revoke access for shared/team users associated with your bots.
+                Select team members to remove access. Changes will be applied
+                after successful payment.
               </p>
 
               <div className="grid gap-3">
@@ -1081,14 +674,10 @@ const DowngradePage = () => {
               </div>
 
               <div className="mt-6 flex items-center gap-3">
-                <button
-                  onClick={handleRevokeSelectedTeam}
-                  className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg disabled:opacity-50 flex items-center gap-2 transition-colors"
-                  disabled={selectedTeamShares.length === 0 || loading}
-                >
-                  {loading ? <Spinner /> : null}
-                  <span>Revoke selected access</span>
-                </button>
+                <div className="text-sm text-white/70">
+                  {selectedTeamShares.length} team member(s) selected for
+                  removal
+                </div>
                 <div className="ml-auto flex gap-3">
                   <button
                     onClick={prevStep}
@@ -1110,6 +699,7 @@ const DowngradePage = () => {
           )}
         </div>
 
+        {/* Main action buttons */}
         <div className="text-center mt-8">
           <button
             onClick={() => fetchOverview()}
@@ -1118,21 +708,17 @@ const DowngradePage = () => {
           >
             Refresh
           </button>
-          {isInPlanLimits ? (
-            <button
-              onClick={() =>
-                selectedPlan?.id && router.push(`/gateways/${selectedPlan.id}`)
-              }
-              className="px-6 py-3 bg-gradient-to-r from-green-500 to-teal-400 hover:from-green-600 hover:to-teal-500 text-white rounded-lg transition-all duration-300"
-            >
-              Continue to payment
-            </button>
-          ) : (
-            <div className="inline-block align-middle text-sm text-white/70">
-              Not ready for purchase yet
-            </div>
-          )}
+
+          <button
+            onClick={handleProceedToPayment}
+            className="px-6 py-3 bg-gradient-to-r from-green-500 to-teal-400 hover:from-green-600 hover:to-teal-500 text-white rounded-lg transition-all duration-300 flex items-center gap-2 mx-auto"
+            disabled={loading || !selectedPlan}
+          >
+            {loading ? <Spinner /> : null}
+            <span>Proceed to Payment</span>
+          </button>
         </div>
+
         {/* Confirm modal */}
         <ConfirmModal
           open={!!confirmState.open}
@@ -1143,7 +729,6 @@ const DowngradePage = () => {
           onCancel={() => setConfirmState({ open: false })}
           onConfirm={() => {
             if (confirmState?.onConfirm) {
-              // execute and allow it to manage closing
               confirmState.onConfirm();
             } else {
               setConfirmState({ open: false });
@@ -1176,12 +761,6 @@ const DowngradePage = () => {
                 </h3>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => handleDeleteAllFaqsForBot(faqModal.botId)}
-                    className="px-3 py-1 bg-red-600 text-white rounded text-sm"
-                  >
-                    Delete all
-                  </button>
-                  <button
                     onClick={closeFaqModal}
                     className="px-3 py-1 bg-gray-200 rounded text-sm"
                   >
@@ -1208,16 +787,6 @@ const DowngradePage = () => {
                             A: {f.answer}
                           </div>
                         </div>
-                        <div className="ml-4">
-                          <button
-                            onClick={() =>
-                              handleDeleteFaq(faqModal.botId, f.id)
-                            }
-                            className="px-3 py-1 bg-red-500 text-white rounded text-sm"
-                          >
-                            Delete
-                          </button>
-                        </div>
                       </li>
                     ))}
                   </ul>
@@ -1226,6 +795,7 @@ const DowngradePage = () => {
             </div>
           </div>
         )}
+
         {/* Text edit modal */}
         {textModal.open && (
           <div className="fixed inset-0 z-40 flex items-center justify-center">
@@ -1256,12 +826,6 @@ const DowngradePage = () => {
                   className="w-full min-h-[240px] p-3 border rounded mb-3"
                 />
                 <div className="flex justify-end gap-2">
-                  <button
-                    onClick={handleDeleteTextContent}
-                    className="px-3 py-2 bg-red-600 text-white rounded"
-                  >
-                    Delete text
-                  </button>
                   <button
                     onClick={handleSaveText}
                     className="px-3 py-2 bg-blue-600 text-white rounded"
