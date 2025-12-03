@@ -12,7 +12,8 @@ export function computeUsageTotals(overview: any): UsageTotals {
 
     const ownedBots = Array.isArray(overview?.owned_bots) ? overview.owned_bots : overview?.ownedBots || [];
 
-    const totalChatbots = (ownedBots.length || 0) + (Array.isArray(sharedBots) ? sharedBots.length : 0);
+    const totalChatbots = (ownedBots.length || 0)
+    // + (Array.isArray(sharedBots) ? sharedBots.length : 0);
 
     const totalChars = (Array.isArray(ownedBots) ? ownedBots.reduce((s: number, b: any) => s + (b?.total_chars ?? 0), 0) : 0) || (overview?.total_chars ?? 0) || 0;
 
