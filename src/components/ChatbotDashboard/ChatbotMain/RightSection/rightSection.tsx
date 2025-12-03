@@ -1,18 +1,18 @@
-"use client"
-import { getChatbots } from '@/store/slices/chats/chatSlice';
-import { AppDispatch, RootState } from '@/store/store';
-import Image from 'next/image'
-import Link from 'next/link';
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+"use client";
+import { getChatbots } from "@/store/slices/chats/chatSlice";
+import { AppDispatch, RootState } from "@/store/store";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 interface ShowModalProps {
   showModal: () => void;
   botId?: number;
 }
 const RightSection = ({ showModal, botId }: ShowModalProps) => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
 
-  const { chatbots } = useSelector((state: RootState) => state.chat)
+  const { chatbots } = useSelector((state: RootState) => state.chat);
 
   useEffect(() => {
     if (!chatbots) {
@@ -20,16 +20,15 @@ const RightSection = ({ showModal, botId }: ShowModalProps) => {
     }
   }, [dispatch]);
 
-
   return (
-    <div >
+    <div>
       <div className="flex flex-col gap-4 p-4">
-        {chatbots?.map((chatbot) => {
+        {chatbots?.map((chatbot: any) => {
           const getImageUrl = () => {
             if (!chatbot.image) return "/images/bot2.png";
 
-            if (typeof chatbot.image === 'string') {
-              if (chatbot.image.startsWith('http')) {
+            if (typeof chatbot.image === "string") {
+              if (chatbot.image.startsWith("http")) {
                 return chatbot.image;
               }
               return `${process.env.NEXT_PUBLIC_BACKEND_URL}${chatbot.image}`;
@@ -44,7 +43,9 @@ const RightSection = ({ showModal, botId }: ShowModalProps) => {
             <Link
               key={`chatbot-${chatbot.id}`} // Better key using unique id
               href={`/chatbot-dashboard/overview/${chatbot.id}`}
-              className={`cursor-pointer rounded-full transition-all hover:scale-105 hover:bg-white/10 ${botId === chatbot.id ? 'bg-white/10' : ''}`}
+              className={`cursor-pointer rounded-full transition-all hover:scale-105 hover:bg-white/10 ${
+                botId === chatbot.id ? "bg-white/10" : ""
+              }`}
               aria-label={`Go to ${chatbot.chatbot_name} dashboard`}
             >
               <div className={`p-2 rounded-full `}>
@@ -57,7 +58,7 @@ const RightSection = ({ showModal, botId }: ShowModalProps) => {
                   quality={85} // Optimize image loading
                   title={chatbot.chatbot_name}
                   style={{
-                    aspectRatio: '1/1' // Ensures perfect square
+                    aspectRatio: "1/1", // Ensures perfect square
                   }}
                 />
               </div>
@@ -65,8 +66,7 @@ const RightSection = ({ showModal, botId }: ShowModalProps) => {
           );
         })}
       </div>
-      <div className='sticky bg-[#2a2561] bottom-0 w-full'>
-
+      <div className="sticky bg-[#2a2561] bottom-0 w-full">
         <hr className="bg-[linear-gradient(90deg,#501794_49.49%,#3E70A1_50.51%)] p-[1px] rounded-md my-6"></hr>
         <Image
           className="m-auto cursor-pointer"
@@ -75,11 +75,10 @@ const RightSection = ({ showModal, botId }: ShowModalProps) => {
           height={24}
           width={24}
           onClick={() => showModal()}
-
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RightSection
+export default RightSection;

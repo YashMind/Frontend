@@ -28,9 +28,14 @@ export default function AcceptInviteClient({ token }: AcceptInviteClientProps) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        dispatch(getMeData({ router })).unwrap().then((res) => {
-          setIsAuthenticated(!!res.user)
-        }).catch((err) => { throw new Error(err) });
+        dispatch(getMeData({ router }))
+          .unwrap()
+          .then((res) => {
+            setIsAuthenticated(!!res.user);
+          })
+          .catch((err) => {
+            throw new Error(err);
+          });
       } catch (error) {
         setIsAuthenticated(false);
       }
@@ -41,41 +46,38 @@ export default function AcceptInviteClient({ token }: AcceptInviteClientProps) {
 
   useEffect(() => {
     if (token && isAuthenticated === true) {
-      console.log(`Accepting invitation with token: ${token}`);
-
       const acceptInvite = async () => {
         try {
-          console.log("Making API call to accept invitation");
-          dispatch(acceptInvitation(token)).unwrap().then((response) => {
-            console.log("API Response status:", response.status);
-            console.log("API Response data:", response);
+          dispatch(acceptInvitation(token))
+            .unwrap()
+            .then((response) => {
+              if (response) {
+                setInviteDetails(response);
+                toasterSuccess(
+                  "Invitation accepted successfully!",
+                  10000,
+                  "accept-invite"
+                );
 
-            if (response) {
-              setInviteDetails(response);
-              toasterSuccess(
-                "Invitation accepted successfully!",
+                // Redirect to dashboard after successful acceptance
+                setTimeout(() => {
+                  router.push("/dashboard");
+                }, 2000);
+              }
+            })
+            .catch((err) => {
+              toasterError(
+                err || "Failed to accept invitation",
                 10000,
                 "accept-invite"
               );
-
-              // Redirect to dashboard after successful acceptance
-              setTimeout(() => {
-                router.push("/dashboard");
-              }, 2000);
-            }
-
-          }).catch((err) => {
-
-            toasterError(
-              err || "Failed to accept invitation",
-              10000,
-              "accept-invite"
-            );
-
-          })
+            });
         } catch (error) {
-          console.log("API call error:", error);
-          toasterError("Error connecting to the server", 10000, "accept-invite");
+          toasterError(
+            "Error connecting to the server",
+            10000,
+            "accept-invite"
+          );
         }
       };
 
@@ -110,7 +112,8 @@ export default function AcceptInviteClient({ token }: AcceptInviteClientProps) {
               </Link>
             </div>
             <p className="mt-4 text-sm text-gray-500">
-              Make sure to use the same email address that received this invitation.
+              Make sure to use the same email address that received this
+              invitation.
             </p>
           </div>
         </div>
@@ -138,7 +141,8 @@ export default function AcceptInviteClient({ token }: AcceptInviteClientProps) {
               <p>{error}</p>
             </div>
             <p className="mb-4 text-gray-600">
-              {error.includes("logged in") || error.includes("Authentication") ? (
+              {error.includes("logged in") ||
+              error.includes("Authentication") ? (
                 <>
                   Please{" "}
                   <Link
@@ -170,7 +174,8 @@ export default function AcceptInviteClient({ token }: AcceptInviteClientProps) {
               <p>Invitation accepted successfully!</p>
             </div>
             <p className="mb-4 text-gray-600">
-              You now have access to the shared chatbot. Redirecting to your dashboard...
+              You now have access to the shared chatbot. Redirecting to your
+              dashboard...
             </p>
             <div className="mt-6">
               <Link

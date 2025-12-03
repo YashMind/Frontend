@@ -9,7 +9,7 @@ import { toasterError, toasterSuccess } from "@/services/utils/toaster";
 const LoginWithGoogle = () => {
   const router = useRouter();
 
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   const signUpWithGoogle = async (accessToken: string) => {
     try {
       // const { data: profile } = await axios.get(
@@ -31,8 +31,7 @@ const LoginWithGoogle = () => {
         token: accessToken,
       });
       return data;
-    } catch (error) {
-      console.log("Google Sign-Up/Login failed:", error);
+    } catch (error: any) {
       throw error.response.data.detail;
     }
   };
@@ -42,22 +41,20 @@ const LoginWithGoogle = () => {
         const user = await signUpWithGoogle(response.access_token);
         // Optionally: store tokens or user info here
         if (user) {
-          toasterSuccess("Logged with google successfully!", 10000, "id")
+          toasterSuccess("Logged with google successfully!", 10000, "id");
           // toast.success("Logged with google successfully!");
-          if (searchParams.get('from')) {
-            router.push(searchParams.get('from') ?? "/chatbot-dashboard/main");
-            return
+          if (searchParams.get("from")) {
+            router.push(searchParams.get("from") ?? "/chatbot-dashboard/main");
+            return;
           }
           router.push("/chatbot-dashboard/main");
         }
       } catch (err: any) {
-        console.log("Login with google failed:", err)
-        toasterError(err || "Login with google failed!", 10000, "id")
+        toasterError(err || "Login with google failed!", 10000, "id");
         // toast.error("Login with google failed!");
       }
     },
-    onError: () =>
-      toasterError("Error in Login with google!", 10000, "id"),
+    onError: () => toasterError("Error in Login with google!", 10000, "id"),
 
     //  toast.error("Error in Login with google!"),
   });

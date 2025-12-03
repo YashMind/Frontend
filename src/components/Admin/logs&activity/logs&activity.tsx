@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { AppDispatch, RootState } from "@/store/store";
@@ -7,7 +7,7 @@ import { getAdminsLogsActivity } from "@/store/slices/admin/adminSlice";
 import { ActivityLogsModal } from "@/components/ActivityLogsModal";
 import { fetchAllTickets } from "@/store/slices/supportTicket/slice";
 import { ErrorLogsModal } from "@/components/Errormessage";
-// import { createErrorMessage }  from "./sli"; 
+// import { createErrorMessage }  from "./sli";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -24,12 +24,10 @@ const cardsData = [
   {
     title: "Error",
     icon: "/images/comment.png",
-
   },
   {
     title: "Admin",
     icon: "/images/shape.png",
-
   },
   // {
   //   title: "AI",
@@ -47,13 +45,19 @@ const LogsActivity = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalFor, setModalFor] = useState<string | null>(null);
-  const { adminsLogsActivityData, adminsLogsActivityTotal } = useSelector((state: RootState) => state.admin);
-  const { tickets, loading, error } = useSelector((state: RootState) => state.tickets);
+  const { adminsLogsActivityData, adminsLogsActivityTotal } = useSelector(
+    (state: RootState) => state.admin
+  );
+  const { tickets, loading, error } = useSelector(
+    (state: RootState) => state.tickets
+  );
   const [page, setPage] = useState(1);
 
   useEffect(() => {
     if (modalFor === "Admin") {
-      dispatch(getAdminsLogsActivity({ date_filter: "", page, limit: ITEMS_PER_PAGE }));
+      dispatch(
+        getAdminsLogsActivity({ date_filter: "", page, limit: ITEMS_PER_PAGE })
+      );
     }
     if (modalFor === "Error") {
       dispatch(fetchAllTickets());
@@ -78,7 +82,7 @@ const LogsActivity = () => {
           <section className="mt-[50px]">
             <h2 className="text-xl font-semibold mb-[30px]">Logs & Activity</h2>
             <div className="bg-[#0B1739] p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-white rounded-[28px]">
-              {cardsData.map(({ title, icon, items }) => (
+              {cardsData.map(({ title, icon, items }: any) => (
                 <div
                   key={title}
                   className="bg-[#081028] p-4 rounded-md shadow-[1px_1px_1px_0px_rgba(16,25,52,0.4)] space-y-1 flex flex-col justify-between"
@@ -86,10 +90,18 @@ const LogsActivity = () => {
                   <div>
                     <div className="flex gap-2 items-center mb-2">
                       <h3 className="text-base font-medium">{title}</h3>
-                      <Image alt={`${title} icon`} src={icon} height={24} width={24} />
+                      <Image
+                        alt={`${title} icon`}
+                        src={icon}
+                        height={24}
+                        width={24}
+                      />
                     </div>
-                    {items?.map((item, idx) => (
-                      <p key={idx} className="text-xs font-medium text-white my-2">
+                    {items?.map((item: any, idx: any) => (
+                      <p
+                        key={idx}
+                        className="text-xs font-medium text-white my-2"
+                      >
                         {item}
                       </p>
                     ))}
@@ -118,7 +130,6 @@ const LogsActivity = () => {
                     >
                       More Information
                     </button>
-
                   </div>
                 </div>
               ))}
@@ -127,20 +138,23 @@ const LogsActivity = () => {
               <ActivityLogsModal
                 isOpen={true}
                 onClose={closeModal}
-                logs={Array.isArray(adminsLogsActivityData) ? adminsLogsActivityData : []}
+                logs={
+                  Array.isArray(adminsLogsActivityData)
+                    ? adminsLogsActivityData
+                    : []
+                }
                 total={adminsLogsActivityTotal}
                 currentPage={page}
                 onPageChange={(newPage) => {
-                  const totalPages = Math.ceil(adminsLogsActivityTotal / ITEMS_PER_PAGE);
+                  const totalPages = Math.ceil(
+                    adminsLogsActivityTotal / ITEMS_PER_PAGE
+                  );
                   if (newPage >= 1 && newPage <= totalPages) {
                     setPage(newPage);
                   }
                 }}
               />
             )}
-
-
-
 
             {modalFor === "Error" && (
               <ErrorLogsModal
@@ -149,7 +163,7 @@ const LogsActivity = () => {
                 logs={Array.isArray(tickets) ? tickets : []}
                 total={tickets.length}
                 currentPage={page}
-                onPageChange={(newPage) => {
+                onPageChange={(newPage: any) => {
                   const totalPages = Math.ceil(tickets.length / ITEMS_PER_PAGE);
                   if (newPage >= 1 && newPage <= totalPages) {
                     setPage(newPage);
@@ -157,10 +171,6 @@ const LogsActivity = () => {
                 }}
               />
             )}
-
-
-
-
           </section>
         </div>
       </div>

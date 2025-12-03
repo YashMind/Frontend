@@ -1,5 +1,9 @@
 "use client";
-import { getAdminsLogsActivity, getRolePermissions, updateRoleAdmin } from "@/store/slices/admin/adminSlice";
+import {
+  getAdminsLogsActivity,
+  getRolePermissions,
+  updateRoleAdmin,
+} from "@/store/slices/admin/adminSlice";
 import { AppDispatch } from "@/store/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
@@ -13,7 +17,7 @@ import { UserData } from "@/types/adminType";
 interface AddEditPlanProps {
   show: boolean;
   onHide: () => void;
-  adminUserData: UserData;
+  adminUserData: any;
   roleData: string;
   onUpdatePermissions: (updatedData: AdminPermissionsForm) => void;
 }
@@ -38,14 +42,12 @@ const roleArray = [
   "Support Admin",
 ];
 
-
 const EditPermissionModal = ({
   show,
   onHide,
   adminUserData,
-  onUpdatePermissions
+  onUpdatePermissions,
 }: AddEditPlanProps) => {
-
   const {
     register,
     handleSubmit,
@@ -73,8 +75,12 @@ const EditPermissionModal = ({
     if (data.id) {
       await dispatch(updateRoleAdmin({ payload: data }));
       const updated = await dispatch(getRolePermissions(data.role!)).unwrap();
-      dispatch(getAdminsLogsActivity({}))
-      onUpdatePermissions({ id: data.id, role: data.role, permissions: updated.permissions });
+      dispatch(getAdminsLogsActivity({}));
+      onUpdatePermissions({
+        id: data.id,
+        role: data.role,
+        permissions: updated.permissions,
+      });
       reset();
       onHide();
     }
@@ -90,11 +96,8 @@ const EditPermissionModal = ({
           &times;
         </button>
 
-        <h2 className="text-xl font-semibold mb-4">
-          Edit Permissions
-        </h2>
+        <h2 className="text-xl font-semibold mb-4">Edit Permissions</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-
           <>
             <div>
               <label className="block mb-1 text-sm font-medium">Role</label>

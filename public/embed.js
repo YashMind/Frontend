@@ -19,8 +19,9 @@
 
   if (!BOT_ID) return;
   const DOMAIN = window.location.hostname;
-  const CHAT_IFRAME_URL = `http://localhost:3000/embed/${BOT_ID}?domain=${encodeURIComponent(DOMAIN)}`;
-
+  const CHAT_IFRAME_URL = `http://localhost:3000/embed/${BOT_ID}?domain=${encodeURIComponent(
+    DOMAIN
+  )}`;
 
   // Create chat container
   const createChatElements = () => {
@@ -47,7 +48,7 @@
       display: "none",
       transform: "translateY(20px)",
       opacity: "0",
-      transition: "all 0.3s ease-out"
+      transition: "all 0.3s ease-out",
     });
     document.body.appendChild(iframe);
 
@@ -83,7 +84,7 @@
       zIndex: "100001",
       boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
       transform: "scale(0)",
-      transition: "all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+      transition: "all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
     });
 
     // Audio handling
@@ -106,28 +107,29 @@
       // Play sound when bubble appears (first time only)
       if (audio && !audioPlayed) {
         // Try to play immediately (may be blocked by browser)
-        audio.play()
+        audio
+          .play()
           .then(() => {
             audioPlayed = true;
           })
-          .catch(e => {
-            console.log("Initial sound blocked, will play on first interaction");
-
-            // Fallback: Play on first user interaction
+          .catch((e) => {
             const playOnInteraction = () => {
               if (!audioPlayed) {
-                audio.play()
+                audio
+                  .play()
                   .then(() => {
                     audioPlayed = true;
-                    bubble.removeEventListener('mouseover', playOnInteraction);
-                    bubble.removeEventListener('click', playOnInteraction);
+                    bubble.removeEventListener("mouseover", playOnInteraction);
+                    bubble.removeEventListener("click", playOnInteraction);
                   })
-                  .catch(e => console.log("Still blocked:", e));
+                  .catch((e) => console.log("Still blocked:", e));
               }
             };
 
-            bubble.addEventListener('mouseover', playOnInteraction, { once: true });
-            bubble.addEventListener('click', playOnInteraction, { once: true });
+            bubble.addEventListener("mouseover", playOnInteraction, {
+              once: true,
+            });
+            bubble.addEventListener("click", playOnInteraction, { once: true });
           });
       }
     }, 800);
@@ -168,7 +170,7 @@
         if (event.data.type === "playSound" && event.data.soundUrl) {
           const msgAudio = new Audio(event.data.soundUrl);
           msgAudio.volume = 0.7;
-          msgAudio.play().catch(e => console.log("Message sound failed:", e));
+          msgAudio.play().catch((e) => console.log("Message sound failed:", e));
         }
       });
     });

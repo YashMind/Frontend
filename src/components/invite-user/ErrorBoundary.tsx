@@ -10,7 +10,10 @@ interface ErrorBoundaryProps {
   children: React.ReactNode;
 }
 
-class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
@@ -32,7 +35,8 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
             Something went wrong
           </h2>
           <p className="text-red-600 mb-4">
-            There was an error loading this component. Please try refreshing the page.
+            There was an error loading this component. Please try refreshing the
+            page.
           </p>
           <button
             onClick={() => this.setState({ hasError: false })}

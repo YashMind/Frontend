@@ -73,7 +73,8 @@ const InvitationModal = ({
   }, [isOpen, dispatch]);
 
   // Email validation function (same as in SelectComponents)
-  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isValidEmail = (email: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   // Handle form submission
   const handleSubmit = () => {
@@ -269,7 +270,7 @@ const InvitationModal = ({
           <div className="space-y-6">
             <SelectComponents
               chatbotOptions={chatbotOptions}
-              onChatbotChange={(option) => {
+              onChatbotChange={(option: any) => {
                 setSelectedChatbot(option);
                 if (option && option.value) {
                   dispatch(getUninvitedUsers(option.value));
@@ -278,7 +279,7 @@ const InvitationModal = ({
                 }
                 setSelectedUsers([]);
               }}
-              onUsersChange={(options) => setSelectedUsers(options)}
+              onUsersChange={(options: any) => setSelectedUsers(options)}
               isDisabled={invitationLoading}
               selectedChatbot={selectedChatbot}
               selectedUsers={selectedUsers}
@@ -300,10 +301,11 @@ const InvitationModal = ({
           <button
             onClick={handleSubmit}
             disabled={isSubmitting || invitationLoading}
-            className={`px-6 py-2 rounded-md text-white font-medium ${isSubmitting || invitationLoading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-indigo-600 hover:bg-indigo-700"
-              }`}
+            className={`px-6 py-2 rounded-md text-white font-medium ${
+              isSubmitting || invitationLoading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-indigo-600 hover:bg-indigo-700"
+            }`}
           >
             {isSubmitting || invitationLoading
               ? "Sending..."

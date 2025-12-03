@@ -5,7 +5,7 @@ import { AppDispatch } from "@/store/store";
 import { configureLeadMail } from "@/store/slices/chats/chatSlice";
 
 interface ConfigureMailDialogProps {
-  botId: number;
+  botId?: number;
   email: string;
   open: boolean;
   onClose: () => void;

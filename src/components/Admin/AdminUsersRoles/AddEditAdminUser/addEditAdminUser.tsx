@@ -16,9 +16,16 @@ interface AddEditPlanProps {
   show: boolean;
   onHide: () => void;
   adminUserData: AdminUsersData;
-  roleData: string
+  roleData: string;
 }
-
+interface AdminUsersData {
+  id?: number;
+  fullName?: any;
+  email?: any;
+  role?: string;
+  status?: string;
+  role_permissions?: string[];
+}
 const schema = (isEdit: boolean, roleData: string) =>
   yup.object().shape({
     id: yup.number(),
@@ -31,22 +38,22 @@ const schema = (isEdit: boolean, roleData: string) =>
     password: isEdit
       ? yup.string()
       : yup
-        .string()
-        .required("Password is a required field")
-        .min(8, "Password must be at least 8 characters long")
-        .matches(
-          /[a-z]/,
-          "Password must contain at least one lowercase letter"
-        )
-        .matches(
-          /[A-Z]/,
-          "Password must contain at least one uppercase letter"
-        )
-        .matches(/\d/, "Password must contain at least one number")
-        .matches(
-          /[@$!%*?&#]/,
-          "Password must contain at least one special character"
-        ),
+          .string()
+          .required("Password is a required field")
+          .min(8, "Password must be at least 8 characters long")
+          .matches(
+            /[a-z]/,
+            "Password must contain at least one lowercase letter"
+          )
+          .matches(
+            /[A-Z]/,
+            "Password must contain at least one uppercase letter"
+          )
+          .matches(/\d/, "Password must contain at least one number")
+          .matches(
+            /[@$!%*?&#]/,
+            "Password must contain at least one special character"
+          ),
     role:
       roleData === "admin"
         ? yup.string().required("Role is a required field")
@@ -85,7 +92,7 @@ const AddEditAdminUserModal = ({
   show,
   onHide,
   adminUserData,
-  roleData
+  roleData,
 }: AddEditPlanProps) => {
   const isEdit = !!adminUserData?.id;
   const {
@@ -108,7 +115,6 @@ const AddEditAdminUserModal = ({
   const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit = async (data: AdminSignUpForm) => {
-
     try {
       if (data.id) {
         if (roleData === "admin") {
@@ -127,7 +133,6 @@ const AddEditAdminUserModal = ({
       console.log("Failed to submit:", error);
     }
   };
-
 
   useEffect(() => {
     setValue("fullName", adminUserData?.fullName);
@@ -149,19 +154,24 @@ const AddEditAdminUserModal = ({
         </button>
 
         <h2 className="text-xl font-semibold mb-1">
-          {adminUserData?.id ? "Edit" : "Add"} {roleData == "admin" ? "Admin" : "Client"}
+          {adminUserData?.id ? "Edit" : "Add"}{" "}
+          {roleData == "admin" ? "Admin" : "Client"}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block mb-1 mt-4 text-sm font-medium">Full Name</label>
+            <label className="block mb-1 mt-4 text-sm font-medium">
+              Full Name
+            </label>
             <input
               placeholder="Enter name"
               disabled={!!adminUserData?.id}
               type="text"
               {...register("fullName")}
-
-              className={`w-full px-4 py-2 rounded  text-black focus:outline-none ${adminUserData?.id ? "cursor-not-allowed bg-gray-300" : "bg-white"
-                }`}
+              className={`w-full px-4 py-2 rounded  text-black focus:outline-none ${
+                adminUserData?.id
+                  ? "cursor-not-allowed bg-gray-300"
+                  : "bg-white"
+              }`}
             />
             {errors.fullName && (
               <p className="text-red-500 text-sm mt-1">
@@ -177,8 +187,11 @@ const AddEditAdminUserModal = ({
               type="email"
               disabled={!!adminUserData?.id}
               {...register("email")}
-              className={`w-full px-4 py-2 rounded  text-black focus:outline-none ${adminUserData?.id ? "cursor-not-allowed bg-gray-300" : "bg-white"
-                }`}
+              className={`w-full px-4 py-2 rounded  text-black focus:outline-none ${
+                adminUserData?.id
+                  ? "cursor-not-allowed bg-gray-300"
+                  : "bg-white"
+              }`}
             />
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">
@@ -202,7 +215,7 @@ const AddEditAdminUserModal = ({
             )}
           </div>
 
-          {roleData == "admin" ?
+          {roleData == "admin" ? (
             <>
               <div>
                 <label className="block mb-1 text-sm font-medium">Role</label>
@@ -210,14 +223,17 @@ const AddEditAdminUserModal = ({
                   {...register("role")}
                   className="cursor-pointer w-full px-4 py-2 rounded bg-white text-black focus:outline-none"
                   defaultValue=""
-
                 >
                   <option value="" disabled>
                     Select role
                   </option>
                   {roleArray?.map((item, index) => {
                     return (
-                      <option value={item} key={index} className="cursor-pointer">
+                      <option
+                        value={item}
+                        key={index}
+                        className="cursor-pointer"
+                      >
                         {item}
                       </option>
                     );
@@ -258,7 +274,9 @@ const AddEditAdminUserModal = ({
             </div>
           ) : null} */}
             </>
-            : ""}
+          ) : (
+            ""
+          )}
           <hr className="border-gray-600 my-6" />
           <div className="flex justify-start gap-4 mt-6">
             <button

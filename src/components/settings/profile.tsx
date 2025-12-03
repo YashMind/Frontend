@@ -25,12 +25,11 @@ import Link from "next/link";
 const ProfileSettings = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const userData: UserProfileData = useSelector(
-    (state: RootState) => state.auth.userData
+  const userData: any = useSelector((state: RootState) => state.auth.userData);
+  const tokensData: any = useSelector((state: RootState) => state.chat.tokens);
+  const { invitedUsers, pagination } = useSelector(
+    (state: RootState) => state.invitations
   );
-  const tokensData = useSelector((state: RootState) => state.chat.tokens);
-  const chatbots = useSelector((state: RootState) => state.chat.chatbots);
-  const { invitedUsers, pagination } = useSelector((state: RootState) => state.invitations);
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState<UserProfileData | any>({
     ...userData,
@@ -46,8 +45,8 @@ const ProfileSettings = () => {
         ? userData.picture.startsWith("http")
           ? userData.picture
           : userData.picture.startsWith("/uploads")
-            ? process.env.NEXT_PUBLIC_BACKEND_URL + userData.picture
-            : null
+          ? process.env.NEXT_PUBLIC_BACKEND_URL + userData.picture
+          : null
         : null;
 
       setEditedData((prev: any) => {
@@ -68,11 +67,15 @@ const ProfileSettings = () => {
 
   useEffect(() => {
     if (tokensData) {
-      dispatch(getSubscriptionPlan()).unwrap().then((res) => {
-        const plan = (res as any).data;
-        console.log(plan)
-        setPlanName(plan.name);
-      }).catch((e) => { console.log(e) });
+      dispatch(getSubscriptionPlan())
+        .unwrap()
+        .then((res) => {
+          const plan = (res as any).data;
+          setPlanName(plan.name);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     }
   }, [tokensData, dispatch]);
 
@@ -102,7 +105,6 @@ const ProfileSettings = () => {
 
       return response.url;
     } catch (error) {
-      console.log("Profile picture upload failed:", error);
       throw error; // Re-throw to handle in the calling function
     }
   };
@@ -138,21 +140,18 @@ const ProfileSettings = () => {
 
       await dispatch(updateUserProfile({ payload } as any))
         .unwrap()
-        .then(() => { });
+        .then(() => {});
 
       // Optional: Show success feedback
       toast.success("Profile updated successfully");
       setIsEditing(false);
     } catch (error) {
-      console.log("Failed to update profile:", error);
       toast.error("Failed to update profile. Please try again.");
       // Consider keeping the form in edit mode on failure
     }
   };
 
   const handlePasswordChange = (currentPass: string, newPass: string) => {
-    console.log(currentPass, newPass);
-
     dispatch(
       changePassword({
         data: { old_password: currentPass, new_password: newPass },
@@ -160,11 +159,9 @@ const ProfileSettings = () => {
     )
       .unwrap()
       .then((res) => {
-        console.log(res);
         setShowChangePassword(false);
       })
       .catch((e) => {
-        console.log(e);
         toast.error("Failed to change password");
       });
   };
@@ -173,14 +170,18 @@ const ProfileSettings = () => {
     editedPic,
   }: {
     userPic?: string;
-    editedPic?: File | string | null;
+    editedPic?: any;
   }): string => {
     try {
+      const isBrowser = typeof window !== "undefined";
+
       // ✅ 1. If a new image is uploaded (File/Blob)
       if (
+        isBrowser &&
         editedPic &&
         typeof editedPic === "object" &&
-        (editedPic instanceof File || editedPic instanceof Blob)
+        (editedPic.constructor.name === "File" ||
+          editedPic.constructor.name === "Blob")
       ) {
         return URL.createObjectURL(editedPic);
       }
@@ -194,7 +195,14 @@ const ProfileSettings = () => {
       if (userPic && userPic.startsWith("http")) {
         return userPic;
       } else if (userPic && userPic.trim() !== "") {
-        return pathToImage(userPic); // if local/relative
+        const safePathToImage = (path: string): any => {
+          try {
+            return pathToImage(path);
+          } catch {
+            return "/images/userimg.png";
+          }
+        };
+        return safePathToImage(userPic);
       }
 
       // ✅ 4. Always return fallback
@@ -203,8 +211,6 @@ const ProfileSettings = () => {
       return "/images/userimg.png";
     }
   };
-
-
 
   return (
     <div className="p-4 h-full">
@@ -385,7 +391,9 @@ const ProfileSettings = () => {
         <div className="mt-10">
           {/* Header */}
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white">Plan & Usage Details</h2>
+            <h2 className="text-2xl font-bold text-white">
+              Plan & Usage Details
+            </h2>
             <Link
               href={"/#pricing"}
               className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium shadow-lg transition"
@@ -401,37 +409,58 @@ const ProfileSettings = () => {
               <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Plan Name */}
                 <div className="bg-white p-6 rounded-xl border shadow-sm">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-4">Plan Summary</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                    Plan Summary
+                  </h3>
 
                   {/* Plan Name */}
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-gray-600 font-medium">Plan Name:</span>
-                    <span className="text-gray-800 font-semibold">{planName || "N/A"}</span>
+                    <span className="text-gray-600 font-medium">
+                      Plan Name:
+                    </span>
+                    <span className="text-gray-800 font-semibold">
+                      {planName || "N/A"}
+                    </span>
                   </div>
 
                   {/* Trial Status */}
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-gray-600 font-medium">Trial Status:</span>
+                    <span className="text-gray-600 font-medium">
+                      Trial Status:
+                    </span>
                     <span
-                      className={`font-semibold ${tokensData.credits.is_trial ? "text-green-600" : "text-gray-600"
-                        }`}
+                      className={`font-semibold ${
+                        tokensData.credits.is_trial
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }`}
                     >
-                      {tokensData.credits.is_trial ? "Active Trial" : "Not a Trial Plan"}
+                      {tokensData.credits.is_trial
+                        ? "Active Trial"
+                        : "Not a Trial Plan"}
                     </span>
                   </div>
 
                   {/* Duration */}
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600 font-medium">Start Date:</span>
+                    <span className="text-gray-600 font-medium">
+                      Start Date:
+                    </span>
                     <span className="text-gray-800">
-                      {new Date(tokensData.credits.start_date).toLocaleDateString()}
+                      {new Date(
+                        tokensData.credits.start_date
+                      ).toLocaleDateString()}
                     </span>
                   </div>
 
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600 font-medium">Expiry Date:</span>
+                    <span className="text-gray-600 font-medium">
+                      Expiry Date:
+                    </span>
                     <span className="text-gray-800">
-                      {new Date(tokensData.credits.expiry_date).toLocaleDateString()}
+                      {new Date(
+                        tokensData.credits.expiry_date
+                      ).toLocaleDateString()}
                     </span>
                   </div>
                 </div>
@@ -439,122 +468,161 @@ const ProfileSettings = () => {
                 {/* Additional Limits */}
 
                 <div className="bg-white p-6 rounded-xl border shadow-sm text-base">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-4">Training Limits</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                    Training Limits
+                  </h3>
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-gray-600 font-medium">Characters Allowed:</span>
-                    <span className="text-gray-800 font-semibold">{tokensData.credits.chars_allowed.toLocaleString()}</span>
+                    <span className="text-gray-600 font-medium">
+                      Characters Allowed:
+                    </span>
+                    <span className="text-gray-800 font-semibold">
+                      {tokensData.credits.chars_allowed.toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-gray-600 font-medium">Webpages Allowed:</span>
-                    <span className="text-gray-800 font-semibold">{tokensData.credits.webpages_allowed} webpages</span>
+                    <span className="text-gray-600 font-medium">
+                      Webpages Allowed:
+                    </span>
+                    <span className="text-gray-800 font-semibold">
+                      {tokensData?.credits?.webpages_allowed} webpages
+                    </span>
                   </div>
                 </div>
-
               </div>
-
 
               {/* USAGE OVERVIEW */}
               <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-
                 {/* Credits Card */}
                 <div className="bg-white p-6 rounded-xl border shadow-sm">
-                  <h2 className="text-xl font-semibold text-gray-800 mb-4">Credits Usage</h2>
+                  <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                    Credits Usage
+                  </h2>
 
                   {/* Progress */}
                   <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
                     <div
                       className="h-3 rounded-full bg-indigo-600"
                       style={{
-                        width: `${(tokensData.credits.credits_consumed_messages / tokensData.credits.credits_purchased) * 100
-                          }%`,
+                        width: `${
+                          (tokensData.credits.credits_consumed_messages /
+                            tokensData.credits.credits_purchased) *
+                          100
+                        }%`,
                       }}
                     ></div>
                   </div>
 
                   <div className="text-sm text-gray-600 space-y-1">
-                    <p><span className="font-semibold">Purchased:</span> {tokensData.credits.credits_purchased}</p>
-                    <p><span className="font-semibold">Consumed:</span> {tokensData.credits.credits_consumed_messages}</p>
-                    <p><span className="font-semibold">Balance:</span> {tokensData.credits.credit_balance}</p>
+                    <p>
+                      <span className="font-semibold">Purchased:</span>{" "}
+                      {tokensData.credits.credits_purchased}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Consumed:</span>{" "}
+                      {tokensData.credits.credits_consumed_messages}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Balance:</span>{" "}
+                      {tokensData.credits.credit_balance}
+                    </p>
                   </div>
                 </div>
 
                 {/* Message Usage */}
                 <div className="bg-white p-6 rounded-xl border shadow-sm">
-                  <h2 className="text-xl font-semibold text-gray-800 mb-4">Message Usage</h2>
+                  <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                    Message Usage
+                  </h2>
 
                   {/* Progress */}
                   <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
                     <div
                       className="h-3 rounded-full bg-blue-600"
                       style={{
-                        width: `${((tokensData.total_message_consumption || 0) /
-                          (tokensData.token_usage?.[0]?.message_limit || 1)) *
+                        width: `${
+                          ((tokensData.total_message_consumption || 0) /
+                            (tokensData.token_usage?.[0]?.message_limit || 1)) *
                           100
-                          }%`,
+                        }%`,
                       }}
                     ></div>
                   </div>
 
                   <div className="text-sm text-gray-600 space-y-1">
-                    <p><span className="font-semibold">Limit:</span> {tokensData.token_usage?.[0]?.message_limit || 0}</p>
-                    <p><span className="font-semibold">Consumed:</span> {tokensData.total_message_consumption || 0}</p>
-                    <p><span className="font-semibold">Remaining:</span>
-                      {(tokensData.token_usage?.[0]?.message_limit || 0) - (tokensData.total_message_consumption || 0)}
+                    <p>
+                      <span className="font-semibold">Limit:</span>{" "}
+                      {tokensData.token_usage?.[0]?.message_limit || 0}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Consumed:</span>{" "}
+                      {tokensData.total_message_consumption || 0}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Remaining:</span>
+                      {(tokensData.token_usage?.[0]?.message_limit || 0) -
+                        (tokensData.total_message_consumption || 0)}
                     </p>
                   </div>
                 </div>
 
                 {/* Team Strength */}
                 <div className="bg-white p-6 rounded-xl border shadow-sm">
-                  <h2 className="text-xl font-semibold text-gray-800 mb-4">Team Usage</h2>
+                  <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                    Team Usage
+                  </h2>
 
                   {/* Progress Bar */}
                   <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
                     <div
                       className="h-3 rounded-full bg-green-600 transition-all"
                       style={{
-                        width: `${((pagination?.total_items || 0) / (tokensData.credits.team_strength || 1)) * 100
-                          }%`,
+                        width: `${
+                          ((pagination?.total_items || 0) /
+                            (tokensData.credits.team_strength || 1)) *
+                          100
+                        }%`,
                       }}
                     ></div>
                   </div>
 
                   {/* Labels */}
                   <div className="grid grid-cols-3 gap-3 text-center text-sm">
-
                     <div className="bg-gray-50 p-2 rounded-lg">
                       <p className="text-gray-500 text-xs">Allowed</p>
-                      <p className="font-semibold text-gray-800">{tokensData.credits.team_strength}</p>
+                      <p className="font-semibold text-gray-800">
+                        {tokensData.credits.team_strength}
+                      </p>
                     </div>
 
                     <div className="bg-gray-50 p-2 rounded-lg">
                       <p className="text-gray-500 text-xs">Current</p>
-                      <p className="font-semibold text-gray-800">{pagination?.total_items}</p>
+                      <p className="font-semibold text-gray-800">
+                        {pagination?.total_items}
+                      </p>
                     </div>
 
                     <div className="bg-gray-50 p-2 rounded-lg">
                       <p className="text-gray-500 text-xs">Available</p>
                       <p className="font-semibold text-gray-800">
-                        {tokensData.credits.team_strength - (pagination?.total_items || 0)}
+                        {tokensData?.credits?.team_strength -
+                          (pagination?.total_items || 0)}
                       </p>
                     </div>
-
                   </div>
                 </div>
-
-
               </div>
-
-
 
               {/* Shared Bots */}
               <Link href="/settings/teams" className="block mt-8">
                 <div className="bg-white p-6 rounded-xl border shadow-sm hover:shadow-md transition">
-                  <h2 className="text-xl font-semibold text-gray-800 mb-4">Shared Bots</h2>
+                  <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                    Shared Bots
+                  </h2>
                   <p className="text-sm text-gray-700">
                     {invitedUsers.length > 0 ? (
                       <>
-                        Shared with {invitedUsers.length} user{invitedUsers.length > 1 ? "s" : ""}
+                        Shared with {invitedUsers.length} user
+                        {invitedUsers.length > 1 ? "s" : ""}
                         <span className="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
                           {invitedUsers.length}
                         </span>
@@ -572,7 +640,6 @@ const ProfileSettings = () => {
             </div>
           )}
         </div>
-
       </div>
       <ChangePasswordModal
         isOpen={showChangePassword}

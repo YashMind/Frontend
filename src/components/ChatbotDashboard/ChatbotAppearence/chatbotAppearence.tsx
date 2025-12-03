@@ -11,7 +11,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { uploadDocument } from "@/store/slices/chats/chatSlice";
 import { pathToImage } from "@/services/utils/helpers";
-import { ColorPickerField, Field, IFormInput, ImageField, SoundUploadField } from "./Fields";
+import {
+  ColorPickerField,
+  Field,
+  IFormInput,
+  ImageField,
+  SoundUploadField,
+} from "./Fields";
 import LeadGenSelection from "./LeadGenSelection";
 import { toasterSuccess } from "@/services/utils/toaster";
 
@@ -27,7 +33,6 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
 
     // Fetch if chatbotSetting is missing or for a different bot
     if (!chatbotSetting || chatbotSetting.bot_id != botId) {
-      console.log("Fetching chatbot settings for bot:", botId);
       dispatch(fetchChatbotSettings(botId));
     }
   }, [botId, chatbotSetting, dispatch]);
@@ -39,63 +44,67 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
     }
   }, [chatbotSetting]);
 
-  const { register, handleSubmit, setValue, watch, reset } = useForm<IFormInput>({
-    defaultValues: {
-      title_value: chatbotSetting?.title_value || "",
-      welcome_message_value: chatbotSetting?.welcome_message_value || "",
-      suggestions_value: chatbotSetting?.suggestions_value || "",
-      placeholder_value: chatbotSetting?.placeholder_value || "",
-      title_is_active: chatbotSetting?.title_is_active || false,
-      welcome_message_is_active:
-        chatbotSetting?.welcome_message_is_active || false,
-      suggestions_is_active: chatbotSetting?.suggestions_is_active || false,
-      placeholder_is_active: chatbotSetting?.placeholder_is_active || false,
+  const { register, handleSubmit, setValue, watch, reset } =
+    useForm<IFormInput>({
+      defaultValues: {
+        title_value: chatbotSetting?.title_value || "",
+        welcome_message_value: chatbotSetting?.welcome_message_value || "",
+        suggestions_value: chatbotSetting?.suggestions_value || "",
+        placeholder_value: chatbotSetting?.placeholder_value || "",
+        title_is_active: chatbotSetting?.title_is_active || false,
+        welcome_message_is_active:
+          chatbotSetting?.welcome_message_is_active || false,
+        suggestions_is_active: chatbotSetting?.suggestions_is_active || false,
+        placeholder_is_active: chatbotSetting?.placeholder_is_active || false,
 
-      // Branding
-      chat_window_bg: chatbotSetting?.chat_window_bg || "",
-      send_button_color: chatbotSetting?.send_button_color || "",
-      chat_icon_color: chatbotSetting?.chat_icon_color || "",
-      user_message_bg: chatbotSetting?.user_message_bg || "",
-      user_message_color: chatbotSetting?.user_message_color || "",
-      dots_color: chatbotSetting?.dots_color || "",
-      message_bg: chatbotSetting?.message_bg || "",
-      live_message_bg: chatbotSetting?.live_message_bg,
-      message_color: chatbotSetting?.message_color || "",
-      live_message_color: chatbotSetting?.live_message_color,
-      chat_icon: chatbotSetting?.chat_icon ? pathToImage(chatbotSetting?.chat_icon) : undefined,
-      image: chatbotSetting?.image ? pathToImage(chatbotSetting?.image) : undefined,
-      // Lead collection
-      lead_collection: chatbotSetting?.lead_collection || false,
-      name_lead_gen: chatbotSetting?.name_lead_gen || "Name",
-      is_name_lead_gen: chatbotSetting?.is_name_lead_gen || true,
-      required_name_lead_gen: chatbotSetting?.required_name_lead_gen || false,
-      mail_lead_gen: chatbotSetting?.mail_lead_gen || "Email",
-      is_mail_lead_gen: chatbotSetting?.is_mail_lead_gen || false,
-      required_mail_lead_gen: chatbotSetting?.required_mail_lead_gen || false,
-      phone_lead_gen: chatbotSetting?.phone_lead_gen || "Phone",
-      is_phone_lead_gen: chatbotSetting?.is_phone_lead_gen || false,
-      required_phone_lead_gen: chatbotSetting?.required_phone_lead_gen || false,
-      message_lead_gen: chatbotSetting?.message_lead_gen || "Message",
-      is_message_lead_gen: chatbotSetting?.is_message_lead_gen || false,
-      required_message_lead_gen:
-        chatbotSetting?.required_message_lead_gen || false,
-      submission_message_heading_lead_gen:
-        chatbotSetting?.submission_message_heading_lead_gen || "Thanks",
-      sumbission_message_lead_gen:
-        chatbotSetting?.sumbission_message_lead_gen ||
-        "Your query have been submitted.",
-      submit_text_lead_gen: chatbotSetting?.submit_text_lead_gen || "Submit",
-      submit_button_color_lead_gen:
-        chatbotSetting?.submit_button_color_lead_gen || "#555555",
+        // Branding
+        chat_window_bg: chatbotSetting?.chat_window_bg || "",
+        send_button_color: chatbotSetting?.send_button_color || "",
+        chat_icon_color: chatbotSetting?.chat_icon_color || "",
+        user_message_bg: chatbotSetting?.user_message_bg || "",
+        user_message_color: chatbotSetting?.user_message_color || "",
+        dots_color: chatbotSetting?.dots_color || "",
+        message_bg: chatbotSetting?.message_bg || "",
+        live_message_bg: chatbotSetting?.live_message_bg,
+        message_color: chatbotSetting?.message_color || "",
+        live_message_color: chatbotSetting?.live_message_color,
+        chat_icon: chatbotSetting?.chat_icon
+          ? pathToImage(chatbotSetting?.chat_icon)
+          : undefined,
+        image: chatbotSetting?.image
+          ? pathToImage(chatbotSetting?.image)
+          : undefined,
+        // Lead collection
+        lead_collection: chatbotSetting?.lead_collection || false,
+        name_lead_gen: chatbotSetting?.name_lead_gen || "Name",
+        is_name_lead_gen: chatbotSetting?.is_name_lead_gen || true,
+        required_name_lead_gen: chatbotSetting?.required_name_lead_gen || false,
+        mail_lead_gen: chatbotSetting?.mail_lead_gen || "Email",
+        is_mail_lead_gen: chatbotSetting?.is_mail_lead_gen || false,
+        required_mail_lead_gen: chatbotSetting?.required_mail_lead_gen || false,
+        phone_lead_gen: chatbotSetting?.phone_lead_gen || "Phone",
+        is_phone_lead_gen: chatbotSetting?.is_phone_lead_gen || false,
+        required_phone_lead_gen:
+          chatbotSetting?.required_phone_lead_gen || false,
+        message_lead_gen: chatbotSetting?.message_lead_gen || "Message",
+        is_message_lead_gen: chatbotSetting?.is_message_lead_gen || false,
+        required_message_lead_gen:
+          chatbotSetting?.required_message_lead_gen || false,
+        submission_message_heading_lead_gen:
+          chatbotSetting?.submission_message_heading_lead_gen || "Thanks",
+        sumbission_message_lead_gen:
+          chatbotSetting?.sumbission_message_lead_gen ||
+          "Your query have been submitted.",
+        submit_text_lead_gen: chatbotSetting?.submit_text_lead_gen || "Submit",
+        submit_button_color_lead_gen:
+          chatbotSetting?.submit_button_color_lead_gen || "#555555",
 
-      popup_sound: chatbotSetting?.popup_sound || "",
-    },
-  });
+        popup_sound: chatbotSetting?.popup_sound || "",
+      },
+    });
 
   useEffect(() => {
-    console.log("CHATBOT SETTING CHANGED")
     if (chatbotSetting) {
-      // Conditionally set each value if the property exists in chatbotSetting
       if (chatbotSetting?.title_value)
         setValue("title_value", chatbotSetting.title_value);
       if (chatbotSetting?.welcome_message_value)
@@ -130,7 +139,6 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
         chat_icon
           ? setValue("chat_icon", chat_icon)
           : setValue("chat_icon", "");
-
       }
       if (chatbotSetting?.image !== undefined) {
         const image = pathToImage(chatbotSetting.image);
@@ -225,7 +233,9 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
 
       if (chatbotSetting?.popup_sound !== undefined) {
         const popup_sound = pathToImage(chatbotSetting.popup_sound);
-        popup_sound ? setValue("popup_sound", popup_sound) : setValue("popup_sound", "");
+        popup_sound
+          ? setValue("popup_sound", popup_sound)
+          : setValue("popup_sound", "");
       }
     }
   }, [chatbotSetting, setValue]);
@@ -237,60 +247,45 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
     return JSON.stringify(currentValues) !== JSON.stringify(initialValues);
   };
 
-
-
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     if (!hasChanges()) {
-      toast.error("No changes to save. Please make some changes before saving.");
+      toast.error(
+        "No changes to save. Please make some changes before saving."
+      );
       return;
     }
-
-
-
-    console.log("chatbot appearace settings:", data)
     const action = chatbotSetting
       ? updateChatbotSettings
       : createChatbotSettings;
 
-    // if (typeof data.chat_icon === "object") {
-    //   const chatIcon = new FormData();
-    //   if (data.chat_icon[0]) {
-    //     chatIcon.append("file", data.chat_icon[0]);
-    //     await dispatch(uploadDocument({ payload: chatIcon }))
-    //       .unwrap()
-    //       .then((res) => {
-    //         setValue("chat_icon", res?.url);
-    //         data.chat_icon = res?.url;
-    //       });
-    //   }
-    // }
-
-    if (!data.chat_icon || (data.chat_icon as any instanceof FileList && data.chat_icon.length === 0)) {
+    if (
+      !data.chat_icon ||
+      ((data.chat_icon as any) instanceof FileList &&
+        data.chat_icon.length === 0)
+    ) {
       data.chat_icon = "";
     }
-    if (!data.image || (data.image as any instanceof FileList && data.image.length === 0)) {
+    if (
+      !data.image ||
+      ((data.image as any) instanceof FileList && data.image.length === 0)
+    ) {
       data.image = "";
     }
-
-    console.log("typeof data.chat_icon", typeof data.chat_icon, data.chat_icon);
 
     if (typeof data.chat_icon === "object" && data.chat_icon) {
       const chatIcon = new FormData();
       if (data.chat_icon[0]) {
         chatIcon.append("file", data.chat_icon[0]);
-      }
-      else {
-        chatIcon.append('file', data.chat_icon)
+      } else {
+        chatIcon.append("file", data.chat_icon);
       }
       await dispatch(uploadDocument({ payload: chatIcon }))
         .unwrap()
         .then((res) => {
-          console.log("Setting chat_icon", res)
           setValue("chat_icon", res?.url);
           data.chat_icon = res?.url;
         });
     }
-    console.log("typeof data.image", typeof data.image, data.image);
 
     if (typeof data.image === "object" && data.image && data.image) {
       const image = new FormData();
@@ -298,26 +293,25 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       await dispatch(uploadDocument({ payload: image }))
         .unwrap()
         .then((res) => {
-          console.log("Setting image", res)
           setValue("image", res?.url);
           data.image = res?.url;
         });
     }
 
-    console.log("typeof data.popup_sound", typeof data.popup_sound, data.popup_sound);
-
-    if (typeof data.popup_sound === "object" && data.popup_sound && data.popup_sound) {
+    if (
+      typeof data.popup_sound === "object" &&
+      data.popup_sound &&
+      data.popup_sound
+    ) {
       const popup_sound = new FormData();
       popup_sound.append("file", data.popup_sound);
       await dispatch(uploadDocument({ payload: popup_sound }))
         .unwrap()
         .then((res) => {
-          console.log("Setting popup_sound", res)
           setValue("popup_sound", res?.url);
           data.popup_sound = res?.url;
         });
     }
-
 
     await dispatch(
       action({
@@ -382,30 +376,25 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
     }
   }, [chatbotSetting, reset]);
 
-
-
   const handleResetAppearance = async () => {
     const settings = await dispatch(fetchChatbotSettings(botId!)).unwrap();
-    console.log(settings)
     reset(settings);
-
   };
-
-
-  console.log("CHAT ICON", watch('chat_icon'))
-  console.log("Image", watch('image'))
-  console.log("Popup sound", watch('popup_sound'))
-
 
   return (
     <div className="m-4">
       {" "}
-      <h2 className="text-2xl font-bold mb-4 max-md:ml-12">Bot visualisation</h2>
+      <h2 className="text-2xl font-bold mb-4 max-md:ml-12">
+        Bot visualisation
+      </h2>
       <p className="text-sm font-light my-[22px]">
         Make your chatbot match your brand — customize its look and feel here.
       </p>
       <div className="flex max-md:flex-wrap-reverse gap-2 w-full">
-        <form onSubmit={handleSubmit(onSubmit)} className="w-full md:basis-3/4  ">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full md:basis-3/4  "
+        >
           <div className="space-y-2 flex-1 bg-[#9e99b6] p-2 rounded-xl">
             <Field
               name="title_value"
@@ -471,7 +460,6 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
               </div>
               <div className="flex flex-col gap-5 h-full">
                 <div className="basis-1/2 space-y-2">
-
                   <ImageField
                     label="Chatbot avatar"
                     name="image"
@@ -479,7 +467,6 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
                     register={register}
                     setValue={setValue}
                   />
-
                   <ColorPickerField
                     name="message_bg"
                     label="Bot message background"
@@ -515,7 +502,9 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
                   <ImageField
                     label="Start chat icon"
                     name="chat_icon"
-                    value={pathToImage(watch("chat_icon")) || "/images/face2.webp"}
+                    value={
+                      pathToImage(watch("chat_icon")) || "/images/face2.webp"
+                    }
                     register={register}
                     setValue={setValue}
                   />
@@ -548,8 +537,8 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
             </div>
 
             <SoundUploadField
-              initialSound={watch('popup_sound') || null}
-              onSoundChange={(file) => setValue('popup_sound', file as any)}
+              initialSound={watch("popup_sound") || null}
+              onSoundChange={(file) => setValue("popup_sound", file as any)}
             />
 
             <div className="mt-[23] flex gap-3">
@@ -569,7 +558,7 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
 
         <ChatbotDummy chatbotSettings={watch()} />
       </div>
-    </div >
+    </div>
   );
 };
 

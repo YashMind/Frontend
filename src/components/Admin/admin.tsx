@@ -21,34 +21,37 @@ import { AdminAllUsers } from "@/types/adminType";
 
 const Admin = ({ adminPage }: { adminPage: string }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [allUsersData, setAllUsersData] = useState<AdminAllUsers | []>([])
+  const [allUsersData, setAllUsersData] = useState<any>([]);
 
   const router = useRouter();
-  const permissions = useSelector((state: RootState) => state.admin.myPermissions)
+  const permissions = useSelector(
+    (state: RootState) => state.admin.myPermissions
+  );
   const userData = useSelector((state: RootState) => state.auth.userData);
 
   const role = userData?.role;
   useEffect(() => {
-    if (!allUsersData?.data?.length) {
+    if (Array.isArray(allUsersData) || !allUsersData?.data?.length) {
       dispatch(
         getAllUsers({
           page: 1,
           limit: 10,
         })
-      ).unwrap().then(res => setAllUsersData(res));;
+      )
+        .unwrap()
+        .then((res) => setAllUsersData(res));
     }
   }, [allUsersData?.data?.length]);
 
   useEffect(() => {
     dispatch(getMeData({ router }));
-  }, [])
+  }, []);
 
   useEffect(() => {
-
     if (role && !permissions.length) {
       dispatch(getMyPermissions());
     }
-  }, [role])
+  }, [role]);
 
   return (
     <div>

@@ -12,7 +12,7 @@ export default function SelectComponents({
   isDisabled,
   selectedChatbot,
   selectedUsers,
-}: SelectComponentsProps) {
+}: any) {
   const [mounted, setMounted] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -22,7 +22,7 @@ export default function SelectComponents({
   }, []);
 
   const handleChatbotChange = (newValue: any) => {
-    onChatbotChange(newValue as ChatbotOption);
+    onChatbotChange(newValue as any);
   };
 
   const addEmail = () => {
@@ -43,7 +43,11 @@ export default function SelectComponents({
     if (e.key === "," || e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       addEmail();
-    } else if (e.key === "Backspace" && inputValue === "" && selectedUsers.length > 0) {
+    } else if (
+      e.key === "Backspace" &&
+      inputValue === "" &&
+      selectedUsers.length > 0
+    ) {
       const newUsers = [...selectedUsers];
       newUsers.pop();
       onUsersChange(newUsers);
@@ -101,11 +105,13 @@ export default function SelectComponents({
           Enter User Emails (comma separated)
         </label>
         <div
-          className={`min-h-10 p-2 border rounded-md flex flex-wrap gap-2 items-center ${isDisabled ? "bg-gray-100" : "bg-white"}`}
+          className={`min-h-10 p-2 border rounded-md flex flex-wrap gap-2 items-center ${
+            isDisabled ? "bg-gray-100" : "bg-white"
+          }`}
           onClick={() => inputRef.current?.focus()}
         >
           {/* Display selected users */}
-          {selectedUsers.map((user, index) => (
+          {selectedUsers.map((user: any, index: any) => (
             <div
               key={user.value} // Changed to use email as key for better stability
               className="flex items-center bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm"
@@ -125,18 +131,18 @@ export default function SelectComponents({
               )}
             </div>
           ))}
-          
+
           {/* Email input field */}
           {!isDisabled && (
             <input
-              ref={inputRef} 
+              ref={inputRef}
               type="text"
               value={inputValue}
               onChange={handleChange}
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               placeholder={selectedUsers.length === 0 ? "user@example.com" : ""}
-              className="flex-1 min-w-[100px] outline-none " 
+              className="flex-1 min-w-[100px] outline-none "
               disabled={isDisabled}
             />
           )}

@@ -26,7 +26,6 @@ import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
 import { pathToImage } from "@/services/utils/helpers";
 import Image from "next/image";
 
-
 interface RoleWithPermissions {
   id: number;
   role: string;
@@ -43,7 +42,7 @@ const formatAction = (action: string) => {
     role_updated: "Role Updated",
   };
   return map[action] || "Activity";
-}
+};
 const AdminUsersRoles = () => {
   const permissionsData = [
     {
@@ -74,10 +73,12 @@ const AdminUsersRoles = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
   const [modalShow, setModalShow] = useState<boolean>(false);
-  const [showPermissionModal, setShowPermissionModal] = useState<boolean>(false);
-  const [rolesWithPermissions, setRolesWithPermissions] = useState<RoleWithPermissions[]>(permissionsData);
+  const [showPermissionModal, setShowPermissionModal] =
+    useState<boolean>(false);
+  const [rolesWithPermissions, setRolesWithPermissions] =
+    useState<RoleWithPermissions[]>(permissionsData);
 
-  const [selectedDate, setSelectedDate] = useState(today)
+  const [selectedDate, setSelectedDate] = useState(today);
   const [adminUserData, setAdminUserData] = useState<any>({});
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [menuOpenId, setMenuOpenId] = useState<number | null>(null);
@@ -107,7 +108,6 @@ const AdminUsersRoles = () => {
 
     fetchAllPermissions();
   }, []);
-
 
   const handleDeleteClick = (item: any) => {
     setSelectedUser(item.id);
@@ -140,7 +140,6 @@ const AdminUsersRoles = () => {
 
     setIsMenuOpen(false);
   };
-
 
   const handleOpenMenu = (itemId: any) => {
     setMenuOpenId(itemId);
@@ -186,7 +185,7 @@ const AdminUsersRoles = () => {
                   </thead>
                   <tbody>
                     {adminUsers && adminUsers.length > 0 ? (
-                      adminUsers?.map((item, index) => {
+                      adminUsers?.map((item: any, index: any) => {
                         const timeAgo = item?.last_active
                           ? formatDateOrTimeAgo(item.last_active, timezone)
                           : null;
@@ -195,11 +194,24 @@ const AdminUsersRoles = () => {
                             className="border-b border-[#0B1739] hover:bg-[#1A1F3C] "
                             key={index}
                           >
-
                             <td className="p-6 flex justify-start items-center gap-2 font-medium text-xs">
-                              {item.picture ?
-                                <Image src={pathToImage(item?.picture) as string} alt="profile image" width={100} height={100} className="w-8 h-8 rounded-full" /> :
-                                <Image src={"/images/Avatar Circle.png"} alt="profile image" width={100} height={100} className="w-8 h-8 rounded-full" />}
+                              {item.picture ? (
+                                <Image
+                                  src={pathToImage(item?.picture) as string}
+                                  alt="profile image"
+                                  width={100}
+                                  height={100}
+                                  className="w-8 h-8 rounded-full"
+                                />
+                              ) : (
+                                <Image
+                                  src={"/images/Avatar Circle.png"}
+                                  alt="profile image"
+                                  width={100}
+                                  height={100}
+                                  className="w-8 h-8 rounded-full"
+                                />
+                              )}
                               {item?.fullName}
                             </td>
                             <td className="p-6 text-xs text-gray-300">
@@ -235,21 +247,21 @@ const AdminUsersRoles = () => {
                                   size={20}
                                   onClick={() => handleDeleteClick(item)}
                                   className="cursor-pointer"
-
                                 />
                                 {/* dropdown start */}
                                 <PiDotsThreeOutlineVerticalFill
                                   size={20}
                                   className="cursor-pointer"
                                   onClick={() => {
-                                    handleOpenMenu(item?.id)
+                                    handleOpenMenu(item?.id);
                                   }}
                                 />
                               </div>
                             </td>
                           </tr>
                         );
-                      })) : (
+                      })
+                    ) : (
                       <tr>
                         <td
                           colSpan={7}
@@ -282,7 +294,6 @@ const AdminUsersRoles = () => {
 
             {/* roles management */}
             <div className="p-6">
-
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold mb-4">Role Management</h2>
               </div>
@@ -295,7 +306,7 @@ const AdminUsersRoles = () => {
                   >
                     <div className="flex justify-between items-center bg-[#081028] px-4 py-2 rounded">
                       <h3 className="font-semibold text-white">{item?.role}</h3>
-                      {item.role !== "Super Admin" &&
+                      {item.role !== "Super Admin" && (
                         <button
                           className="cursor-pointer text-sm bg-[#3B0459] text-white px-4 py-1 rounded"
                           onClick={() => {
@@ -305,8 +316,7 @@ const AdminUsersRoles = () => {
                         >
                           Edit Permissions
                         </button>
-                      }
-
+                      )}
                     </div>
 
                     <div className="mt-4">
@@ -314,12 +324,18 @@ const AdminUsersRoles = () => {
                       {item?.permissions && item.permissions.length > 0 ? (
                         <ul className="list-disc list-inside text-sm text-gray-200 space-y-1">
                           {item.permissions.map((perm, idx) => (
-                            <li key={idx}>{accessPoints.find((item) => item.value === perm)?.label}</li>
+                            <li key={idx}>
+                              {
+                                accessPoints.find((item) => item.value === perm)
+                                  ?.label
+                              }
+                            </li>
                           ))}
                         </ul>
                       ) : (
                         <p className="text-sm text-gray-400 ml-4">
-                          This role has no permissions assigned. Please edit the role to add permissions.
+                          This role has no permissions assigned. Please edit the
+                          role to add permissions.
                         </p>
                       )}
                     </div>
@@ -342,7 +358,8 @@ const AdminUsersRoles = () => {
                 </div>
 
                 <div className="bg-[#0A0F2C] pb-12 rounded-lg text-white space-y-6 max-w-2xl mx-auto">
-                  {Array.isArray(adminsLogsActivityData) && adminsLogsActivityData.length > 0 ? (
+                  {Array.isArray(adminsLogsActivityData) &&
+                  adminsLogsActivityData.length > 0 ? (
                     adminsLogsActivityData.map((log: any) => (
                       <div
                         key={log.id}
@@ -356,9 +373,13 @@ const AdminUsersRoles = () => {
                             <h3 className="font-semibold text-white capitalize">
                               {formatAction(log.action)}
                             </h3>
-                            <p className="text-sm text-gray-300">{log.log_activity}</p>
+                            <p className="text-sm text-gray-300">
+                              {log.log_activity}
+                            </p>
                           </div>
-                          <div className="text-sm text-gray-400 mt-1">{log.username}</div>
+                          <div className="text-sm text-gray-400 mt-1">
+                            {log.username}
+                          </div>
                         </div>
                       </div>
                     ))
@@ -385,7 +406,9 @@ const AdminUsersRoles = () => {
             onUpdatePermissions={(updatedRole) => {
               setRolesWithPermissions((prev: any) =>
                 prev.map((r: any) =>
-                  r.id === updatedRole.id ? { ...r, permissions: updatedRole.permissions } : r
+                  r.id === updatedRole.id
+                    ? { ...r, permissions: updatedRole.permissions }
+                    : r
                 )
               );
             }}

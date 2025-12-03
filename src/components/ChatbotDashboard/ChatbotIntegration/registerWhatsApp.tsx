@@ -27,7 +27,7 @@ import Link from "next/link";
 
 const MASK = "••••••••••••"; // Consistent mask for all sensitive fields
 
-const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
+const RegisterWhatsAppPage = ({ botId }: { botId?: number }) => {
   const [formData, setFormData] = useState({
     is_active: false,
     whatsapp_number: "",
@@ -57,6 +57,10 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
 
   useEffect(() => {
     const loadRegistration = async () => {
+      if (!botId) {
+        console.error("botId is undefined");
+        return;
+      }
       try {
         const res = await dispatch(fetchWhatsappRegistration(botId)).unwrap();
         if (res) {
@@ -92,7 +96,7 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
       setIsWebhookSecretChanged(true);
     }
 
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -141,7 +145,7 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
 
     setIsLoading(true);
     try {
-      const whatsapp_number = formData.whatsapp_number.replace(/\D/g, '');
+      const whatsapp_number = formData.whatsapp_number.replace(/\D/g, "");
       const payload: any = {
         bot_id: botId,
         whatsapp_number,
@@ -161,21 +165,21 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
         await dispatch(registerWhatsappPhoneNumber(payload)).unwrap();
         setInitialWebhookSecret(formData.webhook_secret);
         setWebhookSetupMode(true);
-        toast.success("WhatsApp integration saved! Now configure your webhook.");
+        toast.success(
+          "WhatsApp integration saved! Now configure your webhook."
+        );
       } else {
         await dispatch(updateWhatsappRegistration(payload)).unwrap();
         toast.success("WhatsApp integration updated successfully!");
         router.push(`/chatbot-dashboard/integration/${botId}`);
       }
     } catch (e: any) {
-      console.log("Operation failed:", e);
       toast.error(e.message || "Failed to process WhatsApp integration");
       setError(e.message || "Operation failed. Please check your credentials.");
     } finally {
       setIsLoading(false);
     }
   };
-
 
   const toggleSection = (section: string) => {
     setExpandedSection(expandedSection === section ? null : section);
@@ -184,11 +188,10 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
   const handleDeactivate = async () => {
     setIsDeleting(true);
     try {
-      await dispatch(deactivateWhatsappRegistration(botId)).unwrap();
+      await dispatch(deactivateWhatsappRegistration(botId!)).unwrap();
       toast.success("WhatsApp integration deactivated successfully!");
       router.push(`/chatbot-dashboard/integration/${botId}`);
     } catch (e: any) {
-      console.log("Deactivation failed:", e);
       toast.error(e || "Failed to deactivate WhatsApp integration");
     } finally {
       setIsDeleting(false);
@@ -199,11 +202,10 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      await dispatch(deleteWhatsappRegistration(botId)).unwrap();
+      await dispatch(deleteWhatsappRegistration(botId!)).unwrap();
       toast.success("WhatsApp integration deleting successfully!");
       router.push(`/chatbot-dashboard/integration/${botId}`);
     } catch (e: any) {
-      console.log("Deleting failed:", e);
       toast.error(e || "Failed to delete WhatsApp integration");
     } finally {
       setIsDeleting(false);
@@ -250,31 +252,51 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
 
             <div className="p-6 space-y-6">
               <div className="space-y-4">
-                <h3 className="font-medium text-gray-800">Step 1: Configure Webhook in Facebook</h3>
+                <h3 className="font-medium text-gray-800">
+                  Step 1: Configure Webhook in Facebook
+                </h3>
                 <ol className="list-decimal pl-5 space-y-2 text-sm text-gray-700">
-                  <li>Go to <a href="https://developers.facebook.com/apps/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Facebook Developer Portal</a></li>
+                  <li>
+                    Go to{" "}
+                    <a
+                      href="https://developers.facebook.com/apps/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      Facebook Developer Portal
+                    </a>
+                  </li>
                   <li>Select your WhatsApp Business app</li>
                   <li>Navigate to "WhatsApp" → "Configuration" → "Webhooks"</li>
                   <li>Click on "Edit" for the "Messages" subscription</li>
-                  <li>Set the Callback URL to:
+                  <li>
+                    Set the Callback URL to:
                     <code className="block bg-gray-100 p-2 rounded mt-1 text-xs">
                       https://yashraa.ai/api/whatsapp/webhook
                     </code>
                   </li>
-                  <li>Set the Verification Token to:
+                  <li>
+                    Set the Verification Token to:
                     <code className="block bg-gray-100 p-2 rounded mt-1 text-xs">
                       {initialWebhookSecret}
                     </code>
                   </li>
-                  <li>Subscribe to the following fields: "messages", "message_template_status_update"</li>
+                  <li>
+                    Subscribe to the following fields: "messages",
+                    "message_template_status_update"
+                  </li>
                 </ol>
               </div>
 
               <div className="space-y-4">
-                <h3 className="font-medium text-gray-800">Step 2: Verify Webhook</h3>
+                <h3 className="font-medium text-gray-800">
+                  Step 2: Verify Webhook
+                </h3>
                 <p className="text-sm text-gray-700">
-                  After saving the webhook configuration, Facebook will send a verification request.
-                  Our system will automatically verify it using the token you provided.
+                  After saving the webhook configuration, Facebook will send a
+                  verification request. Our system will automatically verify it
+                  using the token you provided.
                 </p>
               </div>
 
@@ -372,7 +394,9 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Webhook Verification Token
-                    {!isRegistered && <span className="text-red-500 ml-1">*</span>}
+                    {!isRegistered && (
+                      <span className="text-red-500 ml-1">*</span>
+                    )}
                   </label>
                   <div className="relative">
                     <input
@@ -401,14 +425,15 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
                       : "Leave unchanged to keep existing token"}
                   </p>
                 </div>
-
               </div>
 
               {/* Access Token */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Facebook Access Token
-                  {!isRegistered && <span className="text-red-500 ml-1">*</span>}
+                  {!isRegistered && (
+                    <span className="text-red-500 ml-1">*</span>
+                  )}
                 </label>
                 <div className="relative">
                   <input
@@ -448,8 +473,9 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
                 <button
                   onClick={handleSubmit}
                   disabled={isLoading}
-                  className={`flex-1 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all ${isLoading ? "opacity-80 cursor-not-allowed" : "shadow-lg"
-                    }`}
+                  className={`flex-1 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all ${
+                    isLoading ? "opacity-80 cursor-not-allowed" : "shadow-lg"
+                  }`}
                 >
                   {isLoading ? (
                     <span className="flex items-center justify-center">
@@ -482,8 +508,8 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
                   )}
                 </button>
 
-                {isRegistered && (
-                  formData.is_active ? (
+                {isRegistered &&
+                  (formData.is_active ? (
                     <button
                       type="button"
                       onClick={() => setShowDeactivateModal(true)}
@@ -525,7 +551,11 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
                     <button
                       onClick={handleSubmit}
                       disabled={isLoading}
-                      className={`flex-1 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all ${isLoading ? "opacity-80 cursor-not-allowed" : "shadow-lg"}`}
+                      className={`flex-1 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all ${
+                        isLoading
+                          ? "opacity-80 cursor-not-allowed"
+                          : "shadow-lg"
+                      }`}
                     >
                       {isLoading ? (
                         <span className="flex items-center justify-center">
@@ -555,47 +585,48 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
                         "Connect"
                       )}
                     </button>
-                  )
-                )}
+                  ))}
               </div>
               <div>
-                {isRegistered && <button
-                  type="button"
-                  onClick={() => setShowDeleteModal(true)}
-                  disabled={isDeleting}
-                  className="flex w-full justify-center gap-2 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all shadow-lg"
-                >
-                  {isDeleting ? (
-                    <span className="flex items-center justify-center">
-                      <svg
-                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                      Deleteing...
-                    </span>
-                  ) : (
-                    <>
-                      <FiTrash2 size={18} />
-                      Delete
-                    </>
-                  )}
-                </button>}
+                {isRegistered && (
+                  <button
+                    type="button"
+                    onClick={() => setShowDeleteModal(true)}
+                    disabled={isDeleting}
+                    className="flex w-full justify-center gap-2 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all shadow-lg"
+                  >
+                    {isDeleting ? (
+                      <span className="flex items-center justify-center">
+                        <svg
+                          className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        Deleteing...
+                      </span>
+                    ) : (
+                      <>
+                        <FiTrash2 size={18} />
+                        Delete
+                      </>
+                    )}
+                  </button>
+                )}
               </div>
             </div>
 
@@ -605,7 +636,9 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
                 Configuration Instructions
               </h3>
               <ul className="mt-2 text-sm text-blue-700 space-y-1">
-                <li>• Your credentials will be encrypted and stored securely</li>
+                <li>
+                  • Your credentials will be encrypted and stored securely
+                </li>
                 <li>
                   • Use the webhook URL:{" "}
                   <code className="bg-blue-100 px-1 rounded">
@@ -649,7 +682,8 @@ const RegisterWhatsAppPage = ({ botId }: { botId: number }) => {
                 </a>
               </div>
             </div>
-          </div>)}
+          </div>
+        )}
 
         {/* Documentation Sidebar */}
         {showDocs && (

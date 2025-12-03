@@ -38,9 +38,10 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({
   }, [transcript]);
 
   useEffect(() => {
-    // @ts-ignore
+    // Use type assertion
     const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
 
     if (SpeechRecognition) {
       const recognition = new SpeechRecognition();
@@ -59,7 +60,6 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({
         const prev = transcriptRef.current.trim();
         const curr = finalTranscript.trim();
         const updated = prev && curr ? `${prev} ${curr}` : prev || curr;
-        // Use ref instead of state directly to get latest value
         setTranscript(updated);
       };
 
@@ -67,17 +67,17 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({
         console.warn("Speech recognition error:", event.error);
 
         if (event.error === "not-allowed") {
-          toast.error("Microphone access denied. Please allow microphone permission.");
+          toast.error(
+            "Microphone access denied. Please allow microphone permission."
+          );
           stopRecording();
         } else if (event.error === "aborted") {
-          // Optional: only log or toast if needed
           console.info("Speech recognition was aborted.");
         } else {
           toast.error(`Speech recognition error: ${event.error}`);
           stopRecording();
         }
       };
-
 
       recognitionRef.current = recognition;
     }
@@ -157,8 +157,7 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({
 
       mediaRecorder.start();
       setIsRecording(true);
-    } catch (error) {
-      console.log("Error starting recording:", error);
+    } catch (error: any) {
       toast.error(error.message);
       setIsRecording(false);
     }
@@ -178,10 +177,7 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({
       recognitionRef.current.stop();
     }
 
-    if (
-      audioContextRef.current &&
-      audioContextRef.current.state !== "closed"
-    ) {
+    if (audioContextRef.current && audioContextRef.current.state !== "closed") {
       audioContextRef.current.close().catch((err) => {
         console.warn("Error closing AudioContext:", err);
       });
@@ -194,7 +190,6 @@ const MicrophoneRecorder: React.FC<MicrophoneRecorderProps> = ({
     setIsRecording(false);
     setIsProcessing(false);
   };
-
 
   return (
     <div className="flex flex-col items-center justify-center space-y-1 bg-white rounded-lg ">

@@ -10,9 +10,7 @@ import {
   FaLinkedin,
 } from "react-icons/fa";
 
-
-
-export const FaXTwitter = (props) => (
+export const FaXTwitter = (props: any) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
@@ -211,7 +209,7 @@ const HomeFooter = () => {
               <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
                 <path d="..." stroke="white" />
               </svg>
-              <p >+91-8623893563</p>
+              <p>+91-8623893563</p>
             </div>
           </div>
         </div>

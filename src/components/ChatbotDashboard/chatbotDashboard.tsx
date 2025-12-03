@@ -23,9 +23,9 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
   const chatbots: ChatbotsData[] = useSelector(
     (state: RootState) => state.chat.chatbots
   );
-  // const user = useSelector((state: RootState) => state.auth.user); 
+  // const user = useSelector((state: RootState) => state.auth.user);
 
-  const [showCreditModal, setShowCreditModal] = useState<boolean>(false)
+  const [showCreditModal, setShowCreditModal] = useState<boolean>(false);
   const tokensData = useSelector((state: RootState) => state.chat.tokens);
   const chatbotError = useSelector((state: RootState) => state.chat.error);
   const userData = useSelector((state: RootState) => state.auth.userData);
@@ -72,7 +72,7 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                       width:
                         (tokensData.token_usage[0].combined_token_consumption /
                           tokensData.token_usage[0].token_limit) *
-                        100 +
+                          100 +
                         "%",
                     }}
                   />
@@ -88,17 +88,12 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
               Create New Bot <br></br>
             </span>
           </div>
-
-          {/* Show LowBalanceReminder only if user is NOT invited and all data is loaded */}
-          {/* {userData?.email && Array.isArray(invitedUsers) && !isInvited && (
-            <LowBalanceReminder currentBalance={tokensData.credits && tokensData.credits.credit_balance} threshold={20} onAddCredits={() => setShowCreditModal(true)} />
-          )} */}
         </div>
         <div>
           <h2 className="text-2xl font-semibold mb-2">My Bot List</h2>
           <div className="flex flex-wrap gap-4 bg-[#FFFFFF80]/20 backdrop-blur-3xl p-4 rounded-3xl m-4">
             {chatbots &&
-              chatbots?.map((item, index: number) => {
+              chatbots?.map((item: any, index: number) => {
                 let imgUrl;
 
                 if (item.image) {
@@ -176,10 +171,11 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
                           </span>
                         </div>
                         <span
-                          className={`px-1.5 py-0.5 rounded text-xs ${item.public
-                            ? "text-green-700 bg-green-50"
-                            : "text-blue-700 bg-blue-50"
-                            }`}
+                          className={`px-1.5 py-0.5 rounded text-xs ${
+                            item.public
+                              ? "text-green-700 bg-green-50"
+                              : "text-blue-700 bg-blue-50"
+                          }`}
                         >
                           {item.public ? "Public" : "Private"}
                         </span>
@@ -199,49 +195,3 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
 };
 
 export default ChatbotDashboard;
-
-
-const LowBalanceReminder = ({ currentBalance, threshold = 10, onAddCredits = () => { } }: { currentBalance: number, threshold?: number, onAddCredits?: () => void }) => {
-  const [isVisible, setIsVisible] = useState(true);
-
-  // Check if balance is below threshold
-  const isLowBalance = currentBalance < threshold;
-
-  if (!isLowBalance || !isVisible) return null;
-  return (
-    <div className="relative low-balance-reminder bg-red-50 border-l-4 border-red-500 rounded-lg p-4 ">
-      {/* Close button */}
-      <button
-        onClick={() => setIsVisible(false)}
-        className="absolute top-2 right-2 text-red-400 hover:text-red-600 transition-colors"
-        aria-label="Dismiss warning"
-      >
-        <FaTimes />
-      </button>
-      {!tokensData?.has_shared_bots && (
-        <div className="flex gap-4  flex-col sm:flex-row justify-between items-start sm:items-center pr-6">
-          <div className="flex items-center mb-2 sm:mb-0">
-            <FaExclamationTriangle className="text-red-500 text-xl mr-3" />
-            <div>
-              <h3 className="text-lg font-semibold text-red-800">
-                Low Credit Balance
-              </h3>
-              <p className="text-red-600">
-                Only {currentBalance} credits remaining
-              </p>
-            </div>
-          </div>
-          {onAddCredits && (
-            <button
-              onClick={onAddCredits}
-              className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
-            >
-              Add Credits Now
-            </button>
-          )}
-        </div>
-      )}
-
-    </div>
-  );
-};

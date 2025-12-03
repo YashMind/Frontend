@@ -3,13 +3,13 @@ import { ZapierDialog } from "./ZapierDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { ChatbotsData } from "@/types/chatTypes";
 import { RootState } from "@/store/store";
-import AccessDownloadDialog, { DownloadButton } from "./downloadWordpress";
+import AccessDownloadDialog from "./downloadWordpress";
 import Link from "next/link";
 
 const ChatbotIntegration = ({ botId }: { botId?: number }) => {
   const [openDialog, setOpenDialog] = useState<{
     zapier: boolean;
-    wordpress: boolean
+    wordpress: boolean;
   }>({
     zapier: false,
     wordpress: false,
@@ -25,7 +25,10 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
     <div className="m-4">
       <div className="max-md:ml-12 mb-4">
         <h2 className="text-2xl font-bold ">Apps Integration</h2>
-        <p>Streamline your workflow by connecting to popular software and social media through our integrations.</p>
+        <p>
+          Streamline your workflow by connecting to popular software and social
+          media through our integrations.
+        </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full  text-center bg-[#9592AE] p-4 rounded-xl ">
         {/* Card 1 */}
@@ -76,7 +79,9 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
 
           <button
             className="cursor-pointer bg-[#FF4F00] text-white px-4 py-1 rounded-full text-[12px] font-bold"
-            onClick={() => setOpenDialog((prev) => ({ ...prev, wordpress: true }))}
+            onClick={() =>
+              setOpenDialog((prev) => ({ ...prev, wordpress: true }))
+            }
           >
             Connect
           </button>
@@ -142,7 +147,7 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
           </button>
         </div> */}
       </div>
-      { }
+      {}
       <AccessDownloadDialog
         token={chatbotData.token}
         fileUrl="/wordpress/yashraa_wordpress.zip"

@@ -38,7 +38,8 @@ export const deleteUser = createAsyncThunk(
       }
       return rejectWithValue("Failed to delete user");
     } catch (error: any) {
-      const errorMessage = error.response?.data?.detail || "Failed to delete user";
+      const errorMessage =
+        error.response?.data?.detail || "Failed to delete user";
       toasterError(errorMessage, 10000, "id");
       return rejectWithValue(errorMessage);
     } finally {
@@ -106,10 +107,12 @@ export const signUpAdmin = createAsyncThunk<any, { payload: AdminSignUpForm }>(
   }
 );
 
-export const getMeData = createAsyncThunk<any, { router: AppRouterInstance, returnPath?: string }>(
+export const getMeData = createAsyncThunk<
+  any,
+  { router: AppRouterInstance; returnPath?: string }
+>(
   "auth/getMeData",
   async ({ router, returnPath }, { dispatch, rejectWithValue }) => {
-    console.log("With Return path")
     try {
       dispatch(startLoadingActivity());
       const response = await http.get("/auth/me");
@@ -122,19 +125,15 @@ export const getMeData = createAsyncThunk<any, { router: AppRouterInstance, retu
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         if (returnPath) {
-          console.log("Returning path:")
           router.push(`/auth/signin?from=${encodeURIComponent(returnPath)}`);
         } else {
-
           router.push("/auth/signin");
         }
         return rejectWithValue(error.response.data.message);
       }
       if (returnPath) {
-        console.log("Returning path:")
         router.push(`/auth/signin?from=${encodeURIComponent(returnPath)}`);
       } else {
-
         router.push("/auth/signin");
       }
       return rejectWithValue("An error occurred during auth");
@@ -157,14 +156,12 @@ export const isLoggedin = createAsyncThunk<any>(
         return rejectWithValue("auth failed");
       }
     } catch (error: any) {
-
       return rejectWithValue("An error occurred during auth");
     } finally {
       dispatch(stopLoadingActivity());
     }
   }
 );
-
 
 export const getRecentSignups = createAsyncThunk<any, void>(
   "admin/getRecentSignups",
@@ -185,7 +182,9 @@ export const getRecentSignups = createAsyncThunk<any, void>(
         toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(error.response.data.message);
       }
-      return rejectWithValue("An error occurred while fetching recent signups.");
+      return rejectWithValue(
+        "An error occurred while fetching recent signups."
+      );
     } finally {
       dispatch(stopLoadingActivity());
     }
@@ -286,75 +285,78 @@ interface AuthState {
   recentSignups: {
     count: number;
     data: UserProfileData[];
-  } | null;  // <-- Add this
+  } | null; // <-- Add this
 }
 
 export const changePassword = createAsyncThunk<
   any,
-  { data: { old_password: string, new_password: string } }>(
-    "auth/changePassword",
-    async ({ data }, { dispatch, rejectWithValue }) => {
-      try {
-        dispatch(startLoadingActivity());
-        const response = await http.post("/auth/change-password", data, { withCredentials: true });
-        if (response.status === 200) {
-          dispatch(stopLoadingActivity());
-          toasterSuccess("Password changed successfully!", 10000, "id");
-          return response.data;
-        } else {
-          return rejectWithValue("Password change failed");
-        }
-      } catch (error: any) {
-        if (error.response && error.response.status === 400) {
-          return rejectWithValue(error.response.data.message);
-        }
-        return rejectWithValue("An error occurred during password change");
-      } finally {
-        dispatch(stopLoadingActivity());
-      }
-    }
-
-
-  )
-// Thunk for forget password
-export const forgetPassword = createAsyncThunk(
-  'password/forgetPassword',
-  async (email, { rejectWithValue }) => {
-    try {
-      const response = await http.post('/auth/forget-password', { email });
+  { data: { old_password: string; new_password: string } }
+>("auth/changePassword", async ({ data }, { dispatch, rejectWithValue }) => {
+  try {
+    dispatch(startLoadingActivity());
+    const response = await http.post("/auth/change-password", data, {
+      withCredentials: true,
+    });
+    if (response.status === 200) {
+      dispatch(stopLoadingActivity());
+      toasterSuccess("Password changed successfully!", 10000, "id");
       return response.data;
-    } catch (error: any) {
-      if (error.response) {
-        return rejectWithValue(error.response.data);
-      }
-      return rejectWithValue({ detail: 'Network error or server is down' });
+    } else {
+      return rejectWithValue("Password change failed");
     }
+  } catch (error: any) {
+    if (error.response && error.response.status === 400) {
+      return rejectWithValue(error.response.data.message);
+    }
+    return rejectWithValue("An error occurred during password change");
+  } finally {
+    dispatch(stopLoadingActivity());
   }
-);
+});
 
-// Thunk for reset password
-export const resetPassword = createAsyncThunk(
-  'password/resetPassword',
+export const forgetPassword = createAsyncThunk<
+  any,
+  { email: string } // Add parameter type
+>("password/forgetPassword", async ({ email }, { rejectWithValue }) => {
+  try {
+    const response = await http.post("/auth/forget-password", { email });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      return rejectWithValue(error.response.data);
+    }
+    return rejectWithValue({ detail: "Network error or server is down" });
+  }
+});
+
+export const resetPassword = createAsyncThunk<
+  any,
+  { token: string; password: string }
+>(
+  "password/resetPassword",
   async ({ token, password }, { rejectWithValue }) => {
     try {
       const new_password = password;
-      console.log(new_password)
-      const response = await http.post('/auth/reset-password', { token, new_password });
+      console.log(new_password);
+      const response = await http.post("/auth/reset-password", {
+        token,
+        new_password,
+      });
       return response.data;
     } catch (error: any) {
       if (error.response) {
         return rejectWithValue(error.response.data);
       }
-      return rejectWithValue({ detail: 'Network error or server is down' });
+      return rejectWithValue({ detail: "Network error or server is down" });
     }
   }
 );
-
 
 const initialState: AuthState = {
   loading: false,
   data: [],
   userData: UserData as UserProfileData,
+  loggedInUser: null,
   userDetails: {},
   recentSignups: null,
 };
@@ -408,7 +410,6 @@ const authSlice = createSlice({
         state.loading = false;
       })
 
-
       .addCase(getMeData.pending, (state) => {
         state.loading = true;
       })
@@ -431,7 +432,6 @@ const authSlice = createSlice({
       })
       .addCase(forgetPassword.pending, (state) => {
         state.loading = true;
-
       })
       .addCase(forgetPassword.fulfilled, (state, action) => {
         state.loading = false;
@@ -439,13 +439,11 @@ const authSlice = createSlice({
       })
       .addCase(forgetPassword.rejected, (state, action) => {
         state.loading = false;
-
       })
 
       // Reset Password cases
       .addCase(resetPassword.pending, (state) => {
         state.loading = true;
-
       })
       .addCase(resetPassword.fulfilled, (state, action) => {
         state.loading = false;

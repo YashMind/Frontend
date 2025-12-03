@@ -20,7 +20,6 @@ export default function ApiTestPage() {
     setResponse(null);
 
     try {
-      console.log(`Testing accept-invite API with token: ${token}`);
       const response = await fetch(`/api/chatbot/accept-invite/${token}`, {
         method: "POST",
         credentials: "include",
@@ -29,9 +28,7 @@ export default function ApiTestPage() {
         },
       });
 
-      console.log("API Response status:", response.status);
       const data = await response.json();
-      console.log("API Response data:", data);
 
       setResponse(data);
 
@@ -42,7 +39,6 @@ export default function ApiTestPage() {
         toasterError(data.detail || "API call failed", 10000, "api-test");
       }
     } catch (err: any) {
-      console.log("API call error:", err);
       setError(err.message || "An error occurred");
       toasterError(err.message || "An error occurred", 10000, "api-test");
     } finally {
@@ -71,10 +67,11 @@ export default function ApiTestPage() {
         <button
           onClick={testAcceptInvite}
           disabled={loading}
-          className={`w-full py-2 px-4 rounded-md text-white font-medium ${loading
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-indigo-600 hover:bg-indigo-700"
-            }`}
+          className={`w-full py-2 px-4 rounded-md text-white font-medium ${
+            loading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-indigo-600 hover:bg-indigo-700"
+          }`}
         >
           {loading ? "Testing..." : "Test Accept Invite API"}
         </button>

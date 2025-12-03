@@ -2,7 +2,7 @@ import { FiX, FiCopy } from "react-icons/fi";
 import { useRef, useState } from "react";
 
 interface ZapierDialogProps {
-  link: string;
+  link: any;
   token: string;
   isOpen: boolean;
   onClose: () => void;

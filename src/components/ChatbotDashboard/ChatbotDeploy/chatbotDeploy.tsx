@@ -1,40 +1,41 @@
-"use client"
+"use client";
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import toast from "react-hot-toast";
-import { QRCodeCanvas } from 'qrcode.react';
+import { QRCodeCanvas } from "qrcode.react";
 import Head from "next/head";
 import { ChatbotsData } from "@/types/chatTypes";
 import { toasterError, toasterSuccess } from "@/services/utils/toaster";
 import { fetchChatbotSettings } from "@/store/slices/chats/appearanceSettings";
 import { pathToImage } from "@/services/utils/helpers";
 
-
 const ChatbotDeploy = () => {
-  const dispatch = useDispatch<AppDispatch>()
-  const chatbotData: ChatbotsData = useSelector((state: RootState) => state.chat.chatbotData);
-  const settings = useSelector((state: RootState) => state.appearance.settings)
+  const dispatch = useDispatch<AppDispatch>();
+  const chatbotData: ChatbotsData = useSelector(
+    (state: RootState) => state.chat.chatbotData
+  );
+  const settings = useSelector((state: RootState) => state.appearance.settings);
 
   const inputRef1: any = useRef(null);
   const inputRef2: any = useRef(null);
   const inputRef3: any = useRef(null);
 
   useEffect(() => {
-    if (chatbotData)
-      dispatch(fetchChatbotSettings(chatbotData.id))
-  }, [chatbotData])
+    if (chatbotData) dispatch(fetchChatbotSettings(chatbotData.id));
+  }, [chatbotData]);
 
   const handleCopy = (inputRef: any) => {
     if (inputRef.current) {
-      navigator.clipboard.writeText(inputRef.current.value)
+      navigator.clipboard
+        .writeText(inputRef.current.value)
         .then(() => {
-          toasterSuccess("Copied to clipboard!", 10000, "id")
+          toasterSuccess("Copied to clipboard!", 10000, "id");
           // toast.success("Copied to clipboard!")
         })
         .catch((err) => {
-          toasterError("Failed to Copy!", 10000, "id")
+          toasterError("Failed to Copy!", 10000, "id");
           // toast.error("Failed to copy!")
         });
     }
@@ -43,13 +44,13 @@ const ChatbotDeploy = () => {
   const chatbotUrl = `${process.env.NEXT_PUBLIC_UI_URL}/embed/${chatbotData?.token}`;
 
   const downloadQRCode = () => {
-    const canvas = document.querySelector('canvas') as HTMLCanvasElement;
+    const canvas = document.querySelector("canvas") as HTMLCanvasElement;
     const pngUrl = canvas
-      .toDataURL('image/png')
-      .replace('image/png', 'image/octet-stream');
-    const downloadLink = document.createElement('a');
+      .toDataURL("image/png")
+      .replace("image/png", "image/octet-stream");
+    const downloadLink = document.createElement("a");
     downloadLink.href = pngUrl;
-    downloadLink.download = 'chatbot-qr.png';
+    downloadLink.download = "chatbot-qr.png";
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -60,12 +61,18 @@ const ChatbotDeploy = () => {
   const embedScript = `
   <script defer src="${process.env.NEXT_PUBLIC_UI_URL}/embed.js" 
     data-bot-id="${chatbotData?.token}"
-    ${settings?.chat_icon ? `data-icon="${pathToImage(settings.chat_icon)}"` : ''}
-    ${settings?.popup_sound ? `data-sound="${pathToImage(settings.popup_sound)}"` : ''}
+    ${
+      settings?.chat_icon
+        ? `data-icon="${pathToImage(settings.chat_icon)}"`
+        : ""
+    }
+    ${
+      settings?.popup_sound
+        ? `data-sound="${pathToImage(settings.popup_sound)}"`
+        : ""
+    }
   ></script>
-`.replace(/\n\s+/g, ' '); // Remove line breaks and extra spaces
-
-  console.log(embedScript)
+`.replace(/\n\s+/g, " "); // Remove line breaks and extra spaces
 
   return (
     <div className="m-4">
@@ -89,7 +96,8 @@ const ChatbotDeploy = () => {
                   Share via Link
                 </h2>
                 <p className="font-light text-xs text-black text-center">
-                  Easily provide access to your chatbot using the URL below or the provided QR code.
+                  Easily provide access to your chatbot using the URL below or
+                  the provided QR code.
                 </p>
               </div>
               <div className="relative">
@@ -116,7 +124,10 @@ const ChatbotDeploy = () => {
             {/* Right (QR) */}
             <div className="flex flex-col items-center justify-center gap-4">
               <QRCodeCanvas value={chatbotUrl} size={304} />
-              <button onClick={() => downloadQRCode()} className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-6 py-1.5 rounded">
+              <button
+                onClick={() => downloadQRCode()}
+                className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-6 py-1.5 rounded"
+              >
                 Download QR
               </button>
             </div>
@@ -138,7 +149,8 @@ const ChatbotDeploy = () => {
                   Embed in Website Header
                 </h2>
                 <p className=" font-light text-xs text-black text-center">
-                  Insert the code snippet below into your website’s header to make the chatbot appear on every page.
+                  Insert the code snippet below into your website’s header to
+                  make the chatbot appear on every page.
                 </p>
               </div>
               <div className="relative">
@@ -159,7 +171,6 @@ const ChatbotDeploy = () => {
                   />
                 </span>
               </div>
-
             </div>
 
             {/* Add to a Website */}
@@ -176,18 +187,17 @@ const ChatbotDeploy = () => {
                   Embed in Webpage
                 </h2>
                 <p className=" font-light text-xs text-black text-center">
-                  Use an i-frame to showcase the chatbot directly within a webpage — fully interactive and ready to go.
+                  Use an i-frame to showcase the chatbot directly within a
+                  webpage — fully interactive and ready to go.
                 </p>
               </div>
               <div className="relative">
-
                 <textarea
                   ref={inputRef3}
                   readOnly
                   value={iframeCode}
                   className="h-20 w-full bg-[#D9D9D9] text-[#727272] px-4 py-2 rounded-xl text-sm placeholder-[#727272]"
                 />
-
 
                 <span className="absolute right-3 top-2.5 text-gray-400 cursor-pointer">
                   <Image

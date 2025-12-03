@@ -1,9 +1,9 @@
-"use client"
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import Script from 'next/script';
+"use client";
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import Script from "next/script";
 
 type FormData = {
   amount: number;
@@ -34,7 +34,8 @@ export default function PaymentPage() {
   const [loading, setLoading] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [responseData, setResponseData] = useState<CashfreeOrderResponse | null>(null);
+  const [responseData, setResponseData] =
+    useState<CashfreeOrderResponse | null>(null);
   const [cashfreeLoaded, setCashfreeLoaded] = useState(false);
 
   const {
@@ -44,36 +45,33 @@ export default function PaymentPage() {
   } = useForm<FormData>({
     defaultValues: {
       amount: 100,
-      name: '',
-      email: '',
-      phone: '',
+      name: "",
+      email: "",
+      phone: "",
     },
   });
-
 
   // Initialize Cashfree SDK when script loads
   const handleCashfreeLoad = () => {
     try {
-      const env = process.env.NEXT_PUBLIC_CASHFREE_ENV || 'TEST';
-      const mode = env === 'TEST' ? 'sandbox' : 'production';
+      const env = process.env.NEXT_PUBLIC_CASHFREE_ENV || "TEST";
+      const mode = env === "TEST" ? "sandbox" : "production";
 
       if (window.Cashfree) {
         window.Cashfree = window.Cashfree({
-          mode: mode
+          mode: mode,
         });
         setCashfreeLoaded(true);
-        console.log('Cashfree SDK loaded successfully in', mode, 'mode');
       }
     } catch (error) {
-      console.log('Error initializing Cashfree SDK:', error);
-      setError('Failed to load payment system');
+      setError("Failed to load payment system");
     }
   };
 
   const openCashfreeCheckout = async (paymentSessionId: string) => {
     try {
       if (!window.Cashfree) {
-        throw new Error('Cashfree SDK not loaded');
+        throw new Error("Cashfree SDK not loaded");
       }
 
       setIsRedirecting(true);
@@ -81,17 +79,23 @@ export default function PaymentPage() {
       const checkoutOptions = {
         paymentSessionId: paymentSessionId,
         redirectTarget: "_self",
-        returnUrl: typeof window !== 'undefined'
-          ? `${window.location.origin}/payment/return`
-          : '',
-        components: ["order-details", "card", "netbanking", "app", "upi", "paylater"]
+        returnUrl:
+          typeof window !== "undefined"
+            ? `${window.location.origin}/payment/return`
+            : "",
+        components: [
+          "order-details",
+          "card",
+          "netbanking",
+          "app",
+          "upi",
+          "paylater",
+        ],
       };
 
       await window.Cashfree.checkout(checkoutOptions);
-
     } catch (error) {
-      console.log('Error opening Cashfree checkout:', error);
-      setError('Failed to open payment page');
+      setError("Failed to open payment page");
       setIsRedirecting(false);
     }
   };
@@ -103,7 +107,9 @@ export default function PaymentPage() {
 
     try {
       if (!cashfreeLoaded) {
-        throw new Error('Payment system is still loading. Please wait and try again.');
+        throw new Error(
+          "Payment system is still loading. Please wait and try again."
+        );
       }
 
       const orderData = {
@@ -113,49 +119,60 @@ export default function PaymentPage() {
         customer_phone: data.phone,
         customer_id: 3, // Replace with your customer ID
         plan_id: 2, // This is a sample plan id
-        return_url: typeof window !== 'undefined'
-          ? `${window.location.origin}/payment/return`
-          : '',
-        notify_url: typeof window !== 'undefined'
-          ? `${window.location.origin}/api/webhook`
-          : '',
+        return_url:
+          typeof window !== "undefined"
+            ? `${window.location.origin}/payment/return`
+            : "",
+        notify_url:
+          typeof window !== "undefined"
+            ? `${window.location.origin}/api/webhook`
+            : "",
       };
 
-      const apiUrl = process.env.NODE_ENV === 'development'
-        ? 'http://localhost:8000/api/payment/cashfree/create-order'
-        : '/api/payment/cashfree/create-order';
+      const apiUrl =
+        process.env.NODE_ENV === "development"
+          ? "http://localhost:8000/api/payment/cashfree/create-order"
+          : "/api/payment/cashfree/create-order";
 
-      const response = await axios.post<CashfreeOrderResponse>(apiUrl, orderData, {
-        headers: {
-          'Content-Type': 'application/json'
+      const response = await axios.post<CashfreeOrderResponse>(
+        apiUrl,
+        orderData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
 
       setResponseData(response.data);
 
       if (response.data.payment_session_id) {
         await openCashfreeCheckout(response.data.payment_session_id);
       } else {
-        console.log('Invalid payment session ID:', response.data);
-        setError(response.data.message || 'Payment session not created. Please try again.');
+        setError(
+          response.data.message ||
+            "Payment session not created. Please try again."
+        );
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const errorData = err.response?.data;
-        setError(errorData?.detail?.message || errorData?.message || 'Failed to create payment order');
+        setError(
+          errorData?.detail?.message ||
+            errorData?.message ||
+            "Failed to create payment order"
+        );
       } else if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError('An unexpected error occurred');
+        setError("An unexpected error occurred");
       }
-      console.log('Payment error:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  const cashfreeUrl = process.env.NEXT_PUBLIC_CASHFREE_URL
-  console.log("cashfreeUrl", cashfreeUrl)
+  const cashfreeUrl = process.env.NEXT_PUBLIC_CASHFREE_URL;
 
   return (
     <>
@@ -163,7 +180,7 @@ export default function PaymentPage() {
       <Script
         src={cashfreeUrl}
         onLoad={handleCashfreeLoad}
-        onError={() => setError('Failed to load payment system')}
+        onError={() => setError("Failed to load payment system")}
       />
 
       <div className="container mx-auto p-4 max-w-md">
@@ -192,9 +209,25 @@ export default function PaymentPage() {
         {isRedirecting && (
           <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-4">
             <div className="flex items-center">
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <svg
+                className="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-700"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
               </svg>
               Opening Cashfree payment page...
             </div>
@@ -203,37 +236,50 @@ export default function PaymentPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label htmlFor="amount" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="amount"
+              className="block text-sm font-medium text-gray-700"
+            >
               Amount (INR)
             </label>
             <input
               id="amount"
               type="number"
-              {...register('amount', {
-                required: 'Amount is required',
-                min: { value: 1, message: 'Amount must be at least ₹1' },
+              {...register("amount", {
+                required: "Amount is required",
+                min: { value: 1, message: "Amount must be at least ₹1" },
               })}
-              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ${errors.amount ? 'border-red-500' : ''
-                }`}
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ${
+                errors.amount ? "border-red-500" : ""
+              }`}
             />
             {errors.amount && (
-              <p className="mt-1 text-sm text-red-600">{errors.amount.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.amount.message}
+              </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
               Full Name
             </label>
             <input
               id="name"
               type="text"
-              {...register('name', {
-                required: 'Name is required',
-                minLength: { value: 3, message: 'Name must be at least 3 characters' },
+              {...register("name", {
+                required: "Name is required",
+                minLength: {
+                  value: 3,
+                  message: "Name must be at least 3 characters",
+                },
               })}
-              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ${errors.name ? 'border-red-500' : ''
-                }`}
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ${
+                errors.name ? "border-red-500" : ""
+              }`}
             />
             {errors.name && (
               <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
@@ -241,46 +287,58 @@ export default function PaymentPage() {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
               id="email"
               type="email"
-              {...register('email', {
-                required: 'Email is required',
+              {...register("email", {
+                required: "Email is required",
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Invalid email address',
+                  message: "Invalid email address",
                 },
               })}
-              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ${errors.email ? 'border-red-500' : ''
-                }`}
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ${
+                errors.email ? "border-red-500" : ""
+              }`}
             />
             {errors.email && (
-              <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="phone"
+              className="block text-sm font-medium text-gray-700"
+            >
               Phone Number
             </label>
             <input
               id="phone"
               type="tel"
-              {...register('phone', {
-                required: 'Phone number is required',
+              {...register("phone", {
+                required: "Phone number is required",
                 pattern: {
                   value: /^[0-9]{10}$/,
-                  message: 'Invalid phone number (10 digits required)',
+                  message: "Invalid phone number (10 digits required)",
                 },
               })}
-              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ${errors.phone ? 'border-red-500' : ''
-                }`}
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ${
+                errors.phone ? "border-red-500" : ""
+              }`}
             />
             {errors.phone && (
-              <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.phone.message}
+              </p>
             )}
           </div>
 
@@ -291,18 +349,34 @@ export default function PaymentPage() {
           >
             {loading ? (
               <>
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
                 Processing...
               </>
             ) : isRedirecting ? (
-              'Opening Payment Page...'
+              "Opening Payment Page..."
             ) : !cashfreeLoaded ? (
-              'Loading...'
+              "Loading..."
             ) : (
-              'Proceed to Pay'
+              "Proceed to Pay"
             )}
           </button>
         </form>

@@ -27,7 +27,6 @@ const Settings = () => {
   // 🟩 Sync store data to local state
   useEffect(() => {
     if (settingsData) {
-      console.log("settings data changed")
       setIsToggleOn(settingsData.toggle_push_notifications ?? false);
       if (settingsData.push_notification_admin_emails) {
         setSavedEmails(settingsData.push_notification_admin_emails);
@@ -44,7 +43,8 @@ const Settings = () => {
   };
 
   // ✅ Validate email format
-  const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validateEmail = (email: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   // ✅ Add new email
   const handleEmailSubmit = (e: React.FormEvent) => {
@@ -56,15 +56,20 @@ const Settings = () => {
       return;
     }
 
-
-    const action = settingsData ? dispatch(addPushNotificationEmail(emailInput)).then(() => {
-      setEmailInput("");
-      setSavedEmails((prev) => [...prev, emailInput]);
-    }) : dispatch(upsertPushNotificationSettings({ push_notification_admin_emails: [emailInput], toggle_push_notifications: false })).then(() => {
-      setEmailInput("");
-      setSavedEmails((prev) => [...prev, emailInput]);
-    });
-
+    const action = settingsData
+      ? dispatch(addPushNotificationEmail(emailInput)).then(() => {
+          setEmailInput("");
+          setSavedEmails((prev) => [...prev, emailInput]);
+        })
+      : dispatch(
+          upsertPushNotificationSettings({
+            push_notification_admin_emails: [emailInput],
+            toggle_push_notifications: false,
+          })
+        ).then(() => {
+          setEmailInput("");
+          setSavedEmails((prev) => [...prev, emailInput]);
+        });
   };
 
   // ✅ Delete email
@@ -92,7 +97,10 @@ const Settings = () => {
     }
 
     dispatch(
-      editPushNotificationEmail({ old_email: oldEmail, new_email: editEmailValue })
+      editPushNotificationEmail({
+        old_email: oldEmail,
+        new_email: editEmailValue,
+      })
     ).then(() => {
       const updatedEmails = [...savedEmails];
       updatedEmails[index] = editEmailValue;
@@ -126,12 +134,14 @@ const Settings = () => {
           />
           <label
             htmlFor="toggle1"
-            className={`block h-6 rounded-full cursor-pointer transition-colors duration-300 ${isToggleOn ? "bg-green-500" : "bg-gray-300"
-              }`}
+            className={`block h-6 rounded-full cursor-pointer transition-colors duration-300 ${
+              isToggleOn ? "bg-green-500" : "bg-gray-300"
+            }`}
           >
             <div
-              className={`absolute left-0.5 top-0.5 w-5 h-5 rounded-full bg-white shadow-sm transform transition-transform duration-300 ${isToggleOn ? "translate-x-5" : "translate-x-0"
-                }`}
+              className={`absolute left-0.5 top-0.5 w-5 h-5 rounded-full bg-white shadow-sm transform transition-transform duration-300 ${
+                isToggleOn ? "translate-x-5" : "translate-x-0"
+              }`}
             ></div>
           </label>
         </div>

@@ -22,16 +22,15 @@ interface MetricCardProps {
   label: string;
   icon: React.ReactNode;
   value: number;
-  changeIcon: React.ReactNode;
-  changeColor: string;
-  bgColor: string;
-  borderColor: string;
+  changeIcon?: React.ReactNode;
+  changeColor?: string;
+  bgColor?: string;
+  borderColor?: string;
   index: number;
   openDropdownIndex: number | null;
   toggleDropdown: (index: number) => void;
   onMoreDetails: () => void;
-  route?: string; 
-
+  route?: string;
 }
 
 const MetricCard = ({
@@ -46,7 +45,7 @@ const MetricCard = ({
   openDropdownIndex,
   toggleDropdown,
   onMoreDetails,
-  route
+  route,
 }: MetricCardProps) => {
   const router = useRouter();
 
@@ -57,8 +56,10 @@ const MetricCard = ({
   };
 
   return (
-    <div 
-      className={`relative bg-[#0B1739] p-4 rounded-lg shadow-md border border-[#343B4F] ${route ? 'cursor-pointer hover:border-[#4a5568]' : ''}`}
+    <div
+      className={`relative bg-[#0B1739] p-4 rounded-lg shadow-md border border-[#343B4F] ${
+        route ? "cursor-pointer hover:border-[#4a5568]" : ""
+      }`}
       onClick={route ? handleCardClick : undefined}
     >
       <div className="flex items-center justify-between text-sm text-gray-400 mb-2 font-medium">
@@ -78,17 +79,18 @@ const MetricCard = ({
 
       <div className="flex items-center gap-2">
         <div className="text-2xl font-semibold">{value.toLocaleString()}</div>
-       {changeIcon && <div
-          className="text-sm flex items-center px-[4px] py-[2px] rounded-[2px]"
-          style={{
-            color: changeColor,
-            backgroundColor: bgColor,
-            border: `1px solid ${borderColor}`,
-          }}
-        >
-          {changeIcon}
-        </div>
-}
+        {changeIcon && (
+          <div
+            className="text-sm flex items-center px-[4px] py-[2px] rounded-[2px]"
+            style={{
+              color: changeColor,
+              backgroundColor: bgColor,
+              border: `1px solid ${borderColor}`,
+            }}
+          >
+            {changeIcon}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -135,7 +137,7 @@ const AdminTopbar = ({ allUsersData }: AdminTopbarProps) => {
       changeColor: "#14CA74",
       bgColor: "#05C16833",
       borderColor: "#05C16833",
-      route:"/admin/users-management",
+      route: "/admin/users-management",
     },
     // {
     //   label: "Total Tokens Consumed",
@@ -154,7 +156,7 @@ const AdminTopbar = ({ allUsersData }: AdminTopbarProps) => {
       changeColor: "#14CA74", // Changed to green
       bgColor: "#05C16833", // Changed to green background
       borderColor: "#05C16833", // Changed to green border
-      route:"/admin/token-analytics"
+      route: "/admin/token-analytics",
     },
     {
       label: "New sign ups",

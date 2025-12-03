@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchAdminTransactions } from "@/store/slices/admin/tokenAnalytic";
 import {
   LineChart,
@@ -11,14 +11,16 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-import { RootState } from "@/store";
+import { AppDispatch, RootState } from "@/store/store";
 
 const GraphChart = () => {
   const transactionsState = useSelector(
-    (state: RootState) => state.tokens.transactions
+    (state: RootState) => state.tokens?.transactions
   );
-  const dispatch = useDispatch();
-  const [groupBy, setGroupBy] = useState<"daily" | "monthly" | "yearly">("monthly");
+  const dispatch = useDispatch<AppDispatch>();
+  const [groupBy, setGroupBy] = useState<"daily" | "monthly" | "yearly">(
+    "monthly"
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -27,10 +29,11 @@ const GraphChart = () => {
       setIsLoading(true);
       setError(null);
       try {
-        await dispatch(fetchAdminTransactions({ page: 1, perPage: 100, groupBy }));
+        await dispatch(
+          fetchAdminTransactions({ page: 1, perPage: 100, groupBy })
+        );
       } catch (err) {
         setError("Failed to load transaction data");
-        console.log(err);
       } finally {
         setIsLoading(false);
       }
@@ -38,8 +41,10 @@ const GraphChart = () => {
     fetchData();
   }, [dispatch, groupBy]);
 
-  const transactionsData = transactionsState?.data;
-  const groupedData = transactionsData ? transactionsData[`${groupBy}_data`] : null;
+  const transactionsData: any = transactionsState?.data;
+  const groupedData = transactionsData
+    ? transactionsData[`${groupBy}_data`]
+    : null;
 
   const [formattedData, setFormattedData] = useState<any[]>([]);
 
@@ -91,11 +96,15 @@ const GraphChart = () => {
         <h3 className="text-lg font-semibold text-white">Transaction Trends</h3>
 
         <div className="flex items-center gap-2">
-          <label htmlFor="groupBy" className="text-sm text-gray-400">Group by:</label>
+          <label htmlFor="groupBy" className="text-sm text-gray-400">
+            Group by:
+          </label>
           <select
             id="groupBy"
             value={groupBy}
-            onChange={(e) => setGroupBy(e.target.value as "daily" | "monthly" | "yearly")}
+            onChange={(e) =>
+              setGroupBy(e.target.value as "daily" | "monthly" | "yearly")
+            }
             className="bg-[#252A41] border border-[#343B4F] text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
           >
             <option value="daily">Daily</option>
@@ -114,8 +123,19 @@ const GraphChart = () => {
         </div>
       ) : error ? (
         <div className=" flex flex-col items-center justify-center text-red-400 gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-8 w-8"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
           </svg>
           <span>{error}</span>
           <button
@@ -135,60 +155,70 @@ const GraphChart = () => {
               <CartesianGrid strokeDasharray="3 3" stroke="#2D3748" />
               <XAxis
                 dataKey="period"
-                tick={{ fill: '#A0AEC0' }}
+                tick={{ fill: "#A0AEC0" }}
                 tickMargin={10}
               />
               <YAxis
-                tick={{ fill: '#A0AEC0' }}
+                tick={{ fill: "#A0AEC0" }}
                 tickFormatter={(value) => value.toLocaleString()}
               />
               <Tooltip
                 contentStyle={{
-                  background: '#1A202C',
-                  borderColor: '#2D3748',
-                  borderRadius: '0.5rem',
-                  color: '#E2E8F0'
+                  background: "#1A202C",
+                  borderColor: "#2D3748",
+                  borderRadius: "0.5rem",
+                  color: "#E2E8F0",
                 }}
                 formatter={(value, name) => [
                   Number(value).toLocaleString(),
-                  name.toString().replace('_', ' ').replace(/(^\w|\s\w)/g, m => m.toUpperCase())
+                  name
+                    .toString()
+                    .replace("_", " ")
+                    .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase()),
                 ]}
-                labelStyle={{ color: '#CBD5E0' }}
+                labelStyle={{ color: "#CBD5E0" }}
               />
               <Legend
-                wrapperStyle={{ paddingTop: '20px' }}
+                wrapperStyle={{ paddingTop: "20px" }}
                 formatter={(value) =>
-                  value.toString().replace('_', ' ').replace(/(^\w|\s\w)/g, m => m.toUpperCase())
+                  value
+                    .toString()
+                    .replace("_", " ")
+                    .replace(/(^\w|\s\w)/g, (m: any) => m.toUpperCase())
                 }
               />
 
               {formattedData.length > 0 && (
                 <>
-                  {Object.keys(groupedData?.success || {}).map((currency, index) => (
-                    <Line
-                      key={`success_${currency}`}
-                      dataKey={`success_${currency}`}
-                      stroke={successColors[index % successColors.length]}
-                      strokeWidth={2}
-                      dot={false}
-                      activeDot={{ r: 6 }}
-                      name={`Success ${currency}`}
-                      type="monotone"
-                    />
-                  ))}
-                  {Object.keys(groupedData?.pending || {}).map((currency, index) => (
-                    <Line
-                      key={`pending_${currency}`}
-                      dataKey={`pending_${currency}`}
-                      stroke={pendingColors[index % pendingColors.length]}
-                      strokeWidth={2}
-                      dot={false}
-                      strokeDasharray="4 4"
-                      activeDot={{ r: 6 }}
-                      name={`Pending ${currency}`}
-                      type="monotone"
-                    />
-                  ))}
+                  {Object.keys(groupedData?.success || {}).map(
+                    (currency, index) => (
+                      <Line
+                        key={`success_${currency}`}
+                        dataKey={`success_${currency}`}
+                        stroke={successColors[index % successColors.length]}
+                        strokeWidth={2}
+                        dot={false}
+                        activeDot={{ r: 6 }}
+                        name={`Success ${currency}`}
+                        type="monotone"
+                      />
+                    )
+                  )}
+                  {Object.keys(groupedData?.pending || {}).map(
+                    (currency, index) => (
+                      <Line
+                        key={`pending_${currency}`}
+                        dataKey={`pending_${currency}`}
+                        stroke={pendingColors[index % pendingColors.length]}
+                        strokeWidth={2}
+                        dot={false}
+                        strokeDasharray="4 4"
+                        activeDot={{ r: 6 }}
+                        name={`Pending ${currency}`}
+                        type="monotone"
+                      />
+                    )
+                  )}
                 </>
               )}
             </LineChart>

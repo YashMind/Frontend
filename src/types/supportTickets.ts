@@ -19,7 +19,7 @@ export interface EmailRequest {
 export interface TicketCreateData {
     subject: string;
     message: string;
-    user_email: string;
+    user_email: any;
 }
 
 export interface TicketStatusUpdate {

@@ -61,9 +61,7 @@ const schema = yup.object().shape({
     .min(1, "Duration Days should be greater than 0")
     .typeError("Duration must be a number")
     .required("Duration is required"),
-  is_enterprise: yup
-    .boolean()
-    .typeError("Duration must true or false"),
+  is_enterprise: yup.boolean().typeError("Duration must true or false"),
   features: yup.string().trim().nullable(),
 });
 
@@ -83,16 +81,16 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
   });
 
   const dispatch = useDispatch<AppDispatch>();
-  const onSubmit = (data: SubscriptionPlans) => {
-    dispatch(createSubscriptionPlan({ payload: data })).unwrap().then((res) => {
-      console.log("Subscription plan create response:", res)
-      reset();
-      onHide();
-    });
+  const onSubmit: any = (data: SubscriptionPlans) => {
+    dispatch(createSubscriptionPlan({ payload: data }))
+      .unwrap()
+      .then((res) => {
+        reset();
+        onHide();
+      });
   };
 
-  const onError = (errors: any) => {
-  };
+  const onError = (errors: any) => {};
 
   useEffect(() => {
     setValue("name", planData?.name);
@@ -114,7 +112,10 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-[#0E1A47] text-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl border border-[#1E3A8A] relative">
         <button
-          onClick={() => { onHide(); reset() }}
+          onClick={() => {
+            onHide();
+            reset();
+          }}
           className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10"
           aria-label="Close modal"
         >
@@ -136,10 +137,11 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
                 placeholder="e.g. Premium Bot"
                 type="text"
                 {...register("name")}
-                className={`w-full px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all ${planData?.id
-                  ? "cursor-not-allowed bg-gray-700 text-gray-400"
-                  : "bg-[#1A2C65] text-white"
-                  }`}
+                className={`w-full px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all ${
+                  planData?.id
+                    ? "cursor-not-allowed bg-gray-700 text-gray-400"
+                    : "bg-[#1A2C65] text-white"
+                }`}
               />
               {errors.name && (
                 <p className="text-red-400 text-xs mt-1">
@@ -158,7 +160,7 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
                 defaultValue={""}
                 className="w-full px-4 py-2.5 rounded-lg bg-[#1A2C65] text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
               >
-                <option value="" disabled >
+                <option value="" disabled>
                   Select Duration
                 </option>
                 {[
@@ -339,7 +341,9 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
 
           {/* Enterprise Plan */}
           <div className="flex flex-col space-y-2">
-            <label className="text-sm font-medium text-gray-300">Enterprise Plan</label>
+            <label className="text-sm font-medium text-gray-300">
+              Enterprise Plan
+            </label>
 
             <div className="flex items-center space-x-3">
               <input
@@ -348,7 +352,10 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
                 {...register("is_enterprise")}
                 className="w-5 h-5 accent-blue-500 bg-[#1A2C65] border border-gray-600 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
               />
-              <label htmlFor="is_enterprise" className="text-gray-200 text-sm cursor-pointer">
+              <label
+                htmlFor="is_enterprise"
+                className="text-gray-200 text-sm cursor-pointer"
+              >
                 Enable Enterprise Features
               </label>
             </div>
@@ -385,7 +392,10 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
           <div className="flex justify-end gap-3 pt-4 border-t border-[#1E3A8A]">
             <button
               type="button"
-              onClick={() => { onHide(); reset() }}
+              onClick={() => {
+                onHide();
+                reset();
+              }}
               className="px-6 py-2.5 rounded-lg border border-gray-500 text-white hover:bg-white/10 transition-colors duration-200"
             >
               Cancel
@@ -398,8 +408,8 @@ const AddEditPlan = ({ show, onHide, planData }: AddEditPlanProps) => {
             </button>
           </div>
         </form>
-      </div >
-    </div >
+      </div>
+    </div>
   ) : null;
 };
 

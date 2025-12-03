@@ -48,11 +48,7 @@ export const sendInvitations = createAsyncThunk<
         user_emails: userEmails,
       };
 
-      // Log the request payload for debugging
-      console.log("Sending invitation request with payload:", apiPayload);
-
       const response = await http.post("/chatbot/invite-users", apiPayload);
-      console.log("Invitation response:", response.data);
 
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
@@ -61,7 +57,6 @@ export const sendInvitations = createAsyncThunk<
         return rejectWithValue("Failed to send invitations");
       }
     } catch (error: any) {
-      console.log("Invitation error:", error);
       if (error.response && error.response.status === 400) {
         toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(
@@ -81,11 +76,7 @@ export const getAvailableUsers = createAsyncThunk<any, void>(
   async (_, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      console.log("Fetching available users...");
-
-      // If there's no specific endpoint, we can use the client users endpoint
       const response = await http.get("/admin/get-client-users");
-      console.log("Available users response:", response.data);
 
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
@@ -94,7 +85,6 @@ export const getAvailableUsers = createAsyncThunk<any, void>(
         return rejectWithValue("Failed to fetch available users");
       }
     } catch (error: any) {
-      console.log("Error fetching available users:", error);
       if (error.response && error.response.status === 400) {
         toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(
@@ -114,24 +104,11 @@ export const getUninvitedUsers = createAsyncThunk<any, number>(
   async (botId, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      console.log(`Fetching uninvited users for chatbot ID: ${botId}...`);
-
-      // Call the new endpoint to get uninvited users for the specific chatbot
-      console.log(
-        `Making API call to: /admin/get-uninvited-users?bot_id=${botId}`
-      );
-
-      // Use the admin endpoint with query parameters
       const url = `/admin/get-uninvited-users?bot_id=${botId}`;
-
       const response = await http.get(url);
-      console.log("Uninvited users response:", response.data);
-
       dispatch(stopLoadingActivity());
       return response.data;
     } catch (error: any) {
-      console.log("Error fetching uninvited users:", error);
-
       if (error.response) {
         const status = error.response.status;
         const errorMessage =
@@ -144,7 +121,8 @@ export const getUninvitedUsers = createAsyncThunk<any, number>(
       }
 
       return rejectWithValue(
-        `Network error: ${error.message || "An error occurred while fetching uninvited users"
+        `Network error: ${
+          error.message || "An error occurred while fetching uninvited users"
         }`
       );
     } finally {
@@ -159,10 +137,8 @@ export const acceptInvitation = createAsyncThunk<any, string>(
   async (token, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startLoadingActivity());
-      console.log("Accepting invitation with token:", token);
 
       const response = await http.post(`/chatbot/accept-invite/${token}`);
-      console.log("Accept invitation response:", response.data);
 
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
@@ -172,7 +148,6 @@ export const acceptInvitation = createAsyncThunk<any, string>(
         return rejectWithValue("Failed to accept invitation");
       }
     } catch (error: any) {
-      console.log("Error accepting invitation:", error);
       if (error.response) {
         let errorMessage = "An error occurred while accepting the invitation.";
 
@@ -227,26 +202,15 @@ export const getInvitedUsers = createAsyncThunk<
       if (status && status !== "all") params.append("status", status);
 
       const url = `/admin/get-invited-users?${params.toString()}`;
-      console.log("Fetching invited users with URL:", url);
-
       const response = await http.get(url);
 
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        console.log("API Response:", response.data);
         return response.data;
       } else {
-        console.log("API Error - Status:", response.status);
         return rejectWithValue("Failed to fetch invited users");
       }
     } catch (error: any) {
-      console.log("Error fetching invited users:", error);
-      console.log("Error details:", {
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-      });
-
       const errorMessage =
         error.response?.data?.detail || "Failed to fetch invited users";
       toasterError(errorMessage, 10000, "id");
@@ -276,8 +240,6 @@ export const revokeAccess = createAsyncThunk<any, number>(
         return rejectWithValue("Failed to revoke access");
       }
     } catch (error: any) {
-      console.log("Error revoking access:", error);
-
       const errorMessage =
         error.response?.data?.detail || "Failed to revoke access";
       toasterError(errorMessage, 10000, "id");

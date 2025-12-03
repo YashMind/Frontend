@@ -5,7 +5,7 @@ interface AccessDownloadDialogProps {
   token: string;
   fileUrl: string;
   fileName?: string;
-  isOpen: boolean
+  isOpen: boolean;
   onClose: () => void;
 }
 
@@ -48,13 +48,12 @@ const AccessDownloadDialog = ({
         window.URL.revokeObjectURL(blobUrl);
       }, 100);
     } catch (err) {
-      console.log(err);
       setError(err instanceof Error ? err.message : "Download failed");
     } finally {
       setIsDownloading(false);
     }
   };
-  if (!isOpen) return null
+  if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center text-black">
       <div

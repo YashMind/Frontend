@@ -32,12 +32,23 @@ const schema = yup.object().shape({
         .string()
         .required("Answer is required")
         .max(ANSWER_LIMIT, `Answer cannot exceed ${ANSWER_LIMIT} characters`),
-      // faqId optional
     })
   ),
 });
 
 const ChatbotQA = ({ botId }: { botId?: number }) => {
+  // Early return if no botId
+  if (!botId) {
+    return (
+      <div className="m-4">
+        <h2 className="text-2xl font-bold mb-4 max-md:ml-12">Q & A</h2>
+        <div className="text-center p-8 bg-gray-100 rounded-lg">
+          <p className="text-gray-600">Bot ID is required to manage Q&A.</p>
+        </div>
+      </div>
+    );
+  }
+
   const dispatch = useDispatch<AppDispatch>();
   const chatbotFaqs: ChatbotFaqsQuesAnswer[] = useSelector(
     (state: RootState) => state.chat.chatbotFaqs
@@ -63,14 +74,12 @@ const ChatbotQA = ({ botId }: { botId?: number }) => {
     name: "questions",
   });
 
-  // Helper: truncate (including spaces) to the limit
   const truncateToLimit = (s: string, limit: number) =>
     s.length > limit ? s.slice(0, limit) : s;
 
   const onSubmit = (data: any) => {
-    data.bot_id = Number(botId);
+    data.bot_id = botId; // botId is guaranteed to be number here
 
-    // Defensive: ensure every question/answer is truncated to their limits
     if (Array.isArray(data.questions)) {
       data.questions = data.questions.map((q: any) => ({
         ...(q || {}),
@@ -99,12 +108,12 @@ const ChatbotQA = ({ botId }: { botId?: number }) => {
   };
 
   useEffect(() => {
+    // botId is guaranteed to be number here
     dispatch(getChatbotsFaqs({ bot_id: botId }));
   }, [dispatch, botId]);
 
   useEffect(() => {
     if (chatbotFaqs && chatbotFaqs.length > 0) {
-      // ensure each question & answer trimmed to limits
       reset({
         questions: chatbotFaqs.map((faq: ChatbotFaqsQuesAnswer) => ({
           question: truncateToLimit(faq.question ?? "", QUESTION_LIMIT),
@@ -117,7 +126,6 @@ const ChatbotQA = ({ botId }: { botId?: number }) => {
 
   const handleDeleteAllFaqs = () => {
     dispatch(deleteChatbotsAllFaqs({ bot_id: botId }));
-    // remove all entries from form
     remove();
   };
 
@@ -128,7 +136,6 @@ const ChatbotQA = ({ botId }: { botId?: number }) => {
     remove(index);
   };
 
-  // watch all questions so UI updates counts live
   const watchedQuestions = watch("questions");
 
   return (
@@ -254,7 +261,6 @@ const ChatbotQA = ({ botId }: { botId?: number }) => {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    {/* Controlled Question with truncation + counter + progress */}
                     <Controller
                       control={control}
                       name={`questions.${index}.question`}
@@ -272,9 +278,7 @@ const ChatbotQA = ({ botId }: { botId?: number }) => {
                                 input,
                                 QUESTION_LIMIT
                               );
-                              // update the form field (keeps value <= limit)
                               field.onChange(truncated);
-                              // also ensure form state updated
                               setValue(
                                 `questions.${index}.question`,
                                 truncated,
@@ -285,19 +289,7 @@ const ChatbotQA = ({ botId }: { botId?: number }) => {
                             aria-invalid={!!errors.questions?.[index]?.question}
                           />
 
-                          {/* question progress bar */}
                           <div className="mt-2">
-                            {/* <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                              <div
-                                className={`${qProgressColor}`}
-                                style={{
-                                  width: `${qPercent}%`,
-                                  height: "100%",
-                                  transition: "width 150ms linear",
-                                }}
-                              />
-                            </div> */}
-
                             <div className="flex justify-between items-center mt-1">
                               <div className="text-xs">
                                 <span
@@ -331,7 +323,6 @@ const ChatbotQA = ({ botId }: { botId?: number }) => {
                       </span>
                     )}
 
-                    {/* Controlled Answer with truncation + counter + progress */}
                     <Controller
                       control={control}
                       name={`questions.${index}.answer`}
@@ -359,19 +350,7 @@ const ChatbotQA = ({ botId }: { botId?: number }) => {
                             aria-invalid={!!errors.questions?.[index]?.answer}
                           />
 
-                          {/* answer progress bar */}
                           <div className="mt-2">
-                            {/* <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                              <div
-                                className={`${aProgressColor}`}
-                                style={{
-                                  width: `${aPercent}%`,
-                                  height: "100%",
-                                  transition: "width 150ms linear",
-                                }}
-                              />
-                            </div> */}
-
                             <div className="flex justify-between items-center mt-1">
                               <div className="text-xs">
                                 <span

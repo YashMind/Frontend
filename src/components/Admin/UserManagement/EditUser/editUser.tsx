@@ -1,7 +1,5 @@
 "use client";
-import {
-  updateUserByAdmin,
-} from "@/store/slices/admin/adminSlice";
+import { updateUserByAdmin } from "@/store/slices/admin/adminSlice";
 import { AppDispatch } from "@/store/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
@@ -12,7 +10,7 @@ import * as yup from "yup";
 interface AddEditPlanProps {
   show: boolean;
   onHide: () => void;
-  userData: AdminUsersData;
+  userData: any;
 }
 
 const schema = yup.object().shape({
@@ -100,7 +98,6 @@ const AddEditUserModal = ({ show, onHide, userData }: AddEditPlanProps) => {
               <p className="text-red-500 text-sm mt-1">{errors.plan?.message}</p>
             )}
           </div> */}
-
 
           <div>
             <label className="block mb-1 text-sm font-medium">Role</label>

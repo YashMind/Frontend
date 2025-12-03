@@ -5,15 +5,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { useForm, Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
-  createChatbot,
   createChatbotDocLinks,
-  updateChatbot,
   uploadDocument,
 } from "@/store/slices/chats/chatSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import toast from "react-hot-toast";
-import { ChatbotDocLinksData, UpdateChatbotData } from "@/types/chatTypes";
 import { toasterError } from "@/services/utils/toaster";
 
 const schema = yup.object().shape({
@@ -46,8 +42,8 @@ const AddBotData = ({
     setValue,
     watch,
     formState: { errors },
-  } = useForm<UpdateChatbotData>({
-    resolver: yupResolver(schema) as Resolver<UpdateChatbotData>,
+  } = useForm<any>({
+    resolver: yupResolver(schema) as Resolver<any>,
     defaultValues: {
       train_from: "Full website",
       target_link: "",
@@ -77,11 +73,9 @@ const AddBotData = ({
 
     // Excel Binary Workbook
     "application/vnd.ms-excel.sheet.binary.macroEnabled.12", // .xlsb
-
   ];
 
-  const target_link = watch('target_link')
-
+  const target_link = watch("target_link");
 
   useEffect(() => {
     if (target_link) {
@@ -103,8 +97,7 @@ const AddBotData = ({
         }
 
         // Check if it's a base homepage link
-        const isBaseLink =
-          url.pathname === "/" && !url.search && !url.hash;
+        const isBaseLink = url.pathname === "/" && !url.search && !url.hash;
 
         if (!isBaseLink) {
           setValue("train_from", "Webpage");
@@ -118,15 +111,13 @@ const AddBotData = ({
     }
   }, [target_link]);
 
-
-
   const uploadFile = (file: File) => {
     const formData = new FormData();
     formData.append("file", file);
     dispatch(uploadDocument({ payload: formData }))
       .unwrap()
       .then((res) => {
-        setValue('train_from', 'Document Upload')
+        setValue("train_from", "Document Upload");
         setValue("document_link", res?.url);
       });
   };
@@ -164,25 +155,23 @@ const AddBotData = ({
     inputRef.current?.click();
   };
 
-  const onSubmit =
-    (formType: "form1" | "form2") => (data: ChatbotDocLinksData) => {
-      data.bot_id = botId;
-      data.chatbot_name = chatbotData?.chatbot_name;
-      if (formType === "form1" && data.target_link === "") {
-        toasterError("Please add a Link!", 10000, "id")
+  const onSubmit = (formType: "form1" | "form2") => (data: any) => {
+    data.bot_id = botId;
+    data.chatbot_name = chatbotData?.chatbot_name;
+    if (formType === "form1" && data.target_link === "") {
+      toasterError("Please add a Link!", 10000, "id");
+    } else if (formType === "form2" && data.document_link === "") {
+      toasterError("Please upload a File!", 10000, "id");
+    } else {
+      if (data.document_link) {
+        data.train_from = "Document Upload";
       }
-      else if (formType === "form2" && data.document_link === "") {
-        toasterError("Please upload a File!", 10000, "id")
-      } else {
-        if (data.document_link) {
-          data.train_from = "Document Upload"
-        }
-        dispatch(createChatbotDocLinks({ payload: data }));
-        handleBack();
-        reset();
-        setUploadedFiles([]);
-      }
-    };
+      dispatch(createChatbotDocLinks({ payload: data }));
+      handleBack();
+      reset();
+      setUploadedFiles([]);
+    }
+  };
 
   const handleTrainFromClick = (value: string) => {
     setActiveTrainFrom(value);
@@ -193,12 +182,14 @@ const AddBotData = ({
     <div className="rounded-xl min-h-screen bg-[#241E4E] text-white p-10 ">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
         {/* Left: Add Data Section */}
-        <div >
+        <div>
           <h2 className="text-2xl font-bold mb-10">Add Data</h2>
 
           <h3 className="text-xl font-semibold mb-2">Train from link</h3>
           <p className="text-sm text-gray-300 mb-4 w-[85%]">
-            Provide the Link of any webpage or Documents — we’ll scan the site and retrieve all linked pages for you to select and train your bot on it.
+            Provide the Link of any webpage or Documents — we’ll scan the site
+            and retrieve all linked pages for you to select and train your bot
+            on it.
           </p>
           <form onSubmit={handleSubmit(onSubmit("form1"))}>
             <div className=" flex flex-wrap gap-2 mb-9">
@@ -208,11 +199,12 @@ const AddBotData = ({
                     key={label}
                     type="button"
                     onClick={() => handleTrainFromClick(label)}
-                    value={watch('train_from')}
-                    className={`cursor-pointer px-4 py-1 rounded-full text-sm font-semibold ${activeTrainFrom === label
-                      ? "bg-cyan-500 text-white"
-                      : "bg-gray-400 text-white"
-                      }`}
+                    value={watch("train_from")}
+                    className={`cursor-pointer px-4 py-1 rounded-full text-sm font-semibold ${
+                      activeTrainFrom === label
+                        ? "bg-cyan-500 text-white"
+                        : "bg-gray-400 text-white"
+                    }`}
                   >
                     {label}
                   </button>
@@ -234,9 +226,9 @@ const AddBotData = ({
                 Start
               </button>
             </div>
-            {errors.target_link && (
+            {errors?.target_link?.message && (
               <span className="text-red-500 mt-2">
-                {errors?.target_link?.message}
+                {errors.target_link.message as string}
               </span>
             )}
           </form>

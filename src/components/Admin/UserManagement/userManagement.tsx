@@ -20,7 +20,6 @@ import { deleteUser } from "@/store/slices/auth/authSlice";
 import { getInvitedUsers } from "@/store/slices/invitations/invitationSlice";
 import { pathToImage } from "@/services/utils/helpers";
 
-
 const UserManagement = () => {
   const { timezone, isLoading } = useTimezone();
 
@@ -49,19 +48,18 @@ const UserManagement = () => {
   }>({});
   const [messageFilter, setMessageFilter] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
-  const [allUsersData, setAllUsersData] = useState();
-  const { invitedUsers, loading, error } = useSelector((state: RootState) => state.invitations);
+  const [allUsersData, setAllUsersData] = useState<any>();
+  const { invitedUsers, loading, error } = useSelector(
+    (state: RootState) => state.invitations
+  );
   const { subscriptionPlansData } = useSelector(
     (state: RootState) => state.admin
   );
 
-
-  // Fetch users when filters or pagination changes
   useEffect(() => {
     dispatch(getAllSubscriptionPlans());
-    dispatch(getInvitedUsers());
+    dispatch(getInvitedUsers({}));
   }, [dispatch]);
-
 
   useEffect(() => {
     const filters = {
@@ -73,8 +71,6 @@ const UserManagement = () => {
       ...(dateFilter.end && { end_date: dateFilter.end }),
     };
 
-
-
     dispatch(
       getAllUsers({
         page,
@@ -85,9 +81,11 @@ const UserManagement = () => {
         ...(roleFilter && { roleUsed: roleFilter }),
         ...filters,
       })
-    ).unwrap().then((res) => {
-      setAllUsersData(res)
-    });
+    )
+      .unwrap()
+      .then((res) => {
+        setAllUsersData(res);
+      });
   }, [
     dispatch,
     page,
@@ -228,7 +226,11 @@ const UserManagement = () => {
                     <option value="">All Plans</option>
                     <option value="invited">Invited User</option>
                     {/* Dynamically add unique plans */}
-                    {subscriptionPlansData.data.map((plan) => <option key={plan.id} value={plan.id}>{plan.name} | {plan.duration_days} days</option>)}
+                    {subscriptionPlansData.data.map((plan) => (
+                      <option key={plan.id} value={plan.id}>
+                        {plan.name} | {plan.duration_days} days
+                      </option>
+                    ))}
                   </select>
                 </div>
 
@@ -269,7 +271,6 @@ const UserManagement = () => {
                     <option value="support admin">Support Admin</option>
                     <option value="billing admin">Billing Admin</option>
                     <option value="product admin">Product Admin</option>
-
                   </select>
                 </div>
 
@@ -425,16 +426,30 @@ const UserManagement = () => {
               </thead>
               <tbody className="text-white">
                 {allUsersData?.data?.length > 0 ? (
-                  allUsersData?.data?.map((item, index) => {
+                  allUsersData?.data?.map((item: any, index: any) => {
                     return (
                       <tr
                         className="bg-[#0A1330] hover:bg-[#1A2C56] relative"
                         key={index}
                       >
                         <td className="p-4 flex items-center text-xs gap-2">
-                          {item.picture ?
-                            <Image src={pathToImage(item?.picture) as string} alt="profile image" width={100} height={100} className="w-8 h-8 rounded-full" /> :
-                            <Image src={"/images/Avatar Circle.png"} alt="profile image" width={100} height={100} className="w-8 h-8 rounded-full" />}
+                          {item.picture ? (
+                            <Image
+                              src={pathToImage(item?.picture) as string}
+                              alt="profile image"
+                              width={100}
+                              height={100}
+                              className="w-8 h-8 rounded-full"
+                            />
+                          ) : (
+                            <Image
+                              src={"/images/Avatar Circle.png"}
+                              alt="profile image"
+                              width={100}
+                              height={100}
+                              className="w-8 h-8 rounded-full"
+                            />
+                          )}
                           {item?.fullName}
                         </td>
                         <td className="p-4 text-[#AEB9E1] text-xs">
@@ -505,12 +520,14 @@ const UserManagement = () => {
               <div className="bg-[#0B1739] p-6 rounded-lg max-w-md w-full mx-4">
                 <div className="flex items-center gap-3 mb-4">
                   <FaTrash className="text-red-400 text-xl" />
-                  <h3 className="text-lg font-semibold text-white">Delete User</h3>
+                  <h3 className="text-lg font-semibold text-white">
+                    Delete User
+                  </h3>
                 </div>
 
                 <p className="text-gray-300 mb-6">
-                  Are you sure you want to delete user "{userToDelete?.fullName}"?
-                  This action cannot be undone.
+                  Are you sure you want to delete user "{userToDelete?.fullName}
+                  "? This action cannot be undone.
                 </p>
 
                 <div className="flex gap-3 justify-end">
@@ -557,8 +574,9 @@ const UserManagement = () => {
             </button>
             {allUsersData?.total_pages >= 1 && (
               <button
-                className={`w-6 h-6 ${page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
-                  } text-black rounded-[7px] text-sm`}
+                className={`w-6 h-6 ${
+                  page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
+                } text-black rounded-[7px] text-sm`}
                 onClick={() => setPage(1)}
               >
                 1
@@ -594,10 +612,11 @@ const UserManagement = () => {
               )}
             {allUsersData?.total_pages > 1 && (
               <button
-                className={`w-6 h-6 ${page === allUsersData?.total_pages
-                  ? "bg-[#624DE3]"
-                  : "bg-gray-200"
-                  } text-black rounded-[7px] text-sm`}
+                className={`w-6 h-6 ${
+                  page === allUsersData?.total_pages
+                    ? "bg-[#624DE3]"
+                    : "bg-gray-200"
+                } text-black rounded-[7px] text-sm`}
                 onClick={() => setPage(allUsersData?.total_pages)}
               >
                 {allUsersData?.total_pages}

@@ -99,7 +99,6 @@ export const Field = ({
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
-
               {...register(checkbox_name)}
               checked={checkbox_value as boolean}
               className="sr-only peer"
@@ -169,7 +168,7 @@ export const ColorPickerField = ({
   return (
     <div className={`space-y-1 ${className} text-gray-900`}>
       <div className="flex flex-col md:flex-row items-start  gap-2">
-        <div >
+        <div>
           <label className="block text-sm font-medium text-gray-900 whitespace-pre-wrap">
             {label}
           </label>
@@ -197,43 +196,43 @@ export const ColorPickerField = ({
                   <div className="grid grid-cols-6 gap-1">
                     {[
                       // Primary brand/accent colors (vibrant but not overwhelming)
-                      "#4F46E5",  // Indigo (great for primary actions)
-                      "#10B981",  // Emerald (success/confirmation)
-                      "#3B82F6",  // Blue (trust/links)
-                      "#F59E0B",  // Amber (warnings)
-                      "#EF4444",  // Red (errors/important)
+                      "#4F46E5", // Indigo (great for primary actions)
+                      "#10B981", // Emerald (success/confirmation)
+                      "#3B82F6", // Blue (trust/links)
+                      "#F59E0B", // Amber (warnings)
+                      "#EF4444", // Red (errors/important)
 
                       // Message bubbles (softer versions)
-                      "#E0E7FF",  // Light indigo (user messages)
-                      "#D1FAE5",  // Light green (bot messages)
-                      "#DBEAFE",  // Light blue (system messages)
-                      "#FEE2E2",  // Light red (error messages)
+                      "#E0E7FF", // Light indigo (user messages)
+                      "#D1FAE5", // Light green (bot messages)
+                      "#DBEAFE", // Light blue (system messages)
+                      "#FEE2E2", // Light red (error messages)
 
                       // Background options
-                      "#F9FAFB",  // Lightest gray (main background)
-                      "#FFFFFF",  // White (card backgrounds)
-                      "#F3F4F6",  // Slightly darker gray (secondary backgrounds)
+                      "#F9FAFB", // Lightest gray (main background)
+                      "#FFFFFF", // White (card backgrounds)
+                      "#F3F4F6", // Slightly darker gray (secondary backgrounds)
 
                       // Text colors
-                      "#111827",  // Dark gray (primary text)
-                      "#374151",  // Medium gray (secondary text)
-                      "#6B7280",  // Lighter gray (disabled/hints)
+                      "#111827", // Dark gray (primary text)
+                      "#374151", // Medium gray (secondary text)
+                      "#6B7280", // Lighter gray (disabled/hints)
 
                       // Status/indicators
-                      "#84CC16",  // Lime (active/online)
-                      "#F97316",  // Orange (busy/processing)
-                      "#8B5CF6",  // Violet (special status)
-                      "#EC4899",  // Pink (notifications)
+                      "#84CC16", // Lime (active/online)
+                      "#F97316", // Orange (busy/processing)
+                      "#8B5CF6", // Violet (special status)
+                      "#EC4899", // Pink (notifications)
 
                       // Gradients/special effects
-                      "#7C3AED",  // Purple (gradient starts)
-                      "#06B6D4",  // Cyan (gradient ends)
-                      "#F43F5E",  // Rose (attention grabbers)
+                      "#7C3AED", // Purple (gradient starts)
+                      "#06B6D4", // Cyan (gradient ends)
+                      "#F43F5E", // Rose (attention grabbers)
 
                       // Dark mode alternatives
-                      "#1F2937",   // Dark background
-                      "#4B5563",   // Dark secondary
-                      "#9CA3AF"    // Dark text
+                      "#1F2937", // Dark background
+                      "#4B5563", // Dark secondary
+                      "#9CA3AF", // Dark text
                     ].map((preset, index) => (
                       <button
                         key={index}
@@ -241,7 +240,7 @@ export const ColorPickerField = ({
                         className="w-6 h-6 rounded-sm border border-gray-200 hover:border-gray-400"
                         style={{ backgroundColor: preset }}
                         onClick={(e) => {
-                          e.stopPropagation()
+                          e.stopPropagation();
                           handleColorChange(preset);
                           setShowColorPicker(false);
                         }}
@@ -282,7 +281,8 @@ export const ColorPickerField = ({
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               {/* <span className="text-gray-500 sm:text-sm">#</span> */}
             </div>
-          </div></div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -295,15 +295,10 @@ export const ImageField = ({
   value,
   register,
   setValue,
-
 }: ImageFieldProps) => {
-
-
-
   const [preview, setPreview] = useState<string>("/images/face2.webp");
   const fileInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-
     if (value && (value instanceof File || value instanceof Blob)) {
       const imageUrl = URL.createObjectURL(value);
       setPreview(imageUrl);
@@ -311,17 +306,13 @@ export const ImageField = ({
       // Revoke URL on cleanup to avoid memory leaks
       return () => URL.revokeObjectURL(imageUrl);
     } else if (typeof value === "string") {
-      console.log('value as string')
       setPreview(value);
-
     } else {
-      console.log("else")
       setPreview("/images/face2.webp"); // Default fallback
     }
   }, [value]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
     const file = e.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
@@ -331,7 +322,7 @@ export const ImageField = ({
         setValue(name, file);
       }
       if (fileInputRef.current?.value) {
-        fileInputRef.current.value = '';
+        fileInputRef.current.value = "";
       }
     }
   };
@@ -339,7 +330,6 @@ export const ImageField = ({
   return (
     <div>
       <div className="relative w-24 h-24 mx-auto  ">
-
         {/* File input - hidden but clickable */}
         <input
           type="file"
@@ -356,7 +346,6 @@ export const ImageField = ({
           <Image
             src={preview}
             key={preview}
-
             alt="Preview"
             className="w-full h-full object-cover pointer-events-none"
             width={150}
@@ -380,7 +369,6 @@ export const ImageField = ({
   );
 };
 
-
 interface SoundUploadFieldProps {
   initialSound?: File | string | null;
   onSoundChange?: (file: File | null) => void;
@@ -388,9 +376,11 @@ interface SoundUploadFieldProps {
 
 export const SoundUploadField = ({
   initialSound = null,
-  onSoundChange
+  onSoundChange,
 }: SoundUploadFieldProps) => {
-  const [soundFile, setSoundFile] = useState<File | string | null>(initialSound);
+  const [soundFile, setSoundFile] = useState<File | string | null>(
+    initialSound
+  );
   const [isPlaying, setIsPlaying] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -401,8 +391,8 @@ export const SoundUploadField = ({
     if (!files || files.length === 0) return;
 
     const file = files[0];
-    if (!file.type.match('audio.*')) {
-      alert('Please select an audio file');
+    if (!file.type.match("audio.*")) {
+      alert("Please select an audio file");
       return;
     }
 
@@ -426,19 +416,19 @@ export const SoundUploadField = ({
       audioRef.current.pause();
     } else {
       // Handle both File objects and URL strings
-      if (typeof soundFile === 'string') {
+      if (typeof soundFile === "string") {
         audioRef.current.src = soundFile;
       } else {
         audioRef.current.src = URL.createObjectURL(soundFile);
       }
-      audioRef.current.play().catch(e => console.log('Playback failed:', e));
+      audioRef.current.play().catch((e) => console.log("Playback failed:", e));
     }
     setIsPlaying(!isPlaying);
   };
 
   const handleReplaceSound = () => {
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
       fileInputRef.current.click();
     }
   };
@@ -457,13 +447,13 @@ export const SoundUploadField = ({
     const handleEnded = () => setIsPlaying(false);
 
     if (audio) {
-      audio.addEventListener('ended', handleEnded);
+      audio.addEventListener("ended", handleEnded);
     }
 
     return () => {
       if (audio) {
-        audio.removeEventListener('ended', handleEnded);
-        if (audio.src.startsWith('blob:')) {
+        audio.removeEventListener("ended", handleEnded);
+        if (audio.src.startsWith("blob:")) {
           URL.revokeObjectURL(audio.src);
         }
       }
@@ -471,8 +461,8 @@ export const SoundUploadField = ({
   }, []);
 
   useEffect(() => {
-    setSoundFile(initialSound)
-  }, [initialSound])
+    setSoundFile(initialSound);
+  }, [initialSound]);
   return (
     <div className="space-y-3 p-4 border border-gray-200 rounded-lg bg-white">
       <audio ref={audioRef} className="hidden" />
@@ -482,7 +472,7 @@ export const SoundUploadField = ({
 
         {soundFile && (
           <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full">
-            {typeof soundFile === 'string' ? "URL Sound" : soundFile.name}
+            {typeof soundFile === "string" ? "URL Sound" : soundFile.name}
           </span>
         )}
       </div>
@@ -499,9 +489,12 @@ export const SoundUploadField = ({
           <button
             type="button"
             onClick={handlePlayPause}
-            className={`flex items-center justify-center w-10 h-10 rounded-full ${isPlaying ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'
-              }`}
-            aria-label={isPlaying ? 'Pause sound' : 'Play sound'}
+            className={`flex items-center justify-center w-10 h-10 rounded-full ${
+              isPlaying
+                ? "bg-red-100 text-red-600"
+                : "bg-blue-100 text-blue-600"
+            }`}
+            aria-label={isPlaying ? "Pause sound" : "Play sound"}
           >
             {isPlaying ? (
               <IoPauseCircleOutline className="w-5 h-5" />
@@ -512,15 +505,17 @@ export const SoundUploadField = ({
 
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-gray-700 truncate">
-              {typeof soundFile === 'string' ? "URL Sound" : soundFile.name}
+              {typeof soundFile === "string" ? "URL Sound" : soundFile.name}
             </p>
             <p className="text-xs text-gray-500">
-              {typeof soundFile === 'string' ? "From URL" : `${(soundFile.size / 1024).toFixed(1)} KB`}
+              {typeof soundFile === "string"
+                ? "From URL"
+                : `${(soundFile.size / 1024).toFixed(1)} KB`}
             </p>
           </div>
 
           <div className="flex gap-2">
-            {typeof soundFile !== 'string' && (
+            {typeof soundFile !== "string" && (
               <button
                 type="button"
                 onClick={handleReplaceSound}

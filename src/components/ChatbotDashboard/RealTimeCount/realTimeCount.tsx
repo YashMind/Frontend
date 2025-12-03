@@ -48,28 +48,7 @@ export default function RealTimeCount() {
         gradientFrom="#443973"
         gradientTo="#2C1E5A"
       />
-      {/* <StatCard
-        icon={<FaMicrophoneAlt size={20} color="#6AC0E7" />}
-        title="Voice Agent Usage"
-        stats={[
-          { label: "Used minutes", value: 0 },
-          { label: "Used Credits", value: 0 },
-        ]}
-        progressPercent={0}
-        gradientFrom="#443973"
-        gradientTo="#2C1E5A"
-      />
-      <StatCard
-        icon={<FaRobot size={20} color="#417ED8" />}
-        title="Chat LLM Usage"
-        stats={[
-          { label: "Used Tokens", value: 0 },
-          { label: "Used Credits", value: 0 },
-        ]}
-        progressPercent={0}
-        gradientFrom="#443973"
-        gradientTo="#2C1E5A"
-      /> */}
+    
       <StatCard
         icon={<FaWallet size={20} color="#417ED8" />}
         title="Wallet Usage"

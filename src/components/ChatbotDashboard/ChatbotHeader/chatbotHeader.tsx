@@ -21,7 +21,7 @@ const ChatbotDashboardHeader = ({
   fix: boolean;
   addBgColor: boolean;
   role?: string;
-  chatbotError?: string;
+  chatbotError?: any;
 }) => {
   const [bot, setBot] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -31,13 +31,11 @@ const ChatbotDashboardHeader = ({
   const menuRef = useRef(null);
   const dispatch = useDispatch<AppDispatch>();
 
-  const userData = useSelector(
-    (state: RootState) => state.auth.userData
-  );
+  const userData = useSelector((state: RootState) => state.auth.userData);
 
   const pathname = usePathname();
   useEffect(() => {
-    dispatch(fetchAnnouncements())
+    dispatch(fetchAnnouncements());
   }, []);
 
   useEffect(() => {
@@ -52,7 +50,7 @@ const ChatbotDashboardHeader = ({
 
   const { loading, data: announcements } = useSelector(
     (state: RootState) => state.announcements
-  )
+  );
 
   const handleToggle = () => {
     setIsMenuOpen((prev) => !prev);
@@ -84,13 +82,17 @@ const ChatbotDashboardHeader = ({
 
   return (
     <nav
-      className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${fix ? "fixed" : ""
-        } w-full z-90 pt-2 ${announcements?.length > 0 ? "md:max-h-[12%] py-2" : "md:max-h-[8%] py-4"} `}
+      className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${
+        fix ? "fixed" : ""
+      } w-full z-90 pt-2 ${
+        announcements?.length > 0 ? "md:max-h-[12%] py-2" : "md:max-h-[8%] py-4"
+      } `}
     >
       {/* 🔹 Main Navbar Content */}
       <div
-        className={`container mx-auto  flex flex-wrap items-center justify-between ${announcements?.length > 0 ? "py-4 md:py-5" : "py-2 md:py-4"
-          }`}
+        className={`container mx-auto  flex flex-wrap items-center justify-between ${
+          announcements?.length > 0 ? "py-4 md:py-5" : "py-2 md:py-4"
+        }`}
       >
         {/* Logo Section */}
         <div className="flex items-center justify-between w-full md:w-auto">
@@ -107,7 +109,7 @@ const ChatbotDashboardHeader = ({
           {/* Mobile Menu Button */}
           <button
             type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden  focus:outline-none focus:ring-2 focus:ring-gray-200 hover:bg-gray-100 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden  focus:outline-none focus:ring-2 focus:ring-gray-200 hover:bg-gray-100 text-gray-400"
             aria-controls="navbar-sticky"
             aria-expanded={isMenuOpen}
             onClick={handleToggle}
@@ -148,16 +150,18 @@ const ChatbotDashboardHeader = ({
         {/* Navigation Links - Hidden on mobile unless menu is open */}
         {!chatbotError && (
           <div
-            className={`${isMenuOpen ? "block" : "hidden"
-              } w-full md:block md:w-auto`}
+            className={`${
+              isMenuOpen ? "block" : "hidden"
+            } w-full md:block md:w-auto`}
             id="navbar-sticky"
           >
             <ul className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4 lg:space-x-6 p-4 md:p-0 mt-4 md:mt-0 rounded-lg">
               <li>
                 <Link
                   href="/chatbot-dashboard/main"
-                  className={`block py-2 px-4 text-white ${bot === 1 ? "bg-[#434343]" : ""
-                    } rounded-[26px] hover:bg-gray-700 md:hover:bg-transparent md:hover:text-blue-300 transition-colors`}
+                  className={`block py-2 px-4 text-white ${
+                    bot === 1 ? "bg-[#434343]" : ""
+                  } rounded-[26px] hover:bg-gray-700 md:hover:bg-transparent md:hover:text-blue-300 transition-colors`}
                   onClick={() => {
                     setBot(1);
                     setIsMenuOpen(false);
@@ -204,7 +208,12 @@ const ChatbotDashboardHeader = ({
               "billing admin",
               "product admin",
               "support admin",
-            ].includes(role.replace(/^"(.*)"$/, "$1").trim().toLowerCase()) && (
+            ].includes(
+              role
+                .replace(/^"(.*)"$/, "$1")
+                .trim()
+                .toLowerCase()
+            ) && (
               <Link
                 href="/admin/overview"
                 className="bg-white p-2 px-4 rounded-full font-semibold text-sm hover:bg-gray-100 transition-colors"
@@ -219,12 +228,14 @@ const ChatbotDashboardHeader = ({
           >
             Upgrade Plan
           </Link>
-          {!pathname.includes('/chatbot-dashboard/main') && <Link
-            href="/chatbot-dashboard/main"
-            className="text-white bg-[#05BDFD] text-sm rounded-[18px] font-semibold hover:bg-[#04a9e0] px-3 py-2 md:px-4 transition-colors"
-          >
-            Dashboard
-          </Link>}
+          {!pathname.includes("/chatbot-dashboard/main") && (
+            <Link
+              href="/chatbot-dashboard/main"
+              className="text-white bg-[#05BDFD] text-sm rounded-[18px] font-semibold hover:bg-[#04a9e0] px-3 py-2 md:px-4 transition-colors"
+            >
+              Dashboard
+            </Link>
+          )}
 
           <div className="flex items-center space-x-2">
             <div className="relative inline-block text-left" ref={menuRef}>
@@ -233,7 +244,17 @@ const ChatbotDashboardHeader = ({
                 className="focus:outline-none cursor-pointer"
                 aria-label="User menu"
               >
-                {userData?.picture ? <Image alt={'profile pic'} src={pathToImage(userData.picture) as string} width={100} height={100} className="w-8 h-8 rounded-full" /> : <FaUser size={18} color="white" />}
+                {userData?.picture ? (
+                  <Image
+                    alt={"profile pic"}
+                    src={pathToImage(userData.picture) as string}
+                    width={100}
+                    height={100}
+                    className="w-8 h-8 rounded-full"
+                  />
+                ) : (
+                  <FaUser size={18} color="white" />
+                )}
               </button>
               {isOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
@@ -300,7 +321,6 @@ const ChatbotDashboardHeader = ({
             </Link>
 
             <div className="flex flex-col items-start justify-start  pt-2 text-white">
-
               <Link
                 href="/settings/profile"
                 className="block py-2 text-sm"
@@ -331,9 +351,10 @@ const ChatbotDashboardHeader = ({
               >
                 Logout
               </button>
-              <p className="text-white text-xs text-gray-200 self-center">
+              <p className="text-white text-xsself-center">
                 {userData?.fullName}
-              </p></div>
+              </p>
+            </div>
           </div>
         )}
       </div>

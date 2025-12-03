@@ -13,18 +13,6 @@ interface ChatMessage {
   is_user: boolean;
 }
 
-interface ChatSession {
-  id: string;
-  created_at: string;
-  messages: ChatMessage[];
-}
-
-interface ChatBot {
-  chatBotId: string;
-  chatBotName: string;
-  sessions: Record<string, ChatSession>;
-}
-
 interface ArchivedMessageModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -34,7 +22,7 @@ const ArchivedMessageModal = ({
   isOpen,
   onClose,
 }: ArchivedMessageModalProps) => {
-  const { isLoading, timezone } = useTimezone()
+  const { isLoading, timezone } = useTimezone();
   const dispatch = useDispatch<AppDispatch>();
   const {
     archivedUserMessages: archivedChats,
@@ -64,7 +52,6 @@ const ArchivedMessageModal = ({
       (chatBot) =>
         chatBot &&
         Object.values(chatBot.sessions).some((session) => {
-          console.log(session);
           return (
             session &&
             session.some((message) =>
@@ -137,7 +124,7 @@ const ArchivedMessageModal = ({
             ) : (
               <div className="space-y-6">
                 {filteredChats &&
-                  filteredChats.map((chatBot) => (
+                  filteredChats.map((chatBot: any) => (
                     <div
                       key={chatBot.chatBotId}
                       className="border rounded-lg p-4"
@@ -148,7 +135,7 @@ const ArchivedMessageModal = ({
                       </div>
 
                       {Object.entries(chatBot.sessions).map(
-                        ([sessionId, session]) => (
+                        ([sessionId, session]: any) => (
                           <div key={sessionId} className="mb-6 last:mb-0">
                             {/* <div className="text-sm text-gray-500 mb-2">
                               {new Date(
@@ -156,21 +143,25 @@ const ArchivedMessageModal = ({
                               ).toLocaleDateString()}
                             </div> */}
                             <div className="space-y-3">
-                              {session.map((message) => (
+                              {session.map((message: any) => (
                                 <div
                                   key={message.id}
-                                  className={`p-3 rounded-lg ${message.sender === "user"
-                                    ? "bg-purple-50 ml-8 text-right"
-                                    : "bg-gray-50 mr-8"
-                                    }`}
+                                  className={`p-3 rounded-lg ${
+                                    message.sender === "user"
+                                      ? "bg-purple-50 ml-8 text-right"
+                                      : "bg-gray-50 mr-8"
+                                  }`}
                                 >
                                   <p className="text-gray-800">
                                     {message.message}
                                   </p>
                                   <time className="text-xs text-gray-500 mt-1 block">
-                                    {isLoading && message.created_at ?
-                                      formatDateTimeWithTz(message.created_at, timezone) : "-"
-                                    }
+                                    {isLoading && message.created_at
+                                      ? formatDateTimeWithTz(
+                                          message.created_at,
+                                          timezone
+                                        )
+                                      : "-"}
                                   </time>
                                 </div>
                               ))}

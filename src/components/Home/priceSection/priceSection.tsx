@@ -21,7 +21,7 @@ const PriceSection = () => {
   const router = useRouter();
   const [selectedPlan, setSelectedPlan] = useState<string>("monthly");
 
-  const { publicSubscriptionPlansData, loading, error } = useSelector(
+  const { publicSubscriptionPlansData, loading, error }: any = useSelector(
     (state: RootState) => state.admin
   );
 
@@ -46,14 +46,15 @@ const PriceSection = () => {
         .map((p: any) => p.duration_days)
         .filter(
           (days) =>
-            !Object.values(standardDurations).includes(days) && typeof days === "number"
+            !Object.values(standardDurations).includes(days) &&
+            typeof days === "number"
         )
     )
   );
 
   // Filter plans based on selected type
   const filteredPlans = Object.values(publicSubscriptionPlansData).filter(
-    (item: SubscriptionPlan) => {
+    (item: any) => {
       const standardMatch = Object.entries(standardDurations).find(
         ([key, value]) => key === selectedPlan && item.duration_days === value
       );
@@ -69,11 +70,11 @@ const PriceSection = () => {
     const duration = standardDurations[type];
     if (duration) {
       return Object.values(publicSubscriptionPlansData).some(
-        (plan: SubscriptionPlan) => plan.duration_days === duration
+        (plan: any) => plan.duration_days === duration
       );
     } else if (type.endsWith("days")) {
       return Object.values(publicSubscriptionPlansData).some(
-        (plan: SubscriptionPlan) => plan.duration_days === parseInt(type)
+        (plan: any) => plan.duration_days === parseInt(type)
       );
     }
     return false;
@@ -98,7 +99,11 @@ const PriceSection = () => {
         >
           Pricing & Plans
         </h1>
-        <img src="/images/heading.png" className="mx-auto sm:mx-0 mt-2" alt="Heading" />
+        <img
+          src="/images/heading.png"
+          className="mx-auto sm:mx-0 mt-2"
+          alt="Heading"
+        />
 
         {/* Plan Selection Buttons */}
         <div className="flex justify-center mt-8 mb-6">
@@ -111,14 +116,17 @@ const PriceSection = () => {
                 <button
                   key={planType}
                   onClick={() => setSelectedPlan(planType)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedPlan === planType
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    selectedPlan === planType
                       ? "bg-gradient-to-r from-[#501794] to-[#40659F] text-white"
                       : "text-[#FFFFFFA1] hover:text-white"
-                    }`}
+                  }`}
                 >
                   {planType.endsWith("days")
                     ? `${parseInt(planType)} Days Plan`
-                    : `${planType.charAt(0).toUpperCase() + planType.slice(1)} Plan`}
+                    : `${
+                        planType.charAt(0).toUpperCase() + planType.slice(1)
+                      } Plan`}
                 </button>
               ) : null
             )}
@@ -126,19 +134,23 @@ const PriceSection = () => {
         </div>
 
         {/* Loading / Error States */}
-        {loading && <div className="text-white text-center py-8">Loading plans...</div>}
-        {error && <div className="text-red-500 text-center py-8">Error: {error}</div>}
+        {loading && (
+          <div className="text-white text-center py-8">Loading plans...</div>
+        )}
+        {error && (
+          <div className="text-red-500 text-center py-8">Error: {error}</div>
+        )}
 
         {/* Plans Display */}
         {!loading && !error && (
           <div className="pt-12">
-            {(!filteredPlans || filteredPlans.length === 0) ? (
+            {!filteredPlans || filteredPlans.length === 0 ? (
               <div className="text-white text-center py-8">
                 No {selectedPlan} plans available
               </div>
             ) : (
               <div className="mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredPlans.map((item: SubscriptionPlan) => {
+                {filteredPlans.map((item: any) => {
                   const isPro = item.name === "Pro";
                   const wrapperClass = isPro
                     ? "p-[2.31px] rounded-tr-[18px] rounded-bl-[18px] bg-gradient-to-r from-[#4E2295] to-[#42579D] h-full"
@@ -164,8 +176,8 @@ const PriceSection = () => {
                             {item.name === "Basic"
                               ? "Ideal for small teams starting with AI-powered chatbots and limited crawling."
                               : item.name === "Pro"
-                                ? "For growing teams needing more power, integrations, and access."
-                                : "Ultimate access with high limits, all features, and max scalability."}
+                              ? "For growing teams needing more power, integrations, and access."
+                              : "Ultimate access with high limits, all features, and max scalability."}
                           </p>
 
                           <h2 className="text-[28px] font-semibold pb-[20px]">
@@ -174,14 +186,15 @@ const PriceSection = () => {
                             <span className="text-xs font-normal text-[#FFFFFFA1] mr-3.5">
                               /{getDurationText(item.duration_days)}
                             </span>
-                            {item.name === "Basic" && item.duration_days === 30 && (
-                              <Link
-                                href="/activate-trial"
-                                className="inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-green-500 to-teal-400 text-white text-sm font-medium rounded-full hover:from-green-600 hover:to-teal-500 transition-colors ml-2"
-                              >
-                                7-Day Free Trial
-                              </Link>
-                            )}
+                            {item.name === "Basic" &&
+                              item.duration_days === 30 && (
+                                <Link
+                                  href="/activate-trial"
+                                  className="inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-green-500 to-teal-400 text-white text-sm font-medium rounded-full hover:from-green-600 hover:to-teal-500 transition-colors ml-2"
+                                >
+                                  7-Day Free Trial
+                                </Link>
+                              )}
                           </h2>
 
                           {item.is_active ? (
@@ -202,7 +215,10 @@ const PriceSection = () => {
                               ?.split(",")
                               .map((feature: string, idx: number) => (
                                 <li className="flex gap-2" key={idx}>
-                                  <img src="/images/star.png" alt="Feature icon" />
+                                  <img
+                                    src="/images/star.png"
+                                    alt="Feature icon"
+                                  />
                                   {feature.trim()}
                                 </li>
                               ))}
@@ -211,7 +227,9 @@ const PriceSection = () => {
 
                         <div className="mb-2 mt-10 self-stretch">
                           <hr className="border-transparent [border-image-source:linear-gradient(98.8deg,#DE4DBC_26.92%,#1D86C2_68.19%,#2B126F_132.4%)] [border-image-slice:1] mb-2" />
-                          <p className="text-xs">• 100% Satisfaction Guarantee</p>
+                          <p className="text-xs">
+                            • 100% Satisfaction Guarantee
+                          </p>
                           <p className="text-xs">• 24 x 7 Customer Support</p>
                         </div>
                       </div>

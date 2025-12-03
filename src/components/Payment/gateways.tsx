@@ -79,10 +79,8 @@ const Gateways = ({
           mode: mode,
         });
         setCashfreeLoaded(true);
-        console.log("Cashfree SDK loaded successfully in", mode, "mode");
       }
     } catch (error) {
-      console.log("Error initializing Cashfree SDK:", error);
       setError("Failed to load payment system");
     }
   };
@@ -110,7 +108,6 @@ const Gateways = ({
 
       await window.Cashfree.checkout(checkoutOptions);
     } catch (error) {
-      console.log("Error opening Cashfree checkout:", error);
       setError("Failed to open payment page");
       setIsRedirecting(false);
     }
@@ -121,7 +118,8 @@ const Gateways = ({
     selectionId: string | null
   ) => {
     try {
-      if (!window.Razorpay) {
+      // Type-safe check for Razorpay
+      if (!(window as any).Razorpay) {
         throw new Error("Razorpay SDK not loaded");
       }
       setIsRedirecting(true);
@@ -135,10 +133,6 @@ const Gateways = ({
         order_id: orderData.razorpay_order_id,
         handler: async function (response: any) {
           try {
-            // Handle successful payment
-            console.log("Payment successful:", response);
-
-            // Process downgrade if selectionId exists
             if (selectionId) {
               setIsProcessing(true);
               await dispatch(
@@ -153,7 +147,6 @@ const Gateways = ({
             router.push(`/payment/success?order_id=${orderData.order_id}`);
           } catch (error: any) {
             console.error("Downgrade processing failed:", error);
-            // Still redirect to success page but with error flag
             router.push(
               `/payment/success?order_id=${orderData.order_id}&downgrade_error=true`
             );
@@ -164,7 +157,7 @@ const Gateways = ({
         prefill: {
           name: userData?.fullName || "",
           email: userData?.email || "",
-          contact: "9876543210", // Use user's phone if available
+          contact: "9876543210",
         },
         notes: {
           order_id: orderData.order_id,
@@ -175,10 +168,10 @@ const Gateways = ({
         },
       };
 
-      const rzp = new window.Razorpay(options);
+      // Use type assertion
+      const rzp = new (window as any).Razorpay(options);
       rzp.open();
     } catch (error) {
-      console.log("Error opening Razorpay checkout:", error);
       setError("Failed to open payment page");
       setIsRedirecting(false);
     }
@@ -285,7 +278,6 @@ const Gateways = ({
       const errorMsg = e.detail?.message || e.message || "Payment failed";
       setError(errorMsg);
       toast.error(`Payment error: ${errorMsg}`);
-      console.log("Payment error:", e);
     } finally {
       setIsProcessing(false);
     }

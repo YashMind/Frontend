@@ -17,13 +17,15 @@ interface EditEnterpriseUserModalProps {
 
 const EnterpriseClients = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { enterpriseUsers, loading } = useSelector((state: RootState) => state.admin);
+  const { enterpriseUsers, loading } = useSelector(
+    (state: RootState) => state.admin
+  );
 
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [search, setSearch] = useState("");
   const [editModal, setEditModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState();
+  const [selectedUser, setSelectedUser] = useState<any>();
 
   useEffect(() => {
     dispatch(getEnterpriseUsers({ page, limit, search }));
@@ -32,19 +34,21 @@ const EnterpriseClients = () => {
   const totalPages = Math.ceil(enterpriseUsers.total / limit);
 
   const onEditSave = (id: string, rate: number) => {
-    toast.dismiss()
+    toast.dismiss();
     if (rate < 1) {
-      toasterError("Message rate should be greater than 0")
-      return
+      toasterError("Message rate should be greater than 0");
+      return;
     }
-    dispatch(updateMessageRate({ id: id, base_rate_per_message: rate })).unwrap().then(() => {
-
-      setEditModal(false)
-      dispatch(getEnterpriseUsers({ page, limit, search }));
-    }).catch((err) => {
-      toasterError(err.message || "Some error occured")
-    })
-  }
+    dispatch(updateMessageRate({ id: id, base_rate_per_message: rate }))
+      .unwrap()
+      .then(() => {
+        setEditModal(false);
+        dispatch(getEnterpriseUsers({ page, limit, search }));
+      })
+      .catch((err) => {
+        toasterError(err.message || "Some error occured");
+      });
+  };
 
   return (
     <div className="bg-[#081028] text-white min-h-screen p-6">
@@ -79,7 +83,10 @@ const EnterpriseClients = () => {
           <tbody>
             {enterpriseUsers.data?.length > 0 ? (
               enterpriseUsers.data.map((user: any) => (
-                <tr key={user.id} className="border-b border-[#0B1739] hover:bg-[#1A1F3C]">
+                <tr
+                  key={user.id}
+                  className="border-b border-[#0B1739] hover:bg-[#1A1F3C]"
+                >
                   <td className="p-4">{user.fullName}</td>
                   <td className="p-4">{user.email}</td>
                   <td className="p-4">
@@ -89,7 +96,17 @@ const EnterpriseClients = () => {
                   </td>
                   <td className="p-4">{user.plan}</td>
                   <td className="p-4">{user.base_rate_per_message}</td>
-                  <td className="p-4"><button className="cursor-pointer" onClick={() => { setEditModal(true); setSelectedUser(user) }}><FaPen /></button></td>
+                  <td className="p-4">
+                    <button
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setEditModal(true);
+                        setSelectedUser(user);
+                      }}
+                    >
+                      <FaPen />
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (
@@ -108,7 +125,11 @@ const EnterpriseClients = () => {
         <button
           disabled={page === 1}
           onClick={() => setPage((p) => p - 1)}
-          className={`px-3 py-1 rounded ${page === 1 ? "bg-gray-700 text-gray-500" : "bg-[#1A2C65] text-white hover:bg-[#243a7f]"}`}
+          className={`px-3 py-1 rounded ${
+            page === 1
+              ? "bg-gray-700 text-gray-500"
+              : "bg-[#1A2C65] text-white hover:bg-[#243a7f]"
+          }`}
         >
           Previous
         </button>
@@ -120,22 +141,24 @@ const EnterpriseClients = () => {
         <button
           disabled={page === totalPages || totalPages === 0}
           onClick={() => setPage((p) => p + 1)}
-          className={`px-3 py-1 rounded ${page === totalPages || totalPages === 0
-            ? "bg-gray-700 text-gray-500"
-            : "bg-[#1A2C65] text-white hover:bg-[#243a7f]"
-            }`}
+          className={`px-3 py-1 rounded ${
+            page === totalPages || totalPages === 0
+              ? "bg-gray-700 text-gray-500"
+              : "bg-[#1A2C65] text-white hover:bg-[#243a7f]"
+          }`}
         >
           Next
         </button>
       </div>
-      <EditEnterpriseUserModal isOpen={editModal} onClose={() => setEditModal(false)} onSave={(rate) => onEditSave(selectedUser?.id, rate)} user={selectedUser} />
+      <EditEnterpriseUserModal
+        isOpen={editModal}
+        onClose={() => setEditModal(false)}
+        onSave={(rate) => onEditSave(selectedUser?.id, rate)}
+        user={selectedUser}
+      />
     </div>
   );
 };
-
-
-
-
 
 const EditEnterpriseUserModal: React.FC<EditEnterpriseUserModalProps> = ({
   user,
@@ -168,7 +191,9 @@ const EditEnterpriseUserModal: React.FC<EditEnterpriseUserModalProps> = ({
         {/* Body */}
         <div className="space-y-4">
           <div>
-            <label className="block text-sm text-gray-300 mb-1">Full Name</label>
+            <label className="block text-sm text-gray-300 mb-1">
+              Full Name
+            </label>
             <input
               type="text"
               value={user.fullName || ""}
@@ -221,7 +246,5 @@ const EditEnterpriseUserModal: React.FC<EditEnterpriseUserModalProps> = ({
     </div>
   );
 };
-
-
 
 export default EnterpriseClients;

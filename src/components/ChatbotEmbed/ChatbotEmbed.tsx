@@ -55,7 +55,6 @@ const ChatbotEmbedSection = ({
     (state: RootState) => state.auth.loggedInUser
   );
 
-
   const {
     register,
     handleSubmit,
@@ -73,18 +72,19 @@ const ChatbotEmbedSection = ({
     },
   });
 
-
   useEffect(() => {
-    console.log(chatbotData)
     if (Object.keys(chatbotData).length > 0 && !chatbotData.public) {
-      dispatch(isLoggedin()).unwrap().then((res) => {
-        // if(res.user.)
-      }).catch((err) => {
-        toast.error('Unauthorized, Kindly login')
-        redirect(`/auth/signin?from=/embed/${botId}`)
-      })
+      dispatch(isLoggedin())
+        .unwrap()
+        .then((res) => {
+          // if(res.user.)
+        })
+        .catch((err) => {
+          toast.error("Unauthorized, Kindly login");
+          redirect(`/auth/signin?from=/embed/${botId}`);
+        });
     }
-  }, [chatbotData])
+  }, [chatbotData]);
 
   useEffect(() => {
     if (hasRun.current) return;
@@ -102,17 +102,18 @@ const ChatbotEmbedSection = ({
     }
   }, [chatMessages, chatIdData.bot_id, chatIdData.id]);
 
-
   const onSubmit = (data: TextMessage) => {
     setIsBotTyping(true);
-    setIsRecording(false)
-    const temp = { ...data }
-    reset()
-    dispatch(conversationMessage({ payload: temp })).unwrap().then(() => reset()).finally(() => {
-      setIsBotTyping(false);
-    });
+    setIsRecording(false);
+    const temp = { ...data };
+    reset();
+    dispatch(conversationMessage({ payload: temp }))
+      .unwrap()
+      .then(() => reset())
+      .finally(() => {
+        setIsBotTyping(false);
+      });
   };
-
 
   const handleDeleteChats = () => {
     dispatch(
@@ -131,9 +132,6 @@ const ChatbotEmbedSection = ({
     }
   }, [chatIdData?.bot_id]);
 
-
-
-
   if (
     chatIdData &&
     chatbotData.allow_domains &&
@@ -142,40 +140,33 @@ const ChatbotEmbedSection = ({
   ) {
     // Split allowed domains safely
     const allowedDomains = chatbotData.domains
-      .split(',')
+      .split(",")
       .map((d) =>
-        d.trim()
-          .replace(/\/$/, '') // remove trailing slash
-          .replace(/^https?:\/\//, '') // remove protocol
+        d
+          .trim()
+          .replace(/\/$/, "") // remove trailing slash
+          .replace(/^https?:\/\//, "") // remove protocol
           .toLowerCase()
       )
       .filter(Boolean);
 
-    // Normalize the incoming domain
-    let currentDomain = '';
+    let currentDomain = "";
     try {
       const domainObj =
-        domainUrl.startsWith('http://') || domainUrl.startsWith('https://')
+        domainUrl.startsWith("http://") || domainUrl.startsWith("https://")
           ? new URL(domainUrl)
           : new URL(`http://${domainUrl}`);
 
-      // Extract the hostname (no port, no protocol)
       currentDomain = domainObj.hostname.toLowerCase();
 
-      // Remove www. for consistency (optional)
-      currentDomain = currentDomain.replace(/^www\./, '');
+      currentDomain = currentDomain.replace(/^www\./, "");
     } catch (e) {
-      console.warn('Invalid domain URL provided:', domainUrl);
+      console.warn("Invalid domain URL provided:", domainUrl);
     }
 
-    console.log('✅ Allowed:', allowedDomains);
-    console.log('🌐 Current:', currentDomain);
-
-    // Compare — allow either exact match or subdomain match
     const isAllowed = allowedDomains.some(
       (allowed) =>
-        allowed === currentDomain ||
-        currentDomain.endsWith(`.${allowed}`) // allow subdomains
+        allowed === currentDomain || currentDomain.endsWith(`.${allowed}`)
     );
 
     if (!isAllowed) {
@@ -193,8 +184,6 @@ const ChatbotEmbedSection = ({
       );
     }
   }
-
-
 
   return (
     <div
@@ -218,101 +207,112 @@ const ChatbotEmbedSection = ({
       <div className="flex-1 p-4 overflow-y-auto text-black">
         {chatMessages && chatMessages.length
           ? chatMessages.map((item, index) => {
-            return (
-              <div key={index}>
-                <div
-                  className={`flex mb-2 ${item.sender === "user" ? "justify-end" : "justify-start"
+              return (
+                <div key={index}>
+                  <div
+                    className={`flex mb-2 ${
+                      item.sender === "user" ? "justify-end" : "justify-start"
                     }`}
-                >
-                  {item.sender === "bot" && (<>
-                    <Image
-                      src={chatbotImage}
-                      alt="Bot"
-                      className="w-8 h-8 rounded-full mr-2"
-                      width={20}
-                      height={20}
-                    />
-                    <ChatMessages message={item.message} chatbotSetting={chatbotSetting} handleGeneratedButtonClick={(query) => setValue('message', query)} /></>
-                  )}{" "}
-                  {item.sender === "user" && (
-                    <>
-                      <div
-                        className={`p-3 rounded-xl max-w-xs text-sm ${item.sender === "user" ? "text-white" : "text-black"
+                  >
+                    {item.sender === "bot" && (
+                      <>
+                        <Image
+                          src={chatbotImage}
+                          alt="Bot"
+                          className="w-8 h-8 rounded-full mr-2"
+                          width={20}
+                          height={20}
+                        />
+                        <ChatMessages
+                          message={item.message}
+                          chatbotSetting={chatbotSetting}
+                          handleGeneratedButtonClick={(query) =>
+                            setValue("message", query)
+                          }
+                        />
+                      </>
+                    )}{" "}
+                    {item.sender === "user" && (
+                      <>
+                        <div
+                          className={`p-3 rounded-xl max-w-xs text-sm ${
+                            item.sender === "user" ? "text-white" : "text-black"
                           }`}
-                        style={{
-                          backgroundColor: chatbotSetting?.user_message_bg ?? "blue"
-                        }}
-                      >
-                        {item.message}
-                      </div>
+                          style={{
+                            backgroundColor:
+                              chatbotSetting?.user_message_bg ?? "blue",
+                          }}
+                        >
+                          {item.message}
+                        </div>
 
-                      <Image
-                        src="/images/userimg.png"
-                        alt="User"
-                        className="w-8 h-8 rounded-full ml-2"
-                        width={20}
-                        height={20}
+                        <Image
+                          src="/images/userimg.png"
+                          alt="User"
+                          className="w-8 h-8 rounded-full ml-2"
+                          width={20}
+                          height={20}
+                        />
+                      </>
+                    )}
+                  </div>
+
+                  {item.sender === "bot" &&
+                    chatbotSetting?.lead_collection &&
+                    index <= 2 && (
+                      <LeadGenForm
+                        bot_id={chatIdData?.bot_id}
+                        chat_id={chatIdData?.id}
+                        is_name={chatbotSetting?.is_name_lead_gen}
+                        is_phone={chatbotSetting?.is_phone_lead_gen}
+                        is_mail={chatbotSetting?.is_mail_lead_gen}
+                        is_message={chatbotSetting?.is_message_lead_gen}
+                        required_name={chatbotSetting?.required_name_lead_gen}
+                        required_phone={chatbotSetting?.required_phone_lead_gen}
+                        required_mail={chatbotSetting?.required_mail_lead_gen}
+                        required_message={
+                          chatbotSetting?.required_message_lead_gen
+                        }
+                        submit_button_text={
+                          chatbotSetting?.submit_text_lead_gen
+                        }
+                        submit_button_color={
+                          chatbotSetting?.submit_button_color_lead_gen
+                        }
+                        submission_message_heading={
+                          chatbotSetting?.submission_message_heading_lead_gen
+                        }
+                        sumbission_message={
+                          chatbotSetting?.sumbission_message_lead_gen
+                        }
                       />
-                    </>
-                  )}
+                    )}
                 </div>
-
-                {item.sender === "bot" &&
-                  chatbotSetting?.lead_collection &&
-                  index <= 2 && (
-                    <LeadGenForm
-                      bot_id={chatIdData?.bot_id}
-                      chat_id={chatIdData?.id}
-                      is_name={chatbotSetting?.is_name_lead_gen}
-                      is_phone={chatbotSetting?.is_phone_lead_gen}
-                      is_mail={chatbotSetting?.is_mail_lead_gen}
-                      is_message={chatbotSetting?.is_message_lead_gen}
-                      required_name={chatbotSetting?.required_name_lead_gen}
-                      required_phone={chatbotSetting?.required_phone_lead_gen}
-                      required_mail={chatbotSetting?.required_mail_lead_gen}
-                      required_message={
-                        chatbotSetting?.required_message_lead_gen
-                      }
-                      submit_button_text={
-                        chatbotSetting?.submit_text_lead_gen
-                      }
-                      submit_button_color={
-                        chatbotSetting?.submit_button_color_lead_gen
-                      }
-                      submission_message_heading={
-                        chatbotSetting?.submission_message_heading_lead_gen
-                      }
-                      sumbission_message={
-                        chatbotSetting?.sumbission_message_lead_gen
-                      }
-                    />
-                  )}
-              </div>
-            );
-          })
+              );
+            })
           : chatbotSetting?.welcome_message_is_active && (
-            <>
-              <div className="flex justify-start gap-2 mb-2">
-                <Image
-                  src={chatbotImage}
-                  alt="Bot"
-                  className="w-8 h-8 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                <div
-                  className="bg-gray-200 p-3 rounded-xl max-w-xs text-sm"
-                  style={{
-                    backgroundColor: chatbotSetting?.message_bg
-                      ? chatbotSetting?.message_bg
-                      : "#c2c2c2",
-                  }}
-                >
-                  {chatbotSetting?.welcome_message_value}
+              <>
+                <div className="flex justify-start gap-2 mb-2">
+                  <Image
+                    src={chatbotImage}
+                    alt="Bot"
+                    className="w-8 h-8 rounded-full"
+                    width={20}
+                    height={20}
+                  />
+                  <div
+                    className="bg-gray-200 p-3 rounded-xl max-w-xs text-sm"
+                    style={{
+                      backgroundColor: chatbotSetting?.message_bg
+                        ? chatbotSetting?.message_bg
+                        : "#c2c2c2",
+                    }}
+                  >
+                    {chatbotSetting?.welcome_message_value}
+                  </div>
                 </div>
-              </div>
-            </>
-          )}
+              </>
+            )}
         {isBotTyping && (
           <div className="flex justify-start items-center gap-2 mb-2">
             <Image
@@ -388,8 +388,9 @@ const ChatbotEmbedSection = ({
                   ? chatbotSetting?.placeholder_value
                   : "Type a message..."
               }
-              className={`${errors.message ? "border-red-500" : ""} w-full ${chatMessages?.length ? "pl-12" : ""
-                } p-2 text-sm rounded-md border text-black border-gray-300 focus:outline-none`}
+              className={`${errors.message ? "border-red-500" : ""} w-full ${
+                chatMessages?.length ? "pl-12" : ""
+              } p-2 text-sm rounded-md border text-black border-gray-300 focus:outline-none`}
             />
           </div>
           <MicrophoneRecorder

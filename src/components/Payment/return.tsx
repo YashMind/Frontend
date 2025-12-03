@@ -1,49 +1,52 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import axios from 'axios';
-import { PaymentVerificationResponse } from '@/types/payment';
-import { formatDateTimeWithTz } from '../utils/formatDateTime';
-import { useTimezone } from '@/context/TimeZoneContext';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { PaymentVerificationResponse } from "@/types/payment";
+import { formatDateTimeWithTz } from "../utils/formatDateTime";
+import { useTimezone } from "@/context/TimeZoneContext";
 
 export default function PaymentReturn() {
   const router = useRouter();
-  const { isLoading, timezone } = useTimezone()
-  const [status, setStatus] = useState('Verifying payment...');
-  const [orderDetails, setOrderDetails] = useState<PaymentVerificationResponse | null>(null);
+  const { isLoading, timezone } = useTimezone();
+  const [status, setStatus] = useState("Verifying payment...");
+  const [orderDetails, setOrderDetails] =
+    useState<PaymentVerificationResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const { order_id, payment_id } = router.query;
 
     if (!order_id) {
-      setError('No order ID found in the URL');
+      setError("No order ID found in the URL");
       return;
     }
 
     const verifyPayment = async () => {
       try {
-        setStatus('Verifying payment status...');
+        setStatus("Verifying payment status...");
 
-        const response = await axios.post<PaymentVerificationResponse>('/api/verify-payment', {
-          order_id,
-          payment_id: payment_id as string | undefined,
-        });
+        const response = await axios.post<PaymentVerificationResponse>(
+          "/api/verify-payment",
+          {
+            order_id,
+            payment_id: payment_id as string | undefined,
+          }
+        );
 
         setOrderDetails(response.data);
 
-        if (response.data.payment_status === 'SUCCESS') {
-          setStatus('Payment successful!');
+        if (response.data.payment_status === "SUCCESS") {
+          setStatus("Payment successful!");
         } else {
           setStatus(`Payment status: ${response.data.payment_status}`);
         }
       } catch (err) {
-        console.log('Error verifying payment:', err);
         setError(
           axios.isAxiosError(err)
-            ? err.response?.data?.detail || 'Failed to verify payment'
-            : 'An unexpected error occurred'
+            ? err.response?.data?.detail || "Failed to verify payment"
+            : "An unexpected error occurred"
         );
-        setStatus('Payment verification failed');
+        setStatus("Payment verification failed");
       }
     };
 
@@ -65,31 +68,46 @@ export default function PaymentReturn() {
 
         {orderDetails && (
           <div className="space-y-2">
-            <p><strong>Order ID:</strong> {orderDetails.order_id}</p>
-            <p><strong>Amount:</strong> ₹{orderDetails.order_amount.toFixed(2)}</p>
-            <p><strong>Status:</strong>
-              <span className={`ml-2 ${orderDetails.payment_status === 'SUCCESS'
-                ? 'text-green-600'
-                : 'text-yellow-600'
-                }`}>
+            <p>
+              <strong>Order ID:</strong> {orderDetails.order_id}
+            </p>
+            <p>
+              <strong>Amount:</strong> ₹{orderDetails.order_amount.toFixed(2)}
+            </p>
+            <p>
+              <strong>Status:</strong>
+              <span
+                className={`ml-2 ${
+                  orderDetails.payment_status === "SUCCESS"
+                    ? "text-green-600"
+                    : "text-yellow-600"
+                }`}
+              >
                 {orderDetails.payment_status}
               </span>
             </p>
             {orderDetails.payment_time && (
-              <p><strong>Payment Time:</strong> {formatDateTimeWithTz(orderDetails.payment_time, timezone)}</p>
+              <p>
+                <strong>Payment Time:</strong>{" "}
+                {formatDateTimeWithTz(orderDetails.payment_time, timezone)}
+              </p>
             )}
             {orderDetails.payment_method && (
-              <p><strong>Payment Method:</strong> {orderDetails.payment_method}</p>
+              <p>
+                <strong>Payment Method:</strong> {orderDetails.payment_method}
+              </p>
             )}
             {orderDetails.payment_id && (
-              <p><strong>Payment ID:</strong> {orderDetails.payment_id}</p>
+              <p>
+                <strong>Payment ID:</strong> {orderDetails.payment_id}
+              </p>
             )}
           </div>
         )}
       </div>
 
       <button
-        onClick={() => router.push('/')}
+        onClick={() => router.push("/")}
         className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
       >
         Return to Home

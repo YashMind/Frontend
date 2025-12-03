@@ -14,7 +14,7 @@ import { formatDateOrTimeAgo } from "@/components/utils/formatDateTime";
 import { useTimezone } from "@/context/TimeZoneContext";
 
 const BillingSettings = () => {
-  const { timezone } = useTimezone()
+  const { timezone } = useTimezone();
   const [modalShow, setModalShow] = useState<boolean>(false);
   const [userData, setUserData] = useState<any>({});
   const dispatch = useDispatch<AppDispatch>();
@@ -40,7 +40,6 @@ const BillingSettings = () => {
     (state: RootState) => state.tokens.transactions
   );
 
-
   // Get transactions array
   const transactionsList = transactions?.transactions || [];
 
@@ -51,7 +50,6 @@ const BillingSettings = () => {
   const paginatedTransactions = transactionsList.slice(startIndex, endIndex);
 
   useEffect(() => {
-
     dispatch(getAllPaymentGateway());
 
     dispatch(fetchAdminTransactions({}));
@@ -154,10 +152,11 @@ const BillingSettings = () => {
                               </td>
                               <td className="py-[20px] px-[28px]">
                                 <span
-                                  className={`${item?.status.toLowerCase() === "active"
-                                    ? "bg-[#18B91F]"
-                                    : "bg-[#C38F00]"
-                                    } text-xs font-medium text-[#FBEDED] px-2 py-0.5 rounded-full`}
+                                  className={`${
+                                    item?.status.toLowerCase() === "active"
+                                      ? "bg-[#18B91F]"
+                                      : "bg-[#C38F00]"
+                                  } text-xs font-medium text-[#FBEDED] px-2 py-0.5 rounded-full`}
                                 >
                                   {item?.status.toUpperCase()}
                                 </span>
@@ -306,10 +305,7 @@ const BillingSettings = () => {
                         <tr>
                           <td colSpan={8} className="text-center py-4">
                             <h2 className="text-white/90">
-                              {typeof transactionsError === "object" &&
-                                "msg" in transactionsError
-                                ? transactionsError.msg
-                                : String(transactionsError)}
+                              {String(transactionsError)}
                             </h2>
                           </td>
                         </tr>
@@ -329,7 +325,10 @@ const BillingSettings = () => {
                               {transaction.user?.name}
                             </td>
                             <td className=" py-[20px] px-[28px] text-[#AEB9E1]">
-                              {formatDateOrTimeAgo(transaction.created_at, timezone)}
+                              {formatDateOrTimeAgo(
+                                transaction.created_at,
+                                timezone
+                              )}
                             </td>
                             <td className="py-[20px] px-[28px] text-[#AEB9E1] ">
                               {transaction.amount} {transaction.currency}
@@ -341,30 +340,36 @@ const BillingSettings = () => {
                               <span
                                 className={`
                               text-xs px-2 py-0.5 rounded-full
-                              ${transaction.status === "created"
-                                    ? "bg-blue-100 text-blue-800"
-                                    : ""
-                                  }
-                              ${transaction.status === "pending"
-                                    ? "bg-yellow-100 text-yellow-800"
-                                    : ""
-                                  }
-                              ${transaction.status === "success"
-                                    ? "bg-green-500 text-white"
-                                    : ""
-                                  }
-                              ${transaction.status === "failed"
-                                    ? "bg-red-100 text-red-800"
-                                    : ""
-                                  }
-                              ${transaction.status === "refunded"
-                                    ? "bg-purple-100 text-purple-800"
-                                    : ""
-                                  }
-                              ${transaction.status === "cancelled"
-                                    ? "bg-gray-200 text-gray-700"
-                                    : ""
-                                  }
+                              ${
+                                transaction.status === "created"
+                                  ? "bg-blue-100 text-blue-800"
+                                  : ""
+                              }
+                              ${
+                                transaction.status === "pending"
+                                  ? "bg-yellow-100 text-yellow-800"
+                                  : ""
+                              }
+                              ${
+                                transaction.status === "success"
+                                  ? "bg-green-500 text-white"
+                                  : ""
+                              }
+                              ${
+                                transaction.status === "failed"
+                                  ? "bg-red-100 text-red-800"
+                                  : ""
+                              }
+                              ${
+                                transaction.status === "refunded"
+                                  ? "bg-purple-100 text-purple-800"
+                                  : ""
+                              }
+                              ${
+                                transaction.status === "cancelled"
+                                  ? "bg-gray-200 text-gray-700"
+                                  : ""
+                              }
                             `}
                               >
                                 {transaction.status}
@@ -409,8 +414,6 @@ const BillingSettings = () => {
                   {transactionsList.length > transactionsPerPage && (
                     <div className="flex justify-between items-center p-[28px] border-t border-[#343B4F]">
                       <span className="text-sm text-gray-400">
-
-
                         {transactionsList.length} transactions (Page{" "}
                         {currentPage} of {totalPages})
                       </span>

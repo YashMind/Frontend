@@ -75,9 +75,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
     const chatId = messages[0]?.chat_id || "Unknown";
     const userId = messages[0]?.user_id || "Unknown";
     const chatbotCreatedAt = formatDateOrTimeAgo(chatBot?.created_at, timezone);
-    console.log("___________________", chatbotCreatedAt);
     const createdAt = formatDateOrTimeAgo(messages[0]?.created_at, timezone);
-    console.log("------------", createdAt);
     const endAt = formatDateOrTimeAgo(
       messages[messages.length - 1]?.created_at,
       timezone
@@ -137,9 +135,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
 
     selectedIds.forEach((chatId: number) => {
       const messages = chatUserHistory?.data[chatId].messages;
-      console.log("--------------------------------------", messages);
       const platform = chatUserHistory?.data[chatId].platform;
-      console.log("----------------------------------------", platform);
       if (messages && messages.length > 0) {
         handleCreateDownloadPdf(messages, platform, chatUserHistory?.chatBot);
       }
@@ -260,7 +256,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
               {chatUserHistory?.data &&
                 Object.entries(chatUserHistory?.data)
                   .sort(
-                    ([, a], [, b]) =>
+                    ([, a]: any, [, b]: any) =>
                       new Date(b.messages[0].created_at).getTime() -
                       new Date(a.messages[0].created_at).getTime()
                   )

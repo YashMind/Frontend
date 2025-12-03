@@ -31,7 +31,9 @@ export const getChatbots = createAsyncThunk<any, GetChatbotsArgs | undefined>(
       dispatch(startLoadingActivity());
 
       const include_shared = args.include_shared ?? true;
-      const response = await http.get(`/chatbot/get-all?include_shared=${include_shared}`);
+      const response = await http.get(
+        `/chatbot/get-all?include_shared=${include_shared}`
+      );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
         return response.data;
@@ -289,7 +291,6 @@ export const createChatbotFaqs = createAsyncThunk<
         return rejectWithValue("failed to create chatbot!");
       }
     } catch (error: any) {
-      console.log("Chatbot FAQ generation Error: ", error)
       if (error.response && error.response.status) {
         // toast.error(error?.response?.data?.detail);
         toasterError(error?.response?.data?.detail, 10000, "id");
@@ -317,7 +318,10 @@ export const updateChatbotsFaqs = createAsyncThunk<
       }));
 
       dispatch(startLoadingActivity());
-      const response = await http.put("/chatbot/update-bot-faqs", { bot_id: payload.bot_id, questions: formattedQuestions });
+      const response = await http.put("/chatbot/update-bot-faqs", {
+        bot_id: payload.bot_id,
+        questions: formattedQuestions,
+      });
 
       if (response.status === 200) {
         toasterSuccess("chatbot faqs updated successfully!", 10000, "id");
@@ -327,7 +331,6 @@ export const updateChatbotsFaqs = createAsyncThunk<
         return rejectWithValue("Failed to update chatbot FAQs!");
       }
     } catch (error: any) {
-      console.log("Chatbot FAQ update Error: ", error);
       if (error.response && error.response.status) {
         toasterError(error?.response?.data?.detail, 10000, "id");
         return rejectWithValue(error.response.data.message);
@@ -338,7 +341,6 @@ export const updateChatbotsFaqs = createAsyncThunk<
     }
   }
 );
-
 
 export const uploadDocument = createAsyncThunk<any, { payload: FormData }>(
   "chat/uploadDocument",
@@ -863,7 +865,7 @@ export const configureLeadMail = createAsyncThunk(
   "chat/configureLeadMail",
   async (
     payload: {
-      bot_id: number;
+      bot_id?: number;
       email: string;
     },
     { rejectWithValue }
@@ -1051,8 +1053,8 @@ export const fetchChatMessageTokensSummary = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.detail ||
-        error.message ||
-        "Failed to fetch today's tokens"
+          error.message ||
+          "Failed to fetch today's tokens"
       );
     }
   }
@@ -1138,7 +1140,7 @@ export const updateWhatsappRegistration = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error?.response?.data?.detail ||
-        "Failed to update WhatsApp registration"
+          "Failed to update WhatsApp registration"
       );
     }
   }
@@ -1155,7 +1157,7 @@ export const deactivateWhatsappRegistration = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error?.response?.data?.detail ||
-        "Failed to deactivate WhatsApp registration"
+          "Failed to deactivate WhatsApp registration"
       );
     }
   }
@@ -1172,7 +1174,7 @@ export const deleteWhatsappRegistration = createAsyncThunk(
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error?.response?.data?.detail ||
-        "Failed to deactivate WhatsApp registration"
+          "Failed to deactivate WhatsApp registration"
       );
     }
   }
@@ -1228,7 +1230,7 @@ export const sendEmail = createAsyncThunk(
 
 const initialState = {
   loading: false,
-  error: null as null | string,
+  error: null as null | string | any,
   data: [],
   botData: {},
   chatbots: [] as ChatbotsData[],

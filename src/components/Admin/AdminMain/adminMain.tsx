@@ -1,4 +1,4 @@
-import { RootState } from "@/store";
+import { RootState } from "@/store/store";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAdminTransactions } from "@/store/slices/admin/tokenAnalytic";
@@ -6,7 +6,10 @@ import { fetchCountryNames } from "@/store/slices/auth/country";
 import GraphChart from "./GraphChart";
 import UserByPlanGaph from "./UserByPlanGaph";
 import { AppDispatch } from "@/store/store";
-import { formatDateOrTimeAgo, formatDateTimeWithTz } from "@/components/utils/formatDateTime";
+import {
+  formatDateOrTimeAgo,
+  formatDateTimeWithTz,
+} from "@/components/utils/formatDateTime";
 import { useTimezone } from "@/context/TimeZoneContext";
 
 const AdminMain = () => {
@@ -25,17 +28,17 @@ const AdminMain = () => {
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const tokenCredit = useSelector((state: RootState) => state.tokenCredit);
+  // const tokenCredit = useSelector((state: RootState) => state.tokenCredit);
   const transactionsState = useSelector(
     (state: RootState) => state.tokens.transactions
   );
   const transactionsData = transactionsState?.data;
 
   const transactions = transactionsData?.transactions || [];
-  const revenueByCurrency = transactionsData?.revenue_by_currency || {
-    INR: 0,
-    USD: 0,
-  };
+  // const revenueByCurrency = transactionsData?.revenue_by_currency || {
+  //   INR: 0,
+  //   USD: 0,
+  // };
   const transactionLoading = transactionsState?.loading || false;
   const transactionError = transactionsState?.error;
   const pagination = transactionsData?.pagination || {};
@@ -46,7 +49,9 @@ const AdminMain = () => {
   const countriesError = countryState.error;
 
   // Calculate pagination for transactions
-  const totalTransactionPages = Math.ceil(transactions.length / transactionsPerPage);
+  const totalTransactionPages = Math.ceil(
+    transactions.length / transactionsPerPage
+  );
   const startIndex = (transactionPage - 1) * transactionsPerPage;
   const endIndex = startIndex + transactionsPerPage;
   const paginatedTransactions = transactions.slice(startIndex, endIndex);
@@ -90,10 +95,11 @@ const AdminMain = () => {
   const handleRefreshTransactions = async () => {
     setRefreshing(true);
     try {
-      await dispatch(fetchAdminTransactions({ page: currentPage, perPage })).unwrap();
+      await dispatch(
+        fetchAdminTransactions({ page: currentPage, perPage })
+      ).unwrap();
     } catch (err) {
       setError("Failed to refresh transactions");
-      console.log("Refresh error:", err);
     } finally {
       setRefreshing(false);
     }
@@ -104,7 +110,6 @@ const AdminMain = () => {
       await dispatch(fetchCountryNames()).unwrap();
     } catch (err) {
       setError("Failed to refresh countries");
-      console.log("Refresh error:", err);
     }
   };
 
@@ -171,7 +176,9 @@ const AdminMain = () => {
               }}
               disabled={transactionLoading || countriesLoading}
             >
-              {transactionLoading || countriesLoading ? "Refreshing..." : "Refresh All Data"}
+              {transactionLoading || countriesLoading
+                ? "Refreshing..."
+                : "Refresh All Data"}
             </button>
           </div>
         </header>
@@ -326,10 +333,11 @@ const AdminMain = () => {
                         <div
                           className="bg-[#14CA74] h-1 rounded-full"
                           style={{
-                            width: `${(stat.count /
-                              Math.max(...countryStats.map((s) => s.count))) *
+                            width: `${
+                              (stat.count /
+                                Math.max(...countryStats.map((s) => s.count))) *
                               100
-                              }%`,
+                            }%`,
                           }}
                         ></div>
                       </div>
@@ -369,7 +377,9 @@ const AdminMain = () => {
                 onClick={handleRefreshTransactions}
                 disabled={transactionLoading || refreshing}
               >
-                {transactionLoading || refreshing ? "Loading..." : "Refresh Transactions"}
+                {transactionLoading || refreshing
+                  ? "Loading..."
+                  : "Refresh Transactions"}
               </button>
             </div>
 
@@ -393,11 +403,15 @@ const AdminMain = () => {
                 <tbody className="text-white divide-y divide-gray-700">
                   {transactionLoading ? (
                     <tr>
-                      <td colSpan={5} className="py-4 text-center text-gray-400">
+                      <td
+                        colSpan={5}
+                        className="py-4 text-center text-gray-400"
+                      >
                         Loading transactions...
                       </td>
                     </tr>
-                  ) : paginatedTransactions && paginatedTransactions.length > 0 ? (
+                  ) : paginatedTransactions &&
+                    paginatedTransactions.length > 0 ? (
                     paginatedTransactions.map((transaction: any) => (
                       <tr key={transaction.id}>
                         <td className="py-1 ">
@@ -409,7 +423,10 @@ const AdminMain = () => {
                             "N/A"}
                         </td>
                         <td className="py-1 ">
-                          {formatDateOrTimeAgo(transaction.created_at, timezone)}
+                          {formatDateOrTimeAgo(
+                            transaction.created_at,
+                            timezone
+                          )}
                         </td>
                         <td className="py-1 ">
                           <span className={getStatusBadge(transaction.status)}>
@@ -417,13 +434,19 @@ const AdminMain = () => {
                           </span>
                         </td>
                         <td className="py-1 ">
-                          {formatCurrency(transaction.amount, transaction.currency)}
+                          {formatCurrency(
+                            transaction.amount,
+                            transaction.currency
+                          )}
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={5} className="py-4 text-center text-gray-400">
+                      <td
+                        colSpan={5}
+                        className="py-4 text-center text-gray-400"
+                      >
                         No transactions found
                       </td>
                     </tr>
@@ -436,19 +459,25 @@ const AdminMain = () => {
             {transactions.length > transactionsPerPage && (
               <div className="flex justify-between items-center mt-4 text-sm border-t border-gray-700 pt-4">
                 <span className="text-gray-400">
-                  Showing {startIndex + 1} to {Math.min(endIndex, transactions.length)} of {transactions.length} transactions
-                  (Page {transactionPage} of {totalTransactionPages})
+                  Showing {startIndex + 1} to{" "}
+                  {Math.min(endIndex, transactions.length)} of{" "}
+                  {transactions.length} transactions (Page {transactionPage} of{" "}
+                  {totalTransactionPages})
                 </span>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => handleTransactionPageChange(transactionPage - 1)}
+                    onClick={() =>
+                      handleTransactionPageChange(transactionPage - 1)
+                    }
                     disabled={transactionPage === 1}
                     className="px-3 py-1 bg-[#0d1224] border border-gray-600 rounded disabled:opacity-50 hover:bg-[#1a223c] transition-colors"
                   >
                     Previous
                   </button>
                   <button
-                    onClick={() => handleTransactionPageChange(transactionPage + 1)}
+                    onClick={() =>
+                      handleTransactionPageChange(transactionPage + 1)
+                    }
                     disabled={transactionPage === totalTransactionPages}
                     className="px-3 py-1 bg-[#0d1224] border border-gray-600 rounded disabled:opacity-50 hover:bg-[#1a223c] transition-colors"
                   >
@@ -462,8 +491,8 @@ const AdminMain = () => {
             {pagination && pagination.total_pages > 1 && (
               <div className="flex justify-between items-center mt-4 text-sm border-t border-gray-700 pt-4">
                 <span className="text-gray-400">
-                  API Page {pagination.page} of {pagination.total_pages}
-                  ({pagination.total_transactions} total transactions)
+                  API Page {pagination.page} of {pagination.total_pages}(
+                  {pagination.total_transactions} total transactions)
                 </span>
                 <div className="flex gap-2">
                   <button
@@ -476,7 +505,8 @@ const AdminMain = () => {
                   <button
                     onClick={() => handlePageChange(pagination.page + 1)}
                     disabled={
-                      pagination.page === pagination.total_pages || transactionLoading
+                      pagination.page === pagination.total_pages ||
+                      transactionLoading
                     }
                     className="px-3 py-1 bg-[#0d1224] border border-gray-600 rounded disabled:opacity-50 hover:bg-[#1a223c] transition-colors"
                   >

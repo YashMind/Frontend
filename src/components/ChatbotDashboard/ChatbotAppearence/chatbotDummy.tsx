@@ -11,7 +11,6 @@ const ChatbotDummy = ({ chatbotSettings }: { chatbotSettings: any }) => {
   const [inputvalue, setInputvalue] = useState("");
 
   const chatbotAvatar: any = useMemo(() => {
-    console.log("memo called", chatbotSettings.image);
     const imageValue: any =
       chatbotSettings && chatbotSettings.image
         ? typeof chatbotSettings.image == "string"
@@ -20,10 +19,8 @@ const ChatbotDummy = ({ chatbotSettings }: { chatbotSettings: any }) => {
         : null;
 
     if (imageValue instanceof File || imageValue instanceof Blob) {
-      console.log("file found");
       return URL.createObjectURL(imageValue);
     } else if (typeof imageValue === "string" && imageValue.trim() !== "") {
-      console.log("image string found", imageValue);
       return pathToImage(imageValue);
     }
     return "/images/face2.webp"; // Default fallback
@@ -39,7 +36,6 @@ const ChatbotDummy = ({ chatbotSettings }: { chatbotSettings: any }) => {
         chatbotSettings.image instanceof Blob
       ) {
         if (chatbotAvatar.startsWith("blob:")) {
-          console.log("gggggggggggggggg", chatbotSettings.image);
           URL.revokeObjectURL(chatbotAvatar);
         }
       }

@@ -67,8 +67,7 @@ async function fetchPermissions(
     if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
       return cached.permissions;
     }
-    // console.log("calling middle ware:", `${process.env.NEXT_PUBLIC_API_URL}/admin/roles_permissions`, accessToken)
-    // Fetch fresh permissions
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/admin/roles_permissions`,
       {
@@ -79,18 +78,12 @@ async function fetchPermissions(
       }
     );
 
-
-    // console.log("api fetched", response)
-
     if (!response.ok) {
       const error = await response.json();
-      console.log("Permissions API Error:", error);
-      return cached?.permissions || []; // Fallback to stale cache if available
+      return cached?.permissions || [];
     }
 
     const { permissions } = await response.json();
-    // console.log("----------------------------111", permissionCache)
-    // Update cache
     permissionCache[role] = {
       permissions: permissions || [],
       timestamp: Date.now(),
@@ -99,7 +92,6 @@ async function fetchPermissions(
 
     return permissions || [];
   } catch (error) {
-    console.log("Network error fetching permissions:", error);
     return permissionCache[role]?.permissions || [];
   }
 }
@@ -111,9 +103,7 @@ async function handleAdminRoutes(
   pathname: string,
   role: string | null
 ) {
-  console.log("ROLE of user:", role)
   if (!role || !ADMIN_ROLES.has(role)) {
-    console.log("Inside redirect", role, ADMIN_ROLES)
     return NextResponse.redirect(
       new URL("/chatbot-dashboard/main", request.url)
     );
@@ -125,16 +115,12 @@ async function handleAdminRoutes(
       (p) => p === "*" || pathname.endsWith(p)
     );
 
-
-    console.log("Has Access:", hasAccess)
-
     if (!hasAccess) {
       return NextResponse.redirect(
         new URL("/chatbot-dashboard/main", request.url)
       );
     }
   } catch (error) {
-    console.log("Permission check failed:", error);
     return NextResponse.redirect(
       new URL("/chatbot-dashboard/main", request.url)
     );
@@ -145,9 +131,6 @@ export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const accessToken = request.cookies.get("access_token")?.value;
 
-  // console.log("Access token:", accessToken)
-
-  // Check public routes first
   if (DYNAMIC_PUBLIC_ROUTE.test(pathname)) return NextResponse.next();
   if (PUBLIC_ROUTES.has(pathname)) return NextResponse.next();
   //   {
@@ -170,7 +153,6 @@ export default async function middleware(request: NextRequest) {
     }
     role = decoded.role || null;
   } catch (error) {
-    console.log("Invalid JWT:", error);
     return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 

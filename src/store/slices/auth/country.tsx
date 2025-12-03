@@ -24,7 +24,6 @@ export const fetchCountryNames = createAsyncThunk(
       const countryList = response.data.countries.map(
         (country: any) => country
       );
-      console.log("Returning countryList", countryList);
       return countryList;
     } catch (err) {
       console.log(err);
@@ -46,7 +45,6 @@ const countriesSlice = createSlice({
       })
       .addCase(fetchCountryNames.fulfilled, (state, action) => {
         state.loading = false;
-        console.log("ation.payload", action.payload);
         state.countries = action.payload || [];
       })
       .addCase(fetchCountryNames.rejected, (state, action) => {

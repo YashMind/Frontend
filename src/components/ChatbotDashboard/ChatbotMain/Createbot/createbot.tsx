@@ -16,15 +16,15 @@ interface EditUserModalProps {
 }
 
 // Define a list of available domains
-const DOMAIN_OPTIONS = promptTypes.map(domain => ({
+const DOMAIN_OPTIONS = promptTypes.map((domain) => ({
   value: domain,
-  label: domain
+  label: domain,
 }));
 
 const schema = yup.object().shape({
   chatbot_name: yup.string().required("Bot name is required field"),
   public: yup.boolean().optional(),
-  domain: yup.string().required("Please select a domain")
+  domain: yup.string().required("Please select a domain"),
 });
 
 const CreatebotModal = ({ show, onHide }: EditUserModalProps) => {
@@ -71,7 +71,7 @@ const CreatebotModal = ({ show, onHide }: EditUserModalProps) => {
             />
             {errors.chatbot_name && (
               <span className="text-red-500 mt-2">
-                {errors?.chatbot_name?.message}
+                {errors?.chatbot_name?.message as string}
               </span>
             )}
           </div>
