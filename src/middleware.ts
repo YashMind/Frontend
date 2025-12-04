@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 
 const ADMIN_ROLES = new Set([
   "Super Admin",
+  "super admin",
   "Billing Admin",
   "Product Admin",
   "Support Admin",

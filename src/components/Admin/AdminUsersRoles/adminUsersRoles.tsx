@@ -306,17 +306,18 @@ const AdminUsersRoles = () => {
                   >
                     <div className="flex justify-between items-center bg-[#081028] px-4 py-2 rounded">
                       <h3 className="font-semibold text-white">{item?.role}</h3>
-                      {item.role !== "Super Admin" && (
-                        <button
-                          className="cursor-pointer text-sm bg-[#3B0459] text-white px-4 py-1 rounded"
-                          onClick={() => {
-                            setShowPermissionModal(true);
-                            setAdminUserData(item);
-                          }}
-                        >
-                          Edit Permissions
-                        </button>
-                      )}
+                      {item.role !== "Super Admin" &&
+                        item.role !== "super admin" && (
+                          <button
+                            className="cursor-pointer text-sm bg-[#3B0459] text-white px-4 py-1 rounded"
+                            onClick={() => {
+                              setShowPermissionModal(true);
+                              setAdminUserData(item);
+                            }}
+                          >
+                            Edit Permissions
+                          </button>
+                        )}
                     </div>
 
                     <div className="mt-4">
