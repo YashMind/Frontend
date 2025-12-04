@@ -36,7 +36,7 @@ export const getChatbots = createAsyncThunk<any, GetChatbotsArgs | undefined>(
       );
       if (response.status === 200) {
         dispatch(stopLoadingActivity());
-        return response.data;
+        return response.data.data;
       } else {
         return rejectWithValue("failed to fetch chatbots");
       }

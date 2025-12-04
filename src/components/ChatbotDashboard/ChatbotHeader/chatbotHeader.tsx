@@ -205,6 +205,7 @@ const ChatbotDashboardHeader = ({
           {role &&
             [
               "super admin",
+              "Super Admin",
               "billing admin",
               "product admin",
               "support admin",
