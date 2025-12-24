@@ -132,12 +132,15 @@ export const MessageGraph = () => {
                 color: '#FFFFFF',
                 borderRadius: '8px'
               }}
-              formatter={(value: number) => [`${value} messages`, 'Count']}
+              formatter={(value) => [
+                `${value ?? 0} messages`,
+                'Count',
+              ]}
               labelFormatter={(label) => `${getXAxisLabel()}: ${label}`}
             />
             <Legend
               wrapperStyle={{ paddingTop: '20px' }}
-              formatter={(value) => <span className="text-white">{value}</span>}
+              formatter={(value) => <span className="text-white">{value ?? 0}</span>}
             />
             <Area
               type="monotone"
