@@ -17,7 +17,7 @@
     "axios": "^1.8.4",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
-    "framer-motion": "^12.23.25",
+    "framer-motion": "^12.23.26",
     "jspdf": "^3.0.1",
     "jspdf-autotable": "^5.0.2",
     "jwt-decode": "^4.0.0",
