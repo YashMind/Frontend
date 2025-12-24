@@ -169,23 +169,29 @@ const GraphChart = () => {
                   borderRadius: "0.5rem",
                   color: "#E2E8F0",
                 }}
-                formatter={(value, name) => [
-                  Number(value).toLocaleString(),
-                  name
-                    .toString()
-                    .replace("_", " ")
-                    .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase()),
-                ]}
+                formatter={(value, name) => {
+                  const label =
+                    typeof name === "string"
+                      ? name
+                        .replace("_", " ")
+                        .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+                      : "";
+
+                  return [Number(value).toLocaleString(), label];
+                }}
+
                 labelStyle={{ color: "#CBD5E0" }}
               />
               <Legend
                 wrapperStyle={{ paddingTop: "20px" }}
                 formatter={(value) =>
-                  value
-                    .toString()
-                    .replace("_", " ")
-                    .replace(/(^\w|\s\w)/g, (m: any) => m.toUpperCase())
+                  typeof value === "string"
+                    ? value
+                      .replace("_", " ")
+                      .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+                    : ""
                 }
+
               />
 
               {formattedData.length > 0 && (
