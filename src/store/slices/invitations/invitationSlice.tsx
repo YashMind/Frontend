@@ -121,8 +121,7 @@ export const getUninvitedUsers = createAsyncThunk<any, number>(
       }
 
       return rejectWithValue(
-        `Network error: ${
-          error.message || "An error occurred while fetching uninvited users"
+        `Network error: ${error.message || "An error occurred while fetching uninvited users"
         }`
       );
     } finally {

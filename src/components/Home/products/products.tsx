@@ -41,16 +41,16 @@ const HomeProducts = () => {
               desc: "Revolutionizing Customer Interaction with Advanced AI Chatbots, Providing Instant, Personalized Support and Seamless Conversations.",
               icon: "/images/icons8-voice-64 1.png",
             },
-            // {
-            //   title: "Voice Agent",
-            //   desc: "Transform the way you interact with technology—just speak, and let our voice agent handle the rest with precision and intelligence.",
-            //   icon: "/images/icons8-voice-64 1 (1).png",
-            // },
-            // {
-            //   title: "Chat LLM",
-            //   desc: "Unlock the Power of Top AI Models. Compare Outputs, Test Multilingual & Document Skills — All in One Place.",
-            //   icon: "/images/icons8-voice-64 1 (2).png",
-            // },
+            {
+              title: "Voice Agent",
+              desc: "Transform the way you interact with technology—just speak, and let our voice agent handle the rest with precision and intelligence.",
+              icon: "/images/icons8-voice-64 1 (1).png",
+            },
+            {
+              title: "Chat LLM",
+              desc: "Unlock the Power of Top AI Models. Compare Outputs, Test Multilingual & Document Skills — All in One Place.",
+              icon: "/images/icons8-voice-64 1 (2).png",
+            },
           ].map((card, idx) => (
             <div
               key={idx}

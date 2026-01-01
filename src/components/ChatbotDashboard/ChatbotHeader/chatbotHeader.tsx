@@ -82,17 +82,14 @@ const ChatbotDashboardHeader = ({
 
   return (
     <nav
-      className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${
-        fix ? "fixed" : ""
-      } w-full z-90 pt-2 ${
-        announcements?.length > 0 ? "md:max-h-[12%] py-2" : "md:max-h-[8%] py-4"
-      } `}
+      className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${fix ? "fixed" : ""
+        } w-full z-90 pt-2 ${announcements?.length > 0 ? "md:max-h-[12%] py-2" : "md:max-h-[20%] py-4"
+        } `}
     >
       {/* 🔹 Main Navbar Content */}
       <div
-        className={`container mx-auto  flex flex-wrap items-center justify-between ${
-          announcements?.length > 0 ? "py-4 md:py-5" : "py-2 md:py-4"
-        }`}
+        className={`container mx-auto  flex flex-wrap items-center justify-between ${announcements?.length > 0 ? "py-4 md:py-5" : "py-2 md:py-4"
+          }`}
       >
         {/* Logo Section */}
         <div className="flex items-center justify-between w-full md:w-auto">
@@ -150,18 +147,16 @@ const ChatbotDashboardHeader = ({
         {/* Navigation Links - Hidden on mobile unless menu is open */}
         {!chatbotError && (
           <div
-            className={`${
-              isMenuOpen ? "block" : "hidden"
-            } w-full md:block md:w-auto`}
+            className={`${isMenuOpen ? "block" : "hidden"
+              } w-full md:block md:w-auto`}
             id="navbar-sticky"
           >
             <ul className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4 lg:space-x-6 p-4 md:p-0 mt-4 md:mt-0 rounded-lg">
               <li>
                 <Link
                   href="/chatbot-dashboard/main"
-                  className={`block py-2 px-4 text-white ${
-                    bot === 1 ? "bg-[#434343]" : ""
-                  } rounded-[26px] hover:bg-gray-700 md:hover:bg-transparent md:hover:text-blue-300 transition-colors`}
+                  className={`block py-2 px-4 text-white ${bot === 1 ? "bg-[#434343]" : ""
+                    } rounded-[26px] hover:bg-gray-700 md:hover:bg-transparent md:hover:text-blue-300 transition-colors`}
                   onClick={() => {
                     setBot(1);
                     setIsMenuOpen(false);
@@ -170,7 +165,7 @@ const ChatbotDashboardHeader = ({
                   Chat Bot
                 </Link>
               </li>
-              {/* <li>
+              <li>
                 <Link
                   href="/voice-agent"
                   className={`block py-2 px-4 text-white ${bot === 2 ? "bg-[#434343]" : ""
@@ -182,8 +177,8 @@ const ChatbotDashboardHeader = ({
                 >
                   Voice Agent
                 </Link>
-              </li> */}
-              {/* <li>
+              </li>
+              <li>
                 <Link
                   href="/chatllm"
                   className={`block py-2 px-4 text-white ${bot === 3 ? "bg-[#434343]" : ""
@@ -195,7 +190,7 @@ const ChatbotDashboardHeader = ({
                 >
                   Chat LLM
                 </Link>
-              </li> */}
+              </li>
             </ul>
           </div>
         )}

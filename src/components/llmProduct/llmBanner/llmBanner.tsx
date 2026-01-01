@@ -7,8 +7,8 @@ const LlmBanner = () => {
       <div className="container h-full flex flex-col md:flex-row items-center justify-between gap-10 px-4 md:px-0 py-10 md:py-0">
         {/* Left Side */}
         <div className="w-full md:w-1/2 text-center md:text-left">
-        <h1 className="text-[30px] sm:text-[36px] md:text-[50px] text-white py-4 "
-         style={{ fontFamily: "'Audiowide', sans-serif" }}>Comming Soon</h1>
+          <h1 className="text-[30px] sm:text-[36px] md:text-[50px] text-white py-4 "
+            style={{ fontFamily: "'Audiowide', sans-serif" }}>Coming Soon</h1>
           <h2
             className="text-[28px] mt-0 sm:text-[36px] md:text-[50px] text-white py-4 "
             style={{ fontFamily: "'Audiowide', sans-serif" }}

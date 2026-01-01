@@ -108,14 +108,15 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
     }
 
     return (
-      <div className="bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 h-full flex flex-col">
+      <div className="bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 h-full flex flex-col md:pt-6">
         {/* Header area - fixed height */}
-        <div className="h-[17%] min-h-[60px]">
+        <div className="h-[17%] min-h-[60px] md:pt-6">
+
           <RealTimeCount />
         </div>
 
         {/* Main content area - takes remaining space */}
-        <div className="flex relative lg:gap-4 flex-1 min-h-0">
+        <div className="flex relative lg:gap-4 flex-1 min-h-0 md:mt-6">
           {/* Sidebar */}
           {botPage !== "main" && (
             <div className="overflow-y-auto  flex-shrink-0  lg:w-[15%] no-scrollbar rounded-3xl">

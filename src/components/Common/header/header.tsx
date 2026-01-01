@@ -232,36 +232,36 @@ const HomeHeader = () => {
                     Chat Bot
                   </Link>
                 </li>
-                {/* <li>
-                <Link
-                  href="/voice-agent"
-                  className={`block py-2 px-3 rounded-full ${navItem === 3
-                    ? "bg-white text-purple-900"
-                    : "text-white hover:bg-white/20"
-                    }`}
-                  onClick={() => {
-                    setNavItem(3);
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Voice Agent
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/chatllm"
-                  className={`block py-2 px-3 rounded-full ${navItem === 4
-                    ? "bg-white text-purple-900"
-                    : "text-white hover:bg-white/20"
-                    }`}
-                  onClick={() => {
-                    setNavItem(4);
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Chat LLM
-                </Link>
-              </li> */}
+                <li>
+                  <Link
+                    href="/voice-agent"
+                    className={`block py-2 px-3 rounded-full ${navItem === 3
+                      ? "bg-white text-purple-900"
+                      : "text-white hover:bg-white/20"
+                      }`}
+                    onClick={() => {
+                      setNavItem(3);
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Voice Agent
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/chatllm"
+                    className={`block py-2 px-3 rounded-full ${navItem === 4
+                      ? "bg-white text-purple-900"
+                      : "text-white hover:bg-white/20"
+                      }`}
+                    onClick={() => {
+                      setNavItem(4);
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Chat LLM
+                  </Link>
+                </li>
                 <li>
                   <Link
                     href="/#pricing"
