@@ -13,7 +13,7 @@ const AccessDownloadDialog = ({
   token,
   fileUrl,
   isOpen,
-  fileName = "download.zip",
+  fileName = "yashraa.zip",
   onClose,
 }: AccessDownloadDialogProps) => {
   const [tokenCopied, setTokenCopied] = useState(false);
