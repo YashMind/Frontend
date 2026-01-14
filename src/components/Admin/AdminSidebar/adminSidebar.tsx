@@ -20,7 +20,7 @@ import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 import ConfirmDeleteModal from "@/components/DeleteConfirmationModal";
 import { formatName, pathToImage } from "@/services/utils/helpers";
-import { RiDashboardHorizontalFill } from "react-icons/ri";
+import { RiDashboardHorizontalFill, RiMenuLine, RiCloseLine } from "react-icons/ri";
 import './sidebar.css';
 const menuItems = [
   { label: "Dashboard", path: "/admin/dashboard", icon: <RiDashboardHorizontalFill size={25} />, key: "dashboard" },
@@ -103,6 +103,9 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleSidebar = () => setIsOpen(!isOpen);
 
   const handleConfirmDelete = async () => {
     await dispatch(logoutUser({ router }));
@@ -110,15 +113,26 @@ const AdminSidebar = ({ adminPage }: { adminPage: string }) => {
   };
 
   return (
-    <div className="sidebar">
-      <div className="hamburger">
-        &#9776;
+    <div className="admin-sidebar-container lg:h-screen lg:sticky lg:top-0">
+      {/* Mobile Header with Hamburger */}
+      <div className="lg:hidden bg-[#081028] p-4 flex justify-between items-center w-full sticky top-0 z-50 border-b border-gray-700">
+        <Link href="/">
+          <Image
+            alt="logo"
+            src="/images/yash-removebg-preview.png"
+            height={40}
+            width={40}
+            unoptimized
+          />
+        </Link>
+        <button onClick={toggleSidebar} className="text-white p-2">
+          {isOpen ? <RiCloseLine size={28} /> : <RiMenuLine size={28} />}
+        </button>
+      </div>
 
-      </div>
-      <div className="sidebarcontent">
-      </div>
-      <aside className="w-[294px] bg-[#081028]   flex flex-col gap-2 rounded-tl-[15px] rounded-bl-[15px]">
-        <h2 className="text-xl font-semibold text-center my-[40px]">
+      <aside className={`fixed inset-y-0 left-0 bg-[#081028] w-[280px] z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:h-full overflow-y-auto no-scrollbar
+        ${isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full lg:shadow-none'} flex flex-col gap-2 rounded-tr-lg rounded-br-lg lg:rounded-none`}>
+        <h2 className="text-xl font-semibold text-center my-[20px] lg:my-[40px]">
           <Image
             alt="alt"
             src="/images/yash-removebg-preview.png"

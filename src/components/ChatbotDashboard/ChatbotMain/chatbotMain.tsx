@@ -108,14 +108,14 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
     }
 
     return (
-      <div className="bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-2 md:p-4 min-h-screen flex flex-col pt-16 md:pt-20">
+      <div className="bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-2 md:p-4 min-h-screen lg:min-h-0 lg:h-full flex flex-col pt-16 md:pt-20">
         {/* Header area - flexible height */}
         <div className="w-full">
           <RealTimeCount />
         </div>
 
         {/* Main content area - takes remaining space */}
-        <div className="flex flex-col lg:flex-row relative lg:gap-4 flex-1 min-h-0 mt-4 md:mt-6">
+        <div className="flex flex-col lg:flex-row relative lg:gap-4 flex-1 lg:min-h-0 mt-4 md:mt-6">
           {/* Sidebar */}
           {botPage !== "main" && (
             <div className="w-full lg:w-[15%] no-scrollbar mb-4 lg:mb-0">
@@ -124,8 +124,8 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
           )}
 
           {/* Main content */}
-          <div className={`relative bg-[#2a2561] rounded-2xl flex-1 min-h-0 flex flex-col `}>
-            <div className="overflow-y-auto no-scrollbar">
+          <div className={`relative bg-[#2a2561] rounded-2xl flex-1 lg:min-h-0 flex flex-col `}>
+            <div className="lg:overflow-y-auto lg:h-full no-scrollbar">
               {renderPageContent()}
             </div>
             <div className="hidden md:flex absolute top-5 right-5 items-center gap-10">
@@ -213,7 +213,7 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
 
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen lg:h-screen">
       {/* Fixed header - outside the scrollable area */}
       <ChatbotDashboardHeader
         fix={true}
@@ -223,7 +223,7 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
       />
 
       {/* Scrollable content */}
-      <div className="bg-gradient-to-r from-[#002B58] to-[#3B0459] flex-1 overflow-hidden">
+      <div className="bg-gradient-to-r from-[#002B58] to-[#3B0459] flex-1 lg:overflow-hidden">
         {renderMainContent}
       </div>
     </div>

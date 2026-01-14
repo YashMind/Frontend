@@ -57,9 +57,8 @@ const MetricCard = ({
 
   return (
     <div
-      className={`relative bg-[#0B1739] p-4 rounded-lg shadow-md border border-[#343B4F] ${
-        route ? "cursor-pointer hover:border-[#4a5568]" : ""
-      }`}
+      className={`relative bg-[#0B1739] p-4 rounded-lg shadow-md border border-[#343B4F] ${route ? "cursor-pointer hover:border-[#4a5568]" : ""
+        }`}
       onClick={route ? handleCardClick : undefined}
     >
       <div className="flex items-center justify-between text-sm text-gray-400 mb-2 font-medium">
@@ -182,8 +181,8 @@ const AdminTopbar = ({ allUsersData }: AdminTopbarProps) => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mt-[40px] px-10">
-        <h2 className="text-2xl font-semibold">
+      <div className="flex flex-col md:flex-row items-center justify-between mt-[20px] md:mt-[40px] px-4 lg:px-10 gap-4">
+        <h2 className="text-xl md:text-2xl font-semibold text-center md:text-left">
           Welcome back,{" "}
           {userData?.fullName ? formatName(userData.fullName) : ""}
         </h2>
@@ -194,11 +193,11 @@ const AdminTopbar = ({ allUsersData }: AdminTopbarProps) => {
           Back
         </button>
       </div>
-      <p className="ml-10 text-[#AEB9E1] text-xs font-normal">
+      <p className="px-4 lg:px-10 text-[#AEB9E1] text-xs font-normal text-center md:text-left mt-2">
         Measure your advertising ROI and report website traffic.
       </p>
 
-      <div className="ml-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full mt-[30px]">
+      <div className="px-4 lg:px-[0px] ml-0 lg:ml-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full mt-[20px] md:mt-[30px] pr-4 lg:pr-0">
         {metrics.map((metric, index) => (
           <MetricCard
             key={index}

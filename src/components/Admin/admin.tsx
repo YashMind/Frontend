@@ -56,11 +56,11 @@ const Admin = ({ adminPage }: { adminPage: string }) => {
   return (
     <div>
       <div className="">
-        <div className="bg-[#081028] text-white min-h-screen flex gap-[32px]">
+        <div className="bg-[#081028] text-white min-h-screen flex flex-col lg:flex-row gap-0 lg:gap-[32px]">
           {/* Sidebar */}
           <AdminSidebar adminPage={adminPage} />
 
-          <div className="dashboard-right flex-1 mr-[30px] mb-[60px]">
+          <div className="dashboard-right flex-1 w-full lg:mr-[30px] mb-[60px]">
             <AdminTopbar allUsersData={allUsersData} />
             {adminPage === "dashboard" ? <AdminMain /> : null}
             {adminPage === "overview" ? <AdminMain /> : null}
