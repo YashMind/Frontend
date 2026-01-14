@@ -49,7 +49,7 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
 
   return (
     <div className="flex-1">
-      <div className="flex flex-wrap gap-4 bg-[#FFFFFF80] px-3 py-3 rounded-2xl w-full max-w-4xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#FFFFFF80] px-3 py-3 rounded-2xl w-full">
         <div className="bg-white rounded-2xl p-6 flex-1 shadow-sm hover:shadow-md transition-shadow duration-300">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-xl font-bold text-gray-800">Today's Usage</h3>
@@ -165,7 +165,7 @@ const ChatbotDetails = ({ botId }: { botId?: number }) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap gap-4 w-full max-w-4xl bg-white/50 px-3 py-3 rounded-2xl mt-6 backdrop-blur-sm">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full bg-white/50 px-3 py-3 rounded-2xl mt-6 backdrop-blur-sm">
         {/* Leads Card */}
         <div className="bg-white rounded-2xl p-6 flex-1 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
           <div className="flex justify-between items-center mb-4">

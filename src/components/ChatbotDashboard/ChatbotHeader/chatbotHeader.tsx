@@ -83,23 +83,23 @@ const ChatbotDashboardHeader = ({
   return (
     <nav
       className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${fix ? "fixed" : ""
-        } w-full z-90 pt-2 ${announcements?.length > 0 ? "md:max-h-[12%] py-2" : "md:max-h-[20%] py-4"
+        } w-full z-90 pt-2 ${announcements?.length > 0 ? "py-2" : "py-4"
         } `}
     >
       {/* 🔹 Main Navbar Content */}
       <div
-        className={`container mx-auto  flex flex-wrap items-center justify-between ${announcements?.length > 0 ? "py-4 md:py-5" : "py-2 md:py-4"
+        className={`w-full px-4 md:px-6 flex flex-wrap items-center justify-between ${announcements?.length > 0 ? "py-4 md:py-5" : "py-2 md:py-4"
           }`}
       >
         {/* Logo Section */}
-        <div className="flex items-center justify-between w-full md:w-auto">
+        <div className="flex items-center justify-between w-full md:w-auto px-4 md:px-0">
           <Link href="/" className="flex items-center">
             <Image
               alt="Logo"
               src="/images/yashraa_header.svg"
               height={120}
               width={120}
-              className="h-10 w-auto md:h-12"
+              className="h-8 md:h-12 w-auto"
             />
           </Link>
 

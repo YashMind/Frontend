@@ -47,7 +47,7 @@ const StatCard: React.FC<StatCardProps> = ({
 
   return (
     <div
-      className={`relative w-full ${isMobile && state.show ? "mb-0.5" : ""}`}
+      className={`relative w-full md:w-64 lg:w-80 ${isMobile && state.show ? "mb-0.5" : ""}`}
       onMouseLeave={handleCloseCard}
     >
       <div

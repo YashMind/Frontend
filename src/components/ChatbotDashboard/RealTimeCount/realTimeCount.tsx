@@ -20,8 +20,9 @@ export default function RealTimeCount() {
 
   return (
     <div
-      className={`mt-[22%] md:mt-[4%] flex flex-col md:flex-row gap-2 p-2 w-full justify-center items-stretch transition flex-nowrap duration-150 lg:max-h-[8%] `}
+      className={`mt-4 md:mt-2 flex flex-col md:flex-row flex-wrap lg:flex-nowrap gap-4 p-4 w-full justify-center items-start transition duration-150`}
     >
+
       <StatCard
         icon={<FaComments size={20} color="#FFB85C" />}
         title="Chat Bot Usage"

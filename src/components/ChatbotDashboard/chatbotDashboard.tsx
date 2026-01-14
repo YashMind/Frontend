@@ -35,9 +35,10 @@ const ChatbotDashboard = ({ showModal }: ChatbotDashboardProps) => {
 
   return (
     <div className="w-full">
-      <div className="bg-gradient-to-br from-[#2a2561] to-[#1a1541] py-4 sm:py-6 rounded-2xl sm:rounded-3xl w-full px-4 sm:px-6">
+      <div className="bg-gradient-to-br from-[#2a2561] to-[#1a1541] py-2 sm:py-6 rounded-2xl sm:rounded-3xl w-full px-2 sm:px-6">
         {/* Header stats section - Small boxes */}
-        <div className="flex flex-col sm:flex-row gap-3 w-full mb-6">
+        <div className="flex flex-col sm:flex-row gap-3 w-full mb-4 sm:mb-6">
+
           {/* First card - Message Consumption */}
           {tokensData?.token_usage?.[0] && (
             <div className="bg-gradient-to-br from-white to-gray-50 p-3 sm:p-4 rounded-xl shadow flex-1 min-w-0">

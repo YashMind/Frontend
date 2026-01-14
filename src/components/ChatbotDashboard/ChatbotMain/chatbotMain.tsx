@@ -108,18 +108,17 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
     }
 
     return (
-      <div className="bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-4 h-full flex flex-col md:pt-6">
-        {/* Header area - fixed height */}
-        <div className="h-[17%] min-h-[60px] md:pt-6">
-
+      <div className="bg-gradient-to-br from-[#1a1440] to-[#2a0e61] text-white p-2 md:p-4 min-h-screen flex flex-col pt-16 md:pt-20">
+        {/* Header area - flexible height */}
+        <div className="w-full">
           <RealTimeCount />
         </div>
 
         {/* Main content area - takes remaining space */}
-        <div className="flex relative lg:gap-4 flex-1 min-h-0 md:mt-6">
+        <div className="flex flex-col lg:flex-row relative lg:gap-4 flex-1 min-h-0 mt-4 md:mt-6">
           {/* Sidebar */}
           {botPage !== "main" && (
-            <div className="overflow-y-auto  flex-shrink-0  lg:w-[15%] no-scrollbar rounded-3xl">
+            <div className="w-full lg:w-[15%] no-scrollbar mb-4 lg:mb-0">
               <ChatbotSidebar botPage={botPage} botId={botId} />
             </div>
           )}
@@ -129,7 +128,7 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
             <div className="overflow-y-auto no-scrollbar">
               {renderPageContent()}
             </div>
-            <div className="absolute top-5 right-5 flex items-center gap-10">
+            <div className="hidden md:flex absolute top-5 right-5 items-center gap-10">
               {botPage !== "main" && (
                 <div className="text-gray-200 text-base font-semibold uppercase">
                   {activeChatbot.chatbot_name}
@@ -139,6 +138,7 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
                 {planName}
               </div>}
             </div>
+
 
           </div>
 

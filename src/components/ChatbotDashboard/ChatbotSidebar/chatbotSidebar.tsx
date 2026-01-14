@@ -219,12 +219,12 @@ const ChatbotSidebar = ({
         </button>
       </div>
 
-      {/* Mobile sidebar */}
       <div
         ref={sidebarRef}
-        className={`fixed overflow-auto no-scrollbar inset-y-10 left-0 z-40 w-64 bg-black text-white p-5 flex flex-col gap-2 transform transition-transform duration-300 ease-in-out md:hidden h-screen
+        className={`fixed overflow-auto no-scrollbar inset-y-0 left-0 z-[100] w-64 bg-black text-white p-5 flex flex-col gap-2 transform transition-transform duration-300 ease-in-out md:hidden
           ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
+
         {/* Close button for mobile sidebar */}
         <div className="flex justify-end z-30">
           <button
