@@ -19,7 +19,7 @@
 
   if (!BOT_ID) return;
   const DOMAIN = window.location.hostname;
-  const CHAT_IFRAME_URL = `http://localhost:3000/embed/${BOT_ID}?domain=${encodeURIComponent(
+  const CHAT_IFRAME_URL = `https://yashraa.ai/embed/${BOT_ID}?domain=${encodeURIComponent(
     DOMAIN
   )}`;
 
