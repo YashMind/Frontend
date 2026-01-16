@@ -150,16 +150,19 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
 
   return (
     <div className="m-4">
-      <h2 className="text-2xl font-bold mb-4 max-md:ml-12">AI</h2>
-      <div className="w-full overflow-hidden">
+      <h2 className="text-2xl font-bold mb-4 text-white max-md:ml-12">AI Configuration</h2>
+      <div className="w-full overflow-hidden flex flex-col gap-6">
         {/* AI Creativity Section */}
-        <div className="bg-white rounded-xl p-6 pb-10 mb-6 ">
-          <h2 className="text-lg font-bold text-black mb-1">AI Temperature</h2>
-          <p className="text-sm text-gray-700 mb-4">
-            Adjust the slider to control how creative or precise the bot’s responses are . this is known as the ‘temperature’ setting.
+        <div className="bg-white/5 backdrop-blur-md rounded-xl p-6 border border-white/10 shadow-lg">
+          <h2 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+            AI Temperature
+          </h2>
+          <p className="text-sm text-gray-400 mb-6">
+            Adjust the slider to control how creative or precise the bot’s responses are. Lower values are more precise, higher values are more creative.
           </p>
           {/* Progress bar */}
-          <div className="w-full rounded-full">
+          <div className="w-full rounded-full px-2">
             <div className="relative">
               <input
                 type="range"
@@ -167,7 +170,7 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
                 min="0"
                 max="100"
                 value={creativity}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer accent-indigo-500"
                 onChange={(e) => {
                   setCreativity(parseInt(e.target.value));
                 }}
@@ -176,66 +179,70 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
                 }}
               />
 
-              <div className="flex mt-2 px-1">
-                <span className="text-sm text-gray-500 absolute top-5 left-0">{creativity}%</span>
-                <span className="text-sm text-gray-500 absolute top-5 right-0">100%</span>
+              <div className="flex justify-between mt-3 text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                <span>Precise</span>
+                <span className="text-indigo-400">{creativity}%</span>
+                <span>Creative</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* AI Instruction Prompt Section */}
-        <div className="bg-white rounded-xl p-6">
-          <h2 className="text-lg font-bold text-black mb-1">
+        <div className="bg-white/5 backdrop-blur-md rounded-xl p-6 border border-white/10 shadow-lg">
+          <h2 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
             Custom Behavior Instructions
-
           </h2>
-          <p className="text-sm text-gray-700 mb-4">
+          <p className="text-sm text-gray-400 mb-6">
             Tell the bot how you’d like it to act in different domains. Your instructions here will guide the AI’s behavior during conversations.
           </p>
 
           {/* Dropdown + Buttons */}
-          <div className="flex flex-wrap gap-y-2 items-center justify-between mb-4">
-            <select
-              className="bg-[#797879] text-sm font-bold px-4 py-2 rounded-md border-transparent outline-0"
-              {...register("type")}
-              value={watch("type")}
-              onChange={(e) => {
-                const target = e.target.value;
-                if (!saved) {
-                  showConfirmToast(
-                    `The Changes in ${watch(
-                      "type"
-                    )} is not saved yet. you want to delete changes?
-                    `,
-                    () => {
-                      setValue("type", target);
-                      setSaved(true);
-                    },
-                    () => null
+          <div className="flex flex-wrap gap-4 items-center justify-between mb-6 p-4 bg-white/5 rounded-lg border border-white/5">
+            <div className="flex items-center gap-2 flex-grow">
+              <span className="text-gray-400 text-sm font-medium whitespace-nowrap">Domain:</span>
+              <select
+                className="bg-black/30 text-white text-sm font-medium px-4 py-2 rounded-lg border border-white/10 outline-none focus:border-indigo-500 min-w-[200px]"
+                {...register("type")}
+                value={watch("type")}
+                onChange={(e) => {
+                  const target = e.target.value;
+                  if (!saved) {
+                    showConfirmToast(
+                      `The Changes in ${watch(
+                        "type"
+                      )} is not saved yet. you want to delete changes?
+                      `,
+                      () => {
+                        setValue("type", target);
+                        setSaved(true);
+                      },
+                      () => null
+                    );
+                  } else {
+                    setValue("type", e.target.value);
+                  }
+                }}
+              >
+                {promptTypes.map((item, index) => {
+                  return (
+                    <option value={item} key={index} className="bg-gray-900 text-white">
+                      {item}
+                    </option>
                   );
-                } else {
-                  setValue("type", e.target.value);
-                }
-              }}
-            >
-              {promptTypes.map((item, index) => {
-                return (
-                  <option value={item} key={index}>
-                    {item}
-                  </option>
-                );
-              })}
-            </select>
-            <div className="flex  gap-2">
+                })}
+              </select>
+            </div>
+            <div className="flex gap-3">
               <button
                 onClick={() => onDelete()}
-                className="bg-[#4B4351] text-white text-sm px-4 py-2 rounded-md cursor-pointer"
+                className="bg-white/10 hover:bg-white/20 text-white text-sm px-4 py-2 rounded-lg cursor-pointer border border-white/10 transition-all font-semibold"
               >
                 Delete
               </button>
               <button
-                className="cursor-pointer bg-[#340555] text-white text-sm px-4 py-2 rounded-md "
+                className="cursor-pointer bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg shadow-lg border border-indigo-500/50 transition-all font-semibold"
                 type="submit"
                 form="dynamicQAForm"
               >
@@ -247,13 +254,13 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
           {/* Prompt Box */}
 
           <form onSubmit={handleSubmit(onSubmit)} id="dynamicQAForm">
-            <div className="flex flex-col h-[300px]">
-              <h3 className="font-bold text-sm mb-2 text-black">
+            <div className="flex flex-col min-h-[300px]">
+              <h3 className="font-bold text-sm mb-3 text-gray-300 uppercase tracking-wide">
                 Chatbot Role and Function
               </h3>
               <textarea
-                placeholder="Enter your content training here"
-                className="flex-grow bg-[#DADADA] rounded-xl p-4 placeholder-[#727272] text-black resize-none outline-none text-sm font-bold"
+                placeholder="Enter detailed instructions for your chatbot here..."
+                className="flex-grow bg-black/20 rounded-xl p-4 placeholder-gray-500 text-white resize-none outline-none text-sm font-medium border border-white/10 focus:border-emerald-500 focus:bg-black/30 transition-all leading-relaxed"
                 {...register("prompt")}
                 onChange={(e) => {
                   setValue("prompt", e.target.value);
@@ -261,21 +268,21 @@ const ChatbotAI = ({ botId }: { botId?: number }) => {
                 }}
               />
               {errors.prompt && (
-                <span className="text-red-500">{errors?.prompt?.message}</span>
+                <span className="text-red-400 mt-2 text-sm">{errors?.prompt?.message}</span>
               )}
             </div>
           </form>
 
           {/* Reset Button */}
-          <div className="flex justify-end mt-2">
+          <div className="flex justify-end mt-4">
             <button
               onClick={() => {
                 reset();
                 setSaved(false);
               }}
-              className="cursor-pointer bg-[#625A67] px-4 py-1 rounded-md text-sm"
+              className="cursor-pointer text-gray-400 hover:text-white hover:underline text-sm transition-colors py-1"
             >
-              Reset
+              Reset to Defaults
             </button>
           </div>
         </div>

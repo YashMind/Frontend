@@ -105,16 +105,16 @@ const ChatbotTexts = ({ botId }: { botId?: number }) => {
 
   return (
     <div className="m-4 h-full">
-      <h2 className="text-2xl max-w-[50%] font-bold mb-4 max-md:ml-12">
+      <h2 className="text-2xl max-w-[50%] font-bold mb-4 text-white max-md:ml-12">
         Train Bot with simple text
       </h2>
-      <p className="text-sm font-light">
+      <p className="text-sm font-light text-gray-300">
         Easily enhance your chatbot’s training by adding additional text below.
         It’s a fast and simple way to update your bot with new information.
       </p>
 
-      <div className="flex flex-1 items-center justify-center mt-4">
-        <div className="bg-white rounded-2xl w-full p-4">
+      <div className="flex flex-1 items-center justify-center mt-8">
+        <div className="bg-white/5 backdrop-blur-md rounded-2xl w-full p-6 border border-white/10 shadow-xl">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col min-h-[500px]">
               <Controller
@@ -134,14 +134,14 @@ const ChatbotTexts = ({ botId }: { botId?: number }) => {
                     percent < 80
                       ? "bg-emerald-500"
                       : percent < 100
-                      ? "bg-amber-500"
-                      : "bg-red-500";
+                        ? "bg-amber-500"
+                        : "bg-red-500";
                   const remainingTextClass =
                     remaining <= 50
                       ? remaining <= 0
-                        ? "text-red-600"
-                        : "text-amber-600"
-                      : "text-gray-600";
+                        ? "text-red-400"
+                        : "text-amber-400"
+                      : "text-gray-400";
 
                   return (
                     <>
@@ -151,7 +151,7 @@ const ChatbotTexts = ({ botId }: { botId?: number }) => {
                       <textarea
                         id="text_content"
                         placeholder="Enter your content training here"
-                        className="flex-grow bg-[#DADADA] rounded-xl p-4 placeholder-[#727272] text-black resize-none outline-none text-sm font-medium h-full"
+                        className="flex-grow bg-white/10 rounded-xl p-6 placeholder-gray-500 text-white resize-none outline-none text-sm font-medium h-full border border-white/10 focus:border-indigo-500 transition-colors"
                         value={raw}
                         onChange={(e) => {
                           const input = e.target.value;
@@ -169,13 +169,13 @@ const ChatbotTexts = ({ botId }: { botId?: number }) => {
 
                       {/* validation error */}
                       {errors.text_content && (
-                        <span id="error-text" className="text-red-500 mt-2">
+                        <span id="error-text" className="text-red-400 mt-2 text-sm">
                           {errors.text_content.message}
                         </span>
                       )}
 
                       {/* progress + counts */}
-                      <div className="mt-3">
+                      <div className="mt-4">
                         {/* <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                           <div
                             className={`h-full ${progressColor}`}
@@ -187,9 +187,9 @@ const ChatbotTexts = ({ botId }: { botId?: number }) => {
                         </div> */}
 
                         <div className="flex justify-between items-center mt-2">
-                          <div id="helptext" className="text-xs text-gray-500">
+                          <div id="helptext" className="text-xs text-gray-400">
                             <span id="charcount" aria-live="polite">
-                              <strong>{nonSpaceCount}</strong> /{" "}
+                              <strong className="text-white">{nonSpaceCount}</strong> /{" "}
                               {LIMIT_NON_SPACE_CHARS} characters (excluding
                               spaces)
                             </span>
@@ -199,8 +199,8 @@ const ChatbotTexts = ({ botId }: { botId?: number }) => {
                               {remaining > 0
                                 ? `${remaining} remaining`
                                 : remaining === 0
-                                ? "Maximum reached"
-                                : `${-remaining} over limit`}
+                                  ? "Maximum reached"
+                                  : `${-remaining} over limit`}
                             </div>
                           </div>
 
@@ -208,14 +208,13 @@ const ChatbotTexts = ({ botId }: { botId?: number }) => {
                           <div className="flex items-center gap-3">
                             <button
                               type="submit"
-                              className={`cursor-pointer p-2 text-white text-sm rounded-md ${
-                                nonSpaceCount === 0
-                                  ? "bg-gray-400 cursor-not-allowed"
-                                  : "bg-[#340555] hover:brightness-110"
-                              }`}
+                              className={`cursor-pointer p-3 px-6 text-white text-sm font-semibold rounded-lg shadow-lg transition-all ${nonSpaceCount === 0
+                                  ? "bg-white/10 text-gray-500 cursor-not-allowed"
+                                  : "bg-indigo-600 hover:bg-indigo-500 shadow-indigo-500/20"
+                                }`}
                               disabled={nonSpaceCount === 0}
                             >
-                              Save
+                              Save Content
                             </button>
                           </div>
                         </div>

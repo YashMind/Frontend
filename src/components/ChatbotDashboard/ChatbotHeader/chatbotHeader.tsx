@@ -82,137 +82,85 @@ const ChatbotDashboardHeader = ({
 
   return (
     <nav
-      className={`${addBgColor ? "bg-[#2B255C]" : "bg-[#2D2095]"} ${fix ? "fixed" : ""
-        } w-full z-90 pt-2 ${announcements?.length > 0 ? "py-2" : "py-4"
-        } `}
+      className={`${fix ? "fixed" : "relative"} w-full z-[100] transition-all duration-300 ${addBgColor
+          ? "bg-white/5 backdrop-blur-xl border-b border-white/10 shadow-2xl"
+          : "bg-transparent"
+        } ${announcements?.length > 0 ? "py-1" : "py-2"}`}
     >
       {/* 🔹 Main Navbar Content */}
       <div
-        className={`w-full px-4 md:px-6 flex flex-wrap items-center justify-between ${announcements?.length > 0 ? "py-4 md:py-5" : "py-2 md:py-4"
+        className={`w-full px-6 flex flex-wrap items-center justify-between transition-all duration-300 ${announcements?.length > 0 ? "py-3 md:py-4" : "py-2 md:py-3"
           }`}
       >
         {/* Logo Section */}
-        <div className="flex items-center justify-between w-full md:w-auto px-4 md:px-0">
-          <Link href="/" className="flex items-center">
+        <div className="flex items-center justify-between w-full md:w-auto">
+          <Link href="/" className="flex items-center group transition-transform duration-300 hover:scale-105">
             <Image
               alt="Logo"
               src="/images/yashraa_header.svg"
               height={120}
               width={120}
-              className="h-8 md:h-12 w-auto"
+              className="h-8 md:h-12 w-auto drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]"
             />
           </Link>
 
           {/* Mobile Menu Button */}
           <button
             type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden  focus:outline-none focus:ring-2 focus:ring-gray-200 hover:bg-gray-100 text-gray-400"
-            aria-controls="navbar-sticky"
-            aria-expanded={isMenuOpen}
+            className="md:hidden p-2 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all active:scale-95"
             onClick={handleToggle}
           >
             <span className="sr-only">Open main menu</span>
             {isMenuOpen ? (
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             ) : (
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             )}
           </button>
         </div>
 
-        {/* Navigation Links - Hidden on mobile unless menu is open */}
+        {/* Navigation Links */}
         {!chatbotError && (
-          <div
-            className={`${isMenuOpen ? "block" : "hidden"
-              } w-full md:block md:w-auto`}
-            id="navbar-sticky"
-          >
-            <ul className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4 lg:space-x-6 p-4 md:p-0 mt-4 md:mt-0 rounded-lg">
-              <li>
-                <Link
-                  href="/chatbot-dashboard/main"
-                  className={`block py-2 px-4 text-white ${bot === 1 ? "bg-[#434343]" : ""
-                    } rounded-[26px] hover:bg-gray-700 md:hover:bg-transparent md:hover:text-blue-300 transition-colors`}
-                  onClick={() => {
-                    setBot(1);
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Chat Bot
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/voice-agent"
-                  className={`block py-2 px-4 text-white ${bot === 2 ? "bg-[#434343]" : ""
-                    } rounded-[26px] hover:bg-gray-700 md:hover:bg-transparent md:hover:text-blue-300 transition-colors`}
-                  onClick={() => {
-                    setBot(2);
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Voice Agent
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/chatllm"
-                  className={`block py-2 px-4 text-white ${bot === 3 ? "bg-[#434343]" : ""
-                    } rounded-[26px] hover:bg-gray-700 md:hover:bg-transparent md:hover:text-blue-300 transition-colors`}
-                  onClick={() => {
-                    setBot(3);
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Chat LLM
-                </Link>
-              </li>
+          <div className={`${isMenuOpen ? "block" : "hidden"} w-full md:block md:w-auto mt-4 md:mt-0`}>
+            <ul className="flex flex-col md:flex-row items-center gap-2 md:gap-4 p-1 rounded-2xl bg-white/5 md:bg-white/5 border border-white/5 md:border-white/10 backdrop-blur-md">
+              {[
+                { label: "Chat Bot", href: "/chatbot-dashboard/main", id: 1 },
+                { label: "Voice Agent", href: "/voice-agent", id: 2 },
+                { label: "Chat LLM", href: "/chatllm", id: 3 },
+              ].map((link) => (
+                <li key={link.id} className="w-full md:w-auto">
+                  <Link
+                    href={link.href}
+                    className={`block py-2 px-6 text-sm font-semibold rounded-xl transition-all duration-300 text-center whitespace-nowrap ${bot === link.id
+                        ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 border border-indigo-400/50"
+                        : "text-gray-300 hover:bg-white/10 hover:text-white"
+                      }`}
+                    onClick={() => {
+                      setBot(link.id);
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         )}
 
         {/* User Controls Section */}
-        <div className="hidden md:flex items-center space-x-3 md:space-x-4">
+        <div className="hidden md:flex items-center gap-4">
           {role &&
-            [
-              "super admin",
-              "Super Admin",
-              "billing admin",
-              "product admin",
-              "support admin",
-            ].includes(
-              role
-                .replace(/^"(.*)"$/, "$1")
-                .trim()
-                .toLowerCase()
+            ["super admin", "billing admin", "product admin", "support admin"].includes(
+              role.replace(/^"(.*)"$/, "$1").trim().toLowerCase()
             ) && (
               <Link
                 href="/admin/overview"
-                className="bg-white p-2 px-4 rounded-full font-semibold text-sm hover:bg-gray-100 transition-colors"
+                className="bg-white/10 hover:bg-white/20 border border-white/20 text-white p-2 px-5 rounded-xl font-bold text-sm transition-all duration-300 active:scale-95 shadow-lg"
               >
                 Admin Dash
               </Link>
@@ -220,72 +168,73 @@ const ChatbotDashboardHeader = ({
 
           <Link
             href="/#pricing"
-            className="text-white bg-[#05BDFD] text-sm rounded-[18px] font-semibold hover:bg-[#04a9e0] px-3 py-2 md:px-4 transition-colors"
+            className="group relative overflow-hidden bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-xl font-bold px-5 py-2.5 transition-all duration-300 shadow-lg shadow-indigo-600/20 active:scale-95"
           >
-            Upgrade Plan
+            <span className="relative z-10">Upgrade Plan</span>
           </Link>
+
           {!pathname.includes("/chatbot-dashboard/main") && (
             <Link
               href="/chatbot-dashboard/main"
-              className="text-white bg-[#05BDFD] text-sm rounded-[18px] font-semibold hover:bg-[#04a9e0] px-3 py-2 md:px-4 transition-colors"
+              className="bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm rounded-xl font-bold px-5 py-2.5 transition-all duration-300 active:scale-95"
             >
               Dashboard
             </Link>
           )}
 
-          <div className="flex items-center space-x-2">
-            <div className="relative inline-block text-left" ref={menuRef}>
+          <div className="flex items-center gap-3 pl-4 border-l border-white/10">
+            <div className="relative" ref={menuRef}>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="focus:outline-none cursor-pointer"
-                aria-label="User menu"
+                className="focus:outline-none cursor-pointer group transition-transform active:scale-90"
               >
-                {userData?.picture ? (
-                  <Image
-                    alt={"profile pic"}
-                    src={pathToImage(userData.picture) as string}
-                    width={100}
-                    height={100}
-                    className="w-8 h-8 rounded-full"
-                  />
-                ) : (
-                  <FaUser size={18} color="white" />
-                )}
+                <div className="w-9 h-9 rounded-xl border-2 border-indigo-500/50 overflow-hidden shadow-lg shadow-indigo-500/20">
+                  {userData?.picture ? (
+                    <Image
+                      alt={"profile pic"}
+                      src={pathToImage(userData.picture) as string}
+                      width={100}
+                      height={100}
+                      className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+                      <FaUser size={16} color="white" />
+                    </div>
+                  )}
+                </div>
               </button>
+
               {isOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
-                  <div className="py-1">
+                <div className="absolute right-0 mt-3 w-56 bg-[#1a1440]/90 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl z-[110] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="p-3 border-b border-white/5 bg-white/5">
+                    <p className="text-white font-bold text-sm truncate">{userData?.fullName}</p>
+                    <p className="text-gray-400 text-xs truncate">{userData?.email}</p>
+                  </div>
+                  <div className="p-1.5">
                     <Link
                       href="/settings/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="flex items-center px-4 py-2.5 text-sm text-gray-300 hover:bg-indigo-600 hover:text-white rounded-xl transition-all"
                     >
-                      Profile
+                      My Profile
                     </Link>
-                    {/* <Link
-                      href="/settings/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Settings
-                    </Link> */}
                     <Link
                       href="/settings/teams"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="flex items-center px-4 py-2.5 text-sm text-gray-300 hover:bg-indigo-600 hover:text-white rounded-xl transition-all"
                     >
-                      Invite User
+                      Manage Teams
                     </Link>
+                    <div className="h-px bg-white/5 my-1.5" />
                     <button
                       onClick={() => setIsModalOpen(true)}
-                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                      className="w-full flex items-center px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 rounded-xl transition-all"
                     >
-                      Logout
+                      Logout Account
                     </button>
                   </div>
                 </div>
               )}
             </div>
-            <p className="text-white font-semibold text-sm md:text-base">
-              {userData?.fullName}
-            </p>
           </div>
         </div>
 

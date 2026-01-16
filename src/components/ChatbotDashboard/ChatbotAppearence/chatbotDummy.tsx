@@ -43,10 +43,10 @@ const ChatbotDummy = ({ chatbotSettings }: { chatbotSettings: any }) => {
   }, [chatbotSettings.image, chatbotAvatar]);
   return (
     <div
-      className="min-w-[320px] w-[320px] max-md:w-full h-full rounded-lg shadow-md flex flex-col justify-between sticky top-40 mb-10"
-      style={{ backgroundColor: chatbotSettings.chat_window_bg ?? "#ffffff" }}
+      className="min-w-[320px] w-[320px] max-md:w-full h-full rounded-2xl shadow-2xl flex flex-col justify-between sticky top-40 mb-10 overflow-hidden bg-white/5 backdrop-blur-md border border-white/10"
+      style={{ backgroundColor: chatbotSettings.chat_window_bg || "rgba(255, 255, 255, 0.05)" }}
     >
-      <div className="p-4 flex items-center gap-2 border-b">
+      <div className="p-4 flex items-center gap-2 border-b border-white/10 bg-white/5">
         {chatbotAvatar && (
           <Image
             src={chatbotAvatar}
@@ -57,12 +57,12 @@ const ChatbotDummy = ({ chatbotSettings }: { chatbotSettings: any }) => {
           />
         )}
         {chatbotSettings.title_is_active && (
-          <span className="font-semibold text-black">
+          <span className="font-semibold text-white">
             {chatbotSettings?.title_value}
           </span>
         )}
       </div>
-      <div className="flex-1 p-4 overflow-y-auto text-black ">
+      <div className="flex-1 p-4 overflow-y-auto text-white scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
         {chatbotSettings.welcome_message_is_active && (
           <div className="flex justify-start gap-2 mb-2">
             {chatbotAvatar && (
@@ -75,15 +75,15 @@ const ChatbotDummy = ({ chatbotSettings }: { chatbotSettings: any }) => {
               />
             )}
             <div
-              className="bg-gray-200 p-3 rounded-xl max-w-xs text-sm"
+              className="p-3 rounded-xl max-w-xs text-sm"
               style={{
                 backgroundColor: chatbotSettings.message_bg
                   ? chatbotSettings.message_bg
-                  : "#c2c2c2",
+                  : "rgba(255, 255, 255, 0.1)",
 
                 color: chatbotSettings.message_color
                   ? chatbotSettings.message_color
-                  : "#000000",
+                  : "#ffffff",
               }}
             >
               {chatbotSettings.welcome_message_value}
@@ -124,28 +124,28 @@ const ChatbotDummy = ({ chatbotSettings }: { chatbotSettings: any }) => {
           )}
           {chatbotSettings.dots_color && (
             <div
-              className=" text-black p-1 rounded-xl max-w-xs text-sm animate-pulse"
+              className="p-1 rounded-xl max-w-xs text-sm animate-pulse"
               style={{
-                backgroundColor: chatbotSettings.message_bg ?? "#135de8",
-                color: chatbotSettings.message_color ?? "#000000",
+                backgroundColor: chatbotSettings.message_bg ?? "rgba(255, 255, 255, 0.1)",
+                color: chatbotSettings.message_color ?? "#ffffff",
               }}
             >
               <span className="flex gap-1 text-3xl">
                 <span
                   className="animate-bounce"
-                  style={{ color: chatbotSettings.dots_color ?? "#135de8" }}
+                  style={{ color: chatbotSettings.dots_color ?? "#6366f1" }}
                 >
                   .
                 </span>
                 <span
-                  className="animate-bounce !delay-150"
-                  style={{ color: chatbotSettings.dots_color ?? "#135de8" }}
+                  className="animate-bounce delay-150"
+                  style={{ color: chatbotSettings.dots_color ?? "#6366f1" }}
                 >
                   .
                 </span>
                 <span
-                  className="animate-bounce !delay-300"
-                  style={{ color: chatbotSettings.dots_color ?? "#135de8" }}
+                  className="animate-bounce delay-300"
+                  style={{ color: chatbotSettings.dots_color ?? "#6366f1" }}
                 >
                   .
                 </span>
@@ -187,7 +187,7 @@ const ChatbotDummy = ({ chatbotSettings }: { chatbotSettings: any }) => {
                 return (
                   <button
                     key={index + "suggestion"}
-                    className="bg-gray-300 text-gray-600 w-fit rounded-md text-sm py-0.5 px-1.5  cursor-pointer"
+                    className="bg-white/10 hover:bg-white/20 text-white w-fit rounded-lg text-sm py-1 px-2 border border-white/10 transition-colors cursor-pointer"
                     onClick={() => handleSuggestion(item.trim())}
                   >
                     {item.trim()}
@@ -195,7 +195,7 @@ const ChatbotDummy = ({ chatbotSettings }: { chatbotSettings: any }) => {
                 );
               })}
         </div>
-        <div className="border-t p-2 flex items-center gap-2">
+        <div className="border-t border-white/10 p-2 flex items-center gap-2 bg-white/5">
           <input
             type="text"
             value={inputvalue}
@@ -205,7 +205,7 @@ const ChatbotDummy = ({ chatbotSettings }: { chatbotSettings: any }) => {
                 ? chatbotSettings.placeholder_value
                 : "Type a message..."
             }
-            className={` w-full p-2 text-sm rounded-md border text-black border-gray-300 bg-gray-50 focus:outline-none`}
+            className={`w-full p-2 text-sm rounded-lg border border-white/10 bg-white/5 text-white placeholder-white/40 focus:outline-none focus:ring-1 focus:ring-white/20`}
           />
           <button
             className="cursor-pointer p-2 rounded text-white"

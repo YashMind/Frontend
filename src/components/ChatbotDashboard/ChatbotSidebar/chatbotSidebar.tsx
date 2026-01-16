@@ -114,7 +114,7 @@ const sidebarSections: SidebarSection[] = [
     ],
   },
   {
-    title: "Advance",
+    title: "Advanced",
     links: [
       {
         label: "Connect Apps",
@@ -177,11 +177,11 @@ const ChatbotSidebar = ({
         <span className="flex-shrink-0">{link.icon}</span>
         {showLabel && (
           <>
-            <span>{link.label}</span>
+            <span className="truncate">{link.label}</span>
             {isActive && (
-              <div className="relative group flex items-center justify-end">
+              <div className="relative group flex items-center justify-end ml-auto">
                 {/* Arrow Icon */}
-                <BiSolidRightArrow className="ml-auto animate-pulse text-[#01BEED] cursor-pointer" />
+                <BiSolidRightArrow className="animate-pulse text-[#01BEED] cursor-pointer" />
 
                 {/* Tooltip / Cloud */}
                 <div
@@ -193,7 +193,7 @@ const ChatbotSidebar = ({
                  bg-[#01BEED] rounded-xl shadow-lg 
                  before:content-[''] before:absolute before:top-full before:right-3
                  before:border-8 before:border-transparent before:border-t-[#01BEED] 
-                 transition-opacity duration-200 opacity-0 group-hover:opacity-100"
+                 transition-opacity duration-200 opacity-0 group-hover:opacity-100 whitespace-nowrap z-50"
                 >
                   Watch the demo
                 </div>
@@ -219,14 +219,15 @@ const ChatbotSidebar = ({
         </button>
       </div>
 
+      {/* Mobile Sidebar */}
       <div
         ref={sidebarRef}
-        className={`fixed overflow-auto no-scrollbar inset-y-0 left-0 z-[100] w-64 bg-black text-white p-5 flex flex-col gap-2 transform transition-transform duration-300 ease-in-out md:hidden
+        className={`fixed inset-y-0 left-0 z-[100] w-64 bg-black/80 backdrop-blur-xl border-r border-white/10 text-white p-5 flex flex-col gap-2 transform transition-transform duration-300 ease-in-out md:hidden
           ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
 
         {/* Close button for mobile sidebar */}
-        <div className="flex justify-end z-30">
+        <div className="flex justify-end mb-4">
           <button
             onClick={() => setMobileMenuOpen(false)}
             className="p-2 rounded-lg text-gray-300 hover:text-white cursor-pointer"
@@ -235,11 +236,11 @@ const ChatbotSidebar = ({
           </button>
         </div>
 
-        <div className="overflow-y-auto z-40 no-scrollbar">
+        <div className="flex-1 overflow-y-auto pr-2 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full">
           {sidebarSections.map(({ title, links }, idx) => (
             <div key={idx} className="flex flex-col gap-2 mb-4">
               {title && (
-                <p className="text-xs uppercase text-gray-500 tracking-wide pl-2">
+                <p className="text-[10px] font-black uppercase text-gray-500 tracking-[0.15em] pl-2 mb-1">
                   {title}
                 </p>
               )}
@@ -251,17 +252,17 @@ const ChatbotSidebar = ({
         </div>
       </div>
 
-      {/* Medium screen sidebar (icons only) */}
+      {/* Medium/Hover Sidebar */}
       <div
-        className={`hidden lg:hidden  ${hovered ? "md:block left-20 w-fit" : "md:block w-16"} z-20  bg-black p-3 hover:w-64 transition-all duration-300 ease-in-out rounded-2xl `}
+        className={`hidden lg:hidden md:flex flex-col h-full z-20 bg-black/40 backdrop-blur-xl border border-white/10 p-3 transition-all duration-300 ease-in-out rounded-2xl shadow-xl overflow-hidden ${hovered ? "w-64" : "w-16"}`}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        <div className="flex flex-col gap-8 h-full overflow-y-auto">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full">
           {sidebarSections.map(({ title, links }, idx) => (
-            <div key={idx} className="flex flex-col gap-2 mb-4">
+            <div key={idx} className="flex flex-col gap-2 mb-6">
               {hovered && title && (
-                <p className="text-xs uppercase text-gray-500 tracking-wide pl-2">
+                <p className="text-[10px] font-black uppercase text-gray-500 tracking-[0.15em] pl-2 mb-1 truncate">
                   {title}
                 </p>
               )}
@@ -274,12 +275,12 @@ const ChatbotSidebar = ({
       </div>
 
       {/* Large screen sidebar (full width) */}
-      <div className="">
-        <div className="hidden h-fit lg:static overflow-auto lg:block  bg-black text-white p-5  flex-col gap-8 rounded-2xl  left-0 top-0 ">
+      <div className="hidden lg:flex flex-col h-full max-h-[calc(100vh-120px)] bg-black/40 backdrop-blur-xl border border-white/10 text-white p-5 rounded-2xl shadow-2xl relative">
+        <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar overflow-x-hidden [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
           {sidebarSections.map(({ title, links }, idx) => (
-            <div key={idx} className="flex flex-col gap-2 mb-4">
+            <div key={idx} className="flex flex-col gap-2 mb-6 last:mb-0">
               {title && (
-                <p className="text-xs uppercase text-gray-500 tracking-wide pl-2">
+                <p className="text-[10px] font-black uppercase text-gray-500 tracking-[0.15em] pl-2 mb-1">
                   {title}
                 </p>
               )}

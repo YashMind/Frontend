@@ -3,8 +3,9 @@ import React, { useEffect, useRef } from "react";
 import AddBotData from "../ChatbotMain/AddData/addData";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import ChatbotSection from "./chatbotSection/chatbotSection";
+
 import ChatbotDetails from "./chatbotDetails/chatbotDetails";
+import ChatbotSection from "./chatbotSection/chatbotSection";
 import { createChatsId } from "@/store/slices/chats/chatSlice";
 import { ChatbotsData } from "@/types/chatTypes";
 const ChatbotOverview = ({
@@ -29,15 +30,16 @@ const ChatbotOverview = ({
   }, [dispatch, botPage, botId]);
 
   return (
-    <div className="m-4">
+    <div className="w-full h-full p-4">
       {botPage === "overview" ? (
         <h2 className="max-md:ml-12 text-2xl font-bold mb-3 ">Overview</h2>
       ) : null}
       {botPage === "overview" ? (
-        <div className="flex flex-col-reverse xl:flex-row gap-6 w-full">
+        <div className="flex flex-col xl:flex-row gap-6 w-full flex-wrap">
           <ChatbotDetails botId={botId} />
-          {/* right chatbot */}
-          <ChatbotSection botId={botId} chatbotData={chatbotData} />
+          <div className="flex-1 min-w-[300px]">
+            <ChatbotSection botId={botId} chatbotData={chatbotData} />
+          </div>
         </div>
       ) : null}
       {botPage === "update" && botId ? (

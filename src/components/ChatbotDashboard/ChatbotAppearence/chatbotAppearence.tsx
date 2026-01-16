@@ -393,9 +393,9 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
       <div className="flex max-md:flex-wrap-reverse gap-2 w-full">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full md:basis-3/4  "
+          className="w-full md:basis-3/4"
         >
-          <div className="space-y-2 flex-1 bg-[#9e99b6] p-2 rounded-xl">
+          <div className="space-y-4 flex-1 bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl">
             <Field
               name="title_value"
               label="Title"
@@ -447,13 +447,13 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
               register={register}
             />
             <LeadGenSelection register={register} watch={watch} />
-            <div className="bg-white rounded-2xl shadow-md p-4 w-full">
-              <div className="flex justify-between items-center mb-4 bg">
+            <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 p-4 w-full">
+              <div className="flex justify-between items-center mb-4">
                 <div>
-                  <h2 className="font-medium text-gray-900 text-base">
+                  <h2 className="font-medium text-white text-base">
                     Style Of Bot
                   </h2>
-                  <p className="text-sm text-[#727272]">
+                  <p className="text-sm text-white/60">
                     Upload Your Bot avatar & set color
                   </p>
                 </div>
@@ -541,15 +541,18 @@ const ChatbotAppearence = ({ botId }: { botId?: number }) => {
               onSoundChange={(file) => setValue("popup_sound", file as any)}
             />
 
-            <div className="mt-[23] flex gap-3">
+            <div className="flex gap-3 pt-4">
               <button
                 type="button"
                 onClick={async (e: any) => await handleResetAppearance()}
-                className=" cursor-pointer bg-[#340555] text-white px-4 py-2 text-base  font-semibold rounded-[10px]"
+                className="cursor-pointer bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-2.5 text-sm font-semibold rounded-xl transition-all duration-300 backdrop-blur-md"
               >
-                Reset Appearence
+                Reset Appearance
               </button>
-              <button className=" cursor-pointer bg-[#01BEED] text-white px-4 py-2 text-base  font-semibold rounded-[10px]">
+              <button
+                type="submit"
+                className="cursor-pointer bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 text-sm font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-indigo-500/25"
+              >
                 Save Changes
               </button>
             </div>

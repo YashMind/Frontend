@@ -23,62 +23,52 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
 
   return (
     <div className="m-4">
-      <div className="max-md:ml-12 mb-4">
-        <h2 className="text-2xl font-bold ">Apps Integration</h2>
-        <p>
+      <div className="max-md:ml-12 mb-8">
+        <h2 className="text-2xl font-bold text-white">Apps Integration</h2>
+        <p className="text-gray-300 font-light mt-2">
           Streamline your workflow by connecting to popular software and social
           media through our integrations.
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full  text-center bg-[#9592AE] p-4 rounded-xl ">
-        {/* Card 1 */}
-        {/* <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative">
-          <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#DF437E] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
-            <img className="" src="/images/icon1.png" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+        {/* Card 2 - Whatsapp */}
+        <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg hover:bg-white/10 transition-colors duration-300 flex flex-col items-center text-center relative mt-8">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-green-500 bg-white/20 backdrop-blur-md rounded-full h-16 w-16 flex justify-center items-center shadow-lg">
+            <img
+              className="w-8 h-8 object-contain"
+              src="/images/logos_whatsapp-icon.png"
+              alt="Whatsapp"
+            />
           </div>
-          <h2 className="pt-[9px] font-medium text-sm">Instagram</h2>
-          <p className="text-xs py-[9px] font-light">
-            Use your chatbot to respond to incoming messages to your Instagram
-            business account.
-          </p>
-          <button
-            disabled
-            className="cursor-pointer bg-[#CC39A2] text-white px-4 py-1 rounded-full text-[12px] font-bold disabled:cursor-not-allowed"
-          >
-            Coming Soon
-          </button>
-        </div> */}
-
-        {/* Card 2 */}
-        <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mt-8">
-          <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#60D669] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
-            <img className="" src="/images/logos_whatsapp-icon.png" />
-          </div>
-          <h2 className="pt-[9px] font-medium text-sm">Whatsapp</h2>
-          <p className="text-xs py-[9px] font-light">
+          <h2 className="pt-8 font-bold text-lg text-white">Whatsapp</h2>
+          <p className="text-sm py-4 font-light text-gray-300">
             Connect your chatbot to a WhatsApp business number for automatic
             24/7 responses.
           </p>
           <Link
             href={`/chatbot-dashboard/integration/${botId}/whatsapp`}
-            className="cursor-pointer bg-[#60D669] text-white px-4 py-1 rounded-full text-[12px] font-bold"
+            className="mt-auto cursor-pointer bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg text-sm font-semibold shadow-lg transition-all"
           >
             Connect
           </Link>
         </div>
 
-        {/* Card 3 */}
-        <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mt-8">
-          <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#0073AA] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
-            <img className="" src="/images/wordpress.png" />
+        {/* Card 3 - Wordpress */}
+        <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg hover:bg-white/10 transition-colors duration-300 flex flex-col items-center text-center relative mt-8">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-[#0073AA] bg-white/20 backdrop-blur-md rounded-full h-16 w-16 flex justify-center items-center shadow-lg">
+            <img
+              className="w-8 h-8 object-contain"
+              src="/images/wordpress.png"
+              alt="Wordpress"
+            />
           </div>
-          <h2 className="pt-[9px] font-medium text-sm">Wordpress</h2>
-          <p className="text-xs py-[9px] font-light">
+          <h2 className="pt-8 font-bold text-lg text-white">Wordpress</h2>
+          <p className="text-sm py-4 font-light text-gray-300">
             Connect your bot with Wordpress site for a seamless integration.
           </p>
 
           <button
-            className="cursor-pointer bg-[#FF4F00] text-white px-4 py-1 rounded-full text-[12px] font-bold"
+            className="mt-auto cursor-pointer bg-[#0073AA] hover:bg-[#005d8a] text-white px-6 py-2 rounded-lg text-sm font-semibold shadow-lg transition-all"
             onClick={() =>
               setOpenDialog((prev) => ({ ...prev, wordpress: true }))
             }
@@ -87,67 +77,50 @@ const ChatbotIntegration = ({ botId }: { botId?: number }) => {
           </button>
         </div>
 
-        {/* Card 4 */}
-        <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mt-8 ">
-          <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#FF4F00] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
-            <img className="" src="/images/logos_zapier.png" />
+        {/* Card 4 - Zapier */}
+        <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg hover:bg-white/10 transition-colors duration-300 flex flex-col items-center text-center relative mt-8">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-[#FF4F00] bg-white/20 backdrop-blur-md rounded-full h-16 w-16 flex justify-center items-center shadow-lg">
+            <img
+              className="w-8 h-8 object-contain"
+              src="/images/logos_zapier.png"
+              alt="Zapier"
+            />
           </div>
-          <h2 className="pt-[9px] font-medium text-sm">Zapier</h2>
-          <p className="text-xs py-[9px] font-light">
+          <h2 className="pt-8 font-bold text-lg text-white">Zapier</h2>
+          <p className="text-sm py-4 font-light text-gray-300">
             Use AI-powered automation with Zapier AI Actions to create more
             intelligent workflows.
           </p>
           <button
-            className="cursor-pointer bg-[#FF4F00] text-white px-4 py-1 rounded-full text-[12px] font-bold"
+            className="mt-auto cursor-pointer bg-[#FF4F00] hover:bg-[#d64200] text-white px-6 py-2 rounded-lg text-sm font-semibold shadow-lg transition-all"
             onClick={() => setOpenDialog((prev) => ({ ...prev, zapier: true }))}
           >
             Connect
           </button>
         </div>
 
-        {/* Card 5 */}
-        <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mt-8">
-          <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#EBB02E] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
-            <img className="" src="/images/devicon_slack.png" />
+        {/* Card 5 - Slack */}
+        <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg hover:bg-white/10 transition-colors duration-300 flex flex-col items-center text-center relative mt-8">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-[#EBB02E] bg-white/20 backdrop-blur-md rounded-full h-16 w-16 flex justify-center items-center shadow-lg">
+            <img
+              className="w-8 h-8 object-contain"
+              src="/images/devicon_slack.png"
+              alt="Slack"
+            />
           </div>
-          <h2 className="pt-[9px] font-medium text-sm">Slack</h2>
-          <p className="text-xs py-[9px] font-light">
+          <h2 className="pt-8 font-bold text-lg text-white">Slack</h2>
+          <p className="text-sm py-4 font-light text-gray-300">
             Connect your bot with Slack workspaces for a seamless integration.
           </p>
-          {/* <a
-            href={slackUrl + `bot_id=${botId}`}
-            className="cursor-pointer bg-[#EBB02E] text-white px-4 py-1 rounded-full text-[12px] font-bold"
-            target="_blank"
-          >
-            Connect
-          </a> */}
           <Link
             href={`/chatbot-dashboard/integration/${botId}/slack`}
-            className="cursor-pointer bg-[#EBB02E] text-white px-4 py-1 rounded-full text-[12px] font-bold"
+            className="mt-auto cursor-pointer bg-[#EBB02E] hover:bg-[#d49e29] text-white px-6 py-2 rounded-lg text-sm font-semibold shadow-lg transition-all"
           >
             Connect
           </Link>
         </div>
-
-        {/* Card 6 */}
-        {/* <div className="bg-white text-black rounded-2xl pb-[12px] pt-[25px]  px-[47px] shadow-lg relative mt-8 ">
-          <div className="absolute top-[-2px] left-1/2 -translate-x-1/2 -translate-y-1/2 border-[2px] border-[#466CFF] bg-[#D9D9D9] rounded-full h-[58px] w-[58px] flex justify-center items-center">
-            <img className="" src="/images/facebook-messenger-icon 1.png" />
-          </div>
-          <h2 className="pt-[9px] font-medium text-sm">Messenger</h2>
-          <p className="text-xs py-[9px] font-light">
-            Use your chatbot to automatically reply to your Facebook pages
-            messages or comments.
-          </p>
-          <button
-            disabled
-            className="cursor-pointer bg-[#466CFF] text-white px-4 py-1 rounded-full text-[12px] font-bold disabled:cursor-not-allowed"
-          >
-            Coming Soon
-          </button>
-        </div> */}
       </div>
-      {}
+      { }
       <AccessDownloadDialog
         token={chatbotData.token}
         fileUrl="/wordpress/yashraa_wordpress.zip"

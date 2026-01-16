@@ -80,18 +80,18 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
 
   return (
     <div className="space-y-2 my-2">
-      <div className="space-y-2 bg-green-50 rounded-lg p-1 text-base text-gray-800 ">
-        <h1 className="text-2xl font-semibold">Get in touch</h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 p-2">
+      <div className="space-y-2 bg-white/10 backdrop-blur-sm rounded-xl p-3 text-base text-white border border-white/10">
+        <h1 className="text-xl font-semibold">Get in touch</h1>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 p-1">
           {fields.is_name && (
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-white/80 mb-1"
               >
                 {fields.name || "Name"}{" "}
                 {fields.required_name && (
-                  <span className="text-red-500">*</span>
+                  <span className="text-red-400">*</span>
                 )}
               </label>
               <input
@@ -100,12 +100,11 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
                 })}
                 id="name"
                 type="text"
-                className={`mt-1 block w-full rounded-md border p-1 ${
-                  errors.name ? "border-red-500" : "border-gray-300"
-                } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+                className={`mt-1 block w-full rounded-lg border p-2 bg-white/5 text-white placeholder-white/40 focus:outline-none focus:ring-1 focus:ring-white/30 ${errors.name ? "border-red-400" : "border-white/10"
+                  } shadow-sm`}
               />
               {errors.name && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-sm text-red-400">
                   {errors.name.message}
                 </p>
               )}
@@ -116,11 +115,11 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
             <div>
               <label
                 htmlFor="contact"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-white/80 mb-1"
               >
                 {fields.contact || "Phone"}{" "}
                 {fields.required_phone && (
-                  <span className="text-red-500">*</span>
+                  <span className="text-red-400">*</span>
                 )}
               </label>
               <input
@@ -129,12 +128,11 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
                 })}
                 id="phone"
                 type="tel"
-                className={`mt-1 block w-full rounded-md border p-1 ${
-                  errors.contact ? "border-red-500" : "border-gray-300"
-                } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+                className={`mt-1 block w-full rounded-lg border p-2 bg-white/5 text-white placeholder-white/40 focus:outline-none focus:ring-1 focus:ring-white/30 ${errors.contact ? "border-red-400" : "border-white/10"
+                  } shadow-sm`}
               />
               {errors.contact && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-sm text-red-400">
                   {errors?.contact?.message}
                 </p>
               )}
@@ -145,11 +143,11 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-white/80 mb-1"
               >
                 {fields.mail || "Email"}{" "}
                 {fields.required_mail && (
-                  <span className="text-red-500">*</span>
+                  <span className="text-red-400">*</span>
                 )}
               </label>
               <input
@@ -162,12 +160,11 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
                 })}
                 id="email"
                 type="email"
-                className={`mt-1 block w-full rounded-md border p-1 ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+                className={`mt-1 block w-full rounded-lg border p-2 bg-white/5 text-white placeholder-white/40 focus:outline-none focus:ring-1 focus:ring-white/30 ${errors.email ? "border-red-400" : "border-white/10"
+                  } shadow-sm`}
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-sm text-red-400">
                   {errors.email.message}
                 </p>
               )}
@@ -178,11 +175,11 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
             <div>
               <label
                 htmlFor="message"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-white/80 mb-1"
               >
                 {fields.message || "Message"}{" "}
                 {fields.required_message && (
-                  <span className="text-red-500">*</span>
+                  <span className="text-red-400">*</span>
                 )}
               </label>
               <textarea
@@ -191,12 +188,11 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
                 })}
                 id="message"
                 rows={3}
-                className={`mt-1 block w-full rounded-md border p-1 ${
-                  errors.message ? "border-red-500" : "border-gray-300"
-                } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+                className={`mt-1 block w-full rounded-lg border p-2 bg-white/5 text-white placeholder-white/40 focus:outline-none focus:ring-1 focus:ring-white/30 ${errors.message ? "border-red-400" : "border-white/10"
+                  } shadow-sm`}
               />
               {errors.message && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-sm text-red-400">
                   {errors.message.message}
                 </p>
               )}
@@ -204,7 +200,7 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
           )}
 
           {isError && (
-            <p className="text-red-600">Submission failed. Please try again.</p>
+            <p className="text-red-400">Submission failed. Please try again.</p>
           )}
 
           <button
@@ -213,17 +209,17 @@ const LeadGenForm: React.FC<Partial<LeadGenFormProps>> = (fields) => {
               color: fields.submit_text_color || "#fff",
               backgroundColor: fields.submit_button_color || "#2563eb",
             }}
-            className="w-full py-2 px-4 rounded-md shadow-sm text-sm font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2"
+            className="w-full py-2.5 px-4 rounded-lg shadow-lg text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all"
           >
             {fields.submit_button_text}
           </button>
         </form>
       </div>
-      <div className="p-6 bg-green-50 rounded-lg">
-        <h3 className="text-xl font-semibold mb-2 text-green-800">
+      <div className="p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/10">
+        <h3 className="text-lg font-semibold mb-1 text-white">
           {fields.submission_message_heading}
         </h3>
-        <p className="text-green-700">{fields.sumbission_message}</p>
+        <p className="text-white/80 text-sm">{fields.sumbission_message}</p>
       </div>
     </div>
   );

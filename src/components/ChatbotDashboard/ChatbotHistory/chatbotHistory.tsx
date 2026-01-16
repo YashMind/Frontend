@@ -144,29 +144,27 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
 
   return (
     <div className="m-4">
-      <h2 className="max-md:ml-12 text-2xl font-bold mb-4">Chat History</h2>
-      <div className="bg-white rounded-b-xl overflow-hidden text-sm w-full  rounded-[40px] mb-8">
+      <h2 className="max-md:ml-12 text-2xl font-bold mb-4 text-white">Chat History</h2>
+      <div className="rounded-xl overflow-hidden text-sm w-full border border-white/10 shadow-xl">
         {/* Top Actions */}
-        <div className="flex flex-wrap items-center justify-between gap-4 bg-[#9592AE] px-6 py-4 ">
-          <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex flex-wrap items-center justify-between gap-4 bg-white/5 backdrop-blur-md px-6 py-4 border-b border-white/10">
+          <div className="flex items-center gap-4 flex-wrap">
             <div className="flex gap-4">
               <button
-                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
-                  isDisabled
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-purple-600 hover:bg-purple-700"
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all shadow-lg ${isDisabled
+                    ? "bg-white/10 border border-white/5 cursor-not-allowed text-gray-500"
+                    : "bg-indigo-600 hover:bg-indigo-700 border border-indigo-500/50"
+                  }`}
                 disabled={isDisabled}
                 onClick={() => handleExportDownloadPdf()}
               >
                 Export
               </button>
               <button
-                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all ${
-                  isDisabled
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-red-500 hover:bg-red-600"
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all shadow-lg ${isDisabled
+                    ? "bg-white/10 border border-white/5 cursor-not-allowed text-gray-500"
+                    : "bg-red-500/80 hover:bg-red-600 border border-red-500/50"
+                  }`}
                 disabled={isDisabled}
                 onClick={() => handleDeleteChat()}
               >
@@ -177,7 +175,7 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
             <div className="relative w-full max-w-xs">
               <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg
-                  className="w-4 h-4 text-white"
+                  className="w-4 h-4 text-gray-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -191,68 +189,44 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
               <input
                 type="text"
                 placeholder="Search..."
-                className="border border-white placeholder-white  pl-9  py-2 rounded-md  focus:outline-none focus:ring-2 focus:ring-purple-500 w-[140px]"
+                className="w-full bg-white/10 border border-white/20 text-white placeholder-gray-400 pl-9 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-
-            {/* <div className="flex items-center gap-2 px-4 py-2 rounded-md  border border-white text-white bg-[#928eb0] focus:outline-none focus:ring-2 focus:ring-purple-500 ">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M8 7V3m8 4V3m-9 8h10m-12 8h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-              <span>Feb/2/2025</span>
-            </div> */}
-          </div>
-          <div className="flex items-center gap-3">
-            {/* <button className="bg-[#340555] text-white rounded  text-[11px] font-bold py-[7px] px-[11px]">
-              Configure mails
-            </button> */}
           </div>
         </div>
 
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="w-fit md:w-full  text-left text-gray-800">
-            <thead className="bg-white text-gray-600 border-y border-gray-300">
+          <table className="w-fit md:w-full text-left text-gray-300">
+            <thead className="bg-white/10 text-gray-200 uppercase text-xs tracking-wider font-semibold border-b border-white/10 backdrop-blur-md">
               <tr>
-                <th className="p-4">
+                <th className="p-4 w-12 text-center">
                   <input
                     type="checkbox"
-                    className="w-4 h-4 accent-[#5E2EFF]"
+                    className="w-4 h-4 accent-indigo-500 bg-white/10 border-white/30 rounded cursor-pointer"
                     onChange={handleSelectAll}
                   />
                 </th>
-                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1 ">
+                <th className="py-4 px-2 whitespace-nowrap">
                   Started
                 </th>
-
-                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
+                <th className="py-4 px-2 whitespace-nowrap">
                   Language
                 </th>
-                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
+                <th className="py-4 px-2 whitespace-nowrap">
                   Last message
                 </th>
-                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
+                <th className="py-4 px-2 whitespace-nowrap">
                   Platform
                 </th>
-                <th className="py-[14px] text-sm font-bold text-black whitespace-nowrap px-1">
+                <th className="py-4 px-2 whitespace-nowrap">
                   Action
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-[#f7f6fd]">
+            <tbody className="bg-white/5 divide-y divide-white/5 backdrop-blur-sm">
               {chatUserHistory?.data &&
                 Object.entries(chatUserHistory?.data)
                   .sort(
@@ -268,11 +242,11 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
                       10
                     );
                     return (
-                      <tr key={chatId} className="border-b border-gray-200">
-                        <td className="p-4">
+                      <tr key={chatId} className="hover:bg-white/10 transition-colors duration-150">
+                        <td className="p-4 text-center">
                           <input
                             type="checkbox"
-                            className="w-4 h-4 accent-[#5E2EFF]"
+                            className="w-4 h-4 accent-indigo-500 bg-white/10 border-white/30 rounded cursor-pointer"
                             checked={selectedIds.includes(Number(chatId))}
                             onChange={(e) =>
                               handleSelectRow(Number(chatId), e.target.checked)
@@ -280,26 +254,33 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
                           />
                         </td>
 
-                        <td className="p-4 text-xs font-medium text-black text-nowrap">
+                        <td className="p-4 text-xs font-medium text-white text-nowrap">
                           {timeAgo}
                         </td>
 
-                        <td className="p-4 text-xs font-medium text-black">
+                        <td className="p-4 text-xs font-medium text-gray-300">
                           English
                         </td>
-                        <td className="truncate max-w-[150px] p-4 text-xs font-medium text-black">
+                        <td className="truncate max-w-[150px] p-4 text-xs font-medium text-gray-400">
                           {lastMessage?.message?.slice(0, 25)}...
                         </td>
-                        <td className="py-4">
-                          <span className="bg-[#DEDEDE] px-3 py-1 rounded-full text-xs font-medium text-black capitalize">
+                        <td className="py-4 px-2">
+                          <span className="bg-white/10 px-3 py-1 rounded-full text-xs font-medium text-white capitalize border border-white/10">
                             {platform ?? "Web"}
                           </span>
                         </td>
-                        <td className="py-4 flex items-center gap-2">
-                          <button onClick={() => handleViewChats(messages)}>
-                            <FaEye size={20} />
+                        <td className="py-4 flex items-center gap-4 px-2">
+                          <button
+                            onClick={() => handleViewChats(messages)}
+                            className="text-gray-400 hover:text-white transition-colors"
+                            title="View Chat"
+                          >
+                            <FaEye size={18} />
                           </button>
-                          <button>
+                          <button
+                            className="text-gray-400 hover:text-indigo-400 transition-colors"
+                            title="Download PDF"
+                          >
                             <MdSimCardDownload
                               size={20}
                               onClick={() =>
@@ -319,9 +300,9 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           </table>
         </div>
         {/* Pagination */}
-        <div className="flex justify-center items-center gap-2 px-6 py-4 bg-white border-t border-gray-200">
+        <div className="flex justify-center items-center gap-2 px-6 py-4 bg-white/5 border-t border-white/10 backdrop-blur-md">
           <button
-            className="text-sm text-[#9E9E9E] font-medium disabled:opacity-50"
+            className="text-sm text-gray-400 hover:text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             disabled={page === 1}
             onClick={() => setPage(page - 1)}
           >
@@ -329,16 +310,15 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           </button>
           {chatUserHistory?.totalPages >= 1 ? (
             <button
-              className={`w-6 h-6 ${
-                page === 1 ? "bg-[#624DE3]" : "bg-gray-200"
-              }   text-black rounded-[7px] text-sm`}
+              className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm font-medium transition-all ${page === 1 ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30" : "bg-white/10 text-gray-300 hover:bg-white/20"
+                }`}
             >
               1
             </button>
           ) : null}
           {chatUserHistory?.totalPages > 1 ? (
             <button
-              className="w-6 h-6 bg-gray-200 text-black rounded-[7px] text-sm"
+              className="w-8 h-8 flex items-center justify-center bg-transparent text-gray-500 rounded-lg text-sm cursor-default"
               disabled
             >
               ...
@@ -346,17 +326,16 @@ const ChatbotHistory = ({ botId }: { botId?: number }) => {
           ) : null}
           {chatUserHistory?.totalPages > 1 ? (
             <button
-              className={`w-6 h-6 ${
-                chatUserHistory?.totalPages === page
-                  ? "bg-[#624DE3]"
-                  : "bg-gray-200"
-              } text-black rounded-[7px] text-sm`}
+              className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm font-medium transition-all ${chatUserHistory?.totalPages === page
+                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30"
+                  : "bg-white/10 text-gray-300 hover:bg-white/20"
+                }`}
             >
               {chatUserHistory?.totalPages}
             </button>
           ) : null}
           <button
-            className="text-sm text-[#9E9E9E] font-medium disabled:opacity-50"
+            className="text-sm text-gray-400 hover:text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             onClick={() => setPage(page + 1)}
             disabled={chatUserHistory?.totalPages === page}
           >

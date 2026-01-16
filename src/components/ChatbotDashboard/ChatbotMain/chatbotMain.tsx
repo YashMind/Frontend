@@ -118,17 +118,17 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
         <div className="flex flex-col lg:flex-row relative lg:gap-4 flex-1 lg:min-h-0 mt-4 md:mt-6">
           {/* Sidebar */}
           {botPage !== "main" && (
-            <div className="w-full lg:w-[15%] no-scrollbar mb-4 lg:mb-0">
+            <div className="w-full lg:w-[15%] mb-4 lg:mb-0 lg:h-full">
               <ChatbotSidebar botPage={botPage} botId={botId} />
             </div>
           )}
 
           {/* Main content */}
-          <div className={`relative bg-[#2a2561] rounded-2xl flex-1 lg:min-h-0 flex flex-col `}>
-            <div className="lg:overflow-y-auto lg:h-full no-scrollbar">
+          <div className={`relative bg-[#2a2561] rounded-2xl flex-1 lg:min-h-0 flex flex-col overflow-hidden`}>
+            <div className="lg:overflow-y-auto lg:h-full [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
               {renderPageContent()}
             </div>
-            <div className="hidden md:flex absolute top-5 right-5 items-center gap-10">
+            <div className="hidden md:flex absolute top-5 right-5 items-center gap-10 pointer-events-none">
               {botPage !== "main" && (
                 <div className="text-gray-200 text-base font-semibold uppercase">
                   {activeChatbot.chatbot_name}
@@ -139,11 +139,10 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
               </div>}
             </div>
 
-
           </div>
 
           {/* Right section */}
-          <div className="relative overflow-y-auto w-[7%] flex-shrink-0 hidden lg:block p-0.5 bg-[#2a2561] rounded-2xl border-l border-[#3a3461] no-scrollbar">
+          <div className="relative overflow-y-auto w-[7%] flex-shrink-0 hidden lg:block p-0.5 bg-[#2a2561] rounded-2xl border-l border-[#3a3461] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
             <RightSection showModal={showModal} botId={botId} />
           </div>
         </div>
@@ -213,7 +212,7 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
 
 
   return (
-    <div className="flex flex-col min-h-screen lg:h-screen">
+    <div className="flex flex-col min-h-screen lg:h-screen bg-[#1a1440]">
       {/* Fixed header - outside the scrollable area */}
       <ChatbotDashboardHeader
         fix={true}
@@ -223,7 +222,7 @@ const ChatbotMain = ({ botPage, botId, role }: ChatbotMainProps) => {
       />
 
       {/* Scrollable content */}
-      <div className="bg-gradient-to-r from-[#002B58] to-[#3B0459] flex-1 lg:overflow-hidden">
+      <div className="bg-gradient-to-r from-[#002B58] to-[#3B0459] flex-1 lg:overflow-hidden relative z-0">
         {renderMainContent}
       </div>
     </div>

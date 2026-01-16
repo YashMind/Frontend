@@ -88,11 +88,11 @@ export const Field = ({
   register,
 }: FieldProps) => {
   return (
-    <div className="bg-white rounded-2xl shadow-md p-4 w-full">
+    <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 p-4 w-full transition-all hover:bg-white/[0.07]">
       <div className="flex justify-between items-center mb-4">
         <div>
-          <h2 className="font-medium text-gray-900 text-base">{label}</h2>
-          <p className="text-sm text-[#727272]">{description}</p>
+          <h2 className="font-medium text-white text-base">{label}</h2>
+          <p className="text-sm text-white/60">{description}</p>
         </div>
 
         {checkbox && checkbox_name && (
@@ -113,7 +113,7 @@ export const Field = ({
           type="text"
           placeholder={placeholder}
           {...register(name)}
-          className="w-full p-3 rounded-full bg-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 mb-4"
+          className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all mb-4"
         />
       )}
       {type === "textarea" && (
@@ -121,7 +121,7 @@ export const Field = ({
           cols={5}
           placeholder={placeholder}
           {...register(name)}
-          className="w-full p-3 rounded-xl bg-gray-200 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 mb-4"
+          className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all mb-4"
         />
       )}
     </div>
@@ -166,21 +166,21 @@ export const ColorPickerField = ({
   };
 
   return (
-    <div className={`space-y-1 ${className} text-gray-900`}>
+    <div className={`space-y-1 ${className} text-white`}>
       <div className="flex flex-col md:flex-row items-start  gap-2">
         <div>
-          <label className="block text-sm font-medium text-gray-900 whitespace-pre-wrap">
+          <label className="block text-sm font-medium text-white whitespace-pre-wrap">
             {label}
           </label>
           {description && (
-            <p className="text-xs text-gray-500 mt-1">{description}</p>
+            <p className="text-xs text-white/60 mt-1">{description}</p>
           )}
         </div>
         <div className="flex gap-2">
           <div className="relative ">
             <button
               type="button"
-              className="w-10 h-10 rounded-md border border-gray-300 shadow-sm flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors"
+              className="w-10 h-10 rounded-lg border border-white/20 shadow-sm flex items-center justify-center cursor-pointer hover:border-white/40 transition-colors bg-white/5"
               aria-label="Open color picker"
               onClick={() => setShowColorPicker(!showColorPicker)}
             >
@@ -191,7 +191,7 @@ export const ColorPickerField = ({
             </button>
 
             {showColorPicker && (
-              <div className="absolute z-30  mt-2 p-3 bg-white rounded-md shadow-lg border border-gray-200">
+              <div className="absolute z-30 mt-2 p-3 bg-[#1e1e2d] rounded-xl shadow-xl border border-white/10 backdrop-blur-md">
                 <div className="flex flex-col space-y-3">
                   <div className="grid grid-cols-6 gap-1">
                     {[
@@ -252,14 +252,14 @@ export const ColorPickerField = ({
                     type="color"
                     value={color}
                     onChange={(e) => handleColorChange(e.target.value)}
-                    className="w-full h-8 cursor-pointer text-black"
+                    className="w-full h-8 cursor-pointer rounded bg-transparent"
                   />
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
                       value={color.replace("#", "")}
                       onChange={handleTextChange}
-                      className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm text-black"
+                      className="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-indigo-500"
                       maxLength={6}
                       placeholder="FFFFFF"
                     />
@@ -275,7 +275,7 @@ export const ColorPickerField = ({
               {...register(name)}
               value={color ? color.slice(1, color.length) : "FFFFFF"}
               onChange={handleTextChange}
-              className="block w-full uppercase text-base rounded-md border border-gray-300 py-2 pl-5 pr-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+              className="block w-full uppercase text-base rounded-lg border border-white/10 bg-white/5 text-white py-2 pl-5 pr-3 shadow-sm focus:border-indigo-500/50 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 sm:text-sm placeholder-white/20"
               placeholder="FFFFFF"
             />
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -342,7 +342,7 @@ export const ImageField = ({
         />
 
         {/* Image Preview */}
-        <div className="w-full h-full rounded-full overflow-hidden border-2 border-gray-300">
+        <div className="w-full h-full rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
           <Image
             src={preview}
             key={preview}
@@ -357,11 +357,11 @@ export const ImageField = ({
         {/* Optional visual feedback on hover */}
         <div className="absolute inset-0 bg-black/10 bg-opacity-10 rounded-full opacity-0 peer-hover:opacity-100 transition-opacity" />
       </div>
-      <div className="flex justify-between items-center mb-4 text-gray-700">
+      <div className="flex justify-between items-center mb-4 text-white">
         <div>
           <h2 className="font-medium text-sm">{label}</h2>
           {description && (
-            <p className="text-xs text-[#727272]">{description}</p>
+            <p className="text-xs text-white/60">{description}</p>
           )}
         </div>
       </div>
@@ -464,23 +464,23 @@ export const SoundUploadField = ({
     setSoundFile(initialSound);
   }, [initialSound]);
   return (
-    <div className="space-y-3 p-4 border border-gray-200 rounded-lg bg-white">
+    <div className="space-y-3 p-4 border border-white/10 rounded-lg bg-white/5 backdrop-blur-md">
       <audio ref={audioRef} className="hidden" />
 
       <div className="flex items-center justify-between">
-        <h3 className="font-medium text-gray-700">Notification Sound</h3>
+        <h3 className="font-medium text-white">Notification Sound</h3>
 
         {soundFile && (
-          <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full">
+          <span className="text-xs px-2 py-1 bg-indigo-500/20 text-indigo-200 rounded-full border border-indigo-500/20">
             {typeof soundFile === "string" ? "URL Sound" : soundFile.name}
           </span>
         )}
       </div>
 
       {uploadProgress > 0 && uploadProgress < 100 ? (
-        <div className="w-full bg-gray-200 rounded-full h-2.5">
+        <div className="w-full bg-white/10 rounded-full h-2.5">
           <div
-            className="bg-blue-600 h-2.5 rounded-full"
+            className="bg-indigo-500 h-2.5 rounded-full"
             style={{ width: `${uploadProgress}%` }}
           ></div>
         </div>
@@ -489,11 +489,10 @@ export const SoundUploadField = ({
           <button
             type="button"
             onClick={handlePlayPause}
-            className={`flex items-center justify-center w-10 h-10 rounded-full ${
-              isPlaying
-                ? "bg-red-100 text-red-600"
-                : "bg-blue-100 text-blue-600"
-            }`}
+            className={`flex items-center justify-center w-10 h-10 rounded-full ${isPlaying
+              ? "bg-red-100 text-red-600"
+              : "bg-blue-100 text-blue-600"
+              }`}
             aria-label={isPlaying ? "Pause sound" : "Play sound"}
           >
             {isPlaying ? (
@@ -504,10 +503,10 @@ export const SoundUploadField = ({
           </button>
 
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-700 truncate">
+            <p className="text-sm font-medium text-white truncate">
               {typeof soundFile === "string" ? "URL Sound" : soundFile.name}
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-white/50">
               {typeof soundFile === "string"
                 ? "From URL"
                 : `${(soundFile.size / 1024).toFixed(1)} KB`}
@@ -534,13 +533,13 @@ export const SoundUploadField = ({
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-6 border-2 border-dashed border-gray-300 rounded-lg">
-          <FaUpload className="w-8 h-8 text-gray-400 mb-2" />
-          <p className="text-sm text-gray-500 mb-2">No sound selected</p>
+        <div className="flex flex-col items-center justify-center py-6 border-2 border-dashed border-white/20 rounded-lg bg-white/5">
+          <FaUpload className="w-8 h-8 text-white/40 mb-2" />
+          <p className="text-sm text-white/60 mb-2">No sound selected</p>
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
+            className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-500 transition-colors"
           >
             Add Sound
           </button>

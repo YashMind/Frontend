@@ -41,9 +41,9 @@ const ChatbotQA = ({ botId }: { botId?: number }) => {
   if (!botId) {
     return (
       <div className="m-4">
-        <h2 className="text-2xl font-bold mb-4 max-md:ml-12">Q & A</h2>
-        <div className="text-center p-8 bg-gray-100 rounded-lg">
-          <p className="text-gray-600">Bot ID is required to manage Q&A.</p>
+        <h2 className="text-2xl font-bold mb-4 text-white max-md:ml-12">Q & A</h2>
+        <div className="text-center p-8 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
+          <p className="text-gray-300">Bot ID is required to manage Q&A.</p>
         </div>
       </div>
     );
@@ -140,251 +140,215 @@ const ChatbotQA = ({ botId }: { botId?: number }) => {
 
   return (
     <div className="m-4">
-      <h2 className="text-2xl font-bold mb-4 max-md:ml-12">Q & A</h2>
-      <div className="bg-[#2E265C] ">
+      <h2 className="text-2xl font-bold mb-4 text-white max-md:ml-12">Q & A</h2>
+      <div className="rounded-xl overflow-hidden border border-white/10 shadow-xl">
         {/* Header */}
-        <div className="bg-[#FFFFFF80] rounded-t-xl flex flex-wrap gap-y-2 items-center justify-between px-5 py-2">
-          <div className="flex items-center gap-4">
+        <div className="bg-white/10 backdrop-blur-md flex flex-wrap gap-y-4 items-center justify-between px-5 py-4 border-b border-white/10">
+          <div className="flex items-center gap-4 flex-wrap">
             <button
-              className="cursor-pointer w-8 h-8 bg-white rounded-full flex items-center justify-center text-3xl  font-bold text-[#2E265C]"
+              className="cursor-pointer w-10 h-10 bg-indigo-600 hover:bg-indigo-700 rounded-full flex items-center justify-center text-xl font-bold text-white shadow-lg transition-all border border-indigo-400/50"
               onClick={() => append({ question: "", answer: "" })}
               type="button"
             >
               +
             </button>
             <div className="relative">
-              <span className="absolute inset-y-0 left-2 flex items-center text-gray-500">
+              <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
                 <Image
-                  className="m-auto"
-                  alt="alt"
+                  className="m-auto opacity-70"
+                  alt="search"
                   src="/images/search.png"
                   height={14}
                   width={14}
+                  style={{ filter: "invert(1)" }}
                 />
               </span>
               <input
                 type="text"
                 placeholder="Search..."
-                className="pl-8 pr-3 py-1 rounded-md outline-none text-sm w-64 border border-white"
+                className="pl-10 pr-4 py-2 bg-white/5 border border-white/20 rounded-lg outline-none text-sm w-64 text-white placeholder-gray-400 focus:border-indigo-500 focus:bg-white/10 transition-all"
               />
             </div>
           </div>
-          <div className="flex gap-4">
-            <button className="bg-[#340555] text-white text-sm p-2 font-bold rounded-md cursor-pointer">
+          <div className="flex gap-3">
+            <button className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 font-semibold rounded-lg shadow-lg border border-indigo-500/50 transition-all cursor-pointer">
               Export All
             </button>
             <button
-              className=" bg-[#4B4351] text-white text-sm p-2 font-bold rounded-md cursor-pointer"
+              className="bg-white/10 hover:bg-white/20 text-white text-sm px-4 py-2 font-semibold rounded-lg border border-white/10 transition-all cursor-pointer backdrop-blur-sm"
               type="button"
               onClick={() => {
                 handleDeleteAllFaqs();
               }}
             >
-              Delete
+              Delete All
             </button>
             <button
-              className="bg-[#18B91F]  text-white text-sm p-2 font-bold rounded-md cursor-pointer"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-4 py-2 font-semibold rounded-lg shadow-lg border border-emerald-500/50 transition-all cursor-pointer"
               type="submit"
               form="dynamicQAForm"
             >
-              Save
+              Save Changes
             </button>
           </div>
         </div>
 
         {/* Question Box */}
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-4"
-          id="dynamicQAForm"
-        >
-          {fields &&
-            fields.map((item: any, index: number) => {
-              const currentQuestionValue =
-                (watchedQuestions && watchedQuestions[index]?.question) ??
-                item.question ??
-                "";
-              const currentAnswerValue =
-                (watchedQuestions && watchedQuestions[index]?.answer) ??
-                item.answer ??
-                "";
+        <div className="bg-black/20 backdrop-blur-sm p-4 min-h-[500px]">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-4"
+            id="dynamicQAForm"
+          >
+            {fields &&
+              fields.map((item: any, index: number) => {
+                const currentQuestionValue =
+                  (watchedQuestions && watchedQuestions[index]?.question) ??
+                  item.question ??
+                  "";
+                const currentAnswerValue =
+                  (watchedQuestions && watchedQuestions[index]?.answer) ??
+                  item.answer ??
+                  "";
 
-              const qLen = currentQuestionValue.length;
-              const qRemaining = QUESTION_LIMIT - qLen;
-              const qPercent = Math.min(
-                100,
-                Math.round((qLen / QUESTION_LIMIT) * 100)
-              );
-              const qProgressColor =
-                qPercent < 80
-                  ? "bg-emerald-500"
-                  : qPercent < 100
-                  ? "bg-amber-500"
-                  : "bg-red-500";
-              const qRemainingClass =
-                qRemaining <= 50
-                  ? qRemaining <= 0
-                    ? "text-red-600"
-                    : "text-amber-600"
-                  : "text-gray-600";
+                const qLen = currentQuestionValue.length;
+                const qRemaining = QUESTION_LIMIT - qLen;
+                const qRemainingClass =
+                  qRemaining <= 50
+                    ? qRemaining <= 0
+                      ? "text-red-400"
+                      : "text-amber-400"
+                    : "text-gray-400";
 
-              const aLen = currentAnswerValue.length;
-              const aRemaining = ANSWER_LIMIT - aLen;
-              const aPercent = Math.min(
-                100,
-                Math.round((aLen / ANSWER_LIMIT) * 100)
-              );
-              const aProgressColor =
-                aPercent < 80
-                  ? "bg-emerald-500"
-                  : aPercent < 100
-                  ? "bg-amber-500"
-                  : "bg-red-500";
-              const aRemainingClass =
-                aRemaining <= 50
-                  ? aRemaining <= 0
-                    ? "text-red-600"
-                    : "text-amber-600"
-                  : "text-gray-600";
+                const aLen = currentAnswerValue.length;
+                const aRemaining = ANSWER_LIMIT - aLen;
+                const aRemainingClass =
+                  aRemaining <= 50
+                    ? aRemaining <= 0
+                      ? "text-red-400"
+                      : "text-amber-400"
+                    : "text-gray-400";
 
-              return (
-                <div className="bg-white rounded-b-xl p-5" key={item.id}>
-                  <div className="flex justify-between items-center mb-2">
-                    <h2 className="text-xl font-bold text-black">Question</h2>
-                    <button
-                      className="cursor-pointer bg-[#FF0004] text-white px-3 py-1 text-sm rounded-md font-bold"
-                      type="button"
-                      onClick={() => handleDeleteFaq(item, index)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <Controller
-                      control={control}
-                      name={`questions.${index}.question`}
-                      render={({ field }) => (
-                        <>
-                          <textarea
-                            {...field}
-                            placeholder="Enter Question............"
-                            className="w-full bg-[#D9D9D9] p-2 rounded-md resize-none text-[#727272] placeholder-[#727272] text-sm font-bold"
-                            rows={2}
-                            value={field.value ?? ""}
-                            onChange={(e) => {
-                              const input = e.target.value;
-                              const truncated = truncateToLimit(
-                                input,
-                                QUESTION_LIMIT
-                              );
-                              field.onChange(truncated);
-                              setValue(
-                                `questions.${index}.question`,
-                                truncated,
-                                { shouldValidate: true, shouldDirty: true }
-                              );
-                            }}
-                            aria-describedby={`question-${index}-count question-${index}-error`}
-                            aria-invalid={!!errors.questions?.[index]?.question}
-                          />
-
-                          <div className="mt-2">
-                            <div className="flex justify-between items-center mt-1">
-                              <div className="text-xs">
-                                <span
-                                  id={`question-${index}-count`}
-                                  aria-live="polite"
-                                  className={`${qRemainingClass}`}
-                                >
-                                  {qLen} / {QUESTION_LIMIT}
-                                </span>
-                                <span
-                                  className={`ml-2 text-xs ${qRemainingClass}`}
-                                >
-                                  {qRemaining > 0
-                                    ? `${qRemaining} remaining`
-                                    : qRemaining === 0
-                                    ? "Maximum reached"
-                                    : `${-qRemaining} over limit`}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      )}
-                    />
-                    {errors.questions?.[index]?.question && (
-                      <span
-                        id={`question-${index}-error`}
-                        className="text-red-500 text-xs font-semibold"
+                return (
+                  <div className="bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/5 transition-all duration-300" key={item.id}>
+                    <div className="flex justify-between items-center mb-4">
+                      <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                        <span className="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
+                        Q&A Pair #{index + 1}
+                      </h2>
+                      <button
+                        className="cursor-pointer bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-red-200 border border-red-500/30 px-3 py-1 text-sm rounded-lg font-medium transition-colors"
+                        type="button"
+                        onClick={() => handleDeleteFaq(item, index)}
                       >
-                        {errors.questions[index].question?.message}
-                      </span>
-                    )}
+                        Remove
+                      </button>
+                    </div>
 
-                    <Controller
-                      control={control}
-                      name={`questions.${index}.answer`}
-                      render={({ field }) => (
-                        <>
-                          <textarea
-                            {...field}
-                            placeholder="Enter Answer............"
-                            className="w-full bg-[#D9D9D9] p-2 rounded-md resize-none text-[#727272] placeholder-[#727272] text-sm font-bold"
-                            rows={3}
-                            value={field.value ?? ""}
-                            onChange={(e) => {
-                              const input = e.target.value;
-                              const truncated = truncateToLimit(
-                                input,
-                                ANSWER_LIMIT
-                              );
-                              field.onChange(truncated);
-                              setValue(`questions.${index}.answer`, truncated, {
-                                shouldValidate: true,
-                                shouldDirty: true,
-                              });
-                            }}
-                            aria-describedby={`answer-${index}-count answer-${index}-error`}
-                            aria-invalid={!!errors.questions?.[index]?.answer}
-                          />
+                    <div className="flex flex-col gap-4">
+                      {/* Question Field */}
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-400 mb-1 ml-1 uppercase tracking-wide">Question</label>
+                        <Controller
+                          control={control}
+                          name={`questions.${index}.question`}
+                          render={({ field }) => (
+                            <>
+                              <textarea
+                                {...field}
+                                placeholder="Enter the user's question..."
+                                className="w-full bg-black/20 p-3 rounded-lg resize-none text-white placeholder-gray-500 text-sm font-medium border border-white/10 focus:border-indigo-500 focus:bg-black/30 outline-none transition-all"
+                                rows={2}
+                                value={field.value ?? ""}
+                                onChange={(e) => {
+                                  const input = e.target.value;
+                                  const truncated = truncateToLimit(
+                                    input,
+                                    QUESTION_LIMIT
+                                  );
+                                  field.onChange(truncated);
+                                  setValue(
+                                    `questions.${index}.question`,
+                                    truncated,
+                                    { shouldValidate: true, shouldDirty: true }
+                                  );
+                                }}
+                                aria-describedby={`question-${index}-count question-${index}-error`}
+                                aria-invalid={!!errors.questions?.[index]?.question}
+                              />
 
-                          <div className="mt-2">
-                            <div className="flex justify-between items-center mt-1">
-                              <div className="text-xs">
+                              <div className="flex justify-end mt-1">
                                 <span
-                                  id={`answer-${index}-count`}
-                                  aria-live="polite"
-                                  className={`${aRemainingClass}`}
+                                  className={`text-xs ${qRemainingClass}`}
                                 >
-                                  {aLen} / {ANSWER_LIMIT}
-                                </span>
-                                <span
-                                  className={`ml-2 text-xs ${aRemainingClass}`}
-                                >
-                                  {aRemaining > 0
-                                    ? `${aRemaining} remaining`
-                                    : aRemaining === 0
-                                    ? "Maximum reached"
-                                    : `${-aRemaining} over limit`}
+                                  {qLen}/{QUESTION_LIMIT}
                                 </span>
                               </div>
-                            </div>
-                          </div>
-                        </>
-                      )}
-                    />
-                    {errors.questions?.[index]?.answer && (
-                      <span className="text-red-500 text-xs font-semibold">
-                        {errors.questions[index].answer?.message}
-                      </span>
-                    )}
+                            </>
+                          )}
+                        />
+                        {errors.questions?.[index]?.question && (
+                          <span
+                            id={`question-${index}-error`}
+                            className="text-red-400 text-xs font-semibold block mt-1"
+                          >
+                            {errors.questions[index].question?.message}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Answer Field */}
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-400 mb-1 ml-1 uppercase tracking-wide">Answer</label>
+                        <Controller
+                          control={control}
+                          name={`questions.${index}.answer`}
+                          render={({ field }) => (
+                            <>
+                              <textarea
+                                {...field}
+                                placeholder="Enter the bot's response..."
+                                className="w-full bg-black/20 p-3 rounded-lg resize-none text-white placeholder-gray-500 text-sm font-medium border border-white/10 focus:border-emerald-500 focus:bg-black/30 outline-none transition-all"
+                                rows={3}
+                                value={field.value ?? ""}
+                                onChange={(e) => {
+                                  const input = e.target.value;
+                                  const truncated = truncateToLimit(
+                                    input,
+                                    ANSWER_LIMIT
+                                  );
+                                  field.onChange(truncated);
+                                  setValue(`questions.${index}.answer`, truncated, {
+                                    shouldValidate: true,
+                                    shouldDirty: true,
+                                  });
+                                }}
+                                aria-describedby={`answer-${index}-count answer-${index}-error`}
+                                aria-invalid={!!errors.questions?.[index]?.answer}
+                              />
+
+                              <div className="flex justify-end mt-1">
+                                <span
+                                  className={`text-xs ${aRemainingClass}`}
+                                >
+                                  {aLen}/{ANSWER_LIMIT}
+                                </span>
+                              </div>
+                            </>
+                          )}
+                        />
+                        {errors.questions?.[index]?.answer && (
+                          <span className="text-red-400 text-xs font-semibold block mt-1">
+                            {errors.questions[index].answer?.message}
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-        </form>
+                );
+              })}
+          </form>
+        </div>
       </div>
     </div>
   );
